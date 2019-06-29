@@ -1,5 +1,5 @@
 ## reactNative文档说明和使用
-`git-clone后：yh-supermarketapp 修改成 supermarketapp，否则会造成android和ios项目启动问题`
+
 ### 项目启动
 ```
 brew install node
