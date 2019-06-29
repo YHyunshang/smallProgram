@@ -15,7 +15,7 @@ export default class App extends Component<Props> {
   constructor(props) {
     super(props)
     this.state = {
-      name: '永辉-超市',
+      name: '永辉超市',
       text: '采用的是react-native配合UI:react-native-element',
       textInput: 'input测试'
     }

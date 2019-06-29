@@ -1,5 +1,5 @@
 ## reactNative文档说明和使用
-
+`git-clone后：yh-supermarketapp 修改成 supermarketapp，否则会造成android和ios项目启动问题`
 ### 项目启动
 ```
 brew install node
@@ -13,8 +13,10 @@ npm run bundle-android android 打包
 ```
 ### 注意事项
 
-`独立android启动 设置：export ANDROID_HOME= “你的SDK”`
-`线上服务为 http://localhost:8081/index.bundle?platform= androidh 或者 ios`
+- `勿用cnpm，否则因路径等问题缺失文件无法启动`
+- `独立android启动 设置：export ANDROID_HOME= “你的SDK”`
+- `线上服务为 http://localhost:8081/index.bundle?platform= androidh 或者 ios`
+
 
 ### react-native规范
 
