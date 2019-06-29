@@ -1,0 +1,28 @@
+{
+  "name": "myApp",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "bundle-android": "react-native bundle --entry-file index.js --bundle-output ./bundle/index.android.jsbundle --platform android --assets-dest ./bundle --dev false",
+    "bundle-ios": "react-native bundle --entry-file index.js  --platform ios --dev false --bundle-output ./bundle/index.ios.jsbundle --assets-dest ./bundle"
+  },
+  "dependencies": {
+    "react": "16.8.3",
+    "react-native": "0.59.9"
+  },
+  "devDependencies": {
+    "@babel/core": "7.4.5",
+    "@babel/runtime": "7.4.5",
+    "axios": "^0.19.0",
+    "babel-jest": "24.8.0",
+    "console": "^0.7.2",
+    "jest": "24.8.0",
+    "lodash": "^4.17.11",
+    "metro-react-native-babel-preset": "0.54.1",
+    "react-test-renderer": "16.8.3"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
