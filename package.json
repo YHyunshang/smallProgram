@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "bundle-android": "react-native bundle --entry-file index.js --bundle-output ./bundle/index.android.jsbundle --platform android --assets-dest ./bundle --dev false",
-    "bundle-ios": "react-native bundle --entry-file index.js  --platform ios --dev false --bundle-output ./bundle/index.ios.jsbundle --assets-dest ./bundle"
+    "bundle-android": "react-native bundle --entry-file index.js --bundle-output ./dist/index.android.jsbundle --platform android --assets-dest ./dist --dev false",
+    "bundle-ios": "react-native bundle --entry-file index.js  --platform ios --dev false --bundle-output ./dist/index.ios.jsbundle --assets-dest ./dist"
   },
   "dependencies": {
     "react": "16.8.3",
