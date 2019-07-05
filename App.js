@@ -40,10 +40,10 @@ export default class App extends Component<Props> {
   }
   // 测试请求Api
   _onPressButton() {
-    Api.api('get', 'http://localhost:3000/api/get')
+    Api.api('post', 'http://localhost:8082/apiGet')
       .then((e) => {
         console.log(e)
-        alert('测试成功android-imgs')
+        // alert('测试成功android-imgs')
       })
       .catch(e => {
         console.log(e)

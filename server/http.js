@@ -1,14 +1,14 @@
-import axios from 'axios';
-import ApiList from './api.json';
-import _ from 'lodash';
-let CancelToken = axios.CancelToken;
+import axios from 'axios'
+import ApiList from './api.json'
+import _ from 'lodash'
+let CancelToken = axios.CancelToken
 // let cancel
 // /*
 //  * 设置请求头
 //  * 设置请求时间
 //  */
-axios.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8';
-axios.defaults.timeout = 60000;
+axios.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8'
+axios.defaults.timeout = 60000
 
 // // request 请求前拦截器
 // axios.interceptors.request.use(config => {
