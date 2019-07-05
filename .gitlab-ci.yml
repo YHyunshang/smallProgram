@@ -1,0 +1,88 @@
+image: registry-itwork.yonghui.cn/public/cibase:0.8.1
+
+stages:
+- node_install
+- node_build
+- docker_build
+
+node_install:
+  stage: node_install
+  script:
+  - node -v
+  - npm -v
+  - mkdir -p /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}/node_modules
+  - rm -rf /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}/node_modules
+  - mkdir -p /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}/node_modules
+  - npm install -g cnpm --registry=https://registry.npm.taobao.org
+  - cnpm i
+  - cp -r node_modules/* /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}/node_modules
+  only:
+  - test
+  - master
+  - /^release-.*$/
+  - /^hotfix-.*$/
+  - tags
+  when: manual
+
+node_build_test:
+  stage: node_build
+  script:
+  - mkdir node_modules
+  - cp -r /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}/node_modules/*  node_modules
+  - chmod -R 777 node_modules
+  - cnpm i webpack
+  - node_build bundle-android # 编译指令
+  - node_build bundle-ios # 编译指令
+  #- mvn --batch-mode verify sonar:sonar -Dsonar.host.url=http://10.0.90.242:9000 -Dsonar.login=admin -Dsonar.password=CVvfcbN9oO@3u9gb@Wi7 -Dsonar.gitlab.project_id=$CI_PROJECT_ID # sonar
+  - mkdir -p /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}
+  - cp -r dist /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}/dist
+  only:
+  - test # 指定分支
+
+node_build_master:
+  stage: node_build
+  script:
+  - mkdir node_modules
+  - cp -r /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}/node_modules/*  node_modules
+  - chmod -R 777 node_modules
+  - cnpm i webpack
+  - node_build build # 编译指令
+  - mkdir -p /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}
+  - cp -r dist /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}/dist
+  only:
+  - master # 指定分支
+
+docker_build:
+  image: registry.cn-hangzhou.aliyuncs.com/choerodon-tools/cibase:0.7.0
+  stage: docker_build
+  script:
+  - docker_build
+  - rm -rf /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}
+  - chart_build
+  only:
+  - test
+  - master
+  - /^hotfix-.*$/
+
+.auto_devops: &auto_devops |
+  http_status_code=`curl -o .auto_devops.sh -s -m 10 --connect-timeout 10 -w %{http_code} "${CHOERODON_URL}/devops/ci?token=${Token}&type=front"`
+  if [ "$http_status_code" != "200" ]; then
+    cat .auto_devops.sh
+    exit 1
+  fi
+  source .auto_devops.sh
+
+  function node_build(){
+      chmod -R 777 node_modules
+      npm run ${1:-"build"}
+  }
+
+  function docker_build(){
+      cp -r /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}/* ${1:-"."}
+      docker login -u ${DOCKER_USER} -p ${DOCKER_PWD} ${DOCKER_REGISTRY}
+      docker build --pull -t ${DOCKER_REGISTRY}/${GROUP_NAME}/${PROJECT_NAME}:${CI_COMMIT_TAG} ${1:-"."}
+      docker push ${DOCKER_REGISTRY}/${GROUP_NAME}/${PROJECT_NAME}:${CI_COMMIT_TAG}
+  }
+
+before_script:
+- *auto_devops
