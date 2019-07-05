@@ -2,19 +2,19 @@ image: registry-itwork.yonghui.cn/public/cibase:0.8.1
 
 stages:
 - node_install
-# - node_build
-# - docker_build
+- node_build
+- docker_build
 
 node_install:
   stage: node_install
   script:
   - node -v
   - npm -v
-  - npm install -g react-native-cli
   - mkdir -p /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}/node_modules
   - rm -rf /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}/node_modules
   - mkdir -p /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}/node_modules
   - npm i
+  - npm install react-native-cli
   - cp -r node_modules/* /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}/node_modules
   only:
   - test
@@ -31,6 +31,7 @@ node_build_test:
   - cp -r /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}/node_modules/*  node_modules
   - chmod -R 777 node_modules
   - node_build bundle-android # 编译指令
+  - mkdir -p /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}
   - cp -r bundle /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}/bundle
   only:
   - test # 指定分支
