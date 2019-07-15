@@ -2,9 +2,10 @@
  * Created by 李华良 on 2019-07-11
  */
 import React from 'react'
-import { View, StyleSheet, ScrollView, Image } from 'react-native'
+import { View, StyleSheet, ScrollView, Image, Text } from 'react-native'
 import BannerFloor from './components/BannerFloor'
 import BoxFloor from './components/BoxFloor'
+import Icon from './components/Icon'
 
 interface State {
   floorData: array<object>  // cms 数据
@@ -48,6 +49,9 @@ class App extends React.Component<object, State> {
     return (
       <ScrollView style={styles.wrapper}>
         {floorComp}
+        {/*<Text style={styles.icon}>&#xe65b;</Text>*/}
+        <Icon name="cart" />
+        {/*<Icon name="ios-person" size={30} color="#4F8EF7" />*/}
       </ScrollView>
     )
   }
@@ -56,6 +60,9 @@ class App extends React.Component<object, State> {
 const styles = StyleSheet.create({
   wrapper: {
   },
+  icon: {
+    // fontFamily: 'iconfont'
+  }
 })
 
 export default App
