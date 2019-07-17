@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-16 15:29:35
+ * @LastEditTime: 2019-07-17 11:00:24
  */
 
 import React from 'react';
@@ -15,10 +15,7 @@ import {
   Dimensions
 } from 'react-native';
 import Swiper from 'react-native-swiper'
- import ToastUtil from '../common/PopUp'
-// import LoadingView from '../common/LoadingView'
-
-const {width,height} = Dimensions.get('window');  //解构赋值 获取屏幕宽度
+const {width} = Dimensions.get('window');  //解构赋值 获取屏幕宽度
 export default  class GoodsDetailSwiper extends React.Component {
   constructor(props) {
     super(props);

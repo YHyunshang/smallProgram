@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-16 13:44:31
+ * @LastEditTime: 2019-07-17 10:53:34
  */
 import React from 'react';
 import {
@@ -13,7 +13,7 @@ import {
   View,
   Image
 } from 'react-native';
-import Icon from '../../../iconSets';
+import Icon from '../../components/Icon'
 export default  class GoodsDetailEvaluate extends React.Component {
   constructor(props) {
     super(props);
@@ -38,7 +38,7 @@ export default  class GoodsDetailEvaluate extends React.Component {
           </View>
           <View style={styles.wrapperItem}>
             <Text style={styles.seeAll}>查看全部</Text>
-            <Icon name='icon-right' size={10} color="#9B9B9B" />
+            <Icon name='right' size={10} color="#9B9B9B" />
           </View>
         </View>
         <View style={styles.evaluteWrapper}>
@@ -70,7 +70,9 @@ const styles = StyleSheet.create({
     padding:15
   },
   wrapperItem:{
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems:'center',
   },
   goodsEvalute:{
     fontSize:15,

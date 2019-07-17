@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-17 10:03:14
+ * @LastEditTime: 2019-07-17 10:57:42
  */
 
 import React from 'react';
@@ -16,6 +16,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 import PopUp from '../common/PopUp'
+import Icon from '../../components/Icon'
 import PosterModal from '../../components/business/PosterModal'
 const shareIconWechat = {uri: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/wechat-friend.png'};
 const shareIconMoments = {uri: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/wechat-moments.png'};
@@ -70,7 +71,7 @@ shareFriend(){
             <View></View>
             <View style={styles.shareTitleText}><Text>分享至</Text></View>
             <TouchableOpacity onPress={() => { this.hideShareModal() }}>
-                <View style={styles.closeIcon}><Text>关闭</Text></View>
+                <Icon style={styles.closeIcon} name='close' size={21} color="#9B9B9B" />
             </TouchableOpacity>
           </View>
       <View style={styles.shareInfo}>
@@ -101,12 +102,9 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   closeIcon:{
-    color:'#9B9B9B',
-    fontSize:14,
     textAlign:'right',
     marginVertical:14,
-    marginRight:13,
-    textAlign:'right'
+    marginRight:13
   },
   shareTitleText:{
     height:49,

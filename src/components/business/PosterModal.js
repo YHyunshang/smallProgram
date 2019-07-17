@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-17 10:01:54
+ * @LastEditTime: 2019-07-17 10:57:33
  */
 
 import React from 'react';
@@ -16,6 +16,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 import PopUp from '../common/PopUp'
+import Icon from '../../components/Icon'
 export default  class PosterModal extends React.Component {
   constructor(props) {
     super(props);
@@ -50,7 +51,7 @@ export default  class PosterModal extends React.Component {
            <View></View>
            <View style={styles.shareTitleText}><Text>保存到相册</Text></View>
            <TouchableOpacity onPress={() => { this.hidePosterModal() }}>
-             <View style={styles.closeIcon}><Text>关闭</Text></View>
+             <Icon style={styles.closeIcon} name='close' size={21} color="#9B9B9B" />
            </TouchableOpacity>
          </View>
           <Image style={styles.posterImage} source={{uri: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_2.jpg'}} resizeMode="cover" ></Image>          
@@ -72,12 +73,9 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   closeIcon:{
-    color:'#9B9B9B',
-    fontSize:14,
     textAlign:'right',
     marginVertical:14,
-    marginRight:13,
-    textAlign:'right'
+    marginRight:13
   },
   shareTitleText:{
     height:49,

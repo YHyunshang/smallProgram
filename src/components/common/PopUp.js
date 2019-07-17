@@ -4,10 +4,10 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-17 10:06:00
+ * @LastEditTime: 2019-07-17 11:01:49
  */
 import React, { Component } from 'react'
-import { StyleSheet, View,Text, TouchableOpacity, Animated, Easing, Dimensions } from 'react-native'
+import { StyleSheet, View, TouchableOpacity, Animated, Easing, Dimensions } from 'react-native'
 /**
  * 弹出层
  */

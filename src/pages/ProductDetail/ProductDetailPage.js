@@ -4,14 +4,13 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-17 10:06:10
+ * @LastEditTime: 2019-07-17 10:58:19
  */
 
 import React from 'react';
 import {ScrollView,View,StyleSheet,Text,Image,TouchableOpacity} from 'react-native'
 // import * as WeChat from 'react-native-wechat';
-import Icon from '../../../iconSets';
-//import IconDefault from 'react-native-vector-icons/FontAwesome';
+import Icon from '../../components/Icon'
 import GoodsDetailEvaluate from '../../components/business/GoodsDetailEvaluate'
 import GoodsDetailSwiper from '../../components/business/GoodsDetailSwiper'
 import GoodsFootCart from '../../components/business/GoodsFootCart'
@@ -69,9 +68,9 @@ export default  class ProductDetailPage extends React.Component {
         <View>
           <View style={styles.goodsWrapper}>
             <Text style={styles.goodsName}>十三香麻辣小龙虾(约750g/份)</Text>
-            {/* <IconDefault name='rocket' size={60} color="#4F8EF7" /> */}
-            <Icon onPress={() => { this.handleShowModal() }} name='icon-share' size={10} color="#FA6400" />
-
+            <View style={styles.iconBg}>
+              <Icon onPress={() => { this.handleShowModal() }} name='share' size={10} color="#FA6400" />
+            </View>
           </View>
           <View>
             <Text style={styles.goodsPrice}>¥ 45.60</Text>
@@ -134,6 +133,18 @@ const styles = StyleSheet.create({
     fontSize:16,
     fontWeight: '600',
     color:'#333333'
+  },
+  iconBg:{
+    width:34,
+    height:25,
+    borderRadius:13,
+    borderWidth:1,
+    borderStyle:'solid',
+    borderColor:'#FA6400',
+    backgroundColor:'#FFE9DA',
+    flexDirection: 'row',
+    justifyContent:'center',
+    alignItems: 'center'
   },
   goodsPrice:{
     fontSize:14,
