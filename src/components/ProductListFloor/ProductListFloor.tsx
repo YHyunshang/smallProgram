@@ -2,11 +2,9 @@
  * Created by 李华良 on 2019-07-12
  */
 import React from 'react'
-import { StyleSheet, View, Text } from 'react-native'
-import FitImage from 'react-native-fit-image'
-import { Button } from 'react-native-vector-icons'
+import { View } from 'react-native'
 import ProductItem from './ProductItem'
-import styles from './ProductList.styles'
+import styles from './ProductListFloor.styles'
 
 interface Props {
   data: array<object>
