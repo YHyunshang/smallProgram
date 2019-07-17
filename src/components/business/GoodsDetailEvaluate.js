@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-17 10:53:34
+ * @LastEditTime: 2019-07-17 11:27:09
  */
 import React from 'react';
 import {
@@ -47,6 +47,7 @@ export default  class GoodsDetailEvaluate extends React.Component {
                 <View style={styles.evaluteInfo}>
                   <Text style={styles.evaluteName}>李明</Text>
                     <View style={styles.memberIcon}>
+                      <Icon name='member' size={10} color="#F6DDA1" />
                       <Text style={styles.memberText}>超级会员</Text>
                     </View>
                 </View>
@@ -109,6 +110,7 @@ const styles = StyleSheet.create({
     marginRight:5
   },
   memberIcon:{
+    flexDirection:"row",
     alignItems:'center',
     justifyContent:'center',
     width:72,
@@ -118,6 +120,7 @@ const styles = StyleSheet.create({
     color: '#F6DDA1'
   },
   memberText:{
+    marginLeft:4,
     fontSize:11,
     color: '#F6DDA1'
   },

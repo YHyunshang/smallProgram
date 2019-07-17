@@ -4,28 +4,26 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-17 10:58:19
+ * @LastEditTime: 2019-07-17 12:27:54
  */
 
 import React from 'react';
 import {ScrollView,View,StyleSheet,Text,Image,TouchableOpacity} from 'react-native'
 // import * as WeChat from 'react-native-wechat';
 import Icon from '../../components/Icon'
-import GoodsDetailEvaluate from '../../components/business/GoodsDetailEvaluate'
-import GoodsDetailSwiper from '../../components/business/GoodsDetailSwiper'
-import GoodsFootCart from '../../components/business/GoodsFootCart'
 import ShareModal from '../../components/business/ShareModal'
 import PosterModal from '../../components/business/PosterModal'
+import GoodsFootCart from '../../components/business/GoodsFootCart'
+import GoodsDetailSwiper from '../../components/business/GoodsDetailSwiper'
+import GoodsDetailEvaluate from '../../components/business/GoodsDetailEvaluate'
 export default  class ProductDetailPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        isShowPoster:false,
         imgData: [
           { image: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_1.jpg'},
           { image: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_2.jpg' },
-          { image: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_3.jpg' },
-          { image: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_4.jpg'},
+          { image: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_3.jpg' }
         ]
       }
   }
@@ -42,17 +40,15 @@ export default  class ProductDetailPage extends React.Component {
    */
   handleShowModal() {
      this.shareModal.showShareModal() 
-     //this.posterModal.showPosterModal() 
   }
   /**
    * @description: 显示生成海报弹层
    */
-  handlePosterModal() {
-    
-    //this.setState({isShowPoster:true})
+  handlePosterModal=(e) =>{
+    this.posterModal.showPosterModal() 
   }
   render() {
-    const {imgData,isShowPoster}=this.state;
+    const {imgData}=this.state;
     //商品详情图文列表
     const goodsImgList = imgData.map(({image}, index) => (
       <Image style={styles.goodsDetailImage} source={{uri: image}} resizeMode="cover" key={index}/>
@@ -114,7 +110,7 @@ export default  class ProductDetailPage extends React.Component {
         </View>
        </ScrollView>  
        <ShareModal modalBoxHeight={240} onShare={this.handlePosterModal} ref={ref => this.shareModal= ref}/>
-       <PosterModal modalBoxHeight={514} isShow={isShowPoster} ref={ref => this.posterModal= ref}/>
+       <PosterModal modalBoxHeight={514} ref={ref => this.posterModal= ref}/>
     </View>
     )
   }

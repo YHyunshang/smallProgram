@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-17 11:01:49
+ * @LastEditTime: 2019-07-17 11:20:46
  */
 import React, { Component } from 'react'
 import { StyleSheet, View, TouchableOpacity, Animated, Easing, Dimensions } from 'react-native'
@@ -114,8 +114,8 @@ const styles = StyleSheet.create({
 })
 
 PopUp.defaultProps = {
-  modalBoxHeight: 300, // 盒子高度
-  modalBoxBg: '#fff', // 背景色
+  modalBoxHeight: 300, // 盒子高度默认300
+  modalBoxBg: '#fff', // 背景色默认白色
   hide: function () { }, // 关闭时的回调函数
   transparentIsClick: true  // 透明区域是否可以点击
 }
