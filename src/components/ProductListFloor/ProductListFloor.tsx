@@ -2,18 +2,26 @@
  * Created by 李华良 on 2019-07-12
  */
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import FitImage from 'react-native-fit-image'
-
-const styles = StyleSheet.create({
-  container: {}
-})
+import { Button } from 'react-native-vector-icons'
+import ProductItem from './ProductItem'
+import styles from './ProductList.styles'
 
 interface Props {
   data: array<object>
-  countPerRow: number
 }
 
-export default function ProductListFloor ({ data, countPerRow }: Props) {
-  let formattedData = []
+export default function ProductListFloor (props: Props) {
+  const { data } = props
+  const length = data.length
+  return (
+    <View style={styles.container}>
+      {data.map((ele, idx) => (
+        <View style={(idx <= length -1) ? styles.productItem : styles.productLastItem} key={ele.code}>
+          <ProductItem data={ele} />
+        </View>
+      ))}
+    </View>
+  )
 }
