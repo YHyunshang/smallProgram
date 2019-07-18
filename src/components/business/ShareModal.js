@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-17 10:57:42
+ * @LastEditTime: 2019-07-18 20:38:54
  */
 
 import React from 'react';
@@ -17,15 +17,11 @@ import {
 } from 'react-native';
 import PopUp from '../common/PopUp'
 import Icon from '../../components/Icon'
-import PosterModal from '../../components/business/PosterModal'
 const shareIconWechat = {uri: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/wechat-friend.png'};
 const shareIconMoments = {uri: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/wechat-moments.png'};
 export default  class ShareModal extends React.Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   isShowModal: false//默认隐藏分享朋友圈和海报弹层
-    // }
   }
 
   componentDidMount() {

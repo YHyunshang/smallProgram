@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-17 10:57:33
+ * @LastEditTime: 2019-07-18 20:56:44
  */
 
 import React from 'react';
@@ -16,6 +16,8 @@ import {
   TouchableOpacity
 } from 'react-native';
 import PopUp from '../common/PopUp'
+import {downloadImage} from '../common/DownLoadImage'
+import Toast from 'react-native-easy-toast'
 import Icon from '../../components/Icon'
 export default  class PosterModal extends React.Component {
   constructor(props) {
@@ -33,14 +35,32 @@ export default  class PosterModal extends React.Component {
  /**
   * @description: 显示生成海报弹层
   */ 
- showPosterModal(){
-  this.popUp.show()
+  showPosterModal(){
+    this.popUp.show()
  }
  /**
   * @description: 隐藏生成海报弹层
   */ 
- hidePosterModal(){
-  this.popUp.hide()
+  hidePosterModal(){
+   this.popUp.hide()
+}
+  /**
+  * @description: 保存图片到本地相册
+  */ 
+ saveImage(){
+  let url="https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_2.jpg"
+   downloadImage(url).then((res)=>{
+      if(res && res.statusCode===200){
+        this.refs.toast.show('图片保存成功', 2000);
+       // this.hidePosterModal()
+      }else{
+        this.refs.toast.show('图片保存失败', 2000);
+      }
+  }).catch((error)=>{
+      this.refs.toast.show('图片保存失败', 2000);
+      console.log(error)
+  })
+  
 }
  
   render() {
@@ -55,12 +75,21 @@ export default  class PosterModal extends React.Component {
            </TouchableOpacity>
          </View>
           <Image style={styles.posterImage} source={{uri: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_2.jpg'}} resizeMode="cover" ></Image>          
-          <View style={styles.saveImage}>
-            <Text style={styles.saveText}>保存图片</Text>
-          </View>
+           <TouchableOpacity onPress={() => { this.saveImage() }}>
+              <View style={styles.saveImage}>
+                <Text style={styles.saveText}>保存图片</Text>
+              </View>
+            </TouchableOpacity>
           <View style={styles.tipsContent}>
             <Text style={styles.tips}>保存图片到手机相册后，将图片分享到您的圈</Text>
           </View>
+          <Toast
+              ref="toast"
+              style={{backgroundColor:'#444444'}}
+              position='top'
+              positionValue={200}
+              fadeInDuration={750}
+            />
         </PopUp>
       )
   }

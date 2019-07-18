@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-17 12:27:54
+ * @LastEditTime: 2019-07-18 20:39:24
  */
 
 import React from 'react';
@@ -64,9 +64,11 @@ export default  class ProductDetailPage extends React.Component {
         <View>
           <View style={styles.goodsWrapper}>
             <Text style={styles.goodsName}>十三香麻辣小龙虾(约750g/份)</Text>
-            <View style={styles.iconBg}>
-              <Icon onPress={() => { this.handleShowModal() }} name='share' size={10} color="#FA6400" />
-            </View>
+            <TouchableOpacity onPress={() => { this.handleShowModal() }} >
+              <View style={styles.iconBg}>
+                <Icon name='share' size={10} color="#FA6400" />
+              </View>
+            </TouchableOpacity>
           </View>
           <View>
             <Text style={styles.goodsPrice}>¥ 45.60</Text>
