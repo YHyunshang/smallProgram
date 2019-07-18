@@ -1,5 +1,5 @@
 /**
- * Created by 李华良 on 2019-07-17
+ * Created by 李华良 on 2019-07-18
  */
 import { StyleSheet } from 'react-native'
 
@@ -53,14 +53,13 @@ export default StyleSheet.create({
   },
   productPrice: {
     color: '#EE4239',
-    fontSize: 15,
-    fontWeight: '500',
+    fontSize: 16,
     lineHeight: 18,
+    fontWeight: '500',
   },
   pricePrefix: {
     fontSize: 12,
     fontWeight: '400',
-    paddingRight: 3,
   },
   cartBtn: {
     borderRadius: 24,

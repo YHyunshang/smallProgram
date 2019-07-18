@@ -41,7 +41,7 @@ export default StyleSheet.create({
     alignSelf: 'flex-start',
     height: 15,
     borderRadius: 2,
-    marginBottom: 2,
+    marginBottom: 5,
   },
   productTag: {
     fontSize: 11,
@@ -56,7 +56,7 @@ export default StyleSheet.create({
   },
   productPrice: {
     color: '#EE4239',
-    fontSize: 16,
+    fontSize: 18,
     lineHeight: 18,
     marginRight: 5,
   },

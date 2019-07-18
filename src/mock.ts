@@ -29,7 +29,7 @@ export default {
       { image: 'http://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/ad_3.jpg', url: '' },
     ],
   }, {
-    type: 'product-list',
+    type: 'product-scroll',
     data: [
       {
         "code": "5d2d8111fa184a6e3cbebd2c",
@@ -38,7 +38,7 @@ export default {
         "name": "洁伴460g平板卫生纸-单包装460克洁伴460g平板卫生纸-单包装460克洁伴460g平板卫生纸-单包装460克洁伴460g平板卫生纸-单包装460克",
         "pos": 0,
         price: 100.01,
-        promotionPrice: 99.99,
+        promotionPrice: 16.99,
         "templateId": "5d2d8111515030b887aa9b8e",
         "label": "促销",
         productDesc: '我们的土豆物美价我们的我们的土豆物美价我们的…我们的土豆物美价我们的…我们的土豆物美价我们的…'
