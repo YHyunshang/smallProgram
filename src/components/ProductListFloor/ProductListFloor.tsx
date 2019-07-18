@@ -3,11 +3,11 @@
  */
 import React from 'react'
 import { View } from 'react-native'
-import ProductItem from './ProductItem'
+import ProductItem, { Props as ProductItemProps} from './ProductItem'
 import styles from './ProductListFloor.styles'
 
 interface Props {
-  data: array<object>
+  data: Array<ProductItemProps>
 }
 
 export default function ProductListFloor (props: Props) {
@@ -16,9 +16,14 @@ export default function ProductListFloor (props: Props) {
   return (
     <View style={styles.container}>
       {data.map((ele, idx) => (
-        <View style={(idx <= length -1) ? styles.productItem : styles.productLastItem} key={ele.code}>
+        <React.Fragment>
+        <View style={styles.productItem} key={ele.code}>
           <ProductItem data={ele} />
         </View>
+        {(idx <= length -1) && (
+          <View style={styles.divider} />
+        )}
+        </React.Fragment>
       ))}
     </View>
   )

@@ -7,31 +7,44 @@ import LinearGradient from 'react-native-linear-gradient'
 import Icon from '../Icon'
 import styles from './ProductItem.styles'
 
-interface Props {
-  data: object
+export interface Props {
+  data: {   // 商品数据
+    code: string,  // 编码
+    imgUrl: string,  // 图片
+    name: string,  // 名称
+    productDesc: string,  // 简述
+    label: string,  // 标签
+    price: number,  // 价格
+    promotionPrice: number,  // 促销价格
+  }
 }
 
-export default function ProductItem (props: Props) {
-  const { data } = props
+export default function ProductItem ({ data: {imgUrl, name, productDesc, label, price, promotionPrice} }: Props) {
+  const isPromotion = promotionPrice < price
+
   return (
     <View style={styles.container}>
       <View style={styles.productImgBox}>
-        <Image style={styles.productImg} source={{ uri: data.imgUrl }} resizeMode="contain" />
+        <Image style={styles.productImg} source={{ uri: imgUrl }} resizeMode="contain" />
       </View>
       <View style={styles.productDetailBox}>
-        <Text style={styles.productName} numberOfLines={1}>{ data.name }</Text>
-        <LinearGradient colors={[ '#FF5247', '#FF873E' ]} style={styles.productTagBox}>
-          {data.tag && (<Text style={styles.productTag}>{ data.tag }</Text>)}
-        </LinearGradient>
+        <Text style={styles.productName} numberOfLines={1}>{ name }</Text>
+        <Text style={styles.productDesc} numberOfLines={1}>{ productDesc }</Text>
         <View style={styles.btmBox}>
-          <Text style={styles.productPriceBox}>
-            <Text style={styles.pricePrefix}>¥ </Text>
-            <Text style={styles.productPrice}>{ data.price }</Text>
-          </Text>
-          <TouchableOpacity onPress={console.log}>
-            <LinearGradient colors={[ '#EE4239', '#FF766F' ]} style={styles.cartBtn}>
+          <LinearGradient colors={[ '#FF5247', '#FF873E' ]} style={styles.productTagBox}>
+            {label && (<Text style={styles.productTag}>{ label }</Text>)}
+          </LinearGradient>
+          <View style={styles.priceBox}>
+            <Text style={styles.productPrice}>
+              <Text style={styles.pricePrefix}>¥</Text>
+              {isPromotion ? promotionPrice : price}
+            </Text>
+            <Text style={styles.slashedPrice}>{isPromotion ? `¥${price}` : ''}</Text>
+          </View>
+          <TouchableOpacity onPress={console.log} style={styles.cartBtn}>
+            <View colors={[ '#EE4239', '#FF766F' ]}>
               <Icon name="cart" style={styles.cartIcon} />
-            </LinearGradient>
+            </View>
           </TouchableOpacity>
         </View>
       </View>

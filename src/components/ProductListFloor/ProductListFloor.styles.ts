@@ -5,11 +5,26 @@ import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
+    margin: 10,
+    backgroundColor: '#FFF',
+    borderRadius: 5,
+    shadowColor: "rgba(0,0,0,0.06)",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 11,
+    elevation: 5,  // only for android
   },
   productItem: {
     paddingVertical: 15,
-    borderBottomWidth: 0.7,
-    borderColor: '#EEE'
+    paddingHorizontal: 10,
   },
+  divider: {
+    marginLeft: 95,
+    marginRight: 10,
+    borderTopWidth: 0.5,
+    borderColor: '#EEEEEE',
+  }
 })

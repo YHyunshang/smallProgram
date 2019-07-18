@@ -15,13 +15,11 @@ export default StyleSheet.create({
   },
   productDetailBox: {
     flex: 1,
-    height: imgHeight,
-    alignItems: 'flex-start',
     justifyContent: 'space-between',
     overflow: 'hidden',
   },
   btmBox: {
-    flexDirection: 'row',
+    position: 'relative',
   },
   productImg: {
     width: imgHeight,
@@ -32,41 +30,67 @@ export default StyleSheet.create({
     color: '#333',
     lineHeight: 20,
   },
+  productDesc: {
+    color: '#999',
+    fontSize: 12,
+    lineHeight: 17,
+    height: 17,
+    marginBottom: 2,
+  },
   productTagBox: {
-    width: 'auto',
-    height: 20,
+    alignSelf: 'flex-start',
+    height: 15,
     borderRadius: 2,
+    marginBottom: 2,
   },
   productTag: {
     fontSize: 11,
     color: '#FFF',
     fontWeight: '400',
-    lineHeight: 20,
+    lineHeight: 15,
     textAlign: 'center',
     paddingHorizontal: 5,
   },
-  btmBox: {
-    width: '100%',
+  priceBox: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'space-between',
   },
-  productPriceBox: {
+  productPrice: {
     color: '#EE4239',
     fontSize: 16,
+    lineHeight: 18,
+    marginRight: 5,
   },
   pricePrefix: {
     fontSize: 12,
     paddingRight: 3,
   },
+  slashedPrice: {
+    lineHeight: 18,
+    height: 18,
+    color: '#999',
+    fontSize: 12,
+    textDecorationLine: 'line-through',
+  },
   cartBtn: {
-    borderRadius: 15,
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    borderRadius: 24,
+    backgroundColor: '#EE4239',
+    shadowColor: "rgba(238,66,57,0.23)",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 6,
+    elevation: 5,  // only for android
   },
   cartIcon: {
-    width: 36,
+    width: 24,
     textAlign: 'center',
-    fontSize: 18,
-    lineHeight: 26,
+    fontSize: 16,
+    lineHeight: 24,
     color: '#FFF',
   },
 })

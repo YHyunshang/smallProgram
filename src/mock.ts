@@ -29,7 +29,7 @@ export default {
       { image: 'http://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/ad_3.jpg', url: '' },
     ],
   }, {
-    type: 'product-col',
+    type: 'product-list',
     data: [
       {
         "code": "5d2d8111fa184a6e3cbebd2c",
@@ -76,90 +76,6 @@ export default {
         "templateId": "5d2d8111991bb0861fdea340"
       }
     ]
-  }, {
-    type: 'product-list',
-    data: [
-      {
-        "code": "5d2d8111fa184a6e3cbebd2c",
-        "id": 0,
-        "imgUrl": "http://placehold.it/120x120",
-        "name": "洁伴460g平板卫生纸-单包装460克洁伴460g平板卫生纸-单包装460克洁伴460g平板卫生纸-单包装460克洁伴460g平板卫生纸-单包装460克",
-        "pos": 0,
-        price: 100.01,
-        "templateId": "5d2d8111515030b887aa9b8e",
-        "tag": "促销"
-      },
-      {
-        "code": "5d2d811175aa609ae8235e35",
-        "id": 1,
-        "imgUrl": "http://placehold.it/120x120",
-        "name": "product name",
-        "pos": 1,
-        "templateId": "5d2d811185f7fa11696f8f85"
-      },
-      {
-        "code": "5d2d81113e48f9e142c81b3e",
-        "id": 2,
-        "imgUrl": "http://placehold.it/120x120",
-        "name": "product name",
-        "pos": 2,
-        "templateId": "5d2d8111e5f5605dcf0c2f6b"
-      },
-      {
-        "code": "5d2d8111415f21c7f3d0d06b",
-        "id": 3,
-        "imgUrl": "http://placehold.it/120x120",
-        "name": "product name",
-        "pos": 3,
-        "templateId": "5d2d811165f11887c99656bc"
-      },
-      {
-        "code": "5d2d8111b04d16d7908edbfe",
-        "id": 4,
-        "imgUrl": "http://placehold.it/120x120",
-        "name": "product name",
-        "pos": 4,
-        "templateId": "5d2d8111991bb0861fdea340"
-      }
-    ]
-  }, {
-    type: 'product-u',
-    data: [{
-      image: 'http://hotfile.yonghui.cn/files/|cephdata|filecache|YHYS|YHYS|2019-06-28|2849459875312824320',
-      tag: '促销',
-      price: 6.9,
-      title: '佳沛金奇异果',
-    },{
-      image: 'http://hotfile.yonghui.cn/files/|cephdata|filecache|YHYS|YHYS|2019-06-28|2849459875312824320',
-      tag: '促销',
-      price: 6.9,
-      title: '佳沛金奇异果',
-    },{
-      image: 'http://hotfile.yonghui.cn/files/|cephdata|filecache|YHYS|YHYS|2019-06-28|2849459875312824320',
-      tag: '促销',
-      price: 6.9,
-      title: '佳沛金奇异果',
-    },{
-      image: 'http://hotfile.yonghui.cn/files/|cephdata|filecache|YHYS|YHYS|2019-06-28|2849459875312824320',
-      tag: '促销',
-      price: 6.9,
-      title: '佳沛金奇异果',
-    },{
-      image: 'http://hotfile.yonghui.cn/files/|cephdata|filecache|YHYS|YHYS|2019-06-28|2849459875312824320',
-      tag: '促销',
-      price: 6.9,
-      title: '佳沛金奇异果',
-    },{
-      image: 'http://hotfile.yonghui.cn/files/|cephdata|filecache|YHYS|YHYS|2019-06-28|2849459875312824320',
-      tag: '促销',
-      price: 6.9,
-      title: '佳沛金奇异果',
-    },{
-      image: 'http://hotfile.yonghui.cn/files/|cephdata|filecache|YHYS|YHYS|2019-06-28|2849459875312824320',
-      tag: '促销',
-      price: 6.9,
-      title: '佳沛金奇异果',
-    },]
   }, {
     type: 'divider',
     data: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_6.jpg'
