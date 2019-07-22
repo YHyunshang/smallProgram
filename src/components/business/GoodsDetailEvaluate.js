@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-17 11:27:09
+ * @LastEditTime: 2019-07-22 14:17:13
  */
 import React from 'react';
 import {
@@ -14,6 +14,7 @@ import {
   Image
 } from 'react-native';
 import Icon from '../../components/Icon'
+import {formatYMDEn} from '../../utils/FormatUtil'
 export default  class GoodsDetailEvaluate extends React.Component {
   constructor(props) {
     super(props);
@@ -29,12 +30,13 @@ export default  class GoodsDetailEvaluate extends React.Component {
 
 
   render() {
+    const {evaluation,favorableRate}=this.props;
     return (
       <View>
         <View style={styles.wrapper}>
           <View style={styles.wrapperItem}>
-            <Text style={styles.goodsEvalute}>商品评价(128)</Text>
-            <Text style={styles.favorableRate}>好评度99%</Text>
+            <Text style={styles.goodsEvalute}>商品评价({evaluation.totalNum})</Text>
+            <Text style={styles.favorableRate}>好评度{favorableRate}%</Text>
           </View>
           <View style={styles.wrapperItem}>
             <Text style={styles.seeAll}>查看全部</Text>
@@ -45,19 +47,19 @@ export default  class GoodsDetailEvaluate extends React.Component {
            <Image style={styles.image} source={{uri: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/default-portrait.png'}} resizeMode="cover"/>
            <View>
                 <View style={styles.evaluteInfo}>
-                  <Text style={styles.evaluteName}>李明</Text>
+                  <Text style={styles.evaluteName}>{evaluation.nickName}</Text>
                     <View style={styles.memberIcon}>
                       <Icon name='member' size={10} color="#F6DDA1" />
                       <Text style={styles.memberText}>超级会员</Text>
                     </View>
                 </View>
             <View>
-              <Text style={styles.evaluteTime}>2019-04-21</Text>
+              <Text style={styles.evaluteTime}>{formatYMDEn(evaluation.evaluateTime)}</Text>
             </View>
            </View>
         </View>
         <View style={styles.evaluteContentBlock}>
-          <Text style={styles.evaluteContent}>味道很不错，希望下次还能买到这么好的商品</Text>
+          <Text style={styles.evaluteContent}>{evaluation.evaluateContext}</Text>
         </View>
       </View>
     )
