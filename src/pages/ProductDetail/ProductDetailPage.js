@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-23 18:03:01
+ * @LastEditTime: 2019-07-23 19:02:18
  */
 
 import React from 'react';
@@ -15,7 +15,7 @@ import {transPenny} from '../../utils/FormatUtil'
 import {goodsDetail} from '../../utils/mock'
 import ShareModal from '../../components/business/ShareModal'
 import PosterModal from '../../components/business/PosterModal'
-import GoodsFootCart from '../../components/business/GoodsFootCart'
+import TabBar from '../../components/common/TabBar'
 import {isIPhoneXMarginTop} from '../../utils/IsIphoneX'
 import GoodsDetailSwiper from '../../components/business/GoodsDetailSwiper'
 import GoodsDetailEvaluate from '../../components/business/GoodsDetailEvaluate'
@@ -29,6 +29,12 @@ export default  class ProductDetailPage extends React.Component {
       evaluation:{},//商品评价信息
       goodsInfo:{},//商品基本信息
       productDetailImagesResponseVOList:[],
+      currentIndex:0,//当前索引
+      tablist:[
+      {id:1,name:"商品"},
+      {id:2,name:"评价"},
+      {id:3,name:"详情"}
+    ],
       imgData: [
           { image: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_1.jpg'},
           { image: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_2.jpg' },
@@ -70,19 +76,23 @@ export default  class ProductDetailPage extends React.Component {
   handlePosterModal=(e) =>{
     this.posterModal.showPosterModal() 
   }
-  clickScrollToGoodsDetails = () => {
-    // 其中this.layouot.y就是距离现在的高度位置 
-    this.myScrollView.scrollTo({ x: 0, y: this.detailLayoutY,animated: false});
+  /**
+   * @description: 根据点击tab选项跳转至指定区域
+   */
+  clickScroll=(index)=>{
+    if(index===0){
+      // 其中this.layouot.y就是距离现在的高度位置 
+      this.myScrollView.scrollTo({ x: 0, y: this.goodsLayoutY,animated: false});
+    }
+    else if(index===1){
+      // 其中this.layouot.y就是距离现在的高度位置 
+      this.myScrollView.scrollTo({ x: 0, y: this.evaluteLayoutY,animated: false});
+    }
+    else{
+      // 其中this.layouot.y就是距离现在的高度位置 
+      this.myScrollView.scrollTo({ x: 0, y: this.detailLayoutY,animated: false});
+    }
   }
-  clickScrollToGoodsEvalute = () => {
-    // 其中this.layouot.y就是距离现在的高度位置 
-    this.myScrollView.scrollTo({ x: 0, y: this.evaluteLayoutY,animated: false});
-  }
-  clickScrollToGoods = () => {
-    // 其中this.layouot.y就是距离现在的高度位置 
-    this.myScrollView.scrollTo({ x: 0, y: this.goodsLayoutY,animated: false});
-  }
-  
   /**
    * @description: 获取分享按钮内容区域到高度
    */
@@ -130,11 +140,16 @@ export default  class ProductDetailPage extends React.Component {
         (
           <View style={styles.topTab}>
             <Icon style={styles.leftIcon} name='right' size={10} color="#333333" />
-            <View style={styles.topTabInfo}>
+            <TabBar ref={e => this.tabs = e}
+            index={this.state.currentIndex}
+            data={this.state.tablist}
+            clickScroll={this.clickScroll}
+            onChange={index => {}} />
+            {/* <View style={styles.topTabInfo}>
               <Text onPress={this.clickScrollToGoods} style={styles.itemTitle}>商品</Text>
               <Text onPress={this.clickScrollToGoodsEvalute} style={styles.itemEvaluateTitle}>评价</Text>
               <Text onPress={this.clickScrollToGoodsDetails} style={styles.itemTitle}>详情</Text>
-            </View>
+            </View> */}
             <TouchableOpacity onPress={() => { this.handleShowModal() }} >
               <Icon style={styles.rightShareIcon} name='share' size={17} color="#333333" />
             </TouchableOpacity>
