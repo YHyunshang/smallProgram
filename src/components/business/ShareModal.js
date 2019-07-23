@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-18 20:38:54
+ * @LastEditTime: 2019-07-23 10:11:02
  */
 
 import React from 'react';
@@ -47,17 +47,45 @@ export default  class ShareModal extends React.Component {
   * @description: 分享朋友圈方法
   */ 
 shareFriend(){
-  
+  WeChat.isWXAppInstalled().then((isInstalled) => {
+    if (isInstalled) {
+      WeChat.shareToSession({
+        title: formatStringWithHtml(params.article.title),
+        description: '分享自：iReading',
+        thumbImage: params.article.contentImg,
+        type: 'news',
+        webpageUrl: params.article.url
+      }).catch((error) => {
+        ToastUtil.showShort(error.message, true);
+      });
+    } else {
+      ToastUtil.showShort('没有安装微信软件，请您安装微信之后再试', true);
+    }
+  });
 }
  /**
-  * @description: 展示生成海报弹层
+  * @description: 分享朋友圈
   */ 
- showPosterMoal(e){
-  this.popUp.hide()
-  const {onShare} = this.props
-  if (onShare) {
-    onShare(e)
-  }
+ showPosterMoal(){
+    WeChat.isWXAppInstalled().then((isInstalled) => {
+      if (isInstalled) {
+        WeChat.shareToTimeline({
+          title: formatStringWithHtml(`[@iReading]${params.article.title}`),
+          thumbImage: params.article.contentImg,
+          type: 'news',
+          webpageUrl: params.article.url
+        }).catch((error) => {
+          ToastUtil.showShort(error.message, true);
+        });
+      } else {
+        ToastUtil.showShort('没有安装微信软件，请您安装微信之后再试', true);
+      }
+    });
+  // this.popUp.hide()
+  // const {onShare} = this.props
+  // if (onShare) {
+  //   onShare(e)
+  // }
 }
   render() {
     const {modalBoxHeight} = this.props
@@ -77,7 +105,7 @@ shareFriend(){
          </TouchableOpacity>
          <TouchableOpacity onPress={() => { this.showPosterMoal() }}>
            <Image style={styles.shareImage} source={shareIconMoments} resizeMode="cover"></Image>
-           <Text style={styles.shareText} >生成海报</Text>
+           <Text style={styles.shareText} >微信朋友圈</Text>
          </TouchableOpacity>
       </View>
     </PopUp>
