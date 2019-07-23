@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-22 17:01:47
+ * @LastEditTime: 2019-07-23 10:38:03
  */
 
 import React from 'react';
@@ -201,9 +201,11 @@ export default  class ProductDetailPage extends React.Component {
                {goodsImgList}
                {shopImgList}            
             </View>
-            <GoodsFootCart/>
         </View>
        </ScrollView>  
+       <View style={styles.footCart}>
+         <GoodsFootCart/>
+       </View>
        <ShareModal modalBoxHeight={240} onShare={this.handlePosterModal} ref={ref => this.shareModal= ref}/>
        <PosterModal modalBoxHeight={514} ref={ref => this.posterModal= ref}/>
     </View>
@@ -334,5 +336,8 @@ const styles = StyleSheet.create({
     fontSize:14,
     color:'#333333',
     marginHorizontal:32
+  },
+  footCart:{
+   height:50
   }
 })

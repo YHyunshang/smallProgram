@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-23 10:11:02
+ * @LastEditTime: 2019-07-23 10:27:12
  */
 
 import React from 'react';
@@ -15,6 +15,7 @@ import {
   Image,
   TouchableOpacity
 } from 'react-native';
+// import * as WeChat from 'react-native-wechat';
 import PopUp from '../common/PopUp'
 import Icon from '../../components/Icon'
 const shareIconWechat = {uri: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/wechat-friend.png'};
