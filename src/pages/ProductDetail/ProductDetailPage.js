@@ -4,11 +4,11 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-23 10:38:03
+ * @LastEditTime: 2019-07-23 15:16:48
  */
 
 import React from 'react';
-import {ScrollView,View,StyleSheet,Text,Image,TouchableOpacity} from 'react-native'
+import {ScrollView,View,StyleSheet,Text,Image,TouchableOpacity,Dimensions} from 'react-native'
 // import * as WeChat from 'react-native-wechat';
 import Icon from '../../components/Icon'
 import {transPenny} from '../../utils/FormatUtil'
@@ -16,8 +16,10 @@ import {goodsDetail} from '../../utils/mock'
 import ShareModal from '../../components/business/ShareModal'
 import PosterModal from '../../components/business/PosterModal'
 import GoodsFootCart from '../../components/business/GoodsFootCart'
+import {isIPhoneXPaddTop,isIPhoneXFooter} from '../../utils/IsIphoneX'
 import GoodsDetailSwiper from '../../components/business/GoodsDetailSwiper'
 import GoodsDetailEvaluate from '../../components/business/GoodsDetailEvaluate'
+let {height,width} =  Dimensions.get('window');
 export default  class ProductDetailPage extends React.Component {
   constructor(props) {
     super(props);
@@ -122,7 +124,7 @@ export default  class ProductDetailPage extends React.Component {
       <Image style={styles.goodsDetailImage} source={{uri: item}} resizeMode="cover" key={index}/>
     ))
     return (
-    <View style={styles.container}>
+    <View  style={styles.container}>
       {
         isShowTopTab?
         (
@@ -199,12 +201,14 @@ export default  class ProductDetailPage extends React.Component {
             </View>
             <View>
                {goodsImgList}
-               {shopImgList}            
+               <View style={styles.shopImgList}>
+               {shopImgList}    
+               </View>          
             </View>
         </View>
        </ScrollView>  
        <View style={styles.footCart}>
-         <GoodsFootCart/>
+          <GoodsFootCart/>
        </View>
        <ShareModal modalBoxHeight={240} onShare={this.handlePosterModal} ref={ref => this.shareModal= ref}/>
        <PosterModal modalBoxHeight={514} ref={ref => this.posterModal= ref}/>
@@ -215,6 +219,7 @@ export default  class ProductDetailPage extends React.Component {
 
 const styles = StyleSheet.create({
   container:{
+    flexDirection:'column',
     position:'relative'
   },
   goodsWrapper: {
@@ -327,6 +332,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems:'center',
     justifyContent:'space-between',
+    //iPhoneX头部兼容处理
+    paddingTop: isIPhoneXPaddTop(0)
   },
   itemTitle:{
     fontSize:14,
@@ -337,7 +344,14 @@ const styles = StyleSheet.create({
     color:'#333333',
     marginHorizontal:32
   },
+  shopImgList:{
+   
+  },
   footCart:{
-   height:50
+    flex:1,
+    width:width,
+    position: "absolute",
+    bottom:0,
+    paddingBottom: isIPhoneXFooter(0)
   }
 })

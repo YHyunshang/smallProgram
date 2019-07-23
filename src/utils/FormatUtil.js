@@ -4,9 +4,9 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-22 13:37:10
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-22 14:11:13
+ * @LastEditTime: 2019-07-23 15:18:52
  */
-var parseNumber = function (num, dec = 0) {
+const parseNumber = function (num, dec = 0) {
   return num ? parseFloat(num.toFixed(dec)) : num
 }
 /**
@@ -31,21 +31,4 @@ export const formatYMDEn = (timestamp) => {
   const month = parseInt(date.getMonth()) + 1;
   const day = date.getDate();
   return `${year}-${month}-${day}`;
-};
-/**
- * @description: 字符串转成html格式
- * @param {originString} 
- * @return: newString
- */
-export const formatStringWithHtml = (originString) => {
-  if (originString === undefined) {
-    return '';
-  }
-  const newString = originString
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&quot;/g, '"')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>');
-  return newString;
 };

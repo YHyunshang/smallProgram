@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-17 17:41:12
+ * @LastEditTime: 2019-07-23 14:32:07
  */
 
 import React from 'react';
@@ -50,7 +50,6 @@ export default  class GoodsFootCart extends React.Component {
 
 const styles = StyleSheet.create({
   wrapper:{
-    position:'relative',
     width:'100%',
     height:50,
     flexDirection: 'row',
