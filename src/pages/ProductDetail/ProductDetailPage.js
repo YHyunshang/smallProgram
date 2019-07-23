@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-23 15:16:48
+ * @LastEditTime: 2019-07-23 18:03:01
  */
 
 import React from 'react';
@@ -16,10 +16,10 @@ import {goodsDetail} from '../../utils/mock'
 import ShareModal from '../../components/business/ShareModal'
 import PosterModal from '../../components/business/PosterModal'
 import GoodsFootCart from '../../components/business/GoodsFootCart'
-import {isIPhoneXPaddTop,isIPhoneXFooter} from '../../utils/IsIphoneX'
+import {isIPhoneXMarginTop} from '../../utils/IsIphoneX'
 import GoodsDetailSwiper from '../../components/business/GoodsDetailSwiper'
 import GoodsDetailEvaluate from '../../components/business/GoodsDetailEvaluate'
-let {height,width} =  Dimensions.get('window');
+const {width} =  Dimensions.get('window');
 export default  class ProductDetailPage extends React.Component {
   constructor(props) {
     super(props);
@@ -139,7 +139,7 @@ export default  class ProductDetailPage extends React.Component {
               <Icon style={styles.rightShareIcon} name='share' size={17} color="#333333" />
             </TouchableOpacity>
           </View>
-        ):(<View></View>)
+        ):(<View ></View>)
 
       }
       <ScrollView  
@@ -201,15 +201,13 @@ export default  class ProductDetailPage extends React.Component {
             </View>
             <View>
                {goodsImgList}
-               <View style={styles.shopImgList}>
                {shopImgList}    
-               </View>          
             </View>
         </View>
        </ScrollView>  
-       <View style={styles.footCart}>
+       {/* <View style={styles.footCart}>
           <GoodsFootCart/>
-       </View>
+       </View> */}
        <ShareModal modalBoxHeight={240} onShare={this.handlePosterModal} ref={ref => this.shareModal= ref}/>
        <PosterModal modalBoxHeight={514} ref={ref => this.posterModal= ref}/>
     </View>
@@ -321,6 +319,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems:'center',
     justifyContent:'space-between',
+    //iPhoneX头部兼容处理
+    marginTop: isIPhoneXMarginTop(0)
+  },
+  blankContent:{
+    width:'100%',
+    height:44,
   },
   leftIcon:{
    marginLeft:15
@@ -329,11 +333,10 @@ const styles = StyleSheet.create({
     marginRight:22
    },
    topTabInfo:{
+    height:44,
     flexDirection: 'row',
     alignItems:'center',
-    justifyContent:'space-between',
-    //iPhoneX头部兼容处理
-    paddingTop: isIPhoneXPaddTop(0)
+    justifyContent:'space-between'
   },
   itemTitle:{
     fontSize:14,
@@ -344,14 +347,10 @@ const styles = StyleSheet.create({
     color:'#333333',
     marginHorizontal:32
   },
-  shopImgList:{
-   
-  },
   footCart:{
     flex:1,
     width:width,
     position: "absolute",
-    bottom:0,
-    paddingBottom: isIPhoneXFooter(0)
+    bottom:0
   }
 })

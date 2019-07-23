@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-23 14:32:07
+ * @LastEditTime: 2019-07-23 16:00:59
  */
 
 import React from 'react';
@@ -32,13 +32,15 @@ export default  class GoodsFootCart extends React.Component {
   render() {
     return (
       <View style={styles.wrapper}>
-          <LinearGradient colors={['#EE4239', '#FF766F']} style={styles.leftWrapper}>
-            <Icon name='cart' size={26} color="#FFFFFF" />
-          </LinearGradient>
-        <View style={styles.cartGoodsBg}>
-            <Text style={styles.cartGoodsNumber}>2</Text>
-        </View>
-       <LinearGradient colors={['#D8433B', '#FF766F']} style={styles.rightWrapper}>
+         <View style={styles.wrapperBg}>
+            <LinearGradient colors={['#EE4239', '#FF766F']} style={styles.leftWrapper}>
+              <Icon name='cart' size={26} color="#FFFFFF" />
+            </LinearGradient>
+            <View style={styles.cartGoodsBg}>
+                <Text style={styles.cartGoodsNumber}>2</Text>
+            </View>
+         </View>
+        <LinearGradient colors={['#D8433B', '#FF766F']} style={styles.rightWrapper}>
           <Icon name='minus' size={18} color="#FFFFFF" />
           <Text style={styles.textColor}>2</Text>
           <Icon name='plus' size={18} color="#FFFFFF" />
@@ -55,7 +57,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  wrapperBg:{
+    flex:1,
+    backgroundColor:'#FFFFFF'
+  },
   leftWrapper: {
+    flex:2,
     width:40,
     height:40,
     flexDirection: 'row',

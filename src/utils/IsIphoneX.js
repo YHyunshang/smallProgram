@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-23 14:53:27
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-23 15:09:15
+ * @LastEditTime: 2019-07-23 18:04:16
  */
 
 import { Dimensions,Platform} from 'react-native';
@@ -17,12 +17,12 @@ const isIPhoneX = Platform.OS === 'ios' && ( (height === X_height && width ===X_
 
 //这里如果isIPhoneX===1，则为iPhoneX,否则不是
 // iphoneX 顶部留白的兼容处理
-export const isIPhoneXPaddTop=(number)=> {
+export const isIPhoneXMarginTop=(number)=> {
     number = isNaN(+number) ? 0 : +number;
-    return number + (isIPhoneX ? 44 : 20)
+    return number + (isIPhoneX ? 44 : 0)
 }
 //iPhoneX 底部高度兼容处理
 export const isIPhoneXFooter=(number)=>{
     number = isNaN(+number) ? 0 : +number;
-    return number + (isIPhoneX ? 34 : 0 )
+    return number + (isIPhoneX ? 44: 0 )
 }
