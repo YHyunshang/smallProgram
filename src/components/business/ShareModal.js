@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-23 10:27:12
+ * @LastEditTime: 2019-07-24 14:30:43
  */
 
 import React from 'react';
@@ -15,9 +15,10 @@ import {
   Image,
   TouchableOpacity
 } from 'react-native';
-// import * as WeChat from 'react-native-wechat';
+import * as WeChat from 'react-native-wechat';
 import PopUp from '../common/PopUp'
 import Icon from '../../components/Icon'
+import Toast from 'react-native-easy-toast'
 const shareIconWechat = {uri: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/wechat-friend.png'};
 const shareIconMoments = {uri: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/wechat-moments.png'};
 export default  class ShareModal extends React.Component {
@@ -26,7 +27,7 @@ export default  class ShareModal extends React.Component {
   }
 
   componentDidMount() {
-   
+    WeChat.registerApp('wx3e5bc65c8d751e70')
   }
 
   componentWillUnmount() {
@@ -51,16 +52,16 @@ shareFriend(){
   WeChat.isWXAppInstalled().then((isInstalled) => {
     if (isInstalled) {
       WeChat.shareToSession({
-        title: formatStringWithHtml(params.article.title),
+        title: '刘玉文的二维码',
         description: '分享自：iReading',
-        thumbImage: params.article.contentImg,
+        thumbImage: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_3.jpg',
         type: 'news',
-        webpageUrl: params.article.url
+        webpageUrl: 'https://blog.csdn.net/weixin_34221036/article/details/91056421'
       }).catch((error) => {
-        ToastUtil.showShort(error.message, true);
+        this.refs.toast.show(error.message, 2000);
       });
     } else {
-      ToastUtil.showShort('没有安装微信软件，请您安装微信之后再试', true);
+      this.refs.toast.show('没有安装微信软件，请您安装微信之后再试', 2000);
     }
   });
 }
@@ -71,15 +72,16 @@ shareFriend(){
     WeChat.isWXAppInstalled().then((isInstalled) => {
       if (isInstalled) {
         WeChat.shareToTimeline({
-          title: formatStringWithHtml(`[@iReading]${params.article.title}`),
-          thumbImage: params.article.contentImg,
+          title: '刘玉文的二维码',
+          thumbImage: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_1.jpg',
           type: 'news',
-          webpageUrl: params.article.url
+          description:'永辉到家链接',
+          webpageUrl: 'https://blog.csdn.net/weixin_34221036/article/details/91056421'
         }).catch((error) => {
-          ToastUtil.showShort(error.message, true);
+          this.refs.toast.show(error.message, 2000);
         });
       } else {
-        ToastUtil.showShort('没有安装微信软件，请您安装微信之后再试', true);
+        this.refs.toast.show('没有安装微信软件，请您安装微信之后再试', 2000);
       }
     });
   // this.popUp.hide()
@@ -109,6 +111,13 @@ shareFriend(){
            <Text style={styles.shareText} >微信朋友圈</Text>
          </TouchableOpacity>
       </View>
+      <Toast
+              ref="toast"
+              style={{backgroundColor:'#444444'}}
+              position='top'
+              positionValue={200}
+              fadeInDuration={750}
+        />
     </PopUp>
     )
   }
