@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-22 14:27:11
+ * @LastEditTime: 2019-07-24 10:05:18
  */
 
 import React from 'react';
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: '100%',
+    height: 375,
   },
   dot: {
     width: 7,

@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-23 19:02:18
+ * @LastEditTime: 2019-07-24 10:03:37
  */
 
 import React from 'react';
@@ -214,7 +214,7 @@ export default  class ProductDetailPage extends React.Component {
             <View style={styles.goodsDetail}>
               <Text style={styles.goodsDetailTitle}>商品详情</Text>
             </View>
-            <View>
+            <View style={styles.imagesContent}>
                {goodsImgList}
                {shopImgList}    
             </View>
@@ -322,10 +322,16 @@ const styles = StyleSheet.create({
     marginLeft:15
   },
   goodsDetailImage:{
-    width:345,
+    width:'100%',
     height:306,
-    marginTop:10,
-    marginHorizontal:15
+    marginTop:10
+  },
+  imagesContent:{
+    width:'100%',
+    flexDirection:'column',
+    alignItems:'center',
+    justifyContent:'center',
+    paddingHorizontal:15
   },
   topTab:{
     width:'100%',
