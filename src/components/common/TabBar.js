@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-23 18:21:32
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-23 19:00:27
+ * @LastEditTime: 2019-07-24 11:43:09
  */
 
 import React,{ Component } from 'react';
@@ -49,17 +49,12 @@ export default class TabBar extends Component {
     }
     render() {
         return <View style={[tabBarStyle.tab, this.props.style]}>
-            <ScrollView 
-                horizontal directionalLockEnabled
-                showsHorizontalScrollIndicator={false}
-                snapToAlignment="center">
                 {this.props.data.map((item, index) =>
                     <TouchableOpacity onPress={() => this.setIndex(index)} key={item.id} style={tabBarStyle.itemBtn}>
                         <Text style={[tabBarStyle.item]} > {item.name}</Text>
                         <View style={[tabBarStyle.line, this.state.index === index ? tabBarStyle.active : null]}></View>
                     </TouchableOpacity>
                 )}
-            </ScrollView>
         </View>
     }
     setIndex(index, bl = true) {
@@ -70,7 +65,7 @@ export default class TabBar extends Component {
 }
 const tabBarStyle = StyleSheet.create({
     tab: {
-        backgroundColor: '#fbfafc',
+        backgroundColor: '#F8F8F8',
         flexDirection: 'row',
         alignItems: "center",
         justifyContent: "center",
@@ -80,21 +75,20 @@ const tabBarStyle = StyleSheet.create({
     },
     itemBtn: {
         paddingHorizontal: 12,
-        paddingTop: 2,
+        // paddingTop: 2,
         flexDirection: 'column',
         justifyContent: "center",
         alignItems: "center"
     },
     item: {
         fontSize: px(28),
-        color: "#858385",
-        marginTop:10
+        color: "#858385"
     },
     line: {
         width: 20,
         height: 2,
-        backgroundColor: "#fbfafc",
-        marginTop: 5
+        backgroundColor: "#F8F8F8",
+        marginTop: 10
     },
     active: {
         backgroundColor: "#EE4239"
