@@ -4,14 +4,14 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-17 11:20:46
+ * @LastEditTime: 2019-07-25 14:01:57
  */
-import React, { Component } from 'react'
-import { StyleSheet, View, TouchableOpacity, Animated, Easing, Dimensions } from 'react-native'
+import React, {Component} from 'react'
+import {StyleSheet, View, TouchableOpacity, Animated, Easing, Dimensions} from 'react-native'
 /**
  * 弹出层
  */
-const { width, height } = Dimensions.get('window')
+const {width, height} = Dimensions.get('window')
 export default class PopUp extends Component {
   constructor(props) {
     super(props)
@@ -46,7 +46,7 @@ export default class PopUp extends Component {
       }
     ).start()
     setTimeout(
-      () => this.setState({ show: false }),
+      () => this.setState({show: false}),
       300
     )
   }
@@ -72,22 +72,21 @@ export default class PopUp extends Component {
     this.fadeOut()
   }
 
-
   render() {
-    let { transparentIsClick, modalBoxBg, modalBoxHeight } = this.props
+    let {transparentIsClick, modalBoxBg, modalBoxHeight} = this.props
     if (this.state.show) {
       return (
-        <View style={[styles.container, { height: height }]}>
-          <TouchableOpacity style={{ height: height - modalBoxHeight }} onPress={transparentIsClick && this.defaultHide.bind(this)}>
-         </TouchableOpacity>
+        <View style={[styles.container, {height}]}>
+          <TouchableOpacity style={{height: height - modalBoxHeight}} onPress={transparentIsClick && this.defaultHide.bind(this)}>
+          </TouchableOpacity>
           <Animated.View
             style={[styles.modalBox, {
-              height: height, top: 0, backgroundColor: modalBoxBg,
+              height, top: 0, backgroundColor: modalBoxBg,
               transform: [{
                 translateY: this.state.offset.interpolate({
                   inputRange: [0, 1],
                   outputRange: [height, height - modalBoxHeight]
-                }),
+                })
               }]
             }]}>
             {this.props.children}
@@ -101,7 +100,7 @@ export default class PopUp extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    width: width,
+    width,
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
     position: 'absolute',
     top: 0,
@@ -109,13 +108,13 @@ const styles = StyleSheet.create({
   },
   modalBox: {
     position: 'absolute',
-    width: width
+    width
   }
 })
 
 PopUp.defaultProps = {
   modalBoxHeight: 300, // 盒子高度默认300
   modalBoxBg: '#fff', // 背景色默认白色
-  hide: function () { }, // 关闭时的回调函数
-  transparentIsClick: true  // 透明区域是否可以点击
+  hide() { }, // 关闭时的回调函数
+  transparentIsClick: true // 透明区域是否可以点击
 }
