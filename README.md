@@ -65,3 +65,25 @@ npm run bundle-android android 打包
 ├─ index # 项目入口
 ├─ packge.json # 启动配置
 ```
+
+
+### iconfont 引入
+> 参考 [react-native-vector-icons 官方文档](https://github.com/oblador/react-native-vector-icons)
+
+icon 统一封装在 `Icon` 组件中，用法参考：
+```typescript jsx
+import Icon from './components/Icon'
+const myIcon = <Icon name="cart" />
+```
+
+更新时参考以下步骤：
+1. 转换 iconfont 为 fontello：
+    在 [fontello](http://fontello.com/) 中上传字体 svg，勾选所有 custom icons 并下载解压
+2. 更新 `Icon` 组件配置：
+    将解压得到的 `config.json` 覆盖到 `./src/components/Icon/config.json`
+3. 更新 iOS xCode 配置：
+    将解压文件中的 font/fontello.ttf 拖动到项目中（可以新建 Resources group，并拖动到其中），
+    注意勾选 Copy items if needed / Create groups / Add to targets；然后编辑 `Info.plist` ，添加一行 `Fonts provided by application`，
+    并添加子项 `fontello.ttf`；最后重新运行 `react-native run-ios` 即可
+4. 更新 Android 项目配置：
+    将 `fontello.ttf` 文件覆盖到 `android/app/src/main/assets/fonts` 并重新运行 `react-native run-android` 即可
