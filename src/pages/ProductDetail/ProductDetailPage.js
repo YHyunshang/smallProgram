@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-25 14:20:18
+ * @LastEditTime: 2019-07-25 20:25:44
  */
 
 import React from 'react'
@@ -21,7 +21,8 @@ import GoodsDetailSwiper from '../../components/business/GoodsDetailSwiper'
 import GoodsDetailEvaluate from '../../components/business/GoodsDetailEvaluate'
 import Toast from 'react-native-easy-toast'
 const {width} = Dimensions.get('window')
-const nativeModule = NativeModules.CalendarManager
+const goodsDetailModule = NativeModules.GoodsDetailsNativeManager
+const httpModule = NativeModules.HttpNativeManager
 export default class ProductDetailPage extends React.Component {
   constructor(props) {
     super(props)
@@ -32,6 +33,8 @@ export default class ProductDetailPage extends React.Component {
       goodsInfo: {}, //商品基本信息
       productDetailImagesResponseVOList: [],
       currentIndex: 0, //当前索引
+      productCode: '', //商品编码
+      storeCode: '', //商品编码
       tablist: [
         {id: 1, name: '商品'},
         {id: 2, name: '评价'},
@@ -51,22 +54,43 @@ export default class ProductDetailPage extends React.Component {
   }
 
   componentDidMount() {
-    this.setState(
-      {
-        goodsDetail,
-        goodsInfo: goodsDetail.resChannelStoreProductVO,
-        evaluation: goodsDetail.resProductEvaluationVO,
-        imgData: goodsDetail.productSliderImagesResponseVOList,
-        productImgList: goodsDetail.productDetailImagesResponseVOList,
-        shopUrl: goodsDetail.resChannelStoreProductVO.shopUrl
-      }
-    )
+    this.getProductParams()
+    //rnPushEventEmitter.addListener('EventReminder',(data)=> console.log("EventReminder:",data));
+    //this.refs.toast.show(this.props.images, 2000)
+    //const productCode = '12821'
   }
 
   componentWillUnmount() {
 
   }
-
+  /**
+   * @description: 获取原生ios返回的productCode和storeCode
+   */
+  getProductParams() {
+    goodsDetailModule.pastProductInfo((error, result) => {
+      result = result ? JSON.parse(result) : {}
+      this.getProductInfo(result.productCode, result.storeCode)
+      this.setState({productCode: result.productCode, storeCode: result.storeCode})
+    })
+  }
+  /**
+   * @description: 获取原生返回的商品详情数据
+   */
+  getProductInfo(productCode, storeCode) {
+    let url = `http://xszt-sit.yh-soi-2c-productcenter.xszt-001.sitapis.yonghui.cn/app/product/queryProductDetailByCode?storeCode=${storeCode}&productCode=${productCode}`
+    httpModule.sendRequest('get', url, null, (errMsg, responseData) => {
+      this.setState(
+        {
+          goodsDetail: responseData,
+          goodsInfo: goodsDetail.resChannelStoreProductVO,
+          evaluation: goodsDetail.resProductEvaluationVO,
+          imgData: goodsDetail.productSliderImagesResponseVOList,
+          productImgList: goodsDetail.productDetailImagesResponseVOList,
+          shopUrl: goodsDetail.resChannelStoreProductVO.shopUrl
+        }
+      )
+    })
+  }
   /**
    * @description: 显示分享朋友圈弹层
    */
@@ -125,8 +149,7 @@ export default class ProductDetailPage extends React.Component {
    * @description: 跳转至原生的评价列表页面
    */
   jumpToNativeEvaluteList=() => {
-    this.refs.toast.show(`qq:${nativeModule}`, 2000)
-    nativeModule.pushToEvaluationList('10086')
+    goodsDetailModule.pushToEvaluationList()
   }
   render() {
     const {imgData, isShowTopTab, goodsInfo, evaluation, productImgList, shopUrl} = this.state
@@ -146,7 +169,6 @@ export default class ProductDetailPage extends React.Component {
           isShowTopTab ?
             (
               <View style={styles.topTab}>
-                <Icon style={styles.leftIcon} name='right' size={10} color="#333333" />
                 <TabBar ref={e => this.tabs = e}
                   index={this.state.currentIndex}
                   data={this.state.tablist}
@@ -365,7 +387,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8F8F8',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     //iPhoneX头部兼容处理
     marginTop: isIPhoneXMarginTop(0)
   },

@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-23 18:21:32
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-25 14:20:39
+ * @LastEditTime: 2019-07-25 15:21:16
  */
 
 import React, {Component} from 'react'
@@ -72,7 +72,7 @@ const tabBarStyle = StyleSheet.create({
   },
   itemBtn: {
     paddingHorizontal: 12,
-    // paddingTop: 2,
+    paddingTop: 2,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center'

@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-25 14:23:56
+ * @LastEditTime: 2019-07-25 14:51:00
  */
 
 import React from 'react'
@@ -46,7 +46,7 @@ export default class ShareModal extends React.Component {
     this.popUp.hide()
   }
   /**
-  * @description: 分享朋友圈方法
+  * @description: 发送微信朋友方法
   */
   shareFriend() {
     WeChat.isWXAppInstalled().then((isInstalled) => {
