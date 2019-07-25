@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-24 14:30:43
+ * @LastEditTime: 2019-07-25 10:12:26
  */
 
 import React from 'react';
@@ -15,7 +15,7 @@ import {
   Image,
   TouchableOpacity
 } from 'react-native';
-import * as WeChat from 'react-native-wechat';
+ import * as WeChat from 'react-native-wechat';
 import PopUp from '../common/PopUp'
 import Icon from '../../components/Icon'
 import Toast from 'react-native-easy-toast'
