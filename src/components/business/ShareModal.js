@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-25 14:51:00
+ * @LastEditTime: 2019-07-26 17:09:34
  */
 
 import React from 'react'
@@ -15,7 +15,7 @@ import {
   Image,
   TouchableOpacity
 } from 'react-native'
-import * as WeChat from 'react-native-wechat'
+// import * as WeChat from 'react-native-wechat'
 import PopUp from '../common/PopUp'
 import Icon from '../../components/Icon'
 import Toast from 'react-native-easy-toast'
@@ -27,7 +27,7 @@ export default class ShareModal extends React.Component {
   }
 
   componentDidMount() {
-    WeChat.registerApp('wx3e5bc65c8d751e70')
+    //WeChat.registerApp('wx3e5bc65c8d751e70')
   }
 
   componentWillUnmount() {
@@ -49,46 +49,47 @@ export default class ShareModal extends React.Component {
   * @description: 发送微信朋友方法
   */
   shareFriend() {
-    WeChat.isWXAppInstalled().then((isInstalled) => {
-      if (isInstalled) {
-        WeChat.shareToSession({
-          title: '刘玉文的二维码',
-          description: '分享自：iReading',
-          thumbImage: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_3.jpg',
-          type: 'news',
-          webpageUrl: 'https://blog.csdn.net/weixin_34221036/article/details/91056421'
-        }).catch((error) => {
-          this.refs.toast.show(error.message, 2000)
-        })
-      } else {
-        this.refs.toast.show('没有安装微信软件，请您安装微信之后再试', 2000)
-      }
-    })
+    // WeChat.isWXAppInstalled().then((isInstalled) => {
+    //   if (isInstalled) {
+    //     WeChat.shareToSession({
+    //       title: '刘玉文的二维码',
+    //       description: '分享自：iReading',
+    //       thumbImage: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_3.jpg',
+    //       type: 'news',
+    //       webpageUrl: 'https://blog.csdn.net/weixin_34221036/article/details/91056421'
+    //     }).catch((error) => {
+    //       this.refs.toast.show(error.message, 2000)
+    //     })
+    //   } else {
+    //     this.refs.toast.show('没有安装微信软件，请您安装微信之后再试', 2000)
+    //   }
+    // })
   }
   /**
   * @description: 分享朋友圈
   */
   showPosterMoal() {
-    WeChat.isWXAppInstalled().then((isInstalled) => {
-      if (isInstalled) {
-        WeChat.shareToTimeline({
-          title: '刘玉文的二维码',
-          thumbImage: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_1.jpg',
-          type: 'news',
-          description: '永辉到家链接',
-          webpageUrl: 'https://blog.csdn.net/weixin_34221036/article/details/91056421'
-        }).catch((error) => {
-          this.refs.toast.show(error.message, 2000)
-        })
-      } else {
-        this.refs.toast.show('没有安装微信软件，请您安装微信之后再试', 2000)
-      }
-    })
-  // this.popUp.hide()
-  // const {onShare} = this.props
-  // if (onShare) {
-  //   onShare(e)
-  // }
+    // WeChat.isWXAppInstalled().then((isInstalled) => {
+    //   if (isInstalled) {
+    //     WeChat.shareToTimeline({
+    //       title: '刘玉文的二维码',
+    //       thumbImage: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_1.jpg',
+    //       type: 'news',
+    //       description: '永辉到家链接',
+    //       webpageUrl: 'https://blog.csdn.net/weixin_34221036/article/details/91056421'
+    //     }).catch((error) => {
+    //       this.refs.toast.show(error.message, 2000)
+    //     })
+    //   } else {
+    //     this.refs.toast.show('没有安装微信软件，请您安装微信之后再试', 2000)
+    //   }
+    // })
+    this.popUp.hide()
+    const {onShare, productParams} = this.props
+    //this.refs.toast.show(productParams, 12000)
+    if (onShare) {
+      onShare(productParams)
+    }
   }
   render() {
     const {modalBoxHeight} = this.props

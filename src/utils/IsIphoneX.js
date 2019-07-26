@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-23 14:53:27
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-23 18:04:16
+ * @LastEditTime: 2019-07-26 13:07:18
  */
 
 import {Dimensions, Platform} from 'react-native'
@@ -24,5 +24,5 @@ export const isIPhoneXMarginTop = (number) => {
 //iPhoneX 底部高度兼容处理
 export const isIPhoneXFooter = (number) => {
   number = isNaN(+number) ? 0 : +number
-  return number + (isIPhoneX ? 44 : 0)
+  return number + (isIPhoneX ? 88 : 44)
 }

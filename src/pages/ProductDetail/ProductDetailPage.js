@@ -4,25 +4,24 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-25 20:25:44
+ * @LastEditTime: 2019-07-26 17:24:42
  */
 
 import React from 'react'
-import {ScrollView, View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, NativeModules} from 'react-native'
+import {ScrollView, View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, NativeModules, Platform} from 'react-native'
 // import * as WeChat from 'react-native-wechat';
 import Icon from '../../components/Icon'
 import {transPenny} from '../../utils/FormatUtil'
-import {goodsDetail} from '../../utils/mock'
-//import ShareModal from '../../components/business/ShareModal'
+import ShareModal from '../../components/business/ShareModal'
 import PosterModal from '../../components/business/PosterModal'
 import TabBar from '../../components/common/TabBar'
-import {isIPhoneXMarginTop} from '../../utils/IsIphoneX'
+import Toast from 'react-native-easy-toast'
+import {isIPhoneXMarginTop, isIPhoneXFooter} from '../../utils/IsIphoneX'
 import GoodsDetailSwiper from '../../components/business/GoodsDetailSwiper'
 import GoodsDetailEvaluate from '../../components/business/GoodsDetailEvaluate'
-import Toast from 'react-native-easy-toast'
 const {width} = Dimensions.get('window')
-const goodsDetailModule = NativeModules.GoodsDetailsNativeManager
-const httpModule = NativeModules.HttpNativeManager
+const goodsDetailModule = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
+const httpModule = NativeModules.HttpNativeManager// 原生http请求模块
 export default class ProductDetailPage extends React.Component {
   constructor(props) {
     super(props)
@@ -31,20 +30,16 @@ export default class ProductDetailPage extends React.Component {
       goodsDetail: {}, //商品详情
       evaluation: {}, //商品评价信息
       goodsInfo: {}, //商品基本信息
+      imgUrl: '', //生成海报的图片地址
+      productParams: {}, //传给生成海报接口的参数
       productDetailImagesResponseVOList: [],
       currentIndex: 0, //当前索引
-      productCode: '', //商品编码
-      storeCode: '', //商品编码
       tablist: [
         {id: 1, name: '商品'},
         {id: 2, name: '评价'},
         {id: 3, name: '详情'}
       ],
-      imgData: [
-        {image: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_1.jpg'},
-        {image: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_2.jpg'},
-        {image: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_3.jpg'}
-      ],
+      imgData: [],
       productImgList: [], //商品详情图文
       shopUrl: []//商家文描
     }
@@ -54,24 +49,13 @@ export default class ProductDetailPage extends React.Component {
   }
 
   componentDidMount() {
-    this.getProductParams()
-    //rnPushEventEmitter.addListener('EventReminder',(data)=> console.log("EventReminder:",data));
-    //this.refs.toast.show(this.props.images, 2000)
-    //const productCode = '12821'
+    let productInfo = goodsDetailModule.productInfo
+    productInfo = productInfo ? JSON.parse(productInfo) : {}
+    this.getProductInfo(productInfo.productCode, productInfo.storeCode)
   }
 
   componentWillUnmount() {
 
-  }
-  /**
-   * @description: 获取原生ios返回的productCode和storeCode
-   */
-  getProductParams() {
-    goodsDetailModule.pastProductInfo((error, result) => {
-      result = result ? JSON.parse(result) : {}
-      this.getProductInfo(result.productCode, result.storeCode)
-      this.setState({productCode: result.productCode, storeCode: result.storeCode})
-    })
   }
   /**
    * @description: 获取原生返回的商品详情数据
@@ -79,16 +63,26 @@ export default class ProductDetailPage extends React.Component {
   getProductInfo(productCode, storeCode) {
     let url = `http://xszt-sit.yh-soi-2c-productcenter.xszt-001.sitapis.yonghui.cn/app/product/queryProductDetailByCode?storeCode=${storeCode}&productCode=${productCode}`
     httpModule.sendRequest('get', url, null, (errMsg, responseData) => {
-      this.setState(
-        {
-          goodsDetail: responseData,
-          goodsInfo: goodsDetail.resChannelStoreProductVO,
-          evaluation: goodsDetail.resProductEvaluationVO,
-          imgData: goodsDetail.productSliderImagesResponseVOList,
-          productImgList: goodsDetail.productDetailImagesResponseVOList,
-          shopUrl: goodsDetail.resChannelStoreProductVO.shopUrl
-        }
-      )
+      responseData = Platform.OS === 'ios' ? responseData : JSON.parse(responseData)
+      if (responseData.result) {
+        let object = {}
+        let shopUrl = JSON.parse(responseData.result.resChannelStoreProductVO.shopUrl || '')
+        object.productDesc = responseData.result.resChannelStoreProductVO.productName
+        object.productPrice = responseData.result.resChannelStoreProductVO.price
+        object.productUrl = responseData.result.productSliderImagesResponseVOList[0].url
+        object.productCode = responseData.result.resChannelStoreProductVO.productCode
+        this.setState(
+          {
+            goodsDetail: responseData.result,
+            goodsInfo: responseData.result.resChannelStoreProductVO,
+            evaluation: responseData.result.resProductEvaluationVO,
+            imgData: responseData.result.productSliderImagesResponseVOList,
+            productImgList: responseData.result.productDetailImagesResponseVOList,
+            shopUrl,
+            productParams: object
+          }
+        )
+      }
     })
   }
   /**
@@ -100,8 +94,25 @@ export default class ProductDetailPage extends React.Component {
   /**
    * @description: 显示生成海报弹层
    */
-  handlePosterModal=(e) => {
+  handlePosterModal=(productParams) => {
     this.posterModal.showPosterModal()
+    this.sharePoster(productParams)
+  }
+  /**
+    * 生成海报方法
+  */
+  sharePoster(productParams) {
+    let params = {
+      appId: 'wx6e85fc07ec7a02f3',
+      productDesc: productParams.productDesc,
+      productCode: productParams.productCode,
+      productPrice: `¥${transPenny(productParams.productPrice)}`,
+      productUrl: productParams.productUrl
+    }
+    let url = 'http://xszt-sit.yh-sod-usercenter.sitapis.yonghui.cn/public/getWXComposeImg'
+    httpModule.sendRequest('post', url, params, (errMsg, responseData) => {
+      this.setState({imgUrl: responseData.result.imgUrl})
+    })
   }
   /**
    * @description: 根据点击tab选项跳转至指定区域
@@ -152,17 +163,17 @@ export default class ProductDetailPage extends React.Component {
     goodsDetailModule.pushToEvaluationList()
   }
   render() {
-    const {imgData, isShowTopTab, goodsInfo, evaluation, productImgList, shopUrl} = this.state
+    const {imgData, isShowTopTab, goodsInfo, evaluation, productImgList, shopUrl, imgUrl, productParams} = this.state
     let favorableRate = goodsInfo.favorableRate ? goodsInfo.favorableRate * 100 : 0
     favorableRate = favorableRate && parseFloat(favorableRate.toFixed(2))
     //商品详情图文列表
-    const goodsImgList = productImgList.map(({url}, index) => (
+    const goodsImgList = productImgList ? productImgList.map(({url}, index) => (
       <Image style={styles.goodsDetailImage} source={{uri: url}} resizeMode="cover" key={index}/>
-    ))
+    )) : []
     //商家文描图文列表
-    const shopImgList = shopUrl.map((item, index) => (
+    const shopImgList = shopUrl ? shopUrl.map((item, index) => (
       <Image style={styles.goodsDetailImage} source={{uri: item}} resizeMode="cover" key={index}/>
-    ))
+    )) : []
     return (
       <View style={styles.container}>
         {
@@ -174,11 +185,6 @@ export default class ProductDetailPage extends React.Component {
                   data={this.state.tablist}
                   clickScroll={this.clickScroll}
                   onChange={index => {}} />
-                {/* <View style={styles.topTabInfo}>
-              <Text onPress={this.clickScrollToGoods} style={styles.itemTitle}>商品</Text>
-              <Text onPress={this.clickScrollToGoodsEvalute} style={styles.itemEvaluateTitle}>评价</Text>
-              <Text onPress={this.clickScrollToGoodsDetails} style={styles.itemTitle}>详情</Text>
-            </View> */}
                 <TouchableOpacity onPress={() => {
                   this.handleShowModal()
                 }} >
@@ -264,8 +270,8 @@ export default class ProductDetailPage extends React.Component {
         {/* <View style={styles.footCart}>
           <GoodsFootCart/>
        </View> */}
-        {/* <ShareModal modalBoxHeight={240} onShare={this.handlePosterModal} ref={ref => this.shareModal= ref}/> */}
-        <PosterModal modalBoxHeight={514} ref={ref => this.posterModal = ref}/>
+        <ShareModal modalBoxHeight={240} productParams={productParams} onShare={this.handlePosterModal} ref={ref => this.shareModal = ref}/>
+        <PosterModal modalBoxHeight={514} imgUrl={imgUrl} ref={ref => this.posterModal = ref}/>
         <Toast
           ref="toast"
           style={{backgroundColor: '#444444'}}
@@ -379,7 +385,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
+    //iPhoneX底部兼容处理
+    marginBottom: isIPhoneXFooter(0)
   },
   topTab: {
     width: '100%',

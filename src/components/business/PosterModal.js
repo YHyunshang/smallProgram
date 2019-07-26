@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-22 21:07:40
+ * @LastEditTime: 2019-07-26 17:59:03
  */
 
 import React from 'react'
@@ -18,6 +18,7 @@ import {
 import PopUp from '../common/PopUp'
 //import {downloadImage} from '../common/DownLoadImage'
 import Toast from 'react-native-easy-toast'
+import {isIPhoneXFooter} from '../../utils/IsIphoneX'
 import Icon from '../../components/Icon'
 export default class PosterModal extends React.Component {
   constructor(props) {
@@ -25,7 +26,6 @@ export default class PosterModal extends React.Component {
   }
 
   componentDidMount() {
-
   }
 
   componentWillUnmount() {
@@ -43,6 +43,7 @@ export default class PosterModal extends React.Component {
   hidePosterModal() {
     this.popUp.hide()
   }
+
   /**
   * @description: 保存图片到本地相册
   */
@@ -63,24 +64,31 @@ export default class PosterModal extends React.Component {
   // }
 
   render() {
-    const {modalBoxHeight} = this.props
+    const {modalBoxHeight, imgUrl} = this.props
+    const baseImg = `data:image/png;base64,${imgUrl}`
     return (
       <PopUp ref={ref => this.popUp = ref} modalBoxHeight={modalBoxHeight}>
         <View style={styles.shareTitleInfo}>
           <View></View>
-          <View style={styles.shareTitleText}><Text>保存到相册</Text></View>
+          <View style={styles.shareTitleText}>
+            <Text>保存到相册</Text>
+          </View>
           <TouchableOpacity onPress={() => {
             this.hidePosterModal()
           }}>
             <Icon style={styles.closeIcon} name='close' size={21} color="#9B9B9B" />
           </TouchableOpacity>
         </View>
-        <Image style={styles.posterImage} source={{uri: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_2.jpg'}} resizeMode="cover" ></Image>
+        <View style={styles.imageContent}>
+          <Image style={styles.posterImage} source={{uri: baseImg}} resizeMode="cover" ></Image>
+        </View>
         <TouchableOpacity onPress={() => {
           this.saveImage()
         }}>
-          <View style={styles.saveImage}>
-            <Text style={styles.saveText}>保存图片</Text>
+          <View style={styles.imageContent}>
+            <View style={styles.saveImage}>
+              <Text style={styles.saveText}>保存图片</Text>
+            </View>
           </View>
         </TouchableOpacity>
         <View style={styles.tipsContent}>
@@ -117,10 +125,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  imageContent: {
+    width: '100%',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   posterImage: {
     width: 246,
-    height: 365,
-    marginHorizontal: 65
+    height: 365
   },
   saveImage: {
     width: 246,
@@ -130,7 +143,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 65,
     marginTop: 16
   },
   saveText: {
@@ -138,8 +150,12 @@ const styles = StyleSheet.create({
     color: '#FFFFFF'
   },
   tipsContent: {
-    marginHorizontal: 62,
-    marginVertical: 10
+    marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    //iPhoneX底部兼容处理
+    marginBottom: isIPhoneXFooter(0)
   },
   tips: {
     fontSize: 12,
