@@ -12,11 +12,13 @@
   },
   "dependencies": {
     "react": "16.8.3",
-    "react-native": "0.59.9",
+    "react-native": "^0.59.9",
+    "react-native-easy-toast": "^1.2.0",
     "react-native-fit-image": "^1.5.4",
     "react-native-linear-gradient": "^2.5.4",
     "react-native-swiper": "^1.5.14",
-    "react-native-vector-icons": "^6.6.0"
+    "react-native-vector-icons": "^6.6.0",
+    "react-native-wechat": "^1.9.10"
   },
   "devDependencies": {
     "@babel/core": "7.4.5",
@@ -34,7 +36,7 @@
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-native": "^3.7.0",
     "jest": "24.8.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.15",
     "metro-react-native-babel-preset": "0.54.1",
     "react-test-renderer": "16.8.3"
   },
