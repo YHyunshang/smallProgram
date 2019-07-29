@@ -5,7 +5,7 @@ import React from 'react'
 import { View, Text, TouchableOpacity, Image } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import FitImage from 'react-native-fit-image'
-import Icon from '../../../../components/Icon'
+import {Icon} from '@components'
 import styles from './ProductItem.styles'
 
 export interface Props {
