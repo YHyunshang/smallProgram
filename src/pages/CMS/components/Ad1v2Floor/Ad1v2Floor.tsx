@@ -9,7 +9,8 @@ const windowDim = Dimensions.get('window')
 const imgWidth = Math.floor((windowDim.width - 20 - 5) / 2)
 
 interface Props {
-  data: array<object>
+  data: object[]
+  onImgPress: Function
 }
 
 const styles = StyleSheet.create({
@@ -26,24 +27,32 @@ const styles = StyleSheet.create({
     width: imgWidth,
     justifyContent: 'space-between'
   },
-  imageLstNotLast: {
+  rightTopImg: {
     marginBottom: 5,
   }
 })
 
-export default function Ad1v2Floor(props: Props) {
-  const {
-    data: [ left, rightTop, rightBtm ]
-  } = props
+function Img({style, imgUrl, linkType, link, onPress}) {
+  return (
+    <FitImage
+      style={style}
+      source={{ uri: imgUrl }}
+      onPress={() => onPress(linkType, link)}
+    />
+  )
+}
+
+export default function Ad1v2Floor({ data, onImgPress }: Props) {
+  const [ left={}, rightTop={}, rightBtm={} ] = data
 
   return (
     <View style={styles.container}>
       <View style={styles.leftImgBox}>
-        <FitImage source={{ uri: left.image }} />
+        <Img {...left} />
       </View>
       <View style={styles.rightImgBox}>
-        <FitImage style={styles.imageLstNotLast} source={{ uri: rightTop.image }} />
-        <FitImage source={{ uri: rightBtm.image }} />
+        <Img style={styles.rightTopImg} {...rightTop} />
+        <Img {...rightBtm} />
       </View>
     </View>
   )

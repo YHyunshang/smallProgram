@@ -43,10 +43,10 @@
 		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
 		F0ABAA36F31742E19C0472A9 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E059F46B954941850A8C8F /* libRNVectorIcons.a */; };
 		F3631CFF689D4908A282B6F7 /* libRNVectorIcons-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DF2E7E6556E4DBBA041761D /* libRNVectorIcons-tvOS.a */; };
-		F3FCAA8322DC754B0017D485 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F3FCAA8222DC754B0017D485 /* fontello.ttf */; };
-		F3FCAA8422DC754B0017D485 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F3FCAA8222DC754B0017D485 /* fontello.ttf */; };
-		F3FCAA8522DC754B0017D485 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F3FCAA8222DC754B0017D485 /* fontello.ttf */; };
-		F3FCAA8622DC754B0017D485 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F3FCAA8222DC754B0017D485 /* fontello.ttf */; };
+		F39C4C9E22E5BAFB008EC3C9 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F39C4C9D22E5BAFB008EC3C9 /* fontello.ttf */; };
+		F39C4C9F22E5BAFB008EC3C9 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F39C4C9D22E5BAFB008EC3C9 /* fontello.ttf */; };
+		F39C4CA022E5BAFB008EC3C9 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F39C4C9D22E5BAFB008EC3C9 /* fontello.ttf */; };
+		F39C4CA122E5BAFB008EC3C9 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F39C4C9D22E5BAFB008EC3C9 /* fontello.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -387,7 +387,7 @@
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		F3FCAA8222DC754B0017D485 /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
+		F39C4C9D22E5BAFB008EC3C9 /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -653,7 +653,7 @@
 		855BF585F2C44D679EC64916 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				F3FCAA8222DC754B0017D485 /* fontello.ttf */,
+				F39C4C9D22E5BAFB008EC3C9 /* fontello.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1169,7 +1169,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F3FCAA8422DC754B0017D485 /* fontello.ttf in Resources */,
+				F39C4C9F22E5BAFB008EC3C9 /* fontello.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1178,7 +1178,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				F3FCAA8322DC754B0017D485 /* fontello.ttf in Resources */,
+				F39C4C9E22E5BAFB008EC3C9 /* fontello.ttf in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1188,7 +1188,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */,
-				F3FCAA8522DC754B0017D485 /* fontello.ttf in Resources */,
+				F39C4CA022E5BAFB008EC3C9 /* fontello.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1196,7 +1196,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F3FCAA8622DC754B0017D485 /* fontello.ttf in Resources */,
+				F39C4CA122E5BAFB008EC3C9 /* fontello.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

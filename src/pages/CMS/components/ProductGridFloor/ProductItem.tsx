@@ -1,11 +1,11 @@
 /**
- * Created by 李华良 on 2019-07-18
+ * Created by 李华良 on 2019-07-17
  */
 import React from 'react'
 import { View, Text, TouchableOpacity, Image } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import FitImage from 'react-native-fit-image'
-import Icon from '../Icon'
+import { Icon } from '@components'
 import styles from './ProductItem.styles'
 
 export interface Props {

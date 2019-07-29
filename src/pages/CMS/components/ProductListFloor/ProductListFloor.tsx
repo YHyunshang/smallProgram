@@ -10,8 +10,7 @@ interface Props {
   data: Array<ProductItemProps>
 }
 
-export default function ProductListFloor (props: Props) {
-  const { data } = props
+export default function ProductListFloor ({ data }: Props) {
   const length = data.length
   return (
     <View style={styles.container}>

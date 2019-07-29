@@ -3,22 +3,18 @@
  */
 import React from 'react'
 import { Image, StyleSheet, View, Dimension } from 'react-native'
-import FitImage from 'react-native-fit-image';
+import FitImage from 'react-native-fit-image'
 
 interface Props {
   image: string  // 图片链接
-  url?: string  // 跳转地址
+  uriType?: string  // 跳转地址类型
+  uri?: string  // 跳转地址
+  onPress: Function  // 点击回调
 }
 
-function handleImageLoad() {
-  console.log('--->>>', arguments)
-}
-
-function AdSingleFloor(props: Props) {
-  const { image, url } = props
-
+function AdSingleFloor({ image, uriType, uri, onPress}: Props) {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} onPress={() => onPress(uriType, uri)}>
       <FitImage style={styles.image} source={{ uri: image }}/>
     </View>
   )
