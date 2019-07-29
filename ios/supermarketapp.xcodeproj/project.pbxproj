@@ -23,6 +23,16 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+<<<<<<< HEAD
+=======
+		180EFEA022E02B530045BA0A /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 180EFE9F22E0213F0045BA0A /* libRCTCameraRoll.a */; };
+		1872998B22E826CC00F90808 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1872998A22E826CC00F90808 /* SystemConfiguration.framework */; };
+		1872998D22E8271F00F90808 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1872998C22E8271F00F90808 /* CoreTelephony.framework */; };
+		1872998F22E8273500F90808 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1872998E22E8273500F90808 /* libsqlite3.0.tbd */; };
+		1872999122E8274D00F90808 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1872999022E8274D00F90808 /* libc++.tbd */; };
+		1872999322E8276000F90808 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1872999222E8276000F90808 /* libz.tbd */; };
+		18CE67DE22E0598900D7E8D6 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 180EFE9F22E0213F0045BA0A /* libRCTCameraRoll.a */; };
+>>>>>>> yuwen.liu-product_detail-20190712
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -41,6 +51,8 @@
 		C685AB2A6B2D41DE884E4BB4 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 189E689CE98E45C0A2987B86 /* libBVLinearGradient.a */; };
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
 		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
+        5A7421E2F0FC45F1BA337B27 /* RCTWeChatTests.xctest in Frameworks */ = {isa = PBXBuildFile; fileRef = 281828AC44D144379660E475 /* RCTWeChatTests.xctest */; };
+		DCA80564037742ADAF9B5620 /* libRCTWeChat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A62FC61E87D445C9F5515C3 /* libRCTWeChat.a */; };
 		F0ABAA36F31742E19C0472A9 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E059F46B954941850A8C8F /* libRNVectorIcons.a */; };
 		F3631CFF689D4908A282B6F7 /* libRNVectorIcons-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DF2E7E6556E4DBBA041761D /* libRNVectorIcons-tvOS.a */; };
 		F39C4C9E22E5BAFB008EC3C9 /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F39C4C9D22E5BAFB008EC3C9 /* fontello.ttf */; };
@@ -113,6 +125,58 @@
 			remoteGlobalIDString = 83CBBA2E1A601D0E00E9B192;
 			remoteInfo = React;
 		};
+<<<<<<< HEAD
+=======
+		180EFE9E22E0213F0045BA0A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 180EFE9A22E0213F0045BA0A /* RCTCameraRoll.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 58B5115D1A9E6B3D00147676;
+			remoteInfo = RCTCameraRoll;
+		};
+		180EFEFB22E030650045BA0A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 56F5ED476AED411C8C899638 /* BVLinearGradient.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = BVLinearGradient;
+		};
+		180EFEFD22E030650045BA0A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 56F5ED476AED411C8C899638 /* BVLinearGradient.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 64AA15081EF7F30100718508;
+			remoteInfo = "BVLinearGradient-tvOS";
+		};
+		1872998622E8266900F90808 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 95AA052D6D544E97B7959F1F /* RCTWeChat.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 86D238421BD0BB9E00C75D01;
+			remoteInfo = RCTWeChat;
+		};
+		1872998822E8266900F90808 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 95AA052D6D544E97B7959F1F /* RCTWeChat.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 10D6D7A41F160C250066F0F3;
+			remoteInfo = RCTWeChatTests;
+		};
+		18C3D13022E0511900D05B7F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0AF14849F452419190098D01 /* RNFS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F12AFB9B1ADAF8F800E0535D;
+			remoteInfo = RNFS;
+		};
+		18C3D13222E0511900D05B7F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0AF14849F452419190098D01 /* RNFS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6456441F1EB8DA9100672408;
+			remoteInfo = "RNFS-tvOS";
+		};
+>>>>>>> yuwen.liu-product_detail-20190712
 		2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
@@ -373,17 +437,33 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = supermarketapp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = supermarketapp/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+<<<<<<< HEAD
 		189E689CE98E45C0A2987B86 /* libBVLinearGradient.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libBVLinearGradient.a; sourceTree = "<group>"; };
+=======
+		180EFE9A22E0213F0045BA0A /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
+		1872998A22E826CC00F90808 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		1872998C22E8271F00F90808 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		1872998E22E8273500F90808 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		1872999022E8274D00F90808 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		1872999222E8276000F90808 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		281828AC44D144379660E475 /* RCTWeChatTests.xctest */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = RCTWeChatTests.xctest; sourceTree = "<group>"; };
+>>>>>>> yuwen.liu-product_detail-20190712
 		2D02E47B1E0B4A5D006451C7 /* supermarketapp-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "supermarketapp-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* supermarketapp-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "supermarketapp-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DF2E7E6556E4DBBA041761D /* libRNVectorIcons-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNVectorIcons-tvOS.a"; sourceTree = "<group>"; };
+<<<<<<< HEAD
+=======
+		4A62FC61E87D445C9F5515C3 /* libRCTWeChat.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTWeChat.a; sourceTree = "<group>"; };
+		56F5ED476AED411C8C899638 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
+>>>>>>> yuwen.liu-product_detail-20190712
 		57E059F46B954941850A8C8F /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		6DCC42599C17434982B3559E /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		7420479D98964B56905DC0F8 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		95AA052D6D544E97B7959F1F /* RCTWeChat.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTWeChat.xcodeproj; path = "../node_modules/react-native-wechat/ios/RCTWeChat.xcodeproj"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
@@ -403,6 +483,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+<<<<<<< HEAD
+=======
+				1872999322E8276000F90808 /* libz.tbd in Frameworks */,
+				1872999122E8274D00F90808 /* libc++.tbd in Frameworks */,
+				1872998F22E8273500F90808 /* libsqlite3.0.tbd in Frameworks */,
+				1872998D22E8271F00F90808 /* CoreTelephony.framework in Frameworks */,
+				1872998B22E826CC00F90808 /* SystemConfiguration.framework in Frameworks */,
+				18CE67DE22E0598900D7E8D6 /* libRCTCameraRoll.a in Frameworks */,
+>>>>>>> yuwen.liu-product_detail-20190712
 				ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */,
@@ -417,7 +506,14 @@
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				F0ABAA36F31742E19C0472A9 /* libRNVectorIcons.a in Frameworks */,
+<<<<<<< HEAD
 				C685AB2A6B2D41DE884E4BB4 /* libBVLinearGradient.a in Frameworks */,
+=======
+				699CC8D2638D434B8487D921 /* libBVLinearGradient.a in Frameworks */,
+				06131B03C4F94D099F734CCC /* libRNFS.a in Frameworks */,
+				DCA80564037742ADAF9B5620 /* libRCTWeChat.a in Frameworks */,
+				5A7421E2F0FC45F1BA337B27 /* RCTWeChatTests.xctest in Frameworks */,
+>>>>>>> yuwen.liu-product_detail-20190712
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -565,9 +661,52 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+<<<<<<< HEAD
+=======
+		180EFE9B22E0213F0045BA0A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				180EFE9F22E0213F0045BA0A /* libRCTCameraRoll.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		180EFEF722E030650045BA0A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				180EFEFC22E030650045BA0A /* libBVLinearGradient.a */,
+				180EFEFE22E030650045BA0A /* libBVLinearGradient.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1872998222E8266900F90808 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1872998722E8266900F90808 /* libRCTWeChat.a */,
+				1872998922E8266900F90808 /* RCTWeChatTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		18C3D12C22E0511800D05B7F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				18C3D13122E0511900D05B7F /* libRNFS.a */,
+				18C3D13322E0511900D05B7F /* libRNFS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+>>>>>>> yuwen.liu-product_detail-20190712
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1872999222E8276000F90808 /* libz.tbd */,
+				1872999022E8274D00F90808 /* libc++.tbd */,
+				1872998E22E8273500F90808 /* libsqlite3.0.tbd */,
+				1872998C22E8271F00F90808 /* CoreTelephony.framework */,
+				1872998A22E826CC00F90808 /* SystemConfiguration.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
@@ -609,7 +748,13 @@
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				7420479D98964B56905DC0F8 /* RNVectorIcons.xcodeproj */,
+<<<<<<< HEAD
 				6DCC42599C17434982B3559E /* BVLinearGradient.xcodeproj */,
+=======
+				56F5ED476AED411C8C899638 /* BVLinearGradient.xcodeproj */,
+				0AF14849F452419190098D01 /* RNFS.xcodeproj */,
+				95AA052D6D544E97B7959F1F /* RCTWeChat.xcodeproj */,
+>>>>>>> yuwen.liu-product_detail-20190712
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -681,7 +826,14 @@
 			children = (
 				57E059F46B954941850A8C8F /* libRNVectorIcons.a */,
 				3DF2E7E6556E4DBBA041761D /* libRNVectorIcons-tvOS.a */,
+<<<<<<< HEAD
 				189E689CE98E45C0A2987B86 /* libBVLinearGradient.a */,
+=======
+				ADEEEE90BF614AD5A1F9D4DD /* libBVLinearGradient.a */,
+				BF63D21DC2C545718E156068 /* libRNFS.a */,
+				4A62FC61E87D445C9F5515C3 /* libRCTWeChat.a */,
+				281828AC44D144379660E475 /* RCTWeChatTests.xctest */,
+>>>>>>> yuwen.liu-product_detail-20190712
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -783,6 +935,10 @@
 						CreatedOnToolsVersion = 6.2;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
+					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = VSFM2EEGMK;
+						ProvisioningStyle = Manual;
+					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
 						ProvisioningStyle = Automatic;
@@ -854,6 +1010,10 @@
 				{
 					ProductGroup = 139FDEE71B06529A00C62182 /* Products */;
 					ProjectRef = 139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */;
+				},
+				{
+					ProductGroup = 1872998222E8266900F90808 /* Products */;
+					ProjectRef = 95AA052D6D544E97B7959F1F /* RCTWeChat.xcodeproj */;
 				},
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
@@ -931,6 +1091,58 @@
 			remoteRef = 146834031AC3E56700842450 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+<<<<<<< HEAD
+=======
+		180EFE9F22E0213F0045BA0A /* libRCTCameraRoll.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTCameraRoll.a;
+			remoteRef = 180EFE9E22E0213F0045BA0A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		180EFEFC22E030650045BA0A /* libBVLinearGradient.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBVLinearGradient.a;
+			remoteRef = 180EFEFB22E030650045BA0A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		180EFEFE22E030650045BA0A /* libBVLinearGradient.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBVLinearGradient.a;
+			remoteRef = 180EFEFD22E030650045BA0A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1872998722E8266900F90808 /* libRCTWeChat.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTWeChat.a;
+			remoteRef = 1872998622E8266900F90808 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1872998922E8266900F90808 /* RCTWeChatTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = RCTWeChatTests.xctest;
+			remoteRef = 1872998822E8266900F90808 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		18C3D13122E0511900D05B7F /* libRNFS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNFS.a;
+			remoteRef = 18C3D13022E0511900D05B7F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		18C3D13322E0511900D05B7F /* libRNFS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNFS.a;
+			remoteRef = 18C3D13222E0511900D05B7F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+>>>>>>> yuwen.liu-product_detail-20190712
 		2D16E6721FA4F8DC00B85C8A /* libRCTBlob-tvOS.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1308,6 +1520,11 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+<<<<<<< HEAD
+=======
+					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
+>>>>>>> yuwen.liu-product_detail-20190712
 				);
 				INFOPLIST_FILE = supermarketappTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1317,6 +1534,12 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+<<<<<<< HEAD
+=======
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+>>>>>>> yuwen.liu-product_detail-20190712
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1337,6 +1560,11 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+<<<<<<< HEAD
+=======
+					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
+>>>>>>> yuwen.liu-product_detail-20190712
 				);
 				INFOPLIST_FILE = supermarketappTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1346,6 +1574,12 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+<<<<<<< HEAD
+=======
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+>>>>>>> yuwen.liu-product_detail-20190712
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1361,12 +1595,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = VSFM2EEGMK;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+<<<<<<< HEAD
+=======
+					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/LinkingIOS",
+>>>>>>> yuwen.liu-product_detail-20190712
 				);
 				INFOPLIST_FILE = supermarketapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1375,8 +1617,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.yonghui.supermarket;
 				PRODUCT_NAME = supermarketapp;
+				PROVISIONING_PROFILE_SPECIFIER = superMarketDev;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1385,11 +1628,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = VSFM2EEGMK;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+<<<<<<< HEAD
+=======
+					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/LinkingIOS",
+>>>>>>> yuwen.liu-product_detail-20190712
 				);
 				INFOPLIST_FILE = supermarketapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1398,8 +1650,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.yonghui.supermarket;
 				PRODUCT_NAME = supermarketapp;
+				PROVISIONING_PROFILE_SPECIFIER = superMarketDis;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -1420,6 +1673,11 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+<<<<<<< HEAD
+=======
+					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
+>>>>>>> yuwen.liu-product_detail-20190712
 				);
 				INFOPLIST_FILE = "supermarketapp-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1428,6 +1686,12 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+<<<<<<< HEAD
+=======
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+>>>>>>> yuwen.liu-product_detail-20190712
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1457,6 +1721,11 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+<<<<<<< HEAD
+=======
+					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
+>>>>>>> yuwen.liu-product_detail-20190712
 				);
 				INFOPLIST_FILE = "supermarketapp-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1465,6 +1734,12 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+<<<<<<< HEAD
+=======
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+>>>>>>> yuwen.liu-product_detail-20190712
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1493,6 +1768,11 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+<<<<<<< HEAD
+=======
+					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
+>>>>>>> yuwen.liu-product_detail-20190712
 				);
 				INFOPLIST_FILE = "supermarketapp-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1501,6 +1781,12 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+<<<<<<< HEAD
+=======
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+>>>>>>> yuwen.liu-product_detail-20190712
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1529,6 +1815,11 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+<<<<<<< HEAD
+=======
+					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
+>>>>>>> yuwen.liu-product_detail-20190712
 				);
 				INFOPLIST_FILE = "supermarketapp-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1537,6 +1828,12 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+<<<<<<< HEAD
+=======
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+>>>>>>> yuwen.liu-product_detail-20190712
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",

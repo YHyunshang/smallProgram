@@ -7,10 +7,10 @@
  * @LastEditTime: 2019-07-12 16:37:58
  */
 
-import React from 'react';
-import ProductDetailPage from './pages/ProductDetail/ProductDetailPage';
+import React from 'react'
+import ProductDetailPage from './pages/ProductDetail/ProductDetailPage'
 const Root = () => (
-    <ProductDetailPage />
-);
+  <ProductDetailPage />
+)
 
-export default Root;
+export default Root

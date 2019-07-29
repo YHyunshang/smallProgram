@@ -1,54 +1,53 @@
 /*
- * @Description: 商品详情顶部图片轮播组件　
+ * @Description: 商品详情顶部图片轮播组件
  * @Company: yh
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-22 14:27:11
+ * @LastEditTime: 2019-07-25 14:07:31
  */
 
-import React from 'react';
+import React from 'react'
 import {
   StyleSheet,
   Image,
   View,
   Dimensions
-} from 'react-native';
+} from 'react-native'
 import Swiper from 'react-native-swiper'
-const {width} = Dimensions.get('window');  //解构赋值 获取屏幕宽度
-export default  class GoodsDetailSwiper extends React.Component {
+const {width} = Dimensions.get('window') //解构赋值 获取屏幕宽度
+export default class GoodsDetailSwiper extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
   }
 
   componentDidMount() {
-   
+
   }
 
   componentWillUnmount() {
-  
+
   }
 
-
   render() {
-    const { imgData } = this.props
+    const {imgData} = this.props
     const dot = <View style={styles.dot} />
-    const activeDot = <View style={{ ...styles.dot, ...styles.activeDot }} />
+    const activeDot = <View style={{...styles.dot, ...styles.activeDot}} />
     const swiperList = imgData.map(({url}, index) => (
       <Image style={styles.image} source={{uri: url}} resizeMode="cover" key={index}/>
     ))
     return (
       <View style={styles.container}>
-        <Swiper 
+        <Swiper
           height={160}
           dot={dot}
           activeDot={activeDot}
-          paginationStyle={styles.paginationStyle}    
+          paginationStyle={styles.paginationStyle}
           loop
           autoplay
-          >     
-            {swiperList}
-          </Swiper>
+        >
+          {swiperList}
+        </Swiper>
       </View>
     )
   }
@@ -58,15 +57,15 @@ const styles = StyleSheet.create({
   wrapper: {
   },
   container: {
-    width: width,
-    height: width,
+    width,
+    height: width
   },
   paginationStyle: {
     bottom: 10
   },
   image: {
     width: '100%',
-    height: '100%',
+    height: 375
   },
   dot: {
     width: 7,
@@ -76,6 +75,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,.25)'
   },
   activeDot: {
-    backgroundColor: 'rgba(0,0,0,.7)',
+    backgroundColor: 'rgba(0,0,0,.7)'
   }
 })

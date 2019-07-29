@@ -8,7 +8,7 @@ import {Platform, StyleSheet, Text, View, Image, Button} from 'react-native'
 import Api from './server/http'
 const instructions = Platform.select({})
 const YHimg = require('./images/yh.png')
-const YHwc = require('./images/wc.png')
+//const YHwc = require('./images/wc.png')
 
 type Props = {};
 export default class App extends Component<Props> {

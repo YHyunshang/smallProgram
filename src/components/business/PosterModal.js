@@ -4,142 +4,161 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-22 21:07:40
+ * @LastEditTime: 2019-07-26 17:59:03
  */
 
-import React from 'react';
+import React from 'react'
 import {
   StyleSheet,
   Text,
   View,
   Image,
   TouchableOpacity
-} from 'react-native';
+} from 'react-native'
 import PopUp from '../common/PopUp'
 //import {downloadImage} from '../common/DownLoadImage'
 import Toast from 'react-native-easy-toast'
+import {isIPhoneXFooter} from '../../utils/IsIphoneX'
 import Icon from '../../components/Icon'
-export default  class PosterModal extends React.Component {
+export default class PosterModal extends React.Component {
   constructor(props) {
-    super(props);
-  
+    super(props)
   }
 
   componentDidMount() {
-   
   }
 
   componentWillUnmount() {
-  
+
   }
- /**
+  /**
   * @description: 显示生成海报弹层
-  */ 
-  showPosterModal(){
+  */
+  showPosterModal() {
     this.popUp.show()
- }
- /**
+  }
+  /**
   * @description: 隐藏生成海报弹层
-  */ 
-  hidePosterModal(){
-   this.popUp.hide()
-}
+  */
+  hidePosterModal() {
+    this.popUp.hide()
+  }
+
   /**
   * @description: 保存图片到本地相册
-  */ 
-//  saveImage(){
-//   let url="https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_2.jpg"
-//    downloadImage(url).then((res)=>{
-//       if(res && res.statusCode===200){
-//         this.refs.toast.show('图片保存成功', 2000);
-//        // this.hidePosterModal()
-//       }else{
-//         this.refs.toast.show('图片保存失败', 2000);
-//       }
-//   }).catch((error)=>{
-//       this.refs.toast.show('图片保存失败', 2000);
-//       console.log(error)
-//   })
-  
-// }
- 
+  */
+  //  saveImage(){
+  //   let url="https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_2.jpg"
+  //    downloadImage(url).then((res)=>{
+  //       if(res && res.statusCode===200){
+  //         this.refs.toast.show('图片保存成功', 2000);
+  //        // this.hidePosterModal()
+  //       }else{
+  //         this.refs.toast.show('图片保存失败', 2000);
+  //       }
+  //   }).catch((error)=>{
+  //       this.refs.toast.show('图片保存失败', 2000);
+  //       console.log(error)
+  //   })
+
+  // }
+
   render() {
-  const {modalBoxHeight}=this.props
-      return (
-        <PopUp ref={ref => this.popUp = ref} modalBoxHeight={modalBoxHeight}>
-         <View style={styles.shareTitleInfo}>
-           <View></View>
-           <View style={styles.shareTitleText}><Text>保存到相册</Text></View>
-           <TouchableOpacity onPress={() => { this.hidePosterModal() }}>
-             <Icon style={styles.closeIcon} name='close' size={21} color="#9B9B9B" />
-           </TouchableOpacity>
-         </View>
-          <Image style={styles.posterImage} source={{uri: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_2.jpg'}} resizeMode="cover" ></Image>          
-           <TouchableOpacity onPress={() => { this.saveImage() }}>
-              <View style={styles.saveImage}>
-                <Text style={styles.saveText}>保存图片</Text>
-              </View>
-            </TouchableOpacity>
-          <View style={styles.tipsContent}>
-            <Text style={styles.tips}>保存图片到手机相册后，将图片分享到您的圈</Text>
+    const {modalBoxHeight, imgUrl} = this.props
+    const baseImg = `data:image/png;base64,${imgUrl}`
+    return (
+      <PopUp ref={ref => this.popUp = ref} modalBoxHeight={modalBoxHeight}>
+        <View style={styles.shareTitleInfo}>
+          <View></View>
+          <View style={styles.shareTitleText}>
+            <Text>保存到相册</Text>
           </View>
-          <Toast
-              ref="toast"
-              style={{backgroundColor:'#444444'}}
-              position='top'
-              positionValue={200}
-              fadeInDuration={750}
-            />
-        </PopUp>
-      )
+          <TouchableOpacity onPress={() => {
+            this.hidePosterModal()
+          }}>
+            <Icon style={styles.closeIcon} name='close' size={21} color="#9B9B9B" />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.imageContent}>
+          <Image style={styles.posterImage} source={{uri: baseImg}} resizeMode="cover" ></Image>
+        </View>
+        <TouchableOpacity onPress={() => {
+          this.saveImage()
+        }}>
+          <View style={styles.imageContent}>
+            <View style={styles.saveImage}>
+              <Text style={styles.saveText}>保存图片</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+        <View style={styles.tipsContent}>
+          <Text style={styles.tips}>保存图片到手机相册后，将图片分享到您的圈</Text>
+        </View>
+        <Toast
+          ref="toast"
+          style={{backgroundColor: '#444444'}}
+          position='top'
+          positionValue={200}
+          fadeInDuration={750}
+        />
+      </PopUp>
+    )
   }
 }
 
 const styles = StyleSheet.create({
-  shareTitleInfo:{
+  shareTitleInfo: {
     flexDirection: 'row',
-    justifyContent:'space-between',
+    justifyContent: 'space-between',
     alignItems: 'center'
   },
-  closeIcon:{
-    textAlign:'right',
-    marginVertical:14,
-    marginRight:13
+  closeIcon: {
+    textAlign: 'right',
+    marginVertical: 14,
+    marginRight: 13
   },
-  shareTitleText:{
-    height:49,
-    fontSize:16,
-    color:'#333333',
+  shareTitleText: {
+    height: 49,
+    fontSize: 16,
+    color: '#333333',
     flexDirection: 'row',
-    justifyContent:'center',
+    justifyContent: 'center',
     alignItems: 'center'
   },
-  posterImage:{
-    width:246,
-    height:365,
-    marginHorizontal:65
-  },
-  saveImage:{
-    width:246,
-    height:45,
-    backgroundColor:'#EE4239',
-    borderRadius:23,
-    flexDirection: 'row',
-    justifyContent:'center',
+  imageContent: {
+    width: '100%',
+    flexDirection: 'column',
     alignItems: 'center',
-    marginHorizontal:65,
-    marginTop:16
+    justifyContent: 'center'
   },
-  saveText:{
-    fontSize:16,
-    color:'#FFFFFF',
+  posterImage: {
+    width: 246,
+    height: 365
   },
-  tipsContent:{
-    marginHorizontal:62,
-    marginVertical:10
+  saveImage: {
+    width: 246,
+    height: 45,
+    backgroundColor: '#EE4239',
+    borderRadius: 23,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 16
   },
-  tips:{
-    fontSize:12,
-    color:'#848791',
+  saveText: {
+    fontSize: 16,
+    color: '#FFFFFF'
+  },
+  tipsContent: {
+    marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    //iPhoneX底部兼容处理
+    marginBottom: isIPhoneXFooter(0)
+  },
+  tips: {
+    fontSize: 12,
+    color: '#848791'
   }
 })
