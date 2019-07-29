@@ -87,3 +87,4 @@ const myIcon = <Icon name="cart" />
     并添加子项 `fontello.ttf`；最后重新运行 `react-native run-ios` 即可
 4. 更新 Android 项目配置：
     将 `fontello.ttf` 文件覆盖到 `android/app/src/main/assets/fonts` 并重新运行 `react-native run-android` 即可
+5. 同步 `.ttf` 字体文件到 native 开发团队
