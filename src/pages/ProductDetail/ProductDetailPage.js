@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-26 17:24:42
+ * @LastEditTime: 2019-07-29 10:03:25
  */
 
 import React from 'react'
@@ -20,8 +20,8 @@ import {isIPhoneXMarginTop, isIPhoneXFooter} from '../../utils/IsIphoneX'
 import GoodsDetailSwiper from '../../components/business/GoodsDetailSwiper'
 import GoodsDetailEvaluate from '../../components/business/GoodsDetailEvaluate'
 const {width} = Dimensions.get('window')
-const goodsDetailModule = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
-const httpModule = NativeModules.HttpNativeManager// 原生http请求模块
+const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
+const httpManager = NativeModules.HttpNativeManager// 原生http请求模块
 export default class ProductDetailPage extends React.Component {
   constructor(props) {
     super(props)
@@ -49,7 +49,7 @@ export default class ProductDetailPage extends React.Component {
   }
 
   componentDidMount() {
-    let productInfo = goodsDetailModule.productInfo
+    let productInfo = goodsDetailManager.productInfo
     productInfo = productInfo ? JSON.parse(productInfo) : {}
     this.getProductInfo(productInfo.productCode, productInfo.storeCode)
   }
@@ -62,7 +62,7 @@ export default class ProductDetailPage extends React.Component {
    */
   getProductInfo(productCode, storeCode) {
     let url = `http://xszt-sit.yh-soi-2c-productcenter.xszt-001.sitapis.yonghui.cn/app/product/queryProductDetailByCode?storeCode=${storeCode}&productCode=${productCode}`
-    httpModule.sendRequest('get', url, null, (errMsg, responseData) => {
+    httpManager.sendRequest('get', url, null, (errMsg, responseData) => {
       responseData = Platform.OS === 'ios' ? responseData : JSON.parse(responseData)
       if (responseData.result) {
         let object = {}
@@ -110,7 +110,7 @@ export default class ProductDetailPage extends React.Component {
       productUrl: productParams.productUrl
     }
     let url = 'http://xszt-sit.yh-sod-usercenter.sitapis.yonghui.cn/public/getWXComposeImg'
-    httpModule.sendRequest('post', url, params, (errMsg, responseData) => {
+    httpManager.sendRequest('post', url, params, (errMsg, responseData) => {
       this.setState({imgUrl: responseData.result.imgUrl})
     })
   }
@@ -160,7 +160,7 @@ export default class ProductDetailPage extends React.Component {
    * @description: 跳转至原生的评价列表页面
    */
   jumpToNativeEvaluteList=() => {
-    goodsDetailModule.pushToEvaluationList()
+    goodsDetailManager.pushToEvaluationList()
   }
   render() {
     const {imgData, isShowTopTab, goodsInfo, evaluation, productImgList, shopUrl, imgUrl, productParams} = this.state
