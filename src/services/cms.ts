@@ -23,39 +23,6 @@ export function getFloorDataByTab(tabId, shopCode) {
   return Http.get('cms', `/cms/mobile/${tabId}/getDetailPage/${shopCode}`)
 }
 
-/**
- * 从 native 获取常量
- * @param key {string} 从 native 获取常量
- */
-export async function getNativeConstant(key:string) {
-  const result = NativeModules.HomeNativeManager[key]
-  Log.debug(`HomeNativeManager.${key} returned ${result}`)
-  return result
-}
-
-/**
- * 通过 native 跳转页面
- * @param type {string|number} 跳转页面类型
- * @param uri {string} 跳转页面路径/code
- * @param extraData {object} 跳转传参
- */
-export function navigateTo(type:string|number, uri:string, extraData={}) {
-  let _uri_ = uri
-  let _extraData_ = { ...extraData }
-  if (type === 2) {
-    _uri_ = ''
-    _extraData_['activityCode'] = uri
-  }
-  const _type_ = {
-    1: '0',  // 原生
-    2: '1',  // RN 活动
-    3: '2',  // h5
-  }[type] || type
-
-  Log.debug('calling HomeNativeManager.pushToNewPage:', type, uri, extraData)
-  return NativeModules.HomeNativeManager.pushToNewPage(_type_, _uri_, JSON.stringify(_extraData_))
-}
-
 // todo: fill add cart
 export function addToCart() {
 }

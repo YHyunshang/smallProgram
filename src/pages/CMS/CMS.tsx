@@ -1,7 +1,7 @@
 /**
  * Created by 李华良 on 2019-07-23
  */
-import React from 'react'
+import * as React from 'react'
 import { StyleSheet, FlatList, Text } from 'react-native'
 import TopTabFloor from './components/TopTabFloor'
 import BannerFloor from './components/BannerFloor'
@@ -12,14 +12,23 @@ import DividerFloor from './components/DividerFloor'
 import ProductListFloor from './components/ProductListFloor'
 import ProductGridFloor from './components/ProductGridFloor'
 import ProductScrollFloor from './components/ProductScrollFloor'
-import { CMSService } from '../../services'
-import { Log } from '@utils'
+import { CMSService } from '@services'
+import { Log, Native } from '@utils'
+
+const {
+  navigateTo,
+  getConstant,
+} = Native
 
 interface State {
+  loading: Boolean  // 加载中
+  shopCode: string|number  // 门店编码
+  tabData: Array<object>  // 顶部 tab 数据
   floorData: Array<object>  // cms 数据
+  currentTabId: number|string  // 当前选中 tab id
 }
 
-class CMS extends React.Component<object, State> {
+class CMS extends React.Component<{}, State> {
   constructor(props) {
     super(props)
 
@@ -36,37 +45,43 @@ class CMS extends React.Component<object, State> {
   }
 
   async componentDidMount() {
-    const shopCode = await CMSService.getNativeConstant('storeCode')
+    const shopCode = await getConstant('storeCode')
     if (shopCode) {
       this.setState({ shopCode })
       this.requestInitData(shopCode)
     }
   }
 
-  requestInitData = (shopCode) => {
+  // 获取初始 CMS 数据
+  requestInitData = (shopCode:string) => {
     CMSService.getInitialData(shopCode)
       .then(({ result: data }) => {
         const tabData = [...data]
+        const currentTabId = data[0].id
         const floorData = data[0] ? data[0].templateVOList : []
-        this.setState({tabData, floorData})
+        this.setState({tabData, currentTabId, floorData})
       })
   }
+  // 获取 tab 下的 CMS 数据
   requestFloorData = tabId =>
     CMSService.getFloorDataByTab(tabId, this.state.shopCode)
       .then(json => {
         this.setState({ floorData: json.result.templateVOList })
       })
 
+  // native 设置门店编码
   setShopData = shopCode => {
     Log.debug(`received shopData from native ${shopCode}`)
     this.setState({ shopCode })
     this.requestInitData(shopCode)
   }
 
+  // 页面滚动
   onPageScroll = ({ nativeEvent: { contentOffset: { x, y } } }) => {
     CMSService.pushScrollToNative(x, y)
   }
 
+  // 选中 tab
   onTabSelect = tabObj => {
     this.setState({ currentTabId: tabObj.id })
     this.requestFloorData(tabObj.id)
@@ -84,9 +99,9 @@ class CMS extends React.Component<object, State> {
               image={tplDetailData[0].imgUrl}
               uriType={tplDetailData[0].linkType}
               uri={tplDetailData[0].link}
-              onPress={CMSService.navigateTo}
+              onPress={navigateTo}
             />)
-            : subType === 2 ? <Ad1v2Floor key={id} data={tplDetailData} onImgPress={CMSService.navigateTo} />  // 1 line img add floor
+            : subType === 2 ? <Ad1v2Floor key={id} data={tplDetailData} onImgPress={navigateTo} />  // 1 line img add floor
             : null)
         : type === 3 ? (  // 3: product floor
             subType === 1 ? <ProductListFloor data={tplDetailData} />  // product list floor
@@ -95,8 +110,8 @@ class CMS extends React.Component<object, State> {
                 : subType === 4 ? <ProductScrollFloor key={id} data={tplDetailData}/>  // product scroll floor
                   : null)
           : type === 4 ? (  // 4: category floor
-              subType === 1 ? <BoxFloor data={tplDetailData} key={id}/>  // 4 per row
-                : subType === 2 ? <BoxFloor data={tplDetailData} key={id}/>  // 5 per row
+              subType === 1 ? <BoxFloor data={tplDetailData} countPerLine={4} key={id}/>  // 4 per row
+                : subType === 2 ? <BoxFloor data={tplDetailData} countPerLine={5} key={id}/>  // 5 per row
                 : null)
             : type === 5 ? <DividerFloor key={id} image={img}/>  // divider floor
               : null
@@ -109,6 +124,7 @@ class CMS extends React.Component<object, State> {
           data={data}
           onTabSelect={this.onTabSelect}
           currentActiveTabId={this.state.currentTabId}
+          isHeaderCollapsed={false}
         />
       ))
     : type === 'cmsFloors' ? this.renderFloors(data)

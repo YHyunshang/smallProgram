@@ -18,7 +18,7 @@ function request(method: string, url: string, data?: object) {
   try {
     request = NativeModules.HttpNativeManager.sendRequest
   } catch (e) {
-    return Promise.reject(RequestErr('RN', 'can not found HttpNativeManager.sendRequest in native module!'))
+    return Promise.reject(new RequestErr('RN', 'can not found HttpNativeManager.sendRequest in native module!'))
   }
 
   Log.debug(`calling HttpNativeManager.sendRequest(${method}, ${url}, ${data}, callbackFunc)`)

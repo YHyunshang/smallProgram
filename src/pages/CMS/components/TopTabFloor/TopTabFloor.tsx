@@ -1,8 +1,7 @@
 /**
  * Created by 李华良 on 2019-07-23
  */
-import React from 'react'
-import PropTypes from 'prop-types'
+import * as React from 'react'
 import { ScrollView, View, TouchableOpacity, Text } from 'react-native'
 import styles from './TopTabFloor.styles'
 
@@ -12,10 +11,10 @@ interface Tab {
   showName: string
 }
 
-interface Props {
+export interface Props {
   data: Tab[]  // 选项列表
   onTabSelect: Function  // 选项选中回调
-  currentActiveTabId: number  // 当前激活的选项 id
+  currentActiveTabId: number|string  // 当前激活的选项 id
   isHeaderCollapsed: boolean  // 顶部是否折叠
 }
 
