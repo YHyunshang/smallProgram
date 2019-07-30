@@ -43,7 +43,7 @@ function request(method: string, url: string, data?: object) {
  * @param query {object}
  */
 function formatUrl(hostKey: string, path: string, query={}) {
-  const nativeEnv = NativeModules.HomeNativeManager.envPathType
+  const nativeEnv = NativeModules.HttpNativeManager.envPathType
   const env = { 0: 'test', 1: 'dev', 2: 'prod' }[nativeEnv]
   if (!env) throw new RequestErr('RN', `map native env[${nativeEnv}] to RN env[${env}] failed`)
 

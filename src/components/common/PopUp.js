@@ -4,10 +4,10 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-25 14:01:57
+ * @LastEditTime: 2019-07-30 20:13:05
  */
 import React, {Component} from 'react'
-import {StyleSheet, View, TouchableOpacity, Animated, Easing, Dimensions} from 'react-native'
+import {StyleSheet, View, TouchableOpacity, Animated, Easing, Dimensions, Platform} from 'react-native'
 /**
  * 弹出层
  */
@@ -74,6 +74,7 @@ export default class PopUp extends Component {
 
   render() {
     let {transparentIsClick, modalBoxBg, modalBoxHeight} = this.props
+    let isIOS = Platform.OS === 'ios'//ios手机
     if (this.state.show) {
       return (
         <View style={[styles.container, {height}]}>
@@ -81,15 +82,17 @@ export default class PopUp extends Component {
           </TouchableOpacity>
           <Animated.View
             style={[styles.modalBox, {
-              height, top: 0, backgroundColor: modalBoxBg,
+              height, bottom: 0, backgroundColor: modalBoxBg,
               transform: [{
                 translateY: this.state.offset.interpolate({
                   inputRange: [0, 1],
-                  outputRange: [height, height - modalBoxHeight]
+                  outputRange: isIOS ? [height, height - modalBoxHeight] : [height - modalBoxHeight, height]
                 })
               }]
             }]}>
-            {this.props.children}
+            <View>
+              {this.props.children}
+            </View>
           </Animated.View>
         </View>
       )

@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-29 10:03:25
+ * @LastEditTime: 2019-07-30 21:17:02
  */
 
 import React from 'react'
@@ -17,11 +17,11 @@ import PosterModal from '../../components/business/PosterModal'
 import TabBar from '../../components/common/TabBar'
 import Toast from 'react-native-easy-toast'
 import {isIPhoneXMarginTop, isIPhoneXFooter} from '../../utils/IsIphoneX'
+import {getGoodsDetailData, getPosterImgUrl} from '../../services/goodsDetail'
 import GoodsDetailSwiper from '../../components/business/GoodsDetailSwiper'
 import GoodsDetailEvaluate from '../../components/business/GoodsDetailEvaluate'
 const {width} = Dimensions.get('window')
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
-const httpManager = NativeModules.HttpNativeManager// 原生http请求模块
 export default class ProductDetailPage extends React.Component {
   constructor(props) {
     super(props)
@@ -60,30 +60,33 @@ export default class ProductDetailPage extends React.Component {
   /**
    * @description: 获取原生返回的商品详情数据
    */
-  getProductInfo(productCode, storeCode) {
-    let url = `http://xszt-sit.yh-soi-2c-productcenter.xszt-001.sitapis.yonghui.cn/app/product/queryProductDetailByCode?storeCode=${storeCode}&productCode=${productCode}`
-    httpManager.sendRequest('get', url, null, (errMsg, responseData) => {
-      responseData = Platform.OS === 'ios' ? responseData : JSON.parse(responseData)
-      if (responseData.result) {
-        let object = {}
-        let shopUrl = JSON.parse(responseData.result.resChannelStoreProductVO.shopUrl || '')
-        object.productDesc = responseData.result.resChannelStoreProductVO.productName
-        object.productPrice = responseData.result.resChannelStoreProductVO.price
-        object.productUrl = responseData.result.productSliderImagesResponseVOList[0].url
-        object.productCode = responseData.result.resChannelStoreProductVO.productCode
-        this.setState(
-          {
-            goodsDetail: responseData.result,
-            goodsInfo: responseData.result.resChannelStoreProductVO,
-            evaluation: responseData.result.resProductEvaluationVO,
-            imgData: responseData.result.productSliderImagesResponseVOList,
-            productImgList: responseData.result.productDetailImagesResponseVOList,
-            shopUrl,
-            productParams: object
-          }
-        )
-      }
-    })
+  getProductInfo = (productCode, storeCode) => {
+    getGoodsDetailData(storeCode, productCode)
+      .then(({result: data, message, code}) => {
+        if (code === 200000 && data) {
+          let object = {}
+          let shopUrl = JSON.parse(data.resChannelStoreProductVO.shopUrl || '')
+          object.productDesc = data.resChannelStoreProductVO.productName
+          object.productPrice = data.resChannelStoreProductVO.price
+          object.productUrl = data.productSliderImagesResponseVOList[0].url
+          object.productCode = data.resChannelStoreProductVO.productCode
+          this.setState(
+            {
+              goodsDetail: data,
+              goodsInfo: data.resChannelStoreProductVO,
+              evaluation: data.resProductEvaluationVO,
+              imgData: data.productSliderImagesResponseVOList,
+              productImgList: data.productDetailImagesResponseVOList,
+              shopUrl,
+              productParams: object
+            }
+          )
+        } else {
+          this.refs.toast.show(message, 3000)
+        }
+      }).catch((error) => {
+        this.refs.toast.show(error, 3000)
+      })
   }
   /**
    * @description: 显示分享朋友圈弹层
@@ -109,10 +112,21 @@ export default class ProductDetailPage extends React.Component {
       productPrice: `¥${transPenny(productParams.productPrice)}`,
       productUrl: productParams.productUrl
     }
-    let url = 'http://xszt-sit.yh-sod-usercenter.sitapis.yonghui.cn/public/getWXComposeImg'
-    httpManager.sendRequest('post', url, params, (errMsg, responseData) => {
-      this.setState({imgUrl: responseData.result.imgUrl})
-    })
+    getPosterImgUrl(params)
+      .then(({result: data, message, code}) => {
+        if (code === 200000 && data) {
+          this.setState({imgUrl: data.imgUrl})
+        } else {
+          this.refs.toast.show(message, 3000)
+        }
+      }
+      ).catch((error) => {
+        this.refs.toast.show(error, 3000)
+      })
+    // let url = 'http://xszt-sit.yh-sod-usercenter.sitapis.yonghui.cn/public/getWXComposeImg'
+    // httpManager.sendRequest('post', url, params, (errMsg, responseData) => {
+    //   this.setState({imgUrl: responseData.result.imgUrl})
+    // })
   }
   /**
    * @description: 根据点击tab选项跳转至指定区域
@@ -180,6 +194,7 @@ export default class ProductDetailPage extends React.Component {
           isShowTopTab ?
             (
               <View style={styles.topTab}>
+                <View></View>
                 <TabBar ref={e => this.tabs = e}
                   index={this.state.currentIndex}
                   data={this.state.tablist}
@@ -395,7 +410,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8F8F8',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     //iPhoneX头部兼容处理
     marginTop: isIPhoneXMarginTop(0)
   },

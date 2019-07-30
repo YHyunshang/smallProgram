@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-25 13:53:15
+ * @LastEditTime: 2019-07-30 12:36:34
  */
 import React from 'react'
 import {
@@ -41,8 +41,14 @@ export default class GoodsDetailEvaluate extends React.Component {
       <View>
         <View style={styles.wrapper}>
           <View style={styles.wrapperItem}>
-            <Text style={styles.goodsEvalute}>商品评价({evaluation.totalNum})</Text>
-            <Text style={styles.favorableRate}>好评度{favorableRate}%</Text>
+            { evaluation.totalNum ?
+              <Text style={styles.goodsEvalute}>商品评价({evaluation.totalNum})</Text>
+              : <Text></Text>
+            }
+            { favorableRate ?
+              <Text style={styles.favorableRate}>好评度{favorableRate}%</Text>
+              : <Text></Text>
+            }
           </View>
           <TouchableOpacity onPress={() => {
             this.seeAll()

@@ -6,19 +6,25 @@
  */
 
 #import "AppDelegate.h"
-#import <React/RCTLinkingManager.h>
+#import "RCTLinkingManager.h"
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
 @implementation AppDelegate
 
+// - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+//  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+// {
+//  return [RCTLinkingManager application:application openURL:url
+//                      sourceApplication:sourceApplication annotation:annotation];
+// }
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
-{
-  return [RCTLinkingManager application:application openURL:url
-                      sourceApplication:sourceApplication annotation:annotation];
+sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{  return [RCTLinkingManager application:application openURL:url 
+      sourceApplication:sourceApplication annotation:annotation];
 }
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
