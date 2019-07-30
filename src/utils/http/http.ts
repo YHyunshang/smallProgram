@@ -4,7 +4,7 @@
 import { NativeModules } from 'react-native'
 import RequestErr from './http-err'
 import HostMapper from './host-mapper'
-import { Log } from '@utils'
+import * as Log from '../log'
 
 /**
  * send http request based on native
@@ -25,7 +25,7 @@ function request(method: string, url: string, data?: object) {
   return new Promise((resolve, reject) => request(
     method.toLowerCase(),
     url,
-    method.toLowerCase() === 'get' ? null : data,
+    method.toLowerCase() === 'get' ? null : JSON.stringify(data),
     (errMsg, responseData) => {
       if (errMsg) {
         return reject(new RequestErr('NATIVE', errMsg))

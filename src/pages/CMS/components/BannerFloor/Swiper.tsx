@@ -34,15 +34,15 @@ class Swiper extends React.Component<Props, State> {
 
   componentDidMount(): void {
     if (this.props.data.length > 0) {
-      this.scrollTo(0)
-      this.autoplay()
+      this.scrollTo(this.state.index)
+      if (this.autoplayInterval <= 0) this.autoplay()
     }
   }
 
   componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
     if (this.props.data.length > 0 && prevProps.data.length === 0) {
-      this.scrollTo(0)
-      this.autoplay()
+      this.scrollTo(this.state.index)
+      if (this.autoplayInterval <= 0) this.autoplay()
     }
   }
 
@@ -54,8 +54,10 @@ class Swiper extends React.Component<Props, State> {
     this.autoplayInterval = setInterval(() => {
       const { data } = this.props
       const { index } = this.state
-      this.setState({ index: (index + 1 >= data.length) ? 0 : index + 1})
-      this.scrollTo(index + 1)
+      this.setState(
+        { index: (index + 1 >= data.length) ? 0 : index + 1},
+        () => this.scrollTo(index + 1)
+      )
     }, 2500)
   }
 
@@ -64,7 +66,7 @@ class Swiper extends React.Component<Props, State> {
     this.scrollViewRef.current.scrollTo({ x: (1 + index) * 288, animated: true })
   }
 
-  onMomentumScrollEnd = e => {
+  onMomentumScrollEnd = () => {
     const {index} = this.state
     const {data} = this.props
     const sv = this.scrollViewRef.current

@@ -5,7 +5,7 @@ import {StyleSheet} from "react-native";
 
 export default StyleSheet.create({
   container: {
-    height: 180,
+    height: 175,
     position: 'relative'
   },
   scrollView: {
@@ -38,7 +38,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 40,
+    height: 35,
     position: 'absolute',
     top: 140,
     left: 0,

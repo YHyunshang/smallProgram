@@ -2,7 +2,7 @@
  * Created by 李华良 on 2019-07-23
  */
 import * as React from 'react'
-import { ScrollView, View, TouchableOpacity, Text } from 'react-native'
+import { ScrollView, View, TouchableOpacity, Text, TouchableWithoutFeedback } from 'react-native'
 import styles from './TopTabFloor.styles'
 
 interface Tab {
@@ -48,8 +48,8 @@ class TopTabFloor extends React.Component<Props> {
     const total = data.length
     const currentActiveTabIdx = data.findIndex(ele => ele.id === currentActiveTabId)
     const contentOffset = currentActiveTabIdx - 2 >= 0
-      ? { x: (tabDims[data[currentActiveTabIdx - 2].id] || {x: 0}).x }
-      : { x: 0 }
+      ? { x: (tabDims[data[currentActiveTabIdx - 2].id] || {x: 0}).x, y: 0 }
+      : { x: 0, y: 0 }
 
     return (
       <ScrollView
@@ -58,6 +58,7 @@ class TopTabFloor extends React.Component<Props> {
         contentOffset={contentOffset}
         contentContainerStyle={styles.contentContainer}
         showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
         ref={this.scrollView}
       >
         {data.map((ele, idx) => (

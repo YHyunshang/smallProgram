@@ -1,40 +1,29 @@
 /**
  * Created by 李华良 on 2019-07-04
  */
-import React from 'react'
-import { View, Image, Text, StyleSheet } from 'react-native'
+import * as React from 'react'
+import { View, Image, Text, TouchableWithoutFeedback } from 'react-native'
+import { Native } from '@utils'
+import styles from './Box.styles'
 
-export interface Props {
-  url?: string;  // 跳转链接
-  image: string;  // 图片 url
-  title?: string;  // 标题
+interface Props {
+  link?: {
+    type: string
+    uri: string
+  }  // 跳转链接
+  image: string  // 图片 url
+  title?: string  // 标题
 }
 
-function Box({ url, image, title }: Props) {
+function Box({ link, image, title }: Props) {
   return (
-    <View style={styles.box}>
-      <Image style={styles.boxImg} source={{ uri: image }} resizeMode="contain" />
-      <Text style={styles.boxText} selectable={false}>{ title }</Text>
-    </View>
+    <TouchableWithoutFeedback onPress={() => Native.navigateTo(link.type, link.uri)}>
+      <View style={styles.box}>
+        <Image style={styles.boxImg} source={{ uri: image }} resizeMode="contain" />
+        <Text style={styles.boxText} selectable={false}>{ title }</Text>
+      </View>
+    </TouchableWithoutFeedback>
   )
 }
-
-const styles = StyleSheet.create({
-  box: {
-    paddingHorizontal: 10,
-    alignItems: 'center',
-  },
-  boxImg: {
-    width: 48,
-    height: 48,
-    marginBottom: 5,
-  },
-  boxText: {
-    textAlign: 'center',
-    fontSize: 13,
-    lineHeight: 18,
-    color: '#333',
-  }
-})
 
 export default Box

@@ -1,39 +1,44 @@
 /**
  * Created by 李华良 on 2019-07-05
  */
-import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import * as React from 'react'
+import { View } from 'react-native'
 import Box from './Box'
+import styles from './BoxFloor.styles'
 
 export interface Props {
-  data: array<object>;
+  data: {
+    id: string | number
+    link: string  // 跳转链接
+    linkType: string  // 跳转地址类型
+    imgUrl: string  // 图片地址
+    name: string  // 标题
+  }[];
+  countPerLine: number  // 每行个数
 }
 
-class BoxFloor extends React.Component<Props, object> {
-  constructor(props: Props) {
-    super(props)
-  }
+function BoxFloor({ data, countPerLine }: Props) {
+  const rows = Array.apply(null, { length: Math.ceil(data.length / countPerLine) })
+    .map((ele, idx) => data.slice(idx * countPerLine, (idx + 1) * countPerLine))
 
-  render() {
-    const { data } = this.props
+  const colStyles = [
+    styles.col,
+    { width: `${100 / countPerLine}%` },
+  ]
 
-    return (
-      <View style={styles.container}>
-        {data.map(({ url, image, title }, idx) => (
-          <Box image={image} url={url} title={title} key={idx} />
-        ))}
-      </View>
-    )
-  }
+  return (
+    <View style={styles.container}>
+      {rows.map((cols, idx) => (
+        <View key={idx} style={styles.row}>
+          {cols.map(({ imgUrl, link, linkType, name, id }) => (
+            <View style={colStyles} key={id}>
+              <Box image={imgUrl} link={{ type: linkType, uri: link }} title={name} />
+            </View>
+          ))}
+        </View>
+      ))}
+    </View>
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 8,
-    paddingVertical: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  }
-})
 
 export default BoxFloor

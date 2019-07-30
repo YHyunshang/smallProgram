@@ -10,6 +10,7 @@ export default StyleSheet.create({
     marginBottom: 5,
     position: 'relative',
   },
+  productImg: {},
   productDetailBox: {
   },
   productTagBox: {
@@ -44,6 +45,7 @@ export default StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'space-between',
   },
+  priceBox: {},
   slashedPrice: {
     lineHeight: 18,
     height: 18,

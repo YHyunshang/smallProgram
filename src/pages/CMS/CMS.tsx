@@ -2,7 +2,7 @@
  * Created by 李华良 on 2019-07-23
  */
 import * as React from 'react'
-import { StyleSheet, FlatList, Text } from 'react-native'
+import { FlatList, Text, View } from 'react-native'
 import TopTabFloor from './components/TopTabFloor'
 import BannerFloor from './components/BannerFloor'
 import BoxFloor from './components/BoxFloor'
@@ -12,8 +12,10 @@ import DividerFloor from './components/DividerFloor'
 import ProductListFloor from './components/ProductListFloor'
 import ProductGridFloor from './components/ProductGridFloor'
 import ProductScrollFloor from './components/ProductScrollFloor'
+import { Icon } from '@components'
 import { CMSService } from '@services'
 import { Log, Native } from '@utils'
+import styles from './CMS.styles'
 
 const {
   navigateTo,
@@ -45,7 +47,8 @@ class CMS extends React.Component<{}, State> {
   }
 
   async componentDidMount() {
-    const shopCode = await getConstant('storeCode')
+    // const shopCode = await getConstant('storeCode')
+    const shopCode = '9010'
     if (shopCode) {
       this.setState({ shopCode })
       this.requestInitData(shopCode)
@@ -58,7 +61,7 @@ class CMS extends React.Component<{}, State> {
       .then(({ result: data }) => {
         const tabData = [...data]
         const currentTabId = data[0].id
-        const floorData = data[0] ? data[0].templateVOList : []
+        const floorData = data[0] ? this.formatFloorData(data[0].templateVOList) : []
         this.setState({tabData, currentTabId, floorData})
       })
   }
@@ -66,8 +69,11 @@ class CMS extends React.Component<{}, State> {
   requestFloorData = tabId =>
     CMSService.getFloorDataByTab(tabId, this.state.shopCode)
       .then(json => {
-        this.setState({ floorData: json.result.templateVOList })
+        this.setState({ floorData: this.formatFloorData(json.result.templateVOList) })
       })
+  formatFloorData = data => data
+    .sort((a, b) => a.pos - b.pos)
+    .filter(ele => ele.img || ele.templateDetailVOList.length > 0)
 
   // native 设置门店编码
   setShopData = shopCode => {
@@ -87,68 +93,55 @@ class CMS extends React.Component<{}, State> {
     this.requestFloorData(tabObj.id)
   }
 
-  renderFloors = data => data
-    .sort((a, b) => a.pos - b.pos)
-    .filter(ele => ele.img || ele.templateDetailVOList.length > 0)
-    .map(({ id, type, subType, templateDetailVOList: tplDetailData, img }) => {
-      return type === 1 ? <BannerFloor data={tplDetailData} key={id}/>  // 1: banner floor
-        : type === 2 ? (  // 2: img-ad floor
-          subType === 1 ? (  // 1v2 img add floor
-            <AdSingleFloor
-              key={id}
-              image={tplDetailData[0].imgUrl}
-              uriType={tplDetailData[0].linkType}
-              uri={tplDetailData[0].link}
-              onPress={navigateTo}
-            />)
-            : subType === 2 ? <Ad1v2Floor key={id} data={tplDetailData} onImgPress={navigateTo} />  // 1 line img add floor
+  renderFloors = ({ item: { id, type, subType, templateDetailVOList: tplDetailData, img } }) =>
+    type === 1 ? <BannerFloor data={tplDetailData} key={id}/>  // 1: banner floor
+      : type === 2 ? (  // 2: img-ad floor
+        subType === 1 ? (  // 1v2 img add floor
+          <AdSingleFloor
+            key={id}
+            image={tplDetailData[0].imgUrl}
+            link={{ type: tplDetailData[0].linkType, uri: tplDetailData[0].link }}
+          />)
+          : subType === 2 ? <Ad1v2Floor key={id} data={tplDetailData} onImgPress={navigateTo} />  // 1 line img add floor
+          : null)
+      : type === 3 ? (  // 3: product floor
+          subType === 1 ? <ProductListFloor data={tplDetailData} />  // product list floor
+            : subType === 2 ? <ProductGridFloor key={id} data={tplDetailData} columnNum={2}/>  // product 2xn floor
+            : subType === 3 ? <ProductGridFloor key={id} data={tplDetailData} columnNum={3}/>  // product 3xn floor
+            : subType === 4 ? <ProductScrollFloor key={id} data={tplDetailData}/>  // product scroll floor
             : null)
-        : type === 3 ? (  // 3: product floor
-            subType === 1 ? <ProductListFloor data={tplDetailData} />  // product list floor
-              : subType === 2 ? <ProductGridFloor key={id} data={tplDetailData} columnNum={2}/>  // product 2xn floor
-              : subType === 3 ? <ProductGridFloor key={id} data={tplDetailData} columnNum={3}/>  // product 3xn floor
-                : subType === 4 ? <ProductScrollFloor key={id} data={tplDetailData}/>  // product scroll floor
-                  : null)
-          : type === 4 ? (  // 4: category floor
-              subType === 1 ? <BoxFloor data={tplDetailData} countPerLine={4} key={id}/>  // 4 per row
-                : subType === 2 ? <BoxFloor data={tplDetailData} countPerLine={5} key={id}/>  // 5 per row
-                : null)
-            : type === 5 ? <DividerFloor key={id} image={img}/>  // divider floor
-              : null
-    })
-
-  renderFlatItems = ({ item: { type, data } }) =>
-    type === 'topTab' ? (
-      data.length > 0 && (
-        <TopTabFloor
-          data={data}
-          onTabSelect={this.onTabSelect}
-          currentActiveTabId={this.state.currentTabId}
-          isHeaderCollapsed={false}
-        />
-      ))
-    : type === 'cmsFloors' ? this.renderFloors(data)
-    : null
+      : type === 4 ? (  // 4: category floor
+          subType === 1 ? <BoxFloor data={tplDetailData} countPerLine={4} key={id}/>  // 4 per row
+            : subType === 2 ? <BoxFloor data={tplDetailData} countPerLine={5} key={id}/>  // 5 per row
+            : null)
+      : type === 5 ? <DividerFloor key={id} image={img}/>  // divider floor
+      : null
 
   render() {
     const {
       tabData,
       floorData,
+      currentTabId,
     } = this.state
 
-    const flatData = [
-      { type: 'topTab', data: tabData },
-      { type: 'cmsFloors', data: floorData }
-    ]
+    const flatHeader = tabData.length > 0 && (
+      <TopTabFloor
+        data={tabData}
+        onTabSelect={this.onTabSelect}
+        currentActiveTabId={currentTabId}
+        isHeaderCollapsed={false}
+      />
+    )
 
     return (
-      <FlatList
-        data={flatData}
-        horizontal={false}
-        refreshing={true}
-        keyExtractor={item => item.type}
-        renderItem={this.renderFlatItems}
-      />
+        <FlatList
+          data={floorData}
+          ListHeaderComponent={flatHeader}
+          horizontal={false}
+          refreshing={true}
+          keyExtractor={item => `${item.id}`}
+          renderItem={this.renderFloors}
+        />
     )
   }
 }

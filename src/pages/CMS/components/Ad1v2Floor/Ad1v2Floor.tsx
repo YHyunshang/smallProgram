@@ -1,49 +1,27 @@
 /**
  * Created by 李华良 on 2019-07-12
  */
-import React from 'react'
-import { StyleSheet, View, Dimensions } from 'react-native'
+import * as React from 'react'
+import { View, TouchableWithoutFeedback } from 'react-native'
 import FitImage from 'react-native-fit-image'
-
-const windowDim = Dimensions.get('window')
-const imgWidth = Math.floor((windowDim.width - 20 - 5) / 2)
+import styles from './Ad1v2Floor.styles'
+import {Native} from "@utils";
 
 interface Props {
   data: object[]
   onImgPress: Function
 }
 
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  leftImgBox: {
-    width: imgWidth,
-  },
-  rightImgBox: {
-    width: imgWidth,
-    justifyContent: 'space-between'
-  },
-  rightTopImg: {
-    marginBottom: 5,
-  }
-})
-
-function Img({style, imgUrl, linkType, link, onPress}) {
+function Img({style, imgUrl, link, linkType}: {style: any, imgUrl: string, link: string, linkType: string|number}) {
   return (
-    <FitImage
-      style={style}
-      source={{ uri: imgUrl }}
-      onPress={() => onPress(linkType, link)}
-    />
+    <TouchableWithoutFeedback onPress={() => Native.navigateTo(linkType, link)}>
+      <FitImage style={style} source={{ uri: imgUrl }} />
+    </TouchableWithoutFeedback>
   )
 }
 
 export default function Ad1v2Floor({ data, onImgPress }: Props) {
-  const [ left={}, rightTop={}, rightBtm={} ] = data
+  const [ left, rightTop, rightBtm ] = data
 
   return (
     <View style={styles.container}>

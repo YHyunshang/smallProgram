@@ -6,7 +6,8 @@
     "paths": {
       "@utils": ["./src/utils"],
       "@services": ["./src/services"],
-      "@components": ["./src/components"]
+      "@components": ["./src/components"],
+      "@img": ["./src/assets/imgs"]
     }
   }
 }
