@@ -2,7 +2,7 @@
  * Created by 李华良 on 2019-07-23
  */
 import * as React from 'react'
-import { FlatList} from 'react-native'
+import { FlatList, NativeEventEmitter, NativeModules } from 'react-native'
 import TopTabFloor from './components/TopTabFloor'
 import BannerFloor from './components/BannerFloor'
 import BoxFloor from './components/BoxFloor'
@@ -15,6 +15,8 @@ import ProductScrollFloor from './components/ProductScrollFloor'
 import { CMSServices } from '@services'
 import { Native, Log } from '@utils'
 import styles from './CMS.styles'
+
+const eventEmitter = new NativeEventEmitter(NativeModules.SendRNEventManager)
 
 interface State {
   loading: Boolean  // 加载中
@@ -40,18 +42,42 @@ class CMS extends React.Component<{}, State> {
     }
   }
 
+  nativeSubscription: any
+
   async componentDidMount() {
     const shopCode = await Native.getConstant('storeCode')
     if (shopCode) {
       this.setState({ shopCode })
       this.requestInitData(shopCode)
     }
+
+    // 门店变化 native 事件监听
+    this.nativeSubscription = eventEmitter.addListener('storeChange', this.onNativeShopChange)
+  }
+
+  componentWillUnmount(): void {
+    this.nativeSubscription && this.nativeSubscription.remove()
+  }
+
+  // 门店变化
+  onNativeShopChange = ({ storeCode }) => {
+    this.setState({ shopCode: storeCode })
+    this.requestInitData(storeCode)
   }
 
   // 获取初始 CMS 数据
   requestInitData = (shopCode:string) => {
     CMSServices.getInitialData(shopCode)
       .then(({ result: data }) => {
+        if (data.length === 0) {
+          this.setState({
+            tabData: [],
+            floorData: [],
+            currentTabId: '',
+          })
+          return
+        }
+
         const tabData = [...data]
         const currentTabId = data[0].id
         const floorData = data[0] ? this.formatFloorData(data[0].templateVOList) : []
