@@ -1,9 +1,8 @@
 /**
  * Created by 李华良 on 2019-07-23
  */
-import React from 'react'
-import PropTypes from 'prop-types'
-import { ScrollView, View, TouchableOpacity, Text } from 'react-native'
+import * as React from 'react'
+import { ScrollView, View, TouchableOpacity, Text, TouchableWithoutFeedback } from 'react-native'
 import styles from './TopTabFloor.styles'
 
 interface Tab {
@@ -12,10 +11,10 @@ interface Tab {
   showName: string
 }
 
-interface Props {
+export interface Props {
   data: Tab[]  // 选项列表
   onTabSelect: Function  // 选项选中回调
-  currentActiveTabId: number  // 当前激活的选项 id
+  currentActiveTabId: number|string  // 当前激活的选项 id
   isHeaderCollapsed: boolean  // 顶部是否折叠
 }
 
@@ -49,8 +48,8 @@ class TopTabFloor extends React.Component<Props> {
     const total = data.length
     const currentActiveTabIdx = data.findIndex(ele => ele.id === currentActiveTabId)
     const contentOffset = currentActiveTabIdx - 2 >= 0
-      ? { x: (tabDims[data[currentActiveTabIdx - 2].id] || {x: 0}).x }
-      : { x: 0 }
+      ? { x: (tabDims[data[currentActiveTabIdx - 2].id] || {x: 0}).x, y: 0 }
+      : { x: 0, y: 0 }
 
     return (
       <ScrollView
@@ -59,6 +58,7 @@ class TopTabFloor extends React.Component<Props> {
         contentOffset={contentOffset}
         contentContainerStyle={styles.contentContainer}
         showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
         ref={this.scrollView}
       >
         {data.map((ele, idx) => (

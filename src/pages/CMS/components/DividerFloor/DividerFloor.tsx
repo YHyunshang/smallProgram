@@ -1,11 +1,9 @@
 /**
  * Created by 李华良 on 2019-07-12
  */
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import * as React from 'react'
 import FitImage from 'react-native-fit-image'
-
-const styles = StyleSheet.create({})
+import styles from './DividerFloor.styles'
 
 interface Props {
   image: string

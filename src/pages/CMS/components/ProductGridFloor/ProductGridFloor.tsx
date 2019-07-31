@@ -1,13 +1,13 @@
 /**
  * Created by 李华良 on 2019-07-17
  */
-import React from 'react'
+import * as React from 'react'
 import { View } from 'react-native'
 import ProductItem from './ProductItem'
 import getStyles from './ProductGridFloor.styles'
 
 interface Props {
-  data: Array<object>
+  data: any[]
   columnNum: number
 }
 

@@ -1,7 +1,7 @@
 /**
  * Created by 李华良 on 2019-07-12
  */
-import React from 'react'
+import * as React from 'react'
 import { View } from 'react-native'
 import ProductItem, { Props as ProductItemProps} from './ProductItem'
 import styles from './ProductListFloor.styles'
@@ -15,12 +15,12 @@ export default function ProductListFloor ({ data }: Props) {
   return (
     <View style={styles.container}>
       {data.map((ele, idx) => (
-        <React.Fragment>
-        <View style={styles.productItem} key={ele.code}>
+        <React.Fragment key={ele.code}>
+          <View style={styles.productItem}>
           <ProductItem data={ele} />
         </View>
-        {(idx <= length -1) && (
-          <View style={styles.divider} />
+      {(idx <= length -1) && (
+        <View style={styles.divider} />
         )}
         </React.Fragment>
       ))}

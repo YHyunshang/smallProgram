@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "jsx": "react-native",
+    "lib": ["es6"],
+    "baseUrl": ".",
+    "paths": {
+      "@utils": ["./src/utils"],
+      "@services": ["./src/services"],
+      "@components": ["./src/components"],
+      "@img": ["./src/assets/imgs"]
+    }
+  }
+}
