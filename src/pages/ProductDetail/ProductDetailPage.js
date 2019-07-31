@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-31 14:24:44
+ * @LastEditTime: 2019-07-31 17:15:45
  */
 import React from 'react'
 import {ScrollView, View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, NativeModules, Platform} from 'react-native'
@@ -93,12 +93,14 @@ export default class ProductDetailPage extends React.Component {
    * @description: 显示分享朋友圈弹层
    */
   handleShowModal() {
+    goodsDetailManager.hideBottomViews()//隐藏底部购物车模块
     this.shareModal.showShareModal()
   }
   /**
    * @description: 显示生成海报弹层
    */
   handlePosterModal=(productParams) => {
+    goodsDetailManager.hideBottomViews()//隐藏底部购物车模块
     this.posterModal.showPosterModal()
     this.sharePoster(productParams)
   }
@@ -120,7 +122,7 @@ export default class ProductDetailPage extends React.Component {
       .then(({result: data, message, code}) => {
         this.loadingModal.dismissLoading()
         if (code === 200000 && data) {
-          this.setState({imgUrl: data.imgUrl, isFirst: false})
+          this.setState({imgUrl: data.imgByte, isFirst: false})
         } else {
           this.refs.toast.show(message, 3000)
         }

@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-30 20:48:35
+ * @LastEditTime: 2019-07-31 17:13:05
  */
 
 import React from 'react'
@@ -13,13 +13,15 @@ import {
   Text,
   View,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  NativeModules
 } from 'react-native'
 import PopUp from '../common/PopUp'
 //import {downloadImage} from '../common/DownLoadImage'
 import Toast from 'react-native-easy-toast'
 import {isIPhoneXFooter} from '../../utils/IsIphoneX'
 import Icon from '../../components/Icon'
+const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
 export default class PosterModal extends React.Component {
   constructor(props) {
     super(props)
@@ -42,6 +44,7 @@ export default class PosterModal extends React.Component {
   */
   hidePosterModal() {
     this.popUp.hide()
+    goodsDetailManager.showBottomViews()//展示底部购物车模块
   }
 
   /**

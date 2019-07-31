@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-30 18:25:09
+ * @LastEditTime: 2019-07-31 16:38:54
  */
 
 import React from 'react'
@@ -13,12 +13,14 @@ import {
   Text,
   View,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  NativeModules
 } from 'react-native'
 // import * as WeChat from 'react-native-wechat'
 import PopUp from '../common/PopUp'
 import Icon from '../../components/Icon'
 import Toast from 'react-native-easy-toast'
+const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
 const shareIconWechat = {uri: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/wechat-friend.png'}
 const shareIconMoments = {uri: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/wechat-moments.png'}
 export default class ShareModal extends React.Component {
@@ -43,6 +45,7 @@ export default class ShareModal extends React.Component {
   * @description: 隐藏分享弹层
   */
   hideShareModal() {
+    goodsDetailManager.showBottomViews()//展示底部购物车模块
     this.popUp.hide()
   }
   /**

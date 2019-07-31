@@ -1,7 +1,7 @@
 /**
  * Created by 李华良 on 2019-07-23
  */
-import { NativeModules } from 'react-native'
+import { NativeModules, Alert } from 'react-native'
 import RequestErr from './http-err'
 import HostMapper from './host-mapper'
 import * as Log from '../log'
