@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-30 21:17:02
+ * @LastEditTime: 2019-07-31 10:00:36
  */
 
 import React from 'react'
@@ -15,6 +15,7 @@ import {transPenny} from '../../utils/FormatUtil'
 import ShareModal from '../../components/business/ShareModal'
 import PosterModal from '../../components/business/PosterModal'
 import TabBar from '../../components/common/TabBar'
+import Loading from '../../components/common/Loading'
 import Toast from 'react-native-easy-toast'
 import {isIPhoneXMarginTop, isIPhoneXFooter} from '../../utils/IsIphoneX'
 import {getGoodsDetailData, getPosterImgUrl} from '../../services/goodsDetail'
@@ -26,6 +27,7 @@ export default class ProductDetailPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      isFirst: true, //是否是第一次请求生成海报接口
       isShowTopTab: false, //是否展示顶部tab
       goodsDetail: {}, //商品详情
       evaluation: {}, //商品评价信息
@@ -112,15 +114,20 @@ export default class ProductDetailPage extends React.Component {
       productPrice: `¥${transPenny(productParams.productPrice)}`,
       productUrl: productParams.productUrl
     }
+    if (this.state.isFirst) {
+      this.loadingModal.showLoading()
+    }
     getPosterImgUrl(params)
       .then(({result: data, message, code}) => {
+        this.loadingModal.dismissLoading()
         if (code === 200000 && data) {
-          this.setState({imgUrl: data.imgUrl})
+          this.setState({imgUrl: data.imgUrl, isFirst: false})
         } else {
           this.refs.toast.show(message, 3000)
         }
       }
       ).catch((error) => {
+        this.loadingModal.dismissLoading()
         this.refs.toast.show(error, 3000)
       })
     // let url = 'http://xszt-sit.yh-sod-usercenter.sitapis.yonghui.cn/public/getWXComposeImg'
@@ -177,7 +184,7 @@ export default class ProductDetailPage extends React.Component {
     goodsDetailManager.pushToEvaluationList()
   }
   render() {
-    const {imgData, isShowTopTab, goodsInfo, evaluation, productImgList, shopUrl, imgUrl, productParams} = this.state
+    const {imgData, isShowTopTab, goodsInfo, evaluation, productImgList, shopUrl, imgUrl, productParams, isFirst} = this.state
     let favorableRate = goodsInfo.favorableRate ? goodsInfo.favorableRate * 100 : 0
     favorableRate = favorableRate && parseFloat(favorableRate.toFixed(2))
     //商品详情图文列表
@@ -294,6 +301,12 @@ export default class ProductDetailPage extends React.Component {
           positionValue={200}
           fadeInDuration={750}
         />
+        {
+          <Loading
+            title={'海报生成中'}
+            ref={ref => this.loadingModal = ref}
+          />
+        }
       </View>
     )
   }

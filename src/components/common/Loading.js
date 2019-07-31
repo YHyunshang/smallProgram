@@ -34,29 +34,27 @@ export default class Loading extends React.Component {
       }
     }
   }
-
+    /**
+     * @description: 展示loading图标
+     */
     showLoading = () => {
       this.state.setIsLoading(true)
     }
+    /**
+     * @description: 隐藏loading图标
+     */
     dismissLoading = () => {
       this.state.setIsLoading(false)
     }
-
     render() {
       if (!this.state.isLoading) {
         return null
       }
       return (
-        <View style={{
-          flex: 1,
-          width,
-          height,
-          position: 'absolute',
-          backgroundColor: '#10101099'
-        }}>
+        <View style={styles.loadingContent}>
           <View style={styles.loading}>
             <ActivityIndicator color="white"/>
-            <Text style={styles.loadingTitle}>请稍后...</Text>
+            <Text style={styles.loadingTitle}>{this.props.title}...</Text>
           </View>
         </View>
       )
@@ -64,6 +62,14 @@ export default class Loading extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  loadingContent: {
+    flex: 1,
+    width,
+    height,
+    position: 'absolute',
+    zIndex: 100,
+    backgroundColor: '#10101099'
+  },
   loading: {
     backgroundColor: '#10101099',
     height: 80,
@@ -75,7 +81,6 @@ const styles = StyleSheet.create({
     top: (height - 80) / 2,
     left: (width - 100) / 2
   },
-
   loadingTitle: {
     marginTop: 10,
     fontSize: 14,
