@@ -1,3 +1,12 @@
+/*
+ * @Description: loading组件
+ * @Company: yh
+ * @Author: yuwen.liu
+ * @Date: 2019-07-31 10:28:53
+ * @LastEditors: yuwen.liu
+ * @LastEditTime: 2019-07-31 10:29:36
+ */
+
 import React from 'react'
 import {ActivityIndicator, StyleSheet, Text, View, Dimensions} from 'react-native'
 let width = Dimensions.get('window').width

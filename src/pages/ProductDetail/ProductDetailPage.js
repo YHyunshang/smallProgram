@@ -4,9 +4,8 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-31 10:00:36
+ * @LastEditTime: 2019-07-31 14:24:44
  */
-
 import React from 'react'
 import {ScrollView, View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, NativeModules, Platform} from 'react-native'
 // import * as WeChat from 'react-native-wechat';

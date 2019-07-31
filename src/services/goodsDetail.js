@@ -15,4 +15,4 @@ export const getGoodsDetailData = (storeCode, productCode) => Http.get('goodsDet
  * @param productParams {Object} 商品信息
  * @return {Promise} Http request instance
  */
-export const getPosterImgUrl = (productParams) => Http.post('userCenter', '/public/getWXComposeImg', {}, JSON.stringify(productParams))
+export const getPosterImgUrl = (productParams) => Http.post('userCenter', '/public/getWXComposeImg', {}, productParams)
