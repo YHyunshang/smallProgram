@@ -160,6 +160,7 @@ class CMS extends React.Component<{}, State> {
           refreshing={true}
           keyExtractor={item => `${item.id}`}
           renderItem={this.renderFloors}
+          showsVerticalScrollIndicator={false}
         />
     )
   }
