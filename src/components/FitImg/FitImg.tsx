@@ -35,8 +35,6 @@ export default class FitImg extends React.Component<Props, any> {
       }
     }
 
-    console.log(containerWidth)
-
     return (
       <View style={styles.container} onLayout={this.onLayout}>
         <Image {...imgProps} />

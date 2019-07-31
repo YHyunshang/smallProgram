@@ -2,7 +2,7 @@
  * Created by 李华良 on 2019-07-23
  */
 import * as React from 'react'
-import { FlatList, Text, View } from 'react-native'
+import { FlatList} from 'react-native'
 import TopTabFloor from './components/TopTabFloor'
 import BannerFloor from './components/BannerFloor'
 import BoxFloor from './components/BoxFloor'
@@ -12,15 +12,9 @@ import DividerFloor from './components/DividerFloor'
 import ProductListFloor from './components/ProductListFloor'
 import ProductGridFloor from './components/ProductGridFloor'
 import ProductScrollFloor from './components/ProductScrollFloor'
-import { Icon } from '@components'
-import { CMSService } from '@services'
-import { Log, Native } from '@utils'
+import { CMSServices } from '@services'
+import { Native, Log } from '@utils'
 import styles from './CMS.styles'
-
-const {
-  navigateTo,
-  getConstant,
-} = Native
 
 interface State {
   loading: Boolean  // 加载中
@@ -47,8 +41,7 @@ class CMS extends React.Component<{}, State> {
   }
 
   async componentDidMount() {
-    // const shopCode = await getConstant('storeCode')
-    const shopCode = '9010'
+    const shopCode = await Native.getConstant('storeCode')
     if (shopCode) {
       this.setState({ shopCode })
       this.requestInitData(shopCode)
@@ -57,7 +50,7 @@ class CMS extends React.Component<{}, State> {
 
   // 获取初始 CMS 数据
   requestInitData = (shopCode:string) => {
-    CMSService.getInitialData(shopCode)
+    CMSServices.getInitialData(shopCode)
       .then(({ result: data }) => {
         const tabData = [...data]
         const currentTabId = data[0].id
@@ -67,7 +60,7 @@ class CMS extends React.Component<{}, State> {
   }
   // 获取 tab 下的 CMS 数据
   requestFloorData = tabId =>
-    CMSService.getFloorDataByTab(tabId, this.state.shopCode)
+    CMSServices.getFloorDataByTab(tabId, this.state.shopCode)
       .then(json => {
         this.setState({ floorData: this.formatFloorData(json.result.templateVOList) })
       })
@@ -84,7 +77,7 @@ class CMS extends React.Component<{}, State> {
 
   // 页面滚动
   onPageScroll = ({ nativeEvent: { contentOffset: { x, y } } }) => {
-    CMSService.pushScrollToNative(x, y)
+    CMSServices.pushScrollToNative(x, y)
   }
 
   // 选中 tab
@@ -102,7 +95,7 @@ class CMS extends React.Component<{}, State> {
             image={tplDetailData[0].imgUrl}
             link={{ type: tplDetailData[0].linkType, uri: tplDetailData[0].link }}
           />)
-          : subType === 2 ? <Ad1v2Floor key={id} data={tplDetailData} onImgPress={navigateTo} />  // 1 line img add floor
+          : subType === 2 ? <Ad1v2Floor key={id} data={tplDetailData} />  // 1 line img add floor
           : null)
       : type === 3 ? (  // 3: product floor
           subType === 1 ? <ProductListFloor data={tplDetailData} />  // product list floor

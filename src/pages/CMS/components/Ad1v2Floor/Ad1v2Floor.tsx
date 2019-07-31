@@ -9,7 +9,6 @@ import {Native} from "@utils";
 
 interface Props {
   data: object[]
-  onImgPress: Function
 }
 
 function Img({style, imgUrl, link, linkType}: {style: any, imgUrl: string, link: string, linkType: string|number}) {
@@ -20,7 +19,7 @@ function Img({style, imgUrl, link, linkType}: {style: any, imgUrl: string, link:
   )
 }
 
-export default function Ad1v2Floor({ data, onImgPress }: Props) {
+export default function Ad1v2Floor({ data }: Props) {
   const [ left, rightTop, rightBtm ] = data
 
   return (

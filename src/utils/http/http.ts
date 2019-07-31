@@ -21,7 +21,6 @@ function request(method: string, url: string, data?: object) {
     return Promise.reject(new RequestErr('RN', 'can not found HttpNativeManager.sendRequest in native module!'))
   }
 
-  Log.debug(`calling HttpNativeManager.sendRequest(${method}, ${url}, ${data}, callbackFunc)`)
   return new Promise((resolve, reject) => request(
     method.toLowerCase(),
     url,
@@ -30,7 +29,6 @@ function request(method: string, url: string, data?: object) {
       if (errMsg) {
         return reject(new RequestErr('NATIVE', errMsg))
       }
-      Log.debug(`HttpNativeManager.sendRequest(${method}, ${url}, ${data}, callbackFunc) returned`, errMsg, responseData)
       return resolve(responseData ? JSON.parse(responseData) : {})
     }
   ))
@@ -42,7 +40,7 @@ function request(method: string, url: string, data?: object) {
  * @param path {string}
  * @param query {object}
  */
-function formatUrl(hostKey: string, path: string, query={}) {
+export function formatUrl(hostKey: string, path: string, query={}) {
   const nativeEnv = NativeModules.HttpNativeManager.envPathType
   const env = { 0: 'test', 1: 'dev', 2: 'prod' }[nativeEnv]
   if (!env) throw new RequestErr('RN', `map native env[${nativeEnv}] to RN env[${env}] failed`)

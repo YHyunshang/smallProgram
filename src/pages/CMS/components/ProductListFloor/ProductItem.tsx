@@ -7,6 +7,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import {Icon} from '@components'
 import styles from './ProductItem.styles'
 import {Native} from "@utils"
+import {CMSServices} from "@services";
 
 export interface Props {
   data: {   // 商品数据
@@ -47,7 +48,7 @@ export default function ProductItem ({ data: {imgUrl, name, productDesc, label, 
             </Text>
             <Text style={styles.slashedPrice}>{isPromotion ? `¥${price}` : ''}</Text>
           </View>
-          <TouchableOpacity activeOpacity={0.8} onPress={console.log} style={styles.cartBtn}>
+          <TouchableOpacity activeOpacity={0.8} style={styles.cartBtn} onPress={() => CMSServices.addToCart(code, 1, price)}>
             <View>
               <Icon name="cart" style={styles.cartIcon} />
             </View>

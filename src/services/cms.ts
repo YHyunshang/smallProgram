@@ -23,8 +23,23 @@ export function getFloorDataByTab(tabId, shopCode) {
   return Http.get('cms', `/cms/mobile/${tabId}/getDetailPage/${shopCode}`)
 }
 
-// todo: fill add cart
-export function addToCart() {
+/**
+ * 添加商品到购物车
+ * @param productCode 商品编码
+ * @param productNum 商品数量
+ * @param productPrice 商品价格
+ */
+export function addToCart(productCode:string, productNum:number, productPrice:number|string) {
+  return NativeModules.HomeNativeManager.addToCart(
+    'post',
+    Http.formatUrl('cart', '/shopping_cart/product'),
+    JSON.stringify({ productCode, productNum, productPrice }),
+    (errMsg, responseData) => {
+      if (errMsg) {
+        Log.error('add to cart failed')
+      }
+    }
+  )
 }
 
 /**
