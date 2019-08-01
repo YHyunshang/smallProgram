@@ -21,6 +21,6 @@ export default StyleSheet.create({
     },
     shadowOpacity: 1,
     shadowRadius: 11,
-    elevation: 5,  // only for android
+    elevation: 1,  // only for android
   }
 })
