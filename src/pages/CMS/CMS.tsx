@@ -2,7 +2,7 @@
  * Created by 李华良 on 2019-07-23
  */
 import * as React from 'react'
-import { FlatList, NativeEventEmitter, NativeModules } from 'react-native'
+import { FlatList, View } from 'react-native'
 import TopTabFloor from './components/TopTabFloor'
 import BannerFloor from './components/BannerFloor'
 import BoxFloor from './components/BoxFloor'
@@ -15,15 +15,14 @@ import ProductScrollFloor from './components/ProductScrollFloor'
 import { CMSServices } from '@services'
 import { Native, Log } from '@utils'
 import styles from './CMS.styles'
-
-const eventEmitter = new NativeEventEmitter(NativeModules.SendRNEventManager)
+import LinearGradient from "react-native-linear-gradient";
 
 interface State {
   loading: Boolean  // 加载中
-  shopCode: string|number  // 门店编码
+  shopCode: string | number  // 门店编码
   tabData: Array<object>  // 顶部 tab 数据
-  floorData: Array<object>  // cms 数据
-  currentTabId: number|string  // 当前选中 tab id
+  floorData: object  // cms 数据
+  currentTabId: number | string  // 当前选中 tab id
 }
 
 class CMS extends React.Component<{}, State> {
@@ -35,7 +34,7 @@ class CMS extends React.Component<{}, State> {
 
       shopCode: '',
 
-      floorData: [],
+      floorData: {},
       tabData: [],
 
       currentTabId: '',
@@ -52,7 +51,7 @@ class CMS extends React.Component<{}, State> {
     }
 
     // 门店变化 native 事件监听
-    this.nativeSubscription = eventEmitter.addListener('storeChange', this.onNativeShopChange)
+    this.nativeSubscription = CMSServices.subscriptShopChange(this.onNativeShopChange)
   }
 
   componentWillUnmount(): void {
@@ -66,13 +65,13 @@ class CMS extends React.Component<{}, State> {
   }
 
   // 获取初始 CMS 数据
-  requestInitData = (shopCode:string) => {
+  requestInitData = (shopCode: string) => {
     CMSServices.getInitialData(shopCode)
       .then(({ result: data }) => {
         if (data.length === 0) {
           this.setState({
             tabData: [],
-            floorData: [],
+            floorData: {},
             currentTabId: '',
           })
           return
@@ -80,15 +79,21 @@ class CMS extends React.Component<{}, State> {
 
         const tabData = [...data]
         const currentTabId = data[0].id
-        const floorData = data[0] ? this.formatFloorData(data[0].templateVOList) : []
-        this.setState({tabData, currentTabId, floorData})
+        const curTabFloorData = data[0] ? this.formatFloorData(data[0].templateVOList) : []
+        this.setState(({ floorData }) => ({
+          tabData,
+          currentTabId,
+          floorData: { ...floorData, [currentTabId]: curTabFloorData }
+        }))
       })
   }
   // 获取 tab 下的 CMS 数据
   requestFloorData = tabId =>
     CMSServices.getFloorDataByTab(tabId, this.state.shopCode)
       .then(json => {
-        this.setState({ floorData: this.formatFloorData(json.result.templateVOList) })
+        this.setState(({ floorData }) => ({
+          floorData: { ...floorData, [tabId]: this.formatFloorData(json.result.templateVOList) }
+        }))
       })
   formatFloorData = data => data
     .sort((a, b) => a.pos - b.pos)
@@ -113,7 +118,7 @@ class CMS extends React.Component<{}, State> {
   }
 
   renderFloors = ({ item: { id, type, subType, templateDetailVOList: tplDetailData, img } }) =>
-    type === 1 ? <BannerFloor data={tplDetailData} key={id}/>  // 1: banner floor
+    type === 1 ? <BannerFloor data={tplDetailData} key={id} />  // 1: banner floor
       : type === 2 ? (  // 2: img-ad floor
         subType === 1 ? (  // 1v2 img add floor
           <AdSingleFloor
@@ -122,19 +127,19 @@ class CMS extends React.Component<{}, State> {
             link={{ type: tplDetailData[0].linkType, uri: tplDetailData[0].link }}
           />)
           : subType === 2 ? <Ad1v2Floor key={id} data={tplDetailData} />  // 1 line img add floor
-          : null)
-      : type === 3 ? (  // 3: product floor
+            : null)
+        : type === 3 ? (  // 3: product floor
           subType === 1 ? <ProductListFloor data={tplDetailData} />  // product list floor
-            : subType === 2 ? <ProductGridFloor key={id} data={tplDetailData} columnNum={2}/>  // product 2xn floor
-            : subType === 3 ? <ProductGridFloor key={id} data={tplDetailData} columnNum={3}/>  // product 3xn floor
-            : subType === 4 ? <ProductScrollFloor key={id} data={tplDetailData}/>  // product scroll floor
-            : null)
-      : type === 4 ? (  // 4: category floor
-          subType === 1 ? <BoxFloor data={tplDetailData} countPerLine={4} key={id}/>  // 4 per row
-            : subType === 2 ? <BoxFloor data={tplDetailData} countPerLine={5} key={id}/>  // 5 per row
-            : null)
-      : type === 5 ? <DividerFloor key={id} image={img}/>  // divider floor
-      : null
+            : subType === 2 ? <ProductGridFloor key={id} data={tplDetailData} columnNum={2} />  // product 2xn floor
+              : subType === 3 ? <ProductGridFloor key={id} data={tplDetailData} columnNum={3} />  // product 3xn floor
+                : subType === 4 ? <ProductScrollFloor key={id} data={tplDetailData} />  // product scroll floor
+                  : null)
+          : type === 4 ? (  // 4: category floor
+            subType === 1 ? <BoxFloor data={tplDetailData} countPerLine={4} key={id} />  // 4 per row
+              : subType === 2 ? <BoxFloor data={tplDetailData} countPerLine={5} key={id} />  // 5 per row
+                : null)
+            : type === 5 ? <DividerFloor key={id} image={img} />  // divider floor
+              : null
 
   render() {
     const {
@@ -144,17 +149,22 @@ class CMS extends React.Component<{}, State> {
     } = this.state
 
     const flatHeader = tabData.length > 0 && (
-      <TopTabFloor
-        data={tabData}
-        onTabSelect={this.onTabSelect}
-        currentActiveTabId={currentTabId}
-        isHeaderCollapsed={false}
-      />
+      <View>
+        <LinearGradient colors={['#D33A34', '#FFF']} style={styles.flatListHeaderBg} />
+        <TopTabFloor
+          data={tabData}
+          onTabSelect={this.onTabSelect}
+          currentActiveTabId={currentTabId}
+          isHeaderCollapsed={false}
+        />
+      </View>
     )
 
     return (
+      <View style={styles.container}>
         <FlatList
-          data={floorData}
+          style={styles.flatList}
+          data={floorData[currentTabId] || []}
           ListHeaderComponent={flatHeader}
           horizontal={false}
           refreshing={true}
@@ -162,6 +172,7 @@ class CMS extends React.Component<{}, State> {
           renderItem={this.renderFloors}
           showsVerticalScrollIndicator={false}
         />
+      </View>
     )
   }
 }

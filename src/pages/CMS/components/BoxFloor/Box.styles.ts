@@ -5,7 +5,7 @@ import {StyleSheet} from "react-native"
 
 export default StyleSheet.create({
   box: {
-    paddingHorizontal: 12.5,
+    paddingHorizontal: 1.5,
     alignItems: 'center',
   },
   boxImg: {

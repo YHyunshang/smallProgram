@@ -1,8 +1,8 @@
 /**
  * Created by 李华良 on 2019-07-26
  */
-import { NativeModules } from 'react-native'
-import { Http, Log } from '@utils'
+import {NativeEventEmitter, NativeModules} from 'react-native'
+import {Http, Log, Native} from '@utils'
 
 /**
  * 获取 CMS 初始数据
@@ -50,4 +50,14 @@ export function addToCart(productCode:string, productNum:number, productPrice:nu
 export function pushScrollToNative(x, y) {
   Log.debug(`calling HomeNativeManager.sendContentOffset(${x}, ${y})`)
   return NativeModules.HomeNativeManager.sendContentOffset(x.toString(), y.toString())
+}
+
+/**
+ * 添加 native 门店变化事件监听
+ * @param handler 事件处理函数
+ */
+export function subscriptShopChange(handler: (...args: any[]) => any) {
+  return
+  const eventEmitter = new NativeEventEmitter(NativeModules.SendRNEventManager)
+  return eventEmitter.addListener('storeChange', handler)
 }

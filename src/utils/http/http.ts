@@ -27,9 +27,13 @@ function request(method: string, url: string, data?: object) {
     method.toLowerCase() === 'get' ? null : JSON.stringify(data),
     (errMsg, responseData) => {
       if (errMsg) {
+        Log.debug(`NativeModules.HttpNativeManager.sendRequest(${method}, ${url}, ${data}) returned an error:`, errMsg)
         return reject(new RequestErr('NATIVE', errMsg))
       }
-      return resolve(responseData ? JSON.parse(responseData) : {})
+
+      const result = responseData ? JSON.parse(responseData) : {}
+      Log.debug(`NativeModules.HttpNativeManager.sendRequest(${method}, ${url}, ${data}) returned:`, result)
+      return resolve(result)
     }
   ))
 }

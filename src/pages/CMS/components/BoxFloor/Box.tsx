@@ -20,7 +20,7 @@ function Box({ link, image, title }: Props) {
     <TouchableWithoutFeedback onPress={() => Native.navigateTo(link.type, link.uri)}>
       <View style={styles.box}>
         <Image style={styles.boxImg} source={{ uri: image }} resizeMode="contain" />
-        <Text style={styles.boxText} selectable={false}>{ title }</Text>
+        <Text style={styles.boxText} selectable={false} ellipsizeMode="clip" numberOfLines={1}>{title}</Text>
       </View>
     </TouchableWithoutFeedback>
   )

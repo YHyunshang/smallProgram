@@ -4,11 +4,18 @@
 import { StyleSheet } from "react-native"
 
 export default StyleSheet.create({
-  bg: {
-    width: '100%',
-    height: '100%',
+  container: {
+    backgroundColor: '#D33A34',
+    position: 'relative',
   },
-  floorBox: {
-    flex: 1,
-  }
+  flatList: {
+    backgroundColor: '#FFF'
+  },
+  flatListHeaderBg: {
+    height: 110,
+    width: '100%',
+    position: 'absolute',
+    top: 0,
+    left: 0
+  },
 })
