@@ -21,7 +21,7 @@ function ProductItem({ data: { imgUrl, label, name,  price, productDesc, promoti
       <View style={styles.productImgBox}>
         <TouchableOpacity
           activeOpacity={0.95}
-          onPress={() => Native.navigateTo('1', 'A003', { params: { productCode: code } })}
+          onPress={() => Native.navigateTo('1', 'A003,A003', { params: { productCode: code } })}
         >
           <FitImg imageProps={{ style: styles.productImg, source: { uri: imgUrl }, resizeMod: 'contain' }} />
         </TouchableOpacity>

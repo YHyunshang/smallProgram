@@ -29,7 +29,7 @@ export default function ProductItem ({ data: {imgUrl, name, productDesc, label, 
       <View style={styles.productImgBox}>
         <TouchableOpacity
           activeOpacity={0.95}
-          onPress={() => Native.navigateTo('1', 'A003', { params: { productCode: code } })}
+          onPress={() => Native.navigateTo('1', 'A003,A003', { params: { productCode: code } })}
         >
           <Image style={styles.productImg} source={{ uri: imgUrl }} resizeMode="contain" />
         </TouchableOpacity>
