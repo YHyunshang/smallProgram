@@ -1,22 +1,23 @@
 /**
  * Created by 李华良 on 2019-07-22
  */
-import {StyleSheet} from "react-native";
+import { StyleSheet } from "react-native"
 
 export default StyleSheet.create({
   container: {
     height: 175,
-    position: 'relative'
+    position: "relative",
   },
   scrollView: {
-    position: 'absolute',
+    position: "absolute",
     top: -15,
     left: 0,
-    width: '100%'
+    width: "100%",
+    height: 170,
   },
   slider: {
     width: 288,
-    height: '100%',
+    height: "100%",
     paddingLeft: 10,
     paddingRight: 5,
     paddingVertical: 15,
@@ -27,28 +28,28 @@ export default StyleSheet.create({
     },
     shadowOpacity: 1,
     shadowRadius: 9,
-    elevation: 5,  // only for android
+    elevation: 5, // only for android
   },
   image: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
     borderRadius: 10,
   },
   indicatorBox: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     height: 35,
-    position: 'absolute',
+    position: "absolute",
     top: 140,
     left: 0,
-    width: '100%',
+    width: "100%",
   },
   indicator: {
     width: 5,
     height: 5,
     marginHorizontal: 2.5,
-    backgroundColor: '#EE4239',
+    backgroundColor: "#EE4239",
     opacity: 0.302,
     borderRadius: 5,
   },

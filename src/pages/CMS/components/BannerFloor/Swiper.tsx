@@ -1,30 +1,35 @@
 /**
  * Created by 李华良 on 2019-07-22
  */
-import * as React from 'react'
-import { ScrollView, View, Image, TouchableWithoutFeedback } from 'react-native'
-import { Native } from '@utils'
-import styles from './Swiper.styles'
+import * as React from "react"
+import { ScrollView, View, Image, TouchableWithoutFeedback } from "react-native"
+import { Native, Log } from "@utils"
+import styles from "./Swiper.styles"
 
 interface Props {
+  sliderWidth: number // slider 宽
   data: {
-    imgUrl: string  // 图片地址
-    link: string  // 跳转地址
-    linkType: string  // 跳转地址类型
-    id: string  // id
+    imgUrl: string // 图片地址
+    link: string // 跳转地址
+    linkType: string // 跳转地址类型
+    id: string // id
   }[]
 }
 
 interface State {
-  index: number  // 当前 slider index
+  index: number // 当前 slider index
 }
 
 class Swiper extends React.Component<Props, State> {
+  static defaultProps = {
+    sliderWidth: 288,
+  }
+
   readonly state = {
     index: 0,
   }
 
-  scrollViewRef = React.createRef()
+  scrollViewRef = React.createRef<ScrollView>()
   autoplayInterval = -1
   dragBeginOffset = { x: 0 }
 
@@ -34,12 +39,17 @@ class Swiper extends React.Component<Props, State> {
 
   componentDidMount(): void {
     if (this.props.data.length > 0) {
-      this.scrollTo(this.state.index)
+      // todo: 优化点，setTimeout 不一定是一个好的方法，可以考虑 scrollView 的 onLayout
+      setTimeout(() => this.scrollTo(this.state.index), 0)
       if (this.autoplayInterval <= 0) this.autoplay()
     }
   }
 
-  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+  componentDidUpdate(
+    prevProps: Readonly<Props>,
+    prevState: Readonly<State>,
+    snapshot?: any
+  ): void {
     if (this.props.data.length > 0 && prevProps.data.length === 0) {
       this.scrollTo(this.state.index)
       if (this.autoplayInterval <= 0) this.autoplay()
@@ -47,35 +57,36 @@ class Swiper extends React.Component<Props, State> {
   }
 
   componentWillUnmount(): void {
-    if (this.autoplayInterval) clearInterval(this.autoplayInterval)
+    if (this.autoplayInterval > 0) clearInterval(this.autoplayInterval)
   }
 
   autoplay = () => {
     this.autoplayInterval = setInterval(() => {
       const { data } = this.props
       const { index } = this.state
-      this.setState(
-        { index: (index + 1 >= data.length) ? 0 : index + 1},
-        () => this.scrollTo(index + 1)
+      this.setState({ index: index + 1 >= data.length ? 0 : index + 1 }, () =>
+        this.scrollTo(index + 1)
       )
     }, 2500)
   }
 
-  scrollTo = (index) => {
-    // @ts-ignore
-    this.scrollViewRef.current.scrollTo({ x: (1 + index) * 288, animated: true })
+  scrollTo = index => {
+    Log.debug("scroll to", index)
+    const { sliderWidth } = this.props
+    this.scrollViewRef.current.scrollTo({
+      x: (1 + index) * sliderWidth,
+      animated: true,
+    })
   }
 
   onMomentumScrollEnd = () => {
-    const {index} = this.state
-    const {data} = this.props
+    const { index } = this.state
+    const { data, sliderWidth } = this.props
     const sv = this.scrollViewRef.current
     if (index === 0) {
-      // @ts-ignore
-      sv.scrollTo({ x: 288, animated: false })
+      sv.scrollTo({ x: sliderWidth, animated: false })
     } else if (index === data.length - 1) {
-      // @ts-ignore
-      sv.scrollTo({ x: data.length * 288, animated: false })
+      sv.scrollTo({ x: data.length * sliderWidth, animated: false })
     }
   }
 
@@ -88,28 +99,31 @@ class Swiper extends React.Component<Props, State> {
   }
 
   onScrollEndDrag = ({ nativeEvent }) => {
-    const { data } = this.props
+    const { data, sliderWidth } = this.props
     const total = data.length
     const { contentOffset } = nativeEvent
-    const indexOffset = (contentOffset.x > this.dragBeginOffset.x) ? 1 : -1
-    // @ts-ignore
-    this.scrollViewRef.current.scrollTo({ x: 288 * (1 + this.state.index + indexOffset), animated: true })
-    this.setState(({ index }) => ({ index: (total + index + indexOffset) % total }), () => {
-      this.autoplay()
+    const indexOffset = contentOffset.x > this.dragBeginOffset.x ? 1 : -1
+    this.scrollViewRef.current.scrollTo({
+      x: sliderWidth * (1 + this.state.index + indexOffset),
+      animated: true,
     })
+    this.setState(
+      ({ index }) => ({ index: (total + index + indexOffset) % total }),
+      () => {
+        this.autoplay()
+      }
+    )
   }
 
   renderSlider = () => {
     const { data } = this.props
-    const sliders = [
-      ...data.slice(-1),
-      ...data,
-      ...data.slice(0, 2),
-    ]
+    const sliders = [...data.slice(-1), ...data, ...data.slice(0, 2)]
     return sliders.map((ele, idx) => (
       <View style={styles.slider} key={`${idx}-${ele.id}`}>
-        <TouchableWithoutFeedback onPress={() => Native.navigateTo(ele.linkType, ele.link)}>
-        <Image style={styles.image} source={{ uri: ele.imgUrl }} />
+        <TouchableWithoutFeedback
+          onPress={() => Native.navigateTo(ele.linkType, ele.link)}
+        >
+          <Image style={styles.image} source={{ uri: ele.imgUrl }} />
         </TouchableWithoutFeedback>
       </View>
     ))
@@ -118,10 +132,12 @@ class Swiper extends React.Component<Props, State> {
   renderIndicator = () => {
     const { index } = this.state
 
-    return this.props.data
-      .map((ele, idx) => (
-        <View key={idx} style={[ styles.indicator, index === idx ? styles.activeIndicator : {} ]}/>
-      ))
+    return this.props.data.map((ele, idx) => (
+      <View
+        key={idx}
+        style={[styles.indicator, index === idx ? styles.activeIndicator : {}]}
+      />
+    ))
   }
 
   render() {
@@ -129,7 +145,6 @@ class Swiper extends React.Component<Props, State> {
       <View style={styles.container}>
         <ScrollView
           horizontal
-          height={170}
           style={styles.scrollView}
           ref={this.scrollViewRef}
           onMomentumScrollEnd={this.onMomentumScrollEnd}
@@ -139,9 +154,7 @@ class Swiper extends React.Component<Props, State> {
         >
           {this.renderSlider()}
         </ScrollView>
-        <View style={styles.indicatorBox}>
-          {this.renderIndicator()}
-        </View>
+        <View style={styles.indicatorBox}>{this.renderIndicator()}</View>
       </View>
     )
   }
