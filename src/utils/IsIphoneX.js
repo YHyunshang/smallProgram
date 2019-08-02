@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-23 14:53:27
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-30 20:22:06
+ * @LastEditTime: 2019-08-02 09:58:20
  */
 
 import {Dimensions, Platform} from 'react-native'
