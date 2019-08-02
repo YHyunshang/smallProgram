@@ -3,7 +3,7 @@
  */
 import * as React from "react"
 import { ScrollView, View, Image, TouchableWithoutFeedback } from "react-native"
-import { Native, Log } from "@utils"
+import { Native } from "@utils"
 import styles from "./Swiper.styles"
 
 interface Props {
@@ -71,7 +71,6 @@ class Swiper extends React.Component<Props, State> {
   }
 
   scrollTo = index => {
-    Log.debug("scroll to", index)
     const { sliderWidth } = this.props
     this.scrollViewRef.current.scrollTo({
       x: (1 + index) * sliderWidth,
