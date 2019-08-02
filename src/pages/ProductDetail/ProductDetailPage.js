@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-31 17:15:45
+ * @LastEditTime: 2019-08-02 15:51:30
  */
 import React from 'react'
 import {ScrollView, View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, NativeModules, Platform} from 'react-native'
@@ -20,7 +20,7 @@ import {isIPhoneXMarginTop, isIPhoneXFooter} from '../../utils/IsIphoneX'
 import {getGoodsDetailData, getPosterImgUrl} from '../../services/goodsDetail'
 import GoodsDetailSwiper from '../../components/business/GoodsDetailSwiper'
 import GoodsDetailEvaluate from '../../components/business/GoodsDetailEvaluate'
-const {width} = Dimensions.get('window')
+const {width, height} = Dimensions.get('window')
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
 export default class ProductDetailPage extends React.Component {
   constructor(props) {
@@ -131,10 +131,6 @@ export default class ProductDetailPage extends React.Component {
         this.loadingModal.dismissLoading()
         this.refs.toast.show(error, 3000)
       })
-    // let url = 'http://xszt-sit.yh-sod-usercenter.sitapis.yonghui.cn/public/getWXComposeImg'
-    // httpManager.sendRequest('post', url, params, (errMsg, responseData) => {
-    //   this.setState({imgUrl: responseData.result.imgUrl})
-    // })
   }
   /**
    * @description: 根据点击tab选项跳转至指定区域
@@ -294,7 +290,7 @@ export default class ProductDetailPage extends React.Component {
           <GoodsFootCart/>
        </View> */}
         <ShareModal modalBoxHeight={240} productParams={productParams} onShare={this.handlePosterModal} ref={ref => this.shareModal = ref}/>
-        <PosterModal modalBoxHeight={514} imgUrl={imgUrl} ref={ref => this.posterModal = ref}/>
+        <PosterModal modalBoxHeight={534} imgUrl={imgUrl} ref={ref => this.posterModal = ref}/>
         <Toast
           ref="toast"
           style={{backgroundColor: '#444444'}}

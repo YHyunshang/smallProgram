@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-31 16:38:54
+ * @LastEditTime: 2019-08-02 17:35:56
  */
 
 import React from 'react'
@@ -16,7 +16,7 @@ import {
   TouchableOpacity,
   NativeModules
 } from 'react-native'
-// import * as WeChat from 'react-native-wechat'
+import * as WeChat from 'react-native-wechat'
 import PopUp from '../common/PopUp'
 import Icon from '../../components/Icon'
 import Toast from 'react-native-easy-toast'
@@ -29,7 +29,7 @@ export default class ShareModal extends React.Component {
   }
 
   componentDidMount() {
-    //WeChat.registerApp('wx3e5bc65c8d751e70')
+    WeChat.registerApp('wx3e5bc65c8d751e70')
   }
 
   componentWillUnmount() {
@@ -52,14 +52,15 @@ export default class ShareModal extends React.Component {
   * @description: 发送微信朋友方法
   */
   shareFriend() {
+    let {productParams} = this.props
     // WeChat.isWXAppInstalled().then((isInstalled) => {
     //   if (isInstalled) {
     //     WeChat.shareToSession({
     //       title: '刘玉文的二维码',
     //       description: '分享自：iReading',
     //       thumbImage: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_3.jpg',
-    //       type: 'news',
-    //       webpageUrl: 'https://blog.csdn.net/weixin_34221036/article/details/91056421'
+    //       type: 'video',
+    //       videoUrl: 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8'
     //     }).catch((error) => {
     //       this.refs.toast.show(error.message, 2000)
     //     })
@@ -67,6 +68,25 @@ export default class ShareModal extends React.Component {
     //     this.refs.toast.show('没有安装微信软件，请您安装微信之后再试', 2000)
     //   }
     // })
+    let weixinMiniProgramShareInfo = {
+      type: 'miniProgram',
+      title: '商品详情分享',
+      thumbImage: productParams.productUrl,
+      description: productParams.productDesc,
+      miniProgramType: 0, //分享小程序版本 正式版:0，测试版:1，体验版:
+      webpageUrl: 'https://blog.csdn.net/weixin_34221036/article/details/91056421',
+      userName: 'gh_913462fd944f', //小程序ID
+      path: '/pages/home/home' //小程序页面路径
+    }
+    WeChat.isWXAppInstalled().then((isInstalled) => {
+      if (isInstalled) {
+        WeChat.shareToSession(weixinMiniProgramShareInfo).catch((error) => {
+          this.refs.toast.show(error.message, 2000)
+        })
+      } else {
+        this.refs.toast.show('没有安装微信软件，请您安装微信之后再试', 2000)
+      }
+    })
   }
   /**
   * @description: 分享朋友圈

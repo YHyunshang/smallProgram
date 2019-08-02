@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-31 18:36:08
+ * @LastEditTime: 2019-08-02 10:08:52
  */
 import React, {Component} from 'react'
 import {StyleSheet, View, TouchableOpacity, Animated, Easing, Dimensions, Platform, NativeModules} from 'react-native'
@@ -55,18 +55,6 @@ export default class PopUp extends Component {
     } else {
       this.setState({show: false})
     }
-    // Animated.timing(
-    //   this.state.offset,
-    //   {
-    //     easing: Easing.linear,
-    //     duration: 300,
-    //     toValue: 0
-    //   }
-    // ).start()
-    // setTimeout(
-    //   () => this.setState({show: false}),
-    //   300
-    // )
   }
   /**
    * @description: 展示弹层方法

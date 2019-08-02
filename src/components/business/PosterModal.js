@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-31 17:13:05
+ * @LastEditTime: 2019-08-02 17:40:38
  */
 
 import React from 'react'
@@ -17,7 +17,7 @@ import {
   NativeModules
 } from 'react-native'
 import PopUp from '../common/PopUp'
-//import {downloadImage} from '../common/DownLoadImage'
+import {downloadImage} from '../common/DownLoadImage'
 import Toast from 'react-native-easy-toast'
 import {isIPhoneXFooter} from '../../utils/IsIphoneX'
 import Icon from '../../components/Icon'
@@ -50,21 +50,21 @@ export default class PosterModal extends React.Component {
   /**
   * @description: 保存图片到本地相册
   */
-  //  saveImage(){
-  //   let url="https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_2.jpg"
-  //    downloadImage(url).then((res)=>{
-  //       if(res && res.statusCode===200){
-  //         this.refs.toast.show('图片保存成功', 2000);
-  //        // this.hidePosterModal()
-  //       }else{
-  //         this.refs.toast.show('图片保存失败', 2000);
-  //       }
-  //   }).catch((error)=>{
-  //       this.refs.toast.show('图片保存失败', 2000);
-  //       console.log(error)
-  //   })
-
-  // }
+  saveImage() {
+    //const {imgUrl} = this.props
+    let url = 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_2.jpg'
+    downloadImage(url).then((res) => {
+      if (res && res.statusCode === 200) {
+        this.refs.toast.show('图片保存成功', 2000)
+        // this.hidePosterModal()
+      } else {
+        this.refs.toast.show('图片保存失败', 2000)
+      }
+    }).catch((error) => {
+      this.refs.toast.show('图片保存失败', 2000)
+      console.log(error)
+    })
+  }
 
   render() {
     const {modalBoxHeight, imgUrl} = this.props
