@@ -22,7 +22,7 @@ interface Props {
 
 interface State {
   loading: boolean // 加载中
-  shopCode: string | number // 门店编码
+  shopCode: string // 门店编码
   tabData: object[] // 顶部 tab 数据
   floorData: any[] // cms 数据
   currentTabId: number | string // 当前选中 tab id
@@ -77,7 +77,11 @@ class CMS extends React.Component<Props, State> {
 
   // 首页 CMS 初始化
   async initHome() {
-    const shopCode = await Native.getConstant('storeCode')
+    let { shopCode } = this.state
+    if (!shopCode) {
+      shopCode = await Native.getConstant('storeCode')
+    }
+
     if (shopCode) {
       this.setState({ shopCode })
       this.requestInitData(shopCode)
