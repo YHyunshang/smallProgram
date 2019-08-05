@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-05 15:32:24
+ * @LastEditTime: 2019-08-05 18:18:23
  */
 import React from 'react'
 import {ScrollView, View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, NativeModules, Platform} from 'react-native'
@@ -69,7 +69,7 @@ export default class ProductDetailPage extends React.Component {
           let shopUrl = JSON.parse(data.resChannelStoreProductVO.shopUrl || '')
           object.productDesc = data.resChannelStoreProductVO.productName
           object.productPrice = data.resChannelStoreProductVO.price
-          object.productUrl = data.productSliderImagesResponseVOList[0].url
+          object.productUrl = data.productSliderImagesResponseVOList ? data.productSliderImagesResponseVOList[0].url : ''
           object.productCode = data.resChannelStoreProductVO.productCode
           this.setState(
             {
@@ -181,7 +181,7 @@ export default class ProductDetailPage extends React.Component {
     goodsDetailManager.pushToEvaluationList()
   }
   render() {
-    const {imgData, isShowTopTab, goodsInfo, evaluation, productImgList, shopUrl, imgUrl, productParams, isFirst} = this.state
+    const {imgData, isShowTopTab, goodsInfo, evaluation, productImgList, shopUrl, imgUrl, productParams} = this.state
     let favorableRate = goodsInfo.favorableRate ? goodsInfo.favorableRate * 100 : 0
     favorableRate = favorableRate && parseFloat(favorableRate.toFixed(2))
     //商品详情图文列表
