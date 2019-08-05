@@ -1,8 +1,8 @@
 /**
  * Created by 李华良 on 2019-07-26
  */
-import {NativeEventEmitter, NativeModules} from 'react-native'
-import {Http, Log, Native} from '@utils'
+import { NativeEventEmitter, NativeModules } from "react-native"
+import { Http, Log, Native } from "@utils"
 
 /**
  * 获取 CMS 初始数据
@@ -10,7 +10,7 @@ import {Http, Log, Native} from '@utils'
  * @return {Promise} Http request instance
  */
 export function getInitialData(shopCode) {
-  return Http.get('cms', `/cms/mobile/${shopCode}/getHomePage`)
+  return Http.get("cms", `/cms/mobile/${shopCode}/getHomePage`)
 }
 
 /**
@@ -20,7 +20,7 @@ export function getInitialData(shopCode) {
  * @return {Promise} Http request instance
  */
 export function getFloorDataByTab(tabId, shopCode) {
-  return Http.get('cms', `/cms/mobile/${tabId}/getDetailPage/${shopCode}`)
+  return Http.get("cms", `/cms/mobile/${tabId}/getDetailPage/${shopCode}`)
 }
 
 /**
@@ -29,14 +29,18 @@ export function getFloorDataByTab(tabId, shopCode) {
  * @param productNum 商品数量
  * @param productPrice 商品价格
  */
-export function addToCart(productCode:string, productNum:number, productPrice:number|string) {
+export function addToCart(
+  productCode: string,
+  productNum: number,
+  productPrice: number | string
+) {
   return NativeModules.HomeNativeManager.addToCart(
-    'post',
-    Http.formatUrl('cart', '/shopping_cart/product'),
+    "post",
+    Http.formatUrl("cart", "/shopping_cart/product"),
     JSON.stringify({ productCode, productNum, productPrice }),
     (errMsg, responseData) => {
       if (errMsg) {
-        Log.error('add to cart failed')
+        Log.error("add to cart failed")
       }
     }
   )
@@ -49,7 +53,10 @@ export function addToCart(productCode:string, productNum:number, productPrice:nu
  */
 export function pushScrollToNative(x, y) {
   Log.debug(`calling HomeNativeManager.sendContentOffset(${x}, ${y})`)
-  return NativeModules.HomeNativeManager.sendContentOffset(x.toString(), y.toString())
+  return NativeModules.HomeNativeManager.sendContentOffset(
+    x.toString(),
+    y.toString()
+  )
 }
 
 /**
@@ -59,5 +66,17 @@ export function pushScrollToNative(x, y) {
 export function subscriptShopChange(handler: (...args: any[]) => any) {
   return
   const eventEmitter = new NativeEventEmitter(NativeModules.SendRNEventManager)
-  return eventEmitter.addListener('storeChange', handler)
+  return eventEmitter.addListener("storeChange", handler)
+}
+
+/**
+ * 获取活动数据
+ * @param activityCode 活动 code
+ * @param shopCode 门店 code
+ */
+export function getActivity(activityCode: string, shopCode: string) {
+  return Http.get(
+    "cms",
+    `/cms/mobile/${activityCode}/getActivePage/${shopCode}`
+  )
 }

@@ -35,8 +35,8 @@ export async function navigateTo(type: string | number, uri: string, params={}) 
       : Platform.OS === 'android' ? uriArr[1]
       : ''
   } else if (_type_ === '1') {
-    _uri_ = ''
-    _extraData_['activityCode'] = uri
+    _uri_ = 'RNCMS'
+    _extraData_ = { params: { activityCode: uri, type: 'activity' } }
   }
 
   Log.debug('calling HomeNativeManager.pushToNewPage:', _type_, _uri_, _extraData_)
@@ -49,4 +49,12 @@ export async function navigateTo(type: string | number, uri: string, params={}) 
  */
 export async function getConstant(key:string) {
   return NativeModules.HomeNativeManager[key]
+}
+
+/**
+ * 设置页面标题
+ * @param title 页面 title
+ */
+export function setTitle(title='') {
+  return NativeModules.HomeNativeManager.setTitle(title)
 }

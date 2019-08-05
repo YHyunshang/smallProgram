@@ -1,6 +1,6 @@
 /**
  * Created by 李华良 on 2019-07-23
  */
-import CMS from './CMS'
+import Page from "./Page"
 
-export default CMS
+export default Page
