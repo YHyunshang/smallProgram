@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-02 15:51:30
+ * @LastEditTime: 2019-08-05 15:32:24
  */
 import React from 'react'
 import {ScrollView, View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, NativeModules, Platform} from 'react-native'
@@ -15,13 +15,13 @@ import ShareModal from '../../components/business/ShareModal'
 import PosterModal from '../../components/business/PosterModal'
 import TabBar from '../../components/common/TabBar'
 import Loading from '../../components/common/Loading'
-import Toast from 'react-native-easy-toast'
 import {isIPhoneXMarginTop, isIPhoneXFooter} from '../../utils/IsIphoneX'
 import {getGoodsDetailData, getPosterImgUrl} from '../../services/goodsDetail'
 import GoodsDetailSwiper from '../../components/business/GoodsDetailSwiper'
 import GoodsDetailEvaluate from '../../components/business/GoodsDetailEvaluate'
 const {width, height} = Dimensions.get('window')
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
+const rnAppModule = NativeModules.RnAppModule// 原生商品详情模块
 export default class ProductDetailPage extends React.Component {
   constructor(props) {
     super(props)
@@ -83,10 +83,10 @@ export default class ProductDetailPage extends React.Component {
             }
           )
         } else {
-          this.refs.toast.show(message, 3000)
+          rnAppModule.showToast(message, '1')
         }
       }).catch((error) => {
-        this.refs.toast.show(error, 3000)
+        rnAppModule.showToast(error, '0')
       })
   }
   /**
@@ -124,12 +124,12 @@ export default class ProductDetailPage extends React.Component {
         if (code === 200000 && data) {
           this.setState({imgUrl: data.imgByte, isFirst: false})
         } else {
-          this.refs.toast.show(message, 3000)
+          rnAppModule.showToast(message, '1')
         }
       }
       ).catch((error) => {
         this.loadingModal.dismissLoading()
-        this.refs.toast.show(error, 3000)
+        rnAppModule.showToast(error, '0')
       })
   }
   /**
@@ -291,13 +291,6 @@ export default class ProductDetailPage extends React.Component {
        </View> */}
         <ShareModal modalBoxHeight={240} productParams={productParams} onShare={this.handlePosterModal} ref={ref => this.shareModal = ref}/>
         <PosterModal modalBoxHeight={534} imgUrl={imgUrl} ref={ref => this.posterModal = ref}/>
-        <Toast
-          ref="toast"
-          style={{backgroundColor: '#444444'}}
-          position='top'
-          positionValue={200}
-          fadeInDuration={750}
-        />
         {
           <Loading
             title={'海报生成中'}
