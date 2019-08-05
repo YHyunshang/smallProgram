@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-08-02 16:31:42
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-08-02 18:38:17
+ * @Last Modified time: 2019-08-05 16:07:21
  */
 import * as React from 'react'
 import { FlatList } from 'react-native'
@@ -24,6 +24,7 @@ interface CMSProps {
   onTabSelect: Function // tab 选择变化
   currentTabId: string | number // 当前选中 tab id
   isActivity: boolean // 是否是活动页
+  onRefresh: () => void // 刷新回调
 }
 
 const floorItemRender = ({
@@ -61,6 +62,8 @@ const floorItemRender = ({
     <DividerFloor key={id} image={img} /> // divider floor
   ) : null
 
+// const flatListEmpty = <View />
+
 export default function CMS({
   loading,
   tabData,
@@ -68,6 +71,7 @@ export default function CMS({
   onTabSelect,
   currentTabId,
   isActivity,
+  onRefresh,
 }: CMSProps) {
   const flatListHeader = tabData.length > 0 && (
     <TopTabFloor
@@ -82,8 +86,10 @@ export default function CMS({
       style={styles.container}
       data={floorData}
       ListHeaderComponent={flatListHeader}
+      // ListEmptyComponent={flatListEmpty}
       horizontal={false}
       refreshing={loading}
+      onRefresh={onRefresh}
       keyExtractor={item => `${item.id}`}
       renderItem={floorItemRender}
       showsVerticalScrollIndicator={false}

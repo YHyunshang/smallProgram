@@ -76,6 +76,8 @@ class TopTabFloor extends React.Component<Props> {
                     currentActiveTabId === ele.id ? styles.activeTabText : {},
                     idx === 0 ? styles.firstTab : {},
                     idx === total - 1 ? styles.lastTab : {},
+                    isHeaderCollapsed ? styles.tabTextCollapsed : {},
+                    (isHeaderCollapsed && currentActiveTabId === ele.id) ? styles.activeTabTextCollapsed : {},
                   ]}
                 >
                   { ele.showName }

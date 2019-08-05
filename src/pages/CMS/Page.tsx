@@ -142,8 +142,8 @@ class CMS extends React.Component<Props, State> {
       this.setState(({ floorData }) => ({
         floorData: {
           ...floorData,
-          [tabId]: []
-        }
+          [tabId]: [],
+        },
       }))
       return
     }
@@ -220,6 +220,7 @@ class CMS extends React.Component<Props, State> {
           currentTabId={currentTabId}
           onTabSelect={this.onTabSelect}
           isActivity={type === CMSType.ACTIVITY}
+          onRefresh={this.init}
         />
       </View>
     )

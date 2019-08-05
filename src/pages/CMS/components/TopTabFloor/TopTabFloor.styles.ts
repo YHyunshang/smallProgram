@@ -10,6 +10,10 @@ export default StyleSheet.create({
     alignItems: 'center',
     height: 40,
   },
+  tab: {
+    position: "relative",
+    alignItems: 'center',
+  },
   tabText: {
     color: '#FFF',
     fontSize: 14,
@@ -33,5 +37,19 @@ export default StyleSheet.create({
     height: 14,
     backgroundColor: '#FFFFFF',
     opacity: 0.2948,
+  },
+
+  tabTextCollapsed: {
+    color: '#333',
+  },
+  activeTabTextCollapsed: {
+    color: '#D8433B',
+  },
+  activeTabFooter: {
+    backgroundColor: '#FFB2AE',
+    width: 26,
+    bottom: 0,
+    height: 5,
+    borderRadius: 5,
   }
 })
