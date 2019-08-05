@@ -64,7 +64,6 @@ export function pushScrollToNative(x, y) {
  * @param handler 事件处理函数
  */
 export function subscriptShopChange(handler: (...args: any[]) => any) {
-  return
   const eventEmitter = new NativeEventEmitter(NativeModules.SendRNEventManager)
   return eventEmitter.addListener("storeChange", handler)
 }

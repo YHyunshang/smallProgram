@@ -96,6 +96,7 @@ class CMS extends React.Component<Props, State> {
 
   // 门店变化
   onNativeShopChange = ({ storeCode }) => {
+    Log.debug(storeCode)
     if (storeCode !== this.state.shopCode) {
       this.setState({ shopCode: storeCode })
       this.requestInitData(storeCode)
