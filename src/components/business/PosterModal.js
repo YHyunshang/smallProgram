@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-02 17:40:38
+ * @LastEditTime: 2019-08-05 15:31:58
  */
 
 import React from 'react'
@@ -18,9 +18,9 @@ import {
 } from 'react-native'
 import PopUp from '../common/PopUp'
 import {downloadImage} from '../common/DownLoadImage'
-import Toast from 'react-native-easy-toast'
 import {isIPhoneXFooter} from '../../utils/IsIphoneX'
 import Icon from '../../components/Icon'
+const rnAppModule = NativeModules.RnAppModule// 原生商品详情模块
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
 export default class PosterModal extends React.Component {
   constructor(props) {
@@ -28,6 +28,7 @@ export default class PosterModal extends React.Component {
   }
 
   componentDidMount() {
+
   }
 
   componentWillUnmount() {
@@ -55,13 +56,13 @@ export default class PosterModal extends React.Component {
     let url = 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_2.jpg'
     downloadImage(url).then((res) => {
       if (res && res.statusCode === 200) {
-        this.refs.toast.show('图片保存成功', 2000)
-        // this.hidePosterModal()
+        rnAppModule.showToast('图片保存成功', '1')//1成功，2失败
+        this.hidePosterModal()
       } else {
-        this.refs.toast.show('图片保存失败', 2000)
+        rnAppModule.showToast('图片保存失败', '0')
       }
     }).catch((error) => {
-      this.refs.toast.show('图片保存失败', 2000)
+      rnAppModule.showToast('图片保存失败', '0')
       console.log(error)
     })
   }
@@ -97,13 +98,6 @@ export default class PosterModal extends React.Component {
         <View style={styles.tipsContent}>
           <Text style={styles.tips}>保存图片到手机相册后，将图片分享到您的圈</Text>
         </View>
-        <Toast
-          ref="toast"
-          style={{backgroundColor: '#444444'}}
-          position='top'
-          positionValue={200}
-          fadeInDuration={750}
-        />
       </PopUp>
     )
   }
