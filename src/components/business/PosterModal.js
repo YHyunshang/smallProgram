@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-05 15:31:58
+ * @LastEditTime: 2019-08-06 14:20:58
  */
 
 import React from 'react'
@@ -52,9 +52,8 @@ export default class PosterModal extends React.Component {
   * @description: 保存图片到本地相册
   */
   saveImage() {
-    //const {imgUrl} = this.props
-    let url = 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_2.jpg'
-    downloadImage(url).then((res) => {
+    const {imgUrl} = this.props
+    downloadImage(imgUrl).then((res) => {
       if (res && res.statusCode === 200) {
         rnAppModule.showToast('图片保存成功', '1')//1成功，2失败
         this.hidePosterModal()
@@ -69,7 +68,6 @@ export default class PosterModal extends React.Component {
 
   render() {
     const {modalBoxHeight, imgUrl} = this.props
-    const baseImg = `data:image/png;base64,${imgUrl}`
     return (
       <PopUp ref={ref => this.popUp = ref} modalBoxHeight={modalBoxHeight}>
         <View style={styles.shareTitleInfo}>
@@ -84,7 +82,7 @@ export default class PosterModal extends React.Component {
           </TouchableOpacity>
         </View>
         <View style={styles.imageContent}>
-          <Image style={styles.posterImage} source={{uri: baseImg}} resizeMode="cover" ></Image>
+          <Image style={styles.posterImage} source={{uri: imgUrl}} resizeMode="cover" ></Image>
         </View>
         <TouchableOpacity onPress={() => {
           this.saveImage()
