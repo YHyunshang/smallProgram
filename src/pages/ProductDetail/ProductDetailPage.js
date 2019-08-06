@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-05 18:18:23
+ * @LastEditTime: 2019-08-06 16:05:48
  */
 import React from 'react'
 import {ScrollView, View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, NativeModules, Platform} from 'react-native'
@@ -66,7 +66,7 @@ export default class ProductDetailPage extends React.Component {
       .then(({result: data, message, code}) => {
         if (code === 200000 && data) {
           let object = {}
-          let shopUrl = JSON.parse(data.resChannelStoreProductVO.shopUrl || '')
+          let shopUrl = data.resChannelStoreProductVO.shopUrl ? JSON.parse(data.resChannelStoreProductVO.shopUrl) : []
           object.productDesc = data.resChannelStoreProductVO.productName
           object.productPrice = data.resChannelStoreProductVO.price
           object.productUrl = data.productSliderImagesResponseVOList ? data.productSliderImagesResponseVOList[0].url : ''
@@ -83,7 +83,7 @@ export default class ProductDetailPage extends React.Component {
             }
           )
         } else {
-          rnAppModule.showToast(message, '1')
+          rnAppModule.showToast(message, '0')
         }
       }).catch((error) => {
         rnAppModule.showToast(error, '0')
@@ -122,9 +122,9 @@ export default class ProductDetailPage extends React.Component {
       .then(({result: data, message, code}) => {
         this.loadingModal.dismissLoading()
         if (code === 200000 && data) {
-          this.setState({imgUrl: data.imgByte, isFirst: false})
+          this.setState({imgUrl: data.imgUrl || '', isFirst: false})
         } else {
-          rnAppModule.showToast(message, '1')
+          rnAppModule.showToast(message, '0')
         }
       }
       ).catch((error) => {
@@ -188,7 +188,7 @@ export default class ProductDetailPage extends React.Component {
     const goodsImgList = productImgList ? productImgList.map(({url}, index) => (
       <Image style={styles.goodsDetailImage} source={{uri: url}} resizeMode="cover" key={index}/>
     )) : []
-    //商家文描图文列表
+    // 商家文描图文列表
     const shopImgList = shopUrl ? shopUrl.map((item, index) => (
       <Image style={styles.goodsDetailImage} source={{uri: item}} resizeMode="cover" key={index}/>
     )) : []
@@ -226,7 +226,9 @@ export default class ProductDetailPage extends React.Component {
             this.goodsLayoutY = event.nativeEvent.layout.y
           }}>
             <View onLayout={this.goodsSwiperLayout.bind(this)}>
-              <GoodsDetailSwiper imgData={imgData}/>
+              {
+                imgData ? <GoodsDetailSwiper imgData={imgData}/> : <Text/>
+              }
             </View>
           </View>
           <View>
@@ -304,8 +306,10 @@ export default class ProductDetailPage extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
+    height: '100%',
     flexDirection: 'column',
-    position: 'relative'
+    position: 'relative',
+    backgroundColor: '#ffffff'
   },
   goodsWrapper: {
     flex: 1,
@@ -383,8 +387,8 @@ const styles = StyleSheet.create({
   },
   goodsMaxBorder: {
     borderStyle: 'solid',
-    borderWidth: 10,
-    borderColor: '#F0F0F0'
+    borderWidth: 5,
+    borderColor: '#FBFBFB'
   },
   goodsDetailTitle: {
     fontSize: 15,
