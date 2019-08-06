@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-06 18:43:21
+ * @LastEditTime: 2019-08-06 19:03:58
  */
 
 import React from 'react'
@@ -34,7 +34,7 @@ export default class GoodsDetailSwiper extends React.Component {
     const dot = <View style={styles.dot} />
     const activeDot = <View style={{...styles.dot, ...styles.activeDot}} />
     const swiperList = imgData.map(({url}, index) => (
-      <Image style={styles.image} source={{uri: url}} resizeMode="contain" key={index}/>
+      <Image style={styles.image} source={{uri: url}} resizeMode="cover" key={index}/>
     ))
     return (
       <View style={styles.container}>
