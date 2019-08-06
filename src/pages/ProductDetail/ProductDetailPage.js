@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-06 18:43:08
+ * @LastEditTime: 2019-08-06 19:03:34
  */
 import React from 'react'
 import {ScrollView, View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, NativeModules} from 'react-native'
@@ -190,7 +190,7 @@ export default class ProductDetailPage extends React.Component {
     )) : <Image style={styles.goodsDetailImage} source={{uri: 'https://static-yh.yonghui.cn/app/static/images/product-default.png'}} resizeMode="contain"/>
     // 商家文描图文列表
     const shopImgList = shopUrl ? shopUrl.map((item, index) => (
-      <Image style={styles.goodsDetailImage} source={{uri: item}} resizeMode="contain" key={index}/>
+      <Image style={styles.goodsDetailImage} source={{uri: item}} resizeMode="cover" key={index}/>
     )) : []
     return (
       <View style={styles.container}>
