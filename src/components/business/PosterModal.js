@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-06 14:20:58
+ * @LastEditTime: 2019-08-06 18:21:07
  */
 
 import React from 'react'
@@ -53,17 +53,21 @@ export default class PosterModal extends React.Component {
   */
   saveImage() {
     const {imgUrl} = this.props
-    downloadImage(imgUrl).then((res) => {
-      if (res && res.statusCode === 200) {
-        rnAppModule.showToast('图片保存成功', '1')//1成功，2失败
-        this.hidePosterModal()
-      } else {
+    if (imgUrl) {
+      downloadImage(imgUrl).then((res) => {
+        if (res && res.statusCode === 200) {
+          rnAppModule.showToast('图片保存成功', '1')//1成功，2失败
+          this.hidePosterModal()
+        } else {
+          rnAppModule.showToast('图片保存失败', '0')
+        }
+      }).catch((error) => {
         rnAppModule.showToast('图片保存失败', '0')
-      }
-    }).catch((error) => {
-      rnAppModule.showToast('图片保存失败', '0')
-      console.log(error)
-    })
+        console.log(error)
+      })
+    } else {
+      rnAppModule.showToast('图片地址为空', '0')
+    }
   }
 
   render() {

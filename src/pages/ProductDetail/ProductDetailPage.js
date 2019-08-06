@@ -4,10 +4,10 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-06 16:05:48
+ * @LastEditTime: 2019-08-06 18:43:08
  */
 import React from 'react'
-import {ScrollView, View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, NativeModules, Platform} from 'react-native'
+import {ScrollView, View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, NativeModules} from 'react-native'
 // import * as WeChat from 'react-native-wechat';
 import Icon from '../../components/Icon'
 import {transPenny} from '../../utils/FormatUtil'
@@ -19,7 +19,7 @@ import {isIPhoneXMarginTop, isIPhoneXFooter} from '../../utils/IsIphoneX'
 import {getGoodsDetailData, getPosterImgUrl} from '../../services/goodsDetail'
 import GoodsDetailSwiper from '../../components/business/GoodsDetailSwiper'
 import GoodsDetailEvaluate from '../../components/business/GoodsDetailEvaluate'
-const {width, height} = Dimensions.get('window')
+const {width} = Dimensions.get('window')
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
 const rnAppModule = NativeModules.RnAppModule// 原生商品详情模块
 export default class ProductDetailPage extends React.Component {
@@ -186,11 +186,11 @@ export default class ProductDetailPage extends React.Component {
     favorableRate = favorableRate && parseFloat(favorableRate.toFixed(2))
     //商品详情图文列表
     const goodsImgList = productImgList ? productImgList.map(({url}, index) => (
-      <Image style={styles.goodsDetailImage} source={{uri: url}} resizeMode="cover" key={index}/>
-    )) : []
+      <Image style={styles.goodsDetailImage} source={{uri: url}} resizeMode="contain" key={index}/>
+    )) : <Image style={styles.goodsDetailImage} source={{uri: 'https://static-yh.yonghui.cn/app/static/images/product-default.png'}} resizeMode="contain"/>
     // 商家文描图文列表
     const shopImgList = shopUrl ? shopUrl.map((item, index) => (
-      <Image style={styles.goodsDetailImage} source={{uri: item}} resizeMode="cover" key={index}/>
+      <Image style={styles.goodsDetailImage} source={{uri: item}} resizeMode="contain" key={index}/>
     )) : []
     return (
       <View style={styles.container}>
@@ -227,7 +227,9 @@ export default class ProductDetailPage extends React.Component {
           }}>
             <View onLayout={this.goodsSwiperLayout.bind(this)}>
               {
-                imgData ? <GoodsDetailSwiper imgData={imgData}/> : <Text/>
+                imgData ? <GoodsDetailSwiper imgData={imgData}/>
+                  :
+                  <Image style={styles.defaultImage} source={{uri: 'https://static-yh.yonghui.cn/app/static/images/product-default.png'}} resizeMode="contain"/>
               }
             </View>
           </View>
@@ -335,6 +337,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  defaultImage: {
+    width: '100%',
+    height: 375
   },
   goodsPrice: {
     fontSize: 14,
