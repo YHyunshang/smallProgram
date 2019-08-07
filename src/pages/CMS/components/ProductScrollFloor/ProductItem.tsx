@@ -7,7 +7,9 @@ import LinearGradient from 'react-native-linear-gradient'
 import {Icon, FitImg} from '@components'
 import styles from './ProductItem.styles'
 import {Native} from "@utils"
-import {CMSServices} from "@services";
+import {CMSServices} from "@services"
+
+const productPlaceholderImg = require('@img/placeholder-product.png')
 
 export interface Props {
   data: any
@@ -15,6 +17,7 @@ export interface Props {
 
 function ProductItem({ data: { imgUrl, label, name,  price, productDesc, promotionPrice, code } }: Props) {
   const isPromotion = promotionPrice < price
+  const productImg = imgUrl ? { uri: imgUrl } : productPlaceholderImg
 
   return (
     <View style={styles.container}>
@@ -23,7 +26,7 @@ function ProductItem({ data: { imgUrl, label, name,  price, productDesc, promoti
           activeOpacity={0.95}
           onPress={() => Native.navigateTo('1', 'A003,A003', { params: { productCode: code } })}
         >
-          <FitImg imageProps={{ style: styles.productImg, source: { uri: imgUrl }, resizeMod: 'contain' }} />
+          <FitImg imageProps={{ style: styles.productImg, source: productImg, resizeMod: 'contain' }} />
         </TouchableOpacity>
         <LinearGradient colors={[ '#FF5247', '#FF873E' ]} style={styles.productTagBox}>
           {label && (<Text style={styles.productTag}>{ label }</Text>)}

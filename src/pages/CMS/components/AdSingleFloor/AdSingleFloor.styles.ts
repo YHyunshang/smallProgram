@@ -9,5 +9,7 @@ export default StyleSheet.create({
     paddingVertical: 5,
   },
   image: {
-  }
+    borderRadius: 5,
+    overflow: "hidden",
+  },
 })

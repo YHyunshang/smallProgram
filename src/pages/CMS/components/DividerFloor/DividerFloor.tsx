@@ -12,6 +12,6 @@ interface Props {
 export default function DividerFloor(props: Props) {
   const { image } = props
   return (
-    <FitImage source={{ uri: image }} />
+    <FitImage source={{ uri: image }} indicator={false} />
   )
 }
