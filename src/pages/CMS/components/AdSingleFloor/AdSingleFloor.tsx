@@ -20,7 +20,7 @@ function AdSingleFloor({ image, link }: Props) {
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={() => Native.navigateTo(link.type, link.uri, link.params)}>
-        <FitImage style={styles.image} source={{ uri: image }} resizeMode="cover" />
+        <FitImage style={styles.image} source={{ uri: image }} resizeMode="cover" indicator={false} />
       </TouchableWithoutFeedback>
     </View>
   )

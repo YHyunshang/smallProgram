@@ -14,7 +14,7 @@ interface Props {
 function Img({style, imgUrl, link, linkType}: {style: any, imgUrl: string, link: string, linkType: string|number}) {
   return (
     <TouchableWithoutFeedback onPress={() => Native.navigateTo(linkType, link)}>
-      <FitImage style={style} source={{ uri: imgUrl }} />
+      <FitImage style={style} source={{ uri: imgUrl }} indicator={false} />
     </TouchableWithoutFeedback>
   )
 }
