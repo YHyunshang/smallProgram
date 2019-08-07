@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-07 15:00:02
+ * @LastEditTime: 2019-08-07 18:11:09
  */
 
 import React from 'react'
@@ -75,7 +75,7 @@ export default class ShareModal extends React.Component {
       description: productParams.productDesc,
       miniProgramType: 0, //分享小程序版本 正式版:0，测试版:1，体验版:
       webpageUrl: 'https://blog.csdn.net/weixin_34221036/article/details/91056421',
-      userName: 'gh_913462fd944f', //小程序ID
+      userName: 'gh_913462fd944f', //小程序原生id非appid
       path: '/pages/home/home' //小程序页面路径
     }
     WeChat.isWXAppInstalled().then((isInstalled) => {
@@ -109,7 +109,6 @@ export default class ShareModal extends React.Component {
     // })
     this.popUp.hide()
     const {onShare, productParams} = this.props
-    //this.refs.toast.show(productParams, 12000)
     if (onShare) {
       onShare(productParams)
     }

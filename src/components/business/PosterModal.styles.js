@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-07 14:55:58
+ * @LastEditTime: 2019-08-07 17:59:55
  */
 import {isIPhoneXFooter} from '../../utils/IsIphoneX'
 import {
@@ -33,7 +33,14 @@ export default StyleSheet.create({
     width: '100%',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    shadowOpacity: 0.6,
+    shadowRadius: 5,
+    shadowColor: '#ddd',
+    //让安卓拥有灰色阴影
+    elevation: 20
+    //设置此项Android显示阴影，只能是灰色阴影，不支持其他颜色设置（Android）
+
   },
   posterImage: {
     width: 246,
