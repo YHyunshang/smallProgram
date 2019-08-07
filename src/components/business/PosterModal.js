@@ -4,12 +4,11 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-06 18:21:07
+ * @LastEditTime: 2019-08-07 14:56:54
  */
 
 import React from 'react'
 import {
-  StyleSheet,
   Text,
   View,
   Image,
@@ -18,8 +17,8 @@ import {
 } from 'react-native'
 import PopUp from '../common/PopUp'
 import {downloadImage} from '../common/DownLoadImage'
-import {isIPhoneXFooter} from '../../utils/IsIphoneX'
 import Icon from '../../components/Icon'
+import styles from './PosterModal.styles'
 const rnAppModule = NativeModules.RnAppModule// 原生商品详情模块
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
 export default class PosterModal extends React.Component {
@@ -104,60 +103,3 @@ export default class PosterModal extends React.Component {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  shareTitleInfo: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  closeIcon: {
-    textAlign: 'right',
-    marginVertical: 14,
-    marginRight: 13
-  },
-  shareTitleText: {
-    height: 49,
-    fontSize: 16,
-    color: '#333333',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  imageContent: {
-    width: '100%',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  posterImage: {
-    width: 246,
-    height: 365
-  },
-  saveImage: {
-    width: 246,
-    height: 45,
-    backgroundColor: '#EE4239',
-    borderRadius: 23,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 16
-  },
-  saveText: {
-    fontSize: 16,
-    color: '#FFFFFF'
-  },
-  tipsContent: {
-    marginTop: 10,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    //iPhoneX底部兼容处理
-    marginBottom: isIPhoneXFooter(0)
-  },
-  tips: {
-    fontSize: 12,
-    color: '#848791'
-  }
-})

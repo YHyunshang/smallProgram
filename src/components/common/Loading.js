@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-31 10:28:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-31 10:29:36
+ * @LastEditTime: 2019-08-07 15:09:04
  */
 
 import React from 'react'
@@ -69,7 +69,9 @@ export default class Loading extends React.Component {
       )
     }
 }
-
+/**
+ * @description: loading组件样式
+ */
 const styles = StyleSheet.create({
   loadingContent: {
     flex: 1,

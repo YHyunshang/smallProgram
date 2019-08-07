@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-02 10:08:52
+ * @LastEditTime: 2019-08-07 15:09:19
  */
 import React, {Component} from 'react'
 import {StyleSheet, View, TouchableOpacity, Animated, Easing, Dimensions, Platform, NativeModules} from 'react-native'
@@ -106,7 +106,9 @@ export default class PopUp extends Component {
     return <View />
   }
 }
-
+/**
+ * @description: 弹出浮层组件样式
+ */
 const styles = StyleSheet.create({
   container: {
     width,

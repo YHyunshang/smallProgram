@@ -4,18 +4,16 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-06 19:03:58
+ * @LastEditTime: 2019-08-07 14:18:28
  */
 
 import React from 'react'
 import {
-  StyleSheet,
   Image,
-  View,
-  Dimensions
+  View
 } from 'react-native'
 import Swiper from 'react-native-swiper'
-const {width} = Dimensions.get('window') //解构赋值 获取屏幕宽度
+import styles from './GoodsDetailSwiper.styles'
 export default class GoodsDetailSwiper extends React.Component {
   constructor(props) {
     super(props)
@@ -52,29 +50,3 @@ export default class GoodsDetailSwiper extends React.Component {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  wrapper: {
-  },
-  container: {
-    width,
-    height: width
-  },
-  paginationStyle: {
-    bottom: 10
-  },
-  image: {
-    width: '100%',
-    height: 375
-  },
-  dot: {
-    width: 7,
-    height: 7,
-    borderRadius: 4,
-    marginHorizontal: 5,
-    backgroundColor: 'rgba(0,0,0,.25)'
-  },
-  activeDot: {
-    backgroundColor: 'rgba(0,0,0,.7)'
-  }
-})

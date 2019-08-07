@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-23 18:21:32
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-25 15:21:16
+ * @LastEditTime: 2019-08-07 15:08:53
  */
 
 import React, {Component} from 'react'
@@ -60,6 +60,9 @@ export default class TabBar extends Component {
       this.setState({index})
     }
 }
+/**
+ * @description: tabBar组件样式
+ */
 const tabBarStyle = StyleSheet.create({
   tab: {
     backgroundColor: '#F8F8F8',
