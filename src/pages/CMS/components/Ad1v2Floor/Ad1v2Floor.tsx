@@ -14,7 +14,7 @@ interface Props {
 function Img({style, imgUrl, link, linkType}: {style: any, imgUrl: string, link: string, linkType: string|number}) {
   return (
     <TouchableWithoutFeedback onPress={() => Native.navigateTo(linkType, link)}>
-      <FitImage style={style} source={{ uri: imgUrl }} indicator={false} />
+      <FitImage style={style} source={{ uri: imgUrl }} indicator={false} resizeMode="cover" />
     </TouchableWithoutFeedback>
   )
 }
@@ -29,7 +29,7 @@ export default function Ad1v2Floor({ data }: Props) {
       </View>
       <View style={styles.rightImgBox}>
         <Img style={styles.rightTopImg} {...rightTop} />
-        <Img {...rightBtm} />
+        <Img style={styles.rightBtmImg} {...rightBtm} />
       </View>
     </View>
   )

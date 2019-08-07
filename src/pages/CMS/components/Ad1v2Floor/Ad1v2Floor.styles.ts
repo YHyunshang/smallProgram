@@ -15,12 +15,22 @@ export default StyleSheet.create({
   },
   leftImgBox: {
     width: imgWidth,
+    borderRadius: 5,
+    overflow: "hidden",
   },
   rightImgBox: {
     width: imgWidth,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    borderRadius: 5,
+    overflow: "hidden",
   },
   rightTopImg: {
     marginBottom: 5,
+    borderRadius: 5,
+    overflow: "hidden",
+  },
+  rightBtmImg: {
+    borderRadius: 5,
+    overflow: "hidden",
   }
 })
