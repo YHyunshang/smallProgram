@@ -4,12 +4,11 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-05 15:31:46
+ * @LastEditTime: 2019-08-07 15:00:02
  */
 
 import React from 'react'
 import {
-  StyleSheet,
   Text,
   View,
   Image,
@@ -19,6 +18,7 @@ import {
 import * as WeChat from 'react-native-wechat'
 import PopUp from '../common/PopUp'
 import Icon from '../../components/Icon'
+import styles from './ShareModal.styles'
 const rnAppModule = NativeModules.RnAppModule// 原生商品详情模块
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
 const shareIconWechat = {uri: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/wechat-friend.png'}
@@ -145,40 +145,3 @@ export default class ShareModal extends React.Component {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  shareInfo: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    marginTop: 44
-  },
-  shareTitleInfo: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  closeIcon: {
-    textAlign: 'right',
-    marginVertical: 14,
-    marginRight: 13
-  },
-  shareTitleText: {
-    height: 49,
-    fontSize: 16,
-    color: '#333333',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  shareImage: {
-    width: 60,
-    height: 60
-  },
-  shareText: {
-    fontSize: 14,
-    color: '#333333',
-    fontWeight: '600',
-    marginTop: 10
-  }
-})

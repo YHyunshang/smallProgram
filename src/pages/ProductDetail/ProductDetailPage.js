@@ -4,22 +4,20 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-06 19:03:34
+ * @LastEditTime: 2019-08-07 11:36:08
  */
 import React from 'react'
-import {ScrollView, View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, NativeModules} from 'react-native'
-// import * as WeChat from 'react-native-wechat';
+import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
 import Icon from '../../components/Icon'
 import {transPenny} from '../../utils/FormatUtil'
 import ShareModal from '../../components/business/ShareModal'
 import PosterModal from '../../components/business/PosterModal'
 import TabBar from '../../components/common/TabBar'
 import Loading from '../../components/common/Loading'
-import {isIPhoneXMarginTop, isIPhoneXFooter} from '../../utils/IsIphoneX'
+import styles from './ProductDetailPage.styles'
 import {getGoodsDetailData, getPosterImgUrl} from '../../services/goodsDetail'
 import GoodsDetailSwiper from '../../components/business/GoodsDetailSwiper'
 import GoodsDetailEvaluate from '../../components/business/GoodsDetailEvaluate'
-const {width} = Dimensions.get('window')
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
 const rnAppModule = NativeModules.RnAppModule// 原生商品详情模块
 export default class ProductDetailPage extends React.Component {
@@ -305,157 +303,3 @@ export default class ProductDetailPage extends React.Component {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    height: '100%',
-    flexDirection: 'column',
-    position: 'relative',
-    backgroundColor: '#ffffff'
-  },
-  goodsWrapper: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingTop: 14,
-    paddingBottom: 11,
-    paddingHorizontal: 15
-  },
-  goodsName: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#333333'
-  },
-  iconBg: {
-    width: 34,
-    height: 25,
-    borderRadius: 13,
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderColor: '#FA6400',
-    backgroundColor: '#FFE9DA',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  defaultImage: {
-    width: '100%',
-    height: 375
-  },
-  goodsPrice: {
-    fontSize: 14,
-    color: '#EE4239',
-    fontWeight: '600',
-    paddingLeft: 15
-  },
-  goodsMinBorder: {
-    borderStyle: 'solid',
-    borderWidth: 0.6,
-    marginHorizontal: 12,
-    marginTop: 11,
-    borderColor: '#F0F0F0'
-  },
-  goodsQualityFlex: {
-    height: 67,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around'
-  },
-  goodsQualityRowFlex: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center'
-  },
-  goodsQualityColumnFlex: {
-    paddingTop: 10,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  heightBorder: {
-    borderStyle: 'solid',
-    borderRightWidth: 1,
-    height: 26,
-    borderColor: '#F0F0F0'
-  },
-  goodsQualityName: {
-    fontSize: 12,
-    color: '#A3A09B',
-    fontWeight: '600'
-  },
-  goodsQualityValue: {
-    fontSize: 14,
-    color: '#333333',
-    fontWeight: '600',
-    marginTop: 6,
-    marginBottom: 13
-  },
-  goodsMaxBorder: {
-    borderStyle: 'solid',
-    borderWidth: 5,
-    borderColor: '#FBFBFB'
-  },
-  goodsDetailTitle: {
-    fontSize: 15,
-    color: '#333333',
-    fontWeight: '900',
-    marginTop: 9,
-    marginLeft: 15
-  },
-  goodsDetailImage: {
-    width: '100%',
-    height: 306,
-    marginTop: 10
-  },
-  imagesContent: {
-    width: '100%',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 15,
-    //iPhoneX底部兼容处理
-    marginBottom: isIPhoneXFooter(0)
-  },
-  topTab: {
-    width: '100%',
-    height: 44,
-    backgroundColor: '#F8F8F8',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    //iPhoneX头部兼容处理
-    marginTop: isIPhoneXMarginTop(0)
-  },
-  blankContent: {
-    width: '100%',
-    height: 44
-  },
-  leftIcon: {
-    marginLeft: 15
-  },
-  rightShareIcon: {
-    marginRight: 22
-  },
-  topTabInfo: {
-    height: 44,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between'
-  },
-  itemTitle: {
-    fontSize: 14,
-    color: '#333333'
-  },
-  itemEvaluateTitle: {
-    fontSize: 14,
-    color: '#333333',
-    marginHorizontal: 32
-  },
-  footCart: {
-    flex: 1,
-    width,
-    position: 'absolute',
-    bottom: 0
-  }
-})
