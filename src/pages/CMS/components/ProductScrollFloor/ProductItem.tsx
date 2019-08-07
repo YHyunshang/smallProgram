@@ -9,7 +9,7 @@ import styles from './ProductItem.styles'
 import {Native} from "@utils"
 import {CMSServices} from "@services"
 
-const productPlaceholderImg = require('@img/placeholder-product.svg')
+const productPlaceholderImg = require('@img/placeholder-product.png')
 
 export interface Props {
   data: any
