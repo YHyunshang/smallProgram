@@ -2,7 +2,7 @@
  * Created by 李华良 on 2019-07-23
  */
 import * as React from 'react'
-import { View, findNodeHandle } from 'react-native'
+import { View } from 'react-native'
 import { CMSServices } from '@services'
 import { Native, Log } from '@utils'
 import styles from './Page.styles'
@@ -95,6 +95,7 @@ class CMS extends React.Component<Props, State> {
 
   initActivity() {
     const { shopCode, activityCode } = this.props
+    this.setState({ shopCode })
     this.requestActivityData(activityCode, shopCode)
   }
 
