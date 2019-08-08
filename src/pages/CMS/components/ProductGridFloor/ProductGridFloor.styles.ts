@@ -6,6 +6,7 @@ import { StyleSheet } from 'react-native'
 const StylesFor2Col = {
   container: {
     padding: 5,
+    backgroundColor: "#FFF",
   },
   row: {
     flexDirection: 'row',
@@ -30,7 +31,9 @@ const StylesFor2Col = {
 }
 
 const StylesFor3Col = {
-  container: {},
+  container: {
+    backgroundColor: "#FFF",
+  },
   row: {
     flexDirection: 'row',
   },
