@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-08 11:38:30
+ * @LastEditTime: 2019-08-08 14:50:24
  */
 
 import {
@@ -17,10 +17,15 @@ export default StyleSheet.create({
   },
   container: {
     width,
-    height: width
+    height: width,
+    overflow: 'hidden'
   },
   paginationStyle: {
     bottom: 10
+  },
+  imgView: {
+    flex: 1,
+    height: 375
   },
   image: {
     width: '100%',
@@ -31,9 +36,9 @@ export default StyleSheet.create({
     height: 7,
     borderRadius: 4,
     marginHorizontal: 5,
-    backgroundColor: 'rgba(0,0,0,.25)'
+    backgroundColor: 'rgba(0,0,0,.20)'
   },
   activeDot: {
-    backgroundColor: 'rgba(0,0,0,.5)'
+    backgroundColor: 'rgba(0,0,0,.6)'
   }
 })
