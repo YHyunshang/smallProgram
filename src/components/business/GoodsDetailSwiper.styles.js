@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-07 14:16:46
+ * @LastEditTime: 2019-08-08 11:38:30
  */
 
 import {
@@ -34,6 +34,6 @@ export default StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,.25)'
   },
   activeDot: {
-    backgroundColor: 'rgba(0,0,0,.7)'
+    backgroundColor: 'rgba(0,0,0,.5)'
   }
 })

@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-07 14:18:28
+ * @LastEditTime: 2019-08-08 12:46:14
  */
 
 import React from 'react'
@@ -32,17 +32,19 @@ export default class GoodsDetailSwiper extends React.Component {
     const dot = <View style={styles.dot} />
     const activeDot = <View style={{...styles.dot, ...styles.activeDot}} />
     const swiperList = imgData.map(({url}, index) => (
-      <Image style={styles.image} source={{uri: url}} resizeMode="cover" key={index}/>
+      <Image style={styles.image} source={{uri: url}} resizeMode="cover"/>
     ))
     return (
       <View style={styles.container}>
         <Swiper
           height={160}
+          removeClippedSubviews={false} //这个很主要啊，解决白屏问题
+          autoplay={true}
+          loop={true}
+          horizontal ={true}
+          paginationStyle={styles.paginationStyle}
           dot={dot}
           activeDot={activeDot}
-          paginationStyle={styles.paginationStyle}
-          loop
-          autoplay
         >
           {swiperList}
         </Swiper>
