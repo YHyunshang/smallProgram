@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-07 11:36:08
+ * @LastEditTime: 2019-08-08 11:45:31
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -38,7 +38,11 @@ export default class ProductDetailPage extends React.Component {
         {id: 2, name: '评价'},
         {id: 3, name: '详情'}
       ],
-      imgData: [],
+      imgData: [{
+        url: 'http://hotfile-cdn.yonghui.cn/files/|cephdata|filecache|YHYS|YHYS|2019-06-28|6998472104035217408'
+      }, {
+        url: 'http://hotfile-cdn.yonghui.cn/files/|cephdata|filecache|YHYS|YHYS|2019-06-28|6997678146182967296'
+      }],
       productImgList: [], //商品详情图文
       shopUrl: []//商家文描
     }

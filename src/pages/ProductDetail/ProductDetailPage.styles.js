@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-07 10:56:16
+ * @LastEditTime: 2019-08-08 12:40:47
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import {isIPhoneXMarginTop, isIPhoneXFooter} from '../../utils/IsIphoneX'
@@ -25,9 +25,11 @@ export default StyleSheet.create({
     paddingHorizontal: 15
   },
   goodsName: {
+    width: width - 65,
     fontSize: 16,
     fontWeight: '600',
-    color: '#333333'
+    color: '#333333',
+    textAlign: 'left'
   },
   iconBg: {
     width: 34,
