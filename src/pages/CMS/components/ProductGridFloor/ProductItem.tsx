@@ -17,8 +17,7 @@ export interface Props {
 
 function ProductItem({ data: { imgUrl, label, name, price, productDesc, promotionPrice, code } }: Props) {
   const isPromotion = promotionPrice < price
-  // const productImage = imgUrl ? { uri: imgUrl } : productPlaceholderImg
-  const productImage = productPlaceholderImg
+  const productImage = imgUrl ? { uri: imgUrl } : productPlaceholderImg
 
   return (
     <View style={styles.container}>
