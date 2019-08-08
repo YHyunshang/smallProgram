@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-08 11:45:31
+ * @LastEditTime: 2019-08-08 15:03:19
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -219,6 +219,7 @@ export default class ProductDetailPage extends React.Component {
           ref={(view) => {
             this.myScrollView = view
           }}
+          showsVerticalScrollIndicator={false}
           scrollEventThrottle = {200}
           onScroll={(event) => {
             this.scrollEvent(event)
