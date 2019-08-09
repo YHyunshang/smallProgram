@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-09 10:07:41
+ * @LastEditTime: 2019-08-09 14:39:16
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -39,9 +39,7 @@ export default class ProductDetailPage extends React.Component {
         {id: 3, name: '详情'}
       ],
       imgData: [{
-        url: 'http://hotfile-cdn.yonghui.cn/files/|cephdata|filecache|YHYS|YHYS|2019-06-28|6998472104035217408'
-      }, {
-        url: 'http://hotfile-cdn.yonghui.cn/files/|cephdata|filecache|YHYS|YHYS|2019-06-28|6997678146182967296'
+        url: 'https://static-yh.yonghui.cn/app/static/images/product-default.png'
       }],
       productImgList: [], // 商品详情图文
       shopUrl: []// 商家文描
@@ -293,9 +291,6 @@ export default class ProductDetailPage extends React.Component {
             </View>
           </View>
         </ScrollView>
-        {/* <View style={styles.footCart}>
-          <GoodsFootCart/>
-       </View> */}
         <ShareModal modalBoxHeight={240} productParams={productParams} onShare={this.handlePosterModal} ref={ref => this.shareModal = ref}/>
         <PosterModal modalBoxHeight={534} imgUrl={imgUrl} ref={ref => this.posterModal = ref}/>
         {
