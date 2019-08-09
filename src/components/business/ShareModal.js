@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-08 10:26:15
+ * @LastEditTime: 2019-08-09 10:08:37
  */
 
 import React from 'react'
@@ -45,7 +45,7 @@ export default class ShareModal extends React.Component {
   * @description: 隐藏分享弹层
   */
   hideShareModal() {
-    goodsDetailManager.showBottomViews()//展示底部购物车模块
+    goodsDetailManager.showBottomViews()// 展示底部购物车模块
     this.popUp.hide()
   }
   /**
@@ -73,10 +73,10 @@ export default class ShareModal extends React.Component {
       title: '商品详情分享',
       thumbImage: productParams.productUrl,
       description: productParams.productDesc,
-      miniProgramType: 0, //分享小程序版本 正式版:0，测试版:1，体验版:
+      miniProgramType: 0, // 分享小程序版本 正式版:0，测试版:1，体验版:
       webpageUrl: 'https://blog.csdn.net/weixin_34221036/article/details/91056421',
-      userName: 'gh_913462fd944f', //小程序原生id非appid
-      path: '/pages/home/home' //小程序页面路径
+      userName: 'gh_913462fd944f', // 小程序原生id非appid
+      path: '/pages/home/home' // 小程序页面路径
     }
     WeChat.isWXAppInstalled().then((isInstalled) => {
       if (isInstalled) {

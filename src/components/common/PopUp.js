@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-07 15:09:19
+ * @LastEditTime: 2019-08-09 10:09:14
  */
 import React, {Component} from 'react'
 import {StyleSheet, View, TouchableOpacity, Animated, Easing, Dimensions, Platform, NativeModules} from 'react-native'
@@ -12,7 +12,7 @@ const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商�
 /**
  * 弹出层
  */
-const isIOS = Platform.OS === 'ios'//ios手机
+const isIOS = Platform.OS === 'ios'// ios手机
 const {width, height} = Dimensions.get('window')
 export default class PopUp extends Component {
   constructor(props) {
@@ -76,7 +76,7 @@ export default class PopUp extends Component {
   defaultHide() {
     this.props.hide()
     this.fadeOut()
-    goodsDetailManager.showBottomViews()//展示底部购物车模块
+    goodsDetailManager.showBottomViews()// 展示底部购物车模块
   }
 
   render() {

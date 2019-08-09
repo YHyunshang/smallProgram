@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-07 14:56:54
+ * @LastEditTime: 2019-08-09 10:08:22
  */
 
 import React from 'react'
@@ -44,7 +44,7 @@ export default class PosterModal extends React.Component {
   */
   hidePosterModal() {
     this.popUp.hide()
-    goodsDetailManager.showBottomViews()//展示底部购物车模块
+    goodsDetailManager.showBottomViews()// 展示底部购物车模块
   }
 
   /**
@@ -55,7 +55,7 @@ export default class PosterModal extends React.Component {
     if (imgUrl) {
       downloadImage(imgUrl).then((res) => {
         if (res && res.statusCode === 200) {
-          rnAppModule.showToast('图片保存成功', '1')//1成功，2失败
+          rnAppModule.showToast('图片保存成功', '1')// 1成功，2失败
           this.hidePosterModal()
         } else {
           rnAppModule.showToast('图片保存失败', '0')
