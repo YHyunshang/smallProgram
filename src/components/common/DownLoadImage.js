@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-18 12:30:01
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-02 16:11:33
+ * @LastEditTime: 2019-08-09 10:09:00
  */
 import RNFS from 'react-native-fs'
 import {
@@ -14,14 +14,14 @@ import {
 export const downloadImage = url => {
   if (!url) return null
   return new Promise((resolve, reject) => {
-    let timestamp = new Date().getTime() //获取当前时间错
-    let random = String((Math.random() * 1000000) | 0) //六位随机数
+    let timestamp = new Date().getTime() // 获取当前时间错
+    let random = String((Math.random() * 1000000) | 0) // 六位随机数
     let dirs =
     Platform.OS === 'ios' ?
       // eslint-disable-next-line no-undef
       RNFS.LibraryDirectoryPath :
       // eslint-disable-next-line no-undef
-      RNFS.DocumentDirectoryPath //外部文件，共享目录的绝对路径（仅限android）
+      RNFS.DocumentDirectoryPath // 外部文件，共享目录的绝对路径（仅限android）
     const downloadDest = `${dirs}/${timestamp + random}.jpg`
     const formUrl = url
     const options = {

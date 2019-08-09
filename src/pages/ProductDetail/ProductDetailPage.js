@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-08 15:03:19
+ * @LastEditTime: 2019-08-09 10:07:41
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -24,15 +24,15 @@ export default class ProductDetailPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isFirst: true, //是否是第一次请求生成海报接口
-      isShowTopTab: false, //是否展示顶部tab
-      goodsDetail: {}, //商品详情
-      evaluation: {}, //商品评价信息
-      goodsInfo: {}, //商品基本信息
-      imgUrl: '', //生成海报的图片地址
-      productParams: {}, //传给生成海报接口的参数
+      isFirst: true, // 是否是第一次请求生成海报接口
+      isShowTopTab: false, // 是否展示顶部tab
+      goodsDetail: {}, // 商品详情
+      evaluation: {}, // 商品评价信息
+      goodsInfo: {}, // 商品基本信息
+      imgUrl: '', // 生成海报的图片地址
+      productParams: {}, // 传给生成海报接口的参数
       productDetailImagesResponseVOList: [],
-      currentIndex: 0, //当前索引
+      currentIndex: 0, // 当前索引
       tablist: [
         {id: 1, name: '商品'},
         {id: 2, name: '评价'},
@@ -43,12 +43,12 @@ export default class ProductDetailPage extends React.Component {
       }, {
         url: 'http://hotfile-cdn.yonghui.cn/files/|cephdata|filecache|YHYS|YHYS|2019-06-28|6997678146182967296'
       }],
-      productImgList: [], //商品详情图文
-      shopUrl: []//商家文描
+      productImgList: [], // 商品详情图文
+      shopUrl: []// 商家文描
     }
-    this.shareIconHeight = 0//分享按钮到高度
-    this.goodsSwiperHeight = 0//图文滚动组件到高度
-    this.topTabY = 0//页面滚动到距离
+    this.shareIconHeight = 0// 分享按钮到高度
+    this.goodsSwiperHeight = 0// 图文滚动组件到高度
+    this.topTabY = 0// 页面滚动到距离
   }
 
   componentDidMount() {
@@ -95,14 +95,14 @@ export default class ProductDetailPage extends React.Component {
    * @description: 显示分享朋友圈弹层
    */
   handleShowModal() {
-    goodsDetailManager.hideBottomViews()//隐藏底部购物车模块
+    goodsDetailManager.hideBottomViews()// 隐藏底部购物车模块
     this.shareModal.showShareModal()
   }
   /**
    * @description: 显示生成海报弹层
    */
   handlePosterModal=(productParams) => {
-    goodsDetailManager.hideBottomViews()//隐藏底部购物车模块
+    goodsDetailManager.hideBottomViews()// 隐藏底部购物车模块
     this.posterModal.showPosterModal()
     this.sharePoster(productParams)
   }
@@ -186,7 +186,7 @@ export default class ProductDetailPage extends React.Component {
     const {imgData, isShowTopTab, goodsInfo, evaluation, productImgList, shopUrl, imgUrl, productParams} = this.state
     let favorableRate = goodsInfo.favorableRate ? goodsInfo.favorableRate * 100 : 0
     favorableRate = favorableRate && parseFloat(favorableRate.toFixed(2))
-    //商品详情图文列表
+    // 商品详情图文列表
     const goodsImgList = productImgList ? productImgList.map(({url}, index) => (
       <Image style={styles.goodsDetailImage} source={{uri: url}} resizeMode="contain" key={index}/>
     )) : <Image style={styles.goodsDetailImage} source={{uri: 'https://static-yh.yonghui.cn/app/static/images/product-default.png'}} resizeMode="contain"/>

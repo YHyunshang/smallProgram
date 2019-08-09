@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-08 15:17:39
+ * @LastEditTime: 2019-08-09 10:08:07
  */
 
 import React from 'react'
@@ -41,7 +41,7 @@ export default class GoodsDetailSwiper extends React.Component {
         <Swiper
           key={imgData.length}
           height={160}
-          removeClippedSubviews={false} //这个很主要啊，解决白屏问题
+          removeClippedSubviews={false} // 这个很主要啊，解决白屏问题
           autoplay={true}
           autoplayTimeout={2}
           loop={true}
