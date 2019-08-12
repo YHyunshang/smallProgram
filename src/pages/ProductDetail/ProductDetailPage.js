@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-09 14:39:16
+ * @LastEditTime: 2019-08-12 10:12:00
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -33,6 +33,7 @@ export default class ProductDetailPage extends React.Component {
       productParams: {}, // 传给生成海报接口的参数
       productDetailImagesResponseVOList: [],
       currentIndex: 0, // 当前索引
+      opacityValue: 0,
       tablist: [
         {id: 1, name: '商品'},
         {id: 2, name: '评价'},
@@ -164,13 +165,16 @@ export default class ProductDetailPage extends React.Component {
    */
   scrollEvent(event) {
     let topTabY = event.nativeEvent.contentOffset.y
-    if (topTabY > this.goodsSwiperHeight + this.shareIconHeight + 15) {
+    let totalHeight = this.goodsSwiperHeight + this.shareIconHeight + 15
+    //let num = parseInt(topTabY / 40)
+    if (topTabY > 0 && topTabY > totalHeight) {
       this.setState({
         isShowTopTab: true
       })
     } else {
       this.setState({
-        isShowTopTab: false
+        isShowTopTab: false,
+        opacityValue: topTabY / totalHeight
       })
     }
   }
@@ -181,7 +185,7 @@ export default class ProductDetailPage extends React.Component {
     goodsDetailManager.pushToEvaluationList()
   }
   render() {
-    const {imgData, isShowTopTab, goodsInfo, evaluation, productImgList, shopUrl, imgUrl, productParams} = this.state
+    const {imgData, isShowTopTab, opacityValue, goodsInfo, evaluation, productImgList, shopUrl, imgUrl, productParams} = this.state
     let favorableRate = goodsInfo.favorableRate ? goodsInfo.favorableRate * 100 : 0
     favorableRate = favorableRate && parseFloat(favorableRate.toFixed(2))
     // 商品详情图文列表
@@ -195,23 +199,21 @@ export default class ProductDetailPage extends React.Component {
     return (
       <View style={styles.container}>
         {
-          isShowTopTab ?
-            (
-              <View style={styles.topTab}>
-                <View></View>
-                <TabBar ref={e => this.tabs = e}
-                  index={this.state.currentIndex}
-                  data={this.state.tablist}
-                  clickScroll={this.clickScroll}
-                  onChange={index => {}} />
-                <TouchableOpacity onPress={() => {
-                  this.handleShowModal()
-                }} >
-                  <Icon style={styles.rightShareIcon} name='share' size={17} color="#333333" />
-                </TouchableOpacity>
-              </View>
-            ) : (<View ></View>)
-
+          (
+            <View style={[styles.topTab, isShowTopTab ? {} : {opacity: opacityValue}]}>
+              <View></View>
+              <TabBar ref={e => this.tabs = e}
+                index={this.state.currentIndex}
+                data={this.state.tablist}
+                clickScroll={this.clickScroll}
+                onChange={index => {}} />
+              <TouchableOpacity onPress={() => {
+                this.handleShowModal()
+              }} >
+                <Icon style={styles.rightShareIcon} name='share' size={17} color="#333333" />
+              </TouchableOpacity>
+            </View>
+          )
         }
         <ScrollView
           ref={(view) => {

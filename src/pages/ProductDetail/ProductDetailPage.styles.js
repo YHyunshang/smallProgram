@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-08 12:40:47
+ * @LastEditTime: 2019-08-12 10:00:06
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import {isIPhoneXMarginTop, isIPhoneXFooter} from '../../utils/IsIphoneX'
@@ -12,6 +12,7 @@ const {width} = Dimensions.get('window')
 export default StyleSheet.create({
   container: {
     height: '100%',
+    zIndex: 100,
     flexDirection: 'column',
     position: 'relative',
     backgroundColor: '#ffffff'
