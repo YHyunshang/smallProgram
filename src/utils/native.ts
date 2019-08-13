@@ -58,3 +58,12 @@ export async function getConstant(key:string) {
 export function setTitle(title='') {
   return NativeModules.HomeNativeManager.setTitle(title)
 }
+
+/**
+ * 
+ * @param message 消息文本
+ * @param type 类型：成功 1 / 失败 0
+ */
+export function showToast(message:string, type='0') {
+  return NativeModules.RnAppModule.showToast(message, type)
+}

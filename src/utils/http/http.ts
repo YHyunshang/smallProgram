@@ -1,10 +1,11 @@
 /**
  * Created by 李华良 on 2019-07-23
  */
-import { NativeModules, Alert } from "react-native"
+import { NativeModules } from "react-native"
 import RequestErr from "./http-err"
 import HostMapper from "./host-mapper"
 import * as Log from "../log"
+import { showToast } from '../native'
 
 /**
  * send http request based on native
@@ -38,6 +39,7 @@ async function request(method: string, url: string, data?: object) {
               `NativeModules.HttpNativeManager.sendRequest(${method}, ${url}, ${data}) returned an error:`,
               errMsg
             )
+            showToast(errMsg)
             return reject(new RequestErr("NATIVE", errMsg))
           }
 
@@ -46,6 +48,10 @@ async function request(method: string, url: string, data?: object) {
             `NativeModules.HttpNativeManager.sendRequest(${method}, ${url}, ${data}) returned:`,
             result
           )
+          if (result.code !== 200000) {
+            showToast(result.message || '系统异常')
+            return reject(new RequestErr("SYSTEM", result.message))
+          }
           return resolve(result)
         }
       )

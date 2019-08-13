@@ -41,7 +41,13 @@ const floorItemRender = ({
       />
     ) : subType === 2 ? (
       <Ad1v2Floor key={id} data={tplDetailData} /> // 1 line img add floor
-    ) : null
+    ) : (
+      <AdSingleFloor
+        key={id}
+        image={tplDetailData[0].imgUrl}
+        link={{ type: tplDetailData[0].linkType, uri: tplDetailData[0].link }}
+      />
+    )
   ) : type === 3 ? ( // 3: product floor
     subType === 1 ? (
       <ProductListFloor data={tplDetailData} /> // product list floor
@@ -51,13 +57,17 @@ const floorItemRender = ({
       <ProductGridFloor key={id} data={tplDetailData} columnNum={3} /> // product 3xn floor
     ) : subType === 4 ? (
       <ProductScrollFloor key={id} data={tplDetailData} /> // product scroll floor
-    ) : null
+    ) : (
+      <ProductListFloor data={tplDetailData} /> // product list floor
+    )
   ) : type === 4 ? ( // 4: category floor
     subType === 1 ? (
       <BoxFloor data={tplDetailData} countPerLine={4} key={id} /> // 4 per row
     ) : subType === 2 ? (
       <BoxFloor data={tplDetailData} countPerLine={5} key={id} /> // 5 per row
-    ) : null
+    ) : (
+      <BoxFloor data={tplDetailData} countPerLine={4} key={id} /> // 4 per row
+    )
   ) : type === 5 ? (
     <DividerFloor key={id} image={img} /> // divider floor
   ) : null

@@ -2,24 +2,18 @@
  * Created by 李华良 on 2019-07-16
  */
 import * as React from 'react'
-import { View, Text, Image, TouchableOpacity } from 'react-native'
+import { View, Text, Image, TouchableOpacity, Platform } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import {Icon} from '@components'
 import styles from './ProductItem.styles'
 import {Native} from "@utils"
 import {CMSServices} from "@services"
 
-const productPlaceholderImg = require('@img/placeholder-product.png')
+const productPlaceholderImg = Platform.OS === 'ios' ? require('@img/placeholder-product.png') : { uri: 'asset:/src_assets_imgs_placeholderproduct.png' }
 
 export interface Props {
   data: {   // 商品数据
-    code: string  // 编码
-    imgUrl: string  // 图片
-    name: string  // 名称
-    productDesc: string  // 简述
-    label: string  // 标签
-    price: number  // 价格
-    promotionPrice: number  // 促销价格
+    [index:string]: string|number
   }
 }
 
@@ -47,9 +41,9 @@ export default function ProductItem ({ data: {imgUrl, name, productDesc, label, 
           <View style={styles.priceBox}>
             <Text style={styles.productPrice}>
               <Text style={styles.pricePrefix}>¥</Text>
-              {isPromotion ? promotionPrice : price}
+              {Number(isPromotion ? promotionPrice : price) / 100}
             </Text>
-            <Text style={styles.slashedPrice}>{isPromotion ? `¥${price}` : ''}</Text>
+            <Text style={styles.slashedPrice}>{isPromotion ? `¥${Number(price) / 100}` : ''}</Text>
           </View>
           <TouchableOpacity activeOpacity={0.8} style={styles.cartBtn} onPress={() => CMSServices.addToCart(code, 1, price)}>
             <View>

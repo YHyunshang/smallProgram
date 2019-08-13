@@ -26,7 +26,7 @@ function ProductGridFloor ({ data, columnNum }: Props) {
       {formattedData.map((ele, idx) => (
         <View style={styles.row} key={idx}>
           {ele.map(itm => (
-            <View style={styles.col} key={itm.code}>
+            <View style={styles.col} key={itm.id}>
               <View style={styles.productBox}>
                 <ProductItem data={itm} />
               </View>

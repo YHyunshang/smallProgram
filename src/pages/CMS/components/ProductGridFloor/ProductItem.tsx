@@ -2,14 +2,14 @@
  * Created by 李华良 on 2019-07-17
  */
 import * as React from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Platform } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import { Icon, FitImg } from '@components'
 import styles from './ProductItem.styles'
 import {Native} from "@utils"
 import { CMSServices } from '@services'
 
-const productPlaceholderImg = require('@img/placeholder-product.png')
+const productPlaceholderImg = Platform.OS === 'ios' ? require('@img/placeholder-product.png') : { uri: 'asset:/src_assets_imgs_placeholderproduct.png' }
 
 export interface Props {
   data: any
@@ -37,10 +37,10 @@ function ProductItem({ data: { imgUrl, label, name, price, productDesc, promotio
         <Text style={styles.productDesc} numberOfLines={1}>{ productDesc }</Text>
         <View style={styles.btmBox}>
           <View style={styles.priceBox}>
-            <Text style={styles.slashedPrice}>{isPromotion ? `¥${price}` : ''}</Text>
+            <Text style={styles.slashedPrice}>{isPromotion ? `¥${price / 100}` : ''}</Text>
             <Text style={styles.productPrice}>
               <Text style={styles.pricePrefix}>¥</Text>
-              {isPromotion ? promotionPrice : price}
+              {(isPromotion ? promotionPrice : price) / 100}
             </Text>
           </View>
           <TouchableOpacity activeOpacity={0.8} onPress={() => CMSServices.addToCart(code, 1, price)}>

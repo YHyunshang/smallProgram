@@ -7,7 +7,9 @@ import ProductItem, { Props as ProductItemProps} from './ProductItem'
 import styles from './ProductListFloor.styles'
 
 interface Props {
-  data: Array<ProductItemProps>
+  data: {
+    [index:string]: string|number
+  }[]
 }
 
 export default function ProductListFloor ({ data }: Props) {
@@ -15,7 +17,7 @@ export default function ProductListFloor ({ data }: Props) {
   return (
     <View style={styles.container}>
       {data.map((ele, idx) => (
-        <React.Fragment key={ele.code}>
+        <React.Fragment key={ele.id}>
           <View style={styles.productItem}>
           <ProductItem data={ele} />
         </View>

@@ -2,11 +2,11 @@
  * Created by 李华良 on 2019-07-04
  */
 import * as React from 'react'
-import { View, Image, Text, TouchableWithoutFeedback, ImageBackground } from 'react-native'
+import { View, Image, Text, TouchableWithoutFeedback, ImageBackground, Platform } from 'react-native'
 import { Native } from '@utils'
 import styles from './Box.styles'
 
-const boxPlaceholder = require('@img/placeholder-box.png')
+const boxPlaceholder = Platform.OS === 'ios' ? require('@img/placeholder-box.png') : { uri: 'asset:/src_assets_imgs_placeholderbox.png' }
 
 interface Props {
   link?: {
