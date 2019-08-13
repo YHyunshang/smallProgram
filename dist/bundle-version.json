@@ -1,8 +1,8 @@
 {
-  "version": "0.0.3",
-  "iosDownloadUrl": "http://static-yh.yonghui.cn/xsztRN/0.0.3/ios/dist-ios.zip",
-  "androidDownloadUrl": "http://static-yh.yonghui.cn/xsztRN/0.0.3/android/index.jsbundle",
+  "version": "0.0.4",
+  "iosDownloadUrl": "http://static-yh.yonghui.cn/xsztRN/0.0.4/ios/dist-ios.zip",
+  "androidDownloadUrl": "http://static-yh.yonghui.cn/xsztRN/0.0.4/android/index.jsbundle",
   "versionDesc": [
-    "更新商品详情"
+    "更新CMS商品默认展示"
   ]
 }
