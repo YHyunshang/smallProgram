@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-12 10:12:00
+ * @LastEditTime: 2019-08-14 10:30:37
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -118,20 +118,20 @@ export default class ProductDetailPage extends React.Component {
     }
     if (this.state.isFirst) {
       this.loadingModal.showLoading()
-    }
-    getPosterImgUrl(params)
-      .then(({result: data, message, code}) => {
-        this.loadingModal.dismissLoading()
-        if (code === 200000 && data) {
-          this.setState({imgUrl: data.imgUrl || '', isFirst: false})
-        } else {
-          rnAppModule.showToast(message, '0')
+      getPosterImgUrl(params)
+        .then(({result: data, message, code}) => {
+          this.loadingModal.dismissLoading()
+          if (code === 200000 && data) {
+            this.setState({imgUrl: data.imgUrl || '', isFirst: false})
+          } else {
+            rnAppModule.showToast(message, '0')
+          }
         }
-      }
-      ).catch((error) => {
-        this.loadingModal.dismissLoading()
-        rnAppModule.showToast(error, '0')
-      })
+        ).catch((error) => {
+          this.loadingModal.dismissLoading()
+          rnAppModule.showToast(error, '0')
+        })
+    }
   }
   /**
    * @description: 根据点击tab选项跳转至指定区域
