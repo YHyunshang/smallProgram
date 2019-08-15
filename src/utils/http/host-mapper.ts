@@ -23,8 +23,8 @@ export default {
     mock: 'https://easy-mock.com/mock/5d391b1acf550c1615de1cba/mess',
   },
   prod: {
-    cms: 'http://xszt-dev.yh-soi-2c-productcenter.devgw.yonghui.cn',
-    cart: 'http://xszt-sit.2c-order.sitgw.yonghui.cn',
+    cms: 'https://yh-soi-2c-productcenter.yonghui.cn',
+    cart: 'https://yh-soi-2c-order.yonghui.cn',
     goodsDetail: 'https://yh-soi-2c-productcenter.yonghui.cn',
     userCenter: 'https://yh-sod-usercenter.yonghui.cn',
     mock: 'https://easy-mock.com/mock/5d391b1acf550c1615de1cba/mess',
