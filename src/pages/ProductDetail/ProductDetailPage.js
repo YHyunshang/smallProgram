@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-14 10:30:37
+ * @LastEditTime: 2019-08-16 10:22:41
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -69,7 +69,7 @@ export default class ProductDetailPage extends React.Component {
           let object = {}
           let shopUrl = data.resChannelStoreProductVO.shopUrl ? JSON.parse(data.resChannelStoreProductVO.shopUrl) : []
           object.productDesc = data.resChannelStoreProductVO.productName
-          object.productPrice = data.resChannelStoreProductVO.price
+          object.productPrice = data.resChannelStoreProductVO.promotionPrice ? data.resChannelStoreProductVO.promotionPrice : data.resChannelStoreProductVO.price
           object.productUrl = data.productSliderImagesResponseVOList ? data.productSliderImagesResponseVOList[0].url : ''
           object.productCode = data.resChannelStoreProductVO.productCode
           this.setState(
@@ -278,7 +278,11 @@ export default class ProductDetailPage extends React.Component {
           <View onLayout={event => {
             this.evaluteLayoutY = event.nativeEvent.layout.y
           }}>
-            <GoodsDetailEvaluate jumpToEvaluteList={this.jumpToNativeEvaluteList} evaluation={evaluation} favorableRate={favorableRate}/>
+            {
+              evaluation ? <GoodsDetailEvaluate jumpToEvaluteList={this.jumpToNativeEvaluteList} evaluation={evaluation} favorableRate={favorableRate}/>
+                : <Text></Text>
+            }
+
           </View>
           <View style={styles.goodsMaxBorder}></View>
           <View onLayout={event => {
