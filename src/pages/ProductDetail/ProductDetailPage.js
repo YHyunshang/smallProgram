@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-16 10:22:41
+ * @LastEditTime: 2019-08-16 11:25:33
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -247,8 +247,12 @@ export default class ProductDetailPage extends React.Component {
                 </View>
               </TouchableOpacity>
             </View>
-            <View>
+            <View style={styles.goodsPromotionPriceRowFlex}>
               <Text style={styles.goodsPrice}>¥ {transPenny(goodsInfo.promotionPrice ? goodsInfo.promotionPrice : goodsInfo.price)}</Text>
+              {
+                goodsInfo.promotionPrice ? <Text style={styles.throughLine} >¥{transPenny(goodsInfo.price)}</Text>
+                  : <Text></Text>
+              }
             </View>
             <View style={styles.goodsMinBorder}></View>
           </View>

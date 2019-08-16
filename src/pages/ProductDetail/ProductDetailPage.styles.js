@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-12 10:00:06
+ * @LastEditTime: 2019-08-16 11:33:38
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import {isIPhoneXMarginTop, isIPhoneXFooter} from '../../utils/IsIphoneX'
@@ -54,6 +54,13 @@ export default StyleSheet.create({
     fontWeight: '600',
     paddingLeft: 15
   },
+  throughLine: {
+    marginLeft: 5,
+    color: '#848791',
+    fontSize: 14,
+    fontWeight: '700',
+    textDecorationLine: 'line-through'
+  },
   goodsMinBorder: {
     borderStyle: 'solid',
     borderWidth: 0.6,
@@ -71,6 +78,11 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
+    alignItems: 'center'
+  },
+  goodsPromotionPriceRowFlex: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
     alignItems: 'center'
   },
   goodsQualityColumnFlex: {
