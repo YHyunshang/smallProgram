@@ -4,14 +4,13 @@
 import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
-  container: {
-  },
+  container: {},
   contentContainer: {
     alignItems: 'center',
     height: 40,
   },
   tab: {
-    position: "relative",
+    position: 'relative',
     alignItems: 'center',
   },
   tabText: {
@@ -30,7 +29,7 @@ export default StyleSheet.create({
   activeTabText: {
     fontSize: 18,
     fontWeight: '700',
-    lineHeight: 25
+    lineHeight: 25,
   },
   divider: {
     width: 1,
@@ -51,5 +50,5 @@ export default StyleSheet.create({
     bottom: 0,
     height: 5,
     borderRadius: 5,
-  }
+  },
 })

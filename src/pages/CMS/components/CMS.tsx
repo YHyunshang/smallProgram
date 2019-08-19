@@ -2,12 +2,12 @@
  * @Author: 李华良
  * @Date: 2019-08-02 16:31:42
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-08-05 16:07:21
+ * @Last Modified time: 2019-08-19 13:51:09
  */
 import * as React from 'react'
 import { FlatList } from 'react-native'
 import TopTabFloor from './TopTabFloor'
-import BannerFloor from './BannerFloor'
+import BannerFloorFull from './BannerFloorFull'
 import BoxFloor from './BoxFloor'
 import AdSingleFloor from './AdSingleFloor'
 import Ad1v2Floor from './Ad1v2Floor'
@@ -31,7 +31,7 @@ const floorItemRender = ({
   item: { id, type, subType, templateDetailVOList: tplDetailData, img },
 }) =>
   type === 1 ? (
-    <BannerFloor data={tplDetailData} key={id} /> // 1: banner floor
+    <BannerFloorFull data={tplDetailData} key={id} /> // 1: banner floor
   ) : type === 2 ? ( // 2: img-ad floor
     subType === 1 ? ( // 1v2 img add floor
       <AdSingleFloor
@@ -97,6 +97,7 @@ export default function CMS({
       data={floorData}
       ListHeaderComponent={flatListHeader}
       // ListEmptyComponent={flatListEmpty}
+      stickyHeaderIndices={[0]}
       horizontal={false}
       refreshing={loading}
       onRefresh={onRefresh}
