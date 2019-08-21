@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-16 11:25:33
+ * @LastEditTime: 2019-08-21 14:17:14
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -17,7 +17,8 @@ import Loading from '../../components/common/Loading'
 import styles from './ProductDetailPage.styles'
 import {getGoodsDetailData, getPosterImgUrl} from '../../services/goodsDetail'
 import GoodsDetailSwiper from '../../components/business/GoodsDetailSwiper'
-import GoodsDetailEvaluate from '../../components/business/GoodsDetailEvaluate'
+import SimilarGoods from '../../components/business/SimilarGoods'
+import Tag from '../../components/business/Tag'
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
 const rnAppModule = NativeModules.RnAppModule// 原生商品详情模块
 export default class ProductDetailPage extends React.Component {
@@ -25,7 +26,6 @@ export default class ProductDetailPage extends React.Component {
     super(props)
     this.state = {
       isFirst: true, // 是否是第一次请求生成海报接口
-      isShowTopTab: false, // 是否展示顶部tab
       goodsDetail: {}, // 商品详情
       evaluation: {}, // 商品评价信息
       goodsInfo: {}, // 商品基本信息
@@ -33,11 +33,9 @@ export default class ProductDetailPage extends React.Component {
       productParams: {}, // 传给生成海报接口的参数
       productDetailImagesResponseVOList: [],
       currentIndex: 0, // 当前索引
-      opacityValue: 0,
       tablist: [
         {id: 1, name: '商品'},
-        {id: 2, name: '评价'},
-        {id: 3, name: '详情'}
+        {id: 2, name: '详情'}
       ],
       imgData: [{
         url: 'https://static-yh.yonghui.cn/app/static/images/product-default.png'
@@ -106,7 +104,7 @@ export default class ProductDetailPage extends React.Component {
     this.sharePoster(productParams)
   }
   /**
-    * 生成海报方法
+  * @description:生成海报方法
   */
   sharePoster(productParams) {
     let params = {
@@ -124,12 +122,12 @@ export default class ProductDetailPage extends React.Component {
           if (code === 200000 && data) {
             this.setState({imgUrl: data.imgUrl || '', isFirst: false})
           } else {
-            rnAppModule.showToast(message, '0')
+            rnAppModule.showToast(JSON.stringify(message), '0')
           }
         }
         ).catch((error) => {
           this.loadingModal.dismissLoading()
-          rnAppModule.showToast(error, '0')
+          rnAppModule.showToast(JSON.stringify(error), '0')
         })
     }
   }
@@ -139,13 +137,10 @@ export default class ProductDetailPage extends React.Component {
   clickScroll=(index) => {
     if (index === 0) {
       // 其中this.layouot.y就是距离现在的高度位置
-      this.myScrollView.scrollTo({x: 0, y: this.goodsLayoutY, animated: false})
-    } else if (index === 1) {
-      // 其中this.layouot.y就是距离现在的高度位置
-      this.myScrollView.scrollTo({x: 0, y: this.evaluteLayoutY, animated: false})
+      this.myScrollView.scrollTo({x: 0, y: this.goodsLayoutY, animated: true})
     } else {
       // 其中this.layouot.y就是距离现在的高度位置
-      this.myScrollView.scrollTo({x: 0, y: this.detailLayoutY, animated: false})
+      this.myScrollView.scrollTo({x: 0, y: this.detailLayoutY, animated: true})
     }
   }
   /**
@@ -161,21 +156,30 @@ export default class ProductDetailPage extends React.Component {
     this.goodsSwiperHeight = event.nativeEvent.layout.height
   }
   /**
-   * @description: 页面滚动时到回调函数
+   * @description: 页面滚动结束时回调函数
    */
-  scrollEvent(event) {
+  onMomentumScrollEnd(event) {
+    // 求出当前的页码
+    // rnAppModule.showToast(event.nativeEvent.contentOffset.y, '0')
+    // rnAppModule.showToast(this.detailLayoutY, '0')//1329
+    // rnAppModule.showToast(this.goodsLayoutY, '0')
+    // let currentPage = Math.floor(event.nativeEvent.contentOffset.y / this.detailLayoutY)
+    // rnAppModule.showToast(currentPage, '0')
+    // currentPage = currentPage == 0 ? 0 : 1
+    // let tablist = this.state.tablist
+    // tablist.map(index => {
+    //   let topTabY = event.nativeEvent.contentOffset.y
+    //   if (topTabY && topTabY >= this.goodsLayoutY && topTabY < this.detailLayoutY) {
+    //     this.tabs.setIndex(index)
+    //   } else if (topTabY && topTabY >= this.detailLayoutY) {
+    //     this.tabs.setIndex(index)
+    //   }
+    // })
     let topTabY = event.nativeEvent.contentOffset.y
-    let totalHeight = this.goodsSwiperHeight + this.shareIconHeight + 15
-    //let num = parseInt(topTabY / 40)
-    if (topTabY > 0 && topTabY > totalHeight) {
-      this.setState({
-        isShowTopTab: true
-      })
-    } else {
-      this.setState({
-        isShowTopTab: false,
-        opacityValue: topTabY / totalHeight
-      })
+    if (topTabY && topTabY >= this.goodsLayoutY && topTabY < this.detailLayoutY) {
+      this.tabs.resetIndex(0)
+    } else if (topTabY && topTabY >= this.detailLayoutY) {
+      this.tabs.resetIndex(1)
     }
   }
   /**
@@ -185,9 +189,9 @@ export default class ProductDetailPage extends React.Component {
     goodsDetailManager.pushToEvaluationList()
   }
   render() {
-    const {imgData, isShowTopTab, opacityValue, goodsInfo, evaluation, productImgList, shopUrl, imgUrl, productParams} = this.state
-    let favorableRate = goodsInfo.favorableRate ? goodsInfo.favorableRate * 100 : 0
-    favorableRate = favorableRate && parseFloat(favorableRate.toFixed(2))
+    const {imgData, goodsInfo, productImgList, shopUrl, imgUrl, productParams} = this.state
+    // let favorableRate = goodsInfo.favorableRate ? goodsInfo.favorableRate * 100 : 0
+    // favorableRate = favorableRate && parseFloat(favorableRate.toFixed(2))
     // 商品详情图文列表
     const goodsImgList = productImgList ? productImgList.map(({url}, index) => (
       <Image style={styles.goodsDetailImage} source={{uri: url}} resizeMode="contain" key={index}/>
@@ -200,7 +204,7 @@ export default class ProductDetailPage extends React.Component {
       <View style={styles.container}>
         {
           (
-            <View style={[styles.topTab, isShowTopTab ? {} : {opacity: opacityValue}]}>
+            <View style={styles.topTab}>
               <View></View>
               <TabBar ref={e => this.tabs = e}
                 index={this.state.currentIndex}
@@ -210,7 +214,7 @@ export default class ProductDetailPage extends React.Component {
               <TouchableOpacity onPress={() => {
                 this.handleShowModal()
               }} >
-                <Icon style={styles.rightShareIcon} name='share' size={17} color="#333333" />
+                <Icon style={styles.rightShareIcon} name='share' size={17} color="#4D4D4D" />
               </TouchableOpacity>
             </View>
           )
@@ -221,9 +225,9 @@ export default class ProductDetailPage extends React.Component {
           }}
           showsVerticalScrollIndicator={false}
           scrollEventThrottle = {200}
-          onScroll={(event) => {
-            this.scrollEvent(event)
-          }}
+          pagingEnabled={true}
+          // 当一帧滚动完毕时调用
+          onMomentumScrollEnd={(event) => this.onMomentumScrollEnd(event)}
         >
           <View onLayout={event => {
             this.goodsLayoutY = event.nativeEvent.layout.y
@@ -237,26 +241,27 @@ export default class ProductDetailPage extends React.Component {
             </View>
           </View>
           <View>
-            <View style={styles.goodsWrapper}>
-              <Text style={styles.goodsName}>{goodsInfo.productName}</Text>
-              <TouchableOpacity onPress={() => {
-                this.handleShowModal()
-              }} onLayout={this.shareIconLayout.bind(this)}>
-                <View style={styles.iconBg}>
-                  <Icon name='share' size={10} color="#FA6400" />
-                </View>
-              </TouchableOpacity>
-            </View>
             <View style={styles.goodsPromotionPriceRowFlex}>
-              <Text style={styles.goodsPrice}>¥ {transPenny(goodsInfo.promotionPrice ? goodsInfo.promotionPrice : goodsInfo.price)}</Text>
+              <Text style={styles.goodsPriceSymbol}>¥</Text>
+              <Text style={styles.goodsPrice}>{transPenny(goodsInfo.promotionPrice ? goodsInfo.promotionPrice : goodsInfo.price)}</Text>
               {
                 goodsInfo.promotionPrice ? <Text style={styles.throughLine} >¥{transPenny(goodsInfo.price)}</Text>
                   : <Text></Text>
               }
             </View>
-            <View style={styles.goodsMinBorder}></View>
+            <Tag textValue='特价' marginLeft={15}></Tag>
+            <View style={styles.goodsWrapper}>
+              <Text style={styles.goodsName}>{goodsInfo.productName}</Text>
+              <Text style={styles.goodsTips}>紧致口感 回味无穷 野生大小不定</Text>
+            </View>
+            <View style={styles.goodsQualityFlex}>
+              <Text style={styles.goodsQualityValue}>{goodsInfo.productSpecific}</Text>
+              <Text style={styles.goodsQualityValue}>{goodsInfo.shelfLife}</Text>
+              <Text style={styles.goodsQualityValue}>{goodsInfo.originPlace}</Text>
+            </View>
+            {/* <View style={styles.goodsMinBorder}></View> */}
           </View>
-          <View style={styles.goodsQualityFlex}>
+          {/* <View style={styles.goodsQualityFlex}>
             <View style={styles.goodsQualityRowFlex}>
               <View style={styles.goodsQualityColumnFlex}>
                 <Text style={styles.goodsQualityName}>产地</Text>
@@ -278,8 +283,8 @@ export default class ProductDetailPage extends React.Component {
               </View>
             </View>
           </View>
-          <View style={styles.goodsMaxBorder}></View>
-          <View onLayout={event => {
+          <View style={styles.goodsMaxBorder}></View> */}
+          {/* <View onLayout={event => {
             this.evaluteLayoutY = event.nativeEvent.layout.y
           }}>
             {
@@ -287,8 +292,12 @@ export default class ProductDetailPage extends React.Component {
                 : <Text></Text>
             }
 
-          </View>
-          <View style={styles.goodsMaxBorder}></View>
+          </View> */}
+          {/* <View style={styles.goodsMaxBorder}></View> */}
+          {
+            imgData ? <SimilarGoods imgData={imgData}></SimilarGoods>
+              : <Text></Text>
+          }
           <View onLayout={event => {
             this.detailLayoutY = event.nativeEvent.layout.y
           }}>

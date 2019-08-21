@@ -4,7 +4,14 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-22 13:37:10
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-23 15:18:52
+ * @LastEditTime: 2019-08-20 16:30:11
+ */
+
+/**
+ * @description:将人民币分转为人民币元
+ * @param {num}
+ * @param {dec}
+ * @return:num
  */
 const parseNumber = function(num, dec = 0) {
   return num ? parseFloat(num.toFixed(dec)) : num

@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-16 11:33:38
+ * @LastEditTime: 2019-08-20 16:41:26
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import {isIPhoneXMarginTop, isIPhoneXFooter} from '../../utils/IsIphoneX'
@@ -19,10 +19,9 @@ export default StyleSheet.create({
   },
   goodsWrapper: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingTop: 14,
-    paddingBottom: 11,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    paddingTop: 10,
     paddingHorizontal: 15
   },
   goodsName: {
@@ -31,6 +30,11 @@ export default StyleSheet.create({
     fontWeight: '600',
     color: '#333333',
     textAlign: 'left'
+  },
+  goodsTips: {
+    paddingTop: 10,
+    fontSize: 14,
+    color: '#666666'
   },
   iconBg: {
     width: 34,
@@ -49,16 +53,36 @@ export default StyleSheet.create({
     height: 375
   },
   goodsPrice: {
-    fontSize: 14,
-    color: '#EE4239',
-    fontWeight: '600',
-    paddingLeft: 15
+    fontSize: 18,
+    color: '#FA8500',
+    fontWeight: '600'
+  },
+  goodsPriceSymbol: {
+    fontSize: 12,
+    color: '#FA8500',
+    paddingLeft: 15,
+    paddingRight: 2,
+    paddingTop: 5,
+    fontWeight: '600'
+  },
+  goodsTag: {
+    width: 30,
+    height: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 1,
+    backgroundColor: '#FFDED9',
+    marginLeft: 15
+  },
+  goodsTagValue: {
+    fontSize: 10,
+    color: '#FF3914'
   },
   throughLine: {
-    marginLeft: 5,
-    color: '#848791',
-    fontSize: 14,
-    fontWeight: '700',
+    marginLeft: 10,
+    color: '#B3B3B3',
+    fontSize: 12,
     textDecorationLine: 'line-through'
   },
   goodsMinBorder: {
@@ -69,10 +93,10 @@ export default StyleSheet.create({
     borderColor: '#F0F0F0'
   },
   goodsQualityFlex: {
-    height: 67,
+    height: 30,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around'
+    justifyContent: 'flex-start'
   },
   goodsQualityRowFlex: {
     flex: 1,
@@ -103,11 +127,10 @@ export default StyleSheet.create({
     fontWeight: '600'
   },
   goodsQualityValue: {
-    fontSize: 14,
-    color: '#333333',
+    fontSize: 12,
+    color: '#B3B3B3',
     fontWeight: '600',
-    marginTop: 6,
-    marginBottom: 13
+    marginLeft: 15
   },
   goodsMaxBorder: {
     borderStyle: 'solid',
@@ -138,11 +161,11 @@ export default StyleSheet.create({
   topTab: {
     width: '100%',
     height: 44,
-    backgroundColor: '#F8F8F8',
+    backgroundColor: '#FFFFFF',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    //iPhoneX头部兼容处理
+    // iPhoneX头部兼容处理
     marginTop: isIPhoneXMarginTop(0)
   },
   blankContent: {

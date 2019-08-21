@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-08 14:50:24
+ * @LastEditTime: 2019-08-19 16:40:33
  */
 
 import {
@@ -36,9 +36,9 @@ export default StyleSheet.create({
     height: 7,
     borderRadius: 4,
     marginHorizontal: 5,
-    backgroundColor: 'rgba(0,0,0,.20)'
+    backgroundColor: 'rgba(0,0,0,.10)'
   },
   activeDot: {
-    backgroundColor: 'rgba(0,0,0,.6)'
+    backgroundColor: '#FF3914'
   }
 })
