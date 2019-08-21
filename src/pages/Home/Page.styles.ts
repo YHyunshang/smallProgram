@@ -9,14 +9,21 @@ export default StyleSheet.create({
     position: 'relative',
     flex: 1,
   },
-  flatList: {
-    backgroundColor: '#FFF',
-  },
-  flatListHeaderBg: {
-    height: 110,
-    width: '100%',
+
+  tabBarContainer: {
     position: 'absolute',
     top: 0,
     left: 0,
+    right: 0,
+    zIndex: 100,
+  },
+  tabBar: {
+    width: '100%',
+    backgroundColor: 'transparent',
+  },
+  tabItem: {
+    flex: 1,
+    alignItems: 'center',
+    padding: 16,
   },
 })
