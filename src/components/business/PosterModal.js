@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-09 10:08:22
+ * @LastEditTime: 2019-08-23 16:42:05
  */
 
 import React from 'react'
@@ -78,7 +78,7 @@ export default class PosterModal extends React.Component {
           <View style={styles.shareTitleText}>
             <Text>保存到相册</Text>
           </View>
-          <TouchableOpacity onPress={() => {
+          <TouchableOpacity activeOpacity={0.95} onPress={() => {
             this.hidePosterModal()
           }}>
             <Icon style={styles.closeIcon} name='close' size={21} color="#9B9B9B" />
@@ -87,7 +87,7 @@ export default class PosterModal extends React.Component {
         <View style={styles.imageContent}>
           <Image style={styles.posterImage} source={{uri: imgUrl}} resizeMode="cover" ></Image>
         </View>
-        <TouchableOpacity onPress={() => {
+        <TouchableOpacity activeOpacity={0.95} onPress={() => {
           this.saveImage()
         }}>
           <View style={styles.imageContent}>

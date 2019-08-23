@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-23 18:21:32
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-21 14:02:19
+ * @LastEditTime: 2019-08-23 16:40:35
  */
 
 import React, {Component} from 'react'
@@ -40,7 +40,7 @@ export default class TabBar extends Component {
     render() {
       return <View style={[tabBarStyle.tab, this.props.style]}>
         {this.props.data.map((item, index) =>
-          <TouchableOpacity onPress={() => this.setIndex(index)} key={item.id} style={tabBarStyle.itemBtn}>
+          <TouchableOpacity activeOpacity={0.95} onPress={() => this.setIndex(index)} key={item.id} style={tabBarStyle.itemBtn}>
             <Text style={[this.state.index === index ? tabBarStyle.active : tabBarStyle.item]} > {item.name}</Text>
           </TouchableOpacity>
         )}

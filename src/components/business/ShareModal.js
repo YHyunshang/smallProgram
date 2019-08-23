@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-09 10:08:37
+ * @LastEditTime: 2019-08-23 16:41:55
  */
 
 import React from 'react'
@@ -12,6 +12,7 @@ import {
   Text,
   View,
   Image,
+  Platform,
   TouchableOpacity,
   NativeModules
 } from 'react-native'
@@ -21,8 +22,10 @@ import Icon from '../../components/Icon'
 import styles from './ShareModal.styles'
 const rnAppModule = NativeModules.RnAppModule// 原生商品详情模块
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
-const shareIconWechat = {uri: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/wechat-friend.png'}
-const shareIconMoments = {uri: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/wechat-moments.png'}
+// const shareIconWechat = {uri: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/wechat-friend.png'}
+// const shareIconMoments = {uri: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/wechat-moments.png'}
+const shareIconWechat = Platform.OS === 'ios' ? require('@img/wechat-friend.png') : {uri: 'asset:/src_assets_imgs_wechat-friend.png'}
+const shareIconMoments = Platform.OS === 'ios' ? require('@img/wechat-moments.png') : {uri: 'asset:/src_assets_imgs_wechat-moments.png'}
 export default class ShareModal extends React.Component {
   constructor(props) {
     super(props)
@@ -120,20 +123,20 @@ export default class ShareModal extends React.Component {
         <View style={styles.shareTitleInfo}>
           <View></View>
           <View style={styles.shareTitleText}><Text>分享至</Text></View>
-          <TouchableOpacity onPress={() => {
+          <TouchableOpacity activeOpacity={0.95} onPress={() => {
             this.hideShareModal()
           }}>
             <Icon style={styles.closeIcon} name='close' size={21} color="#9B9B9B" />
           </TouchableOpacity>
         </View>
         <View style={styles.shareInfo}>
-          <TouchableOpacity onPress={() => {
+          <TouchableOpacity activeOpacity={0.95} onPress={() => {
             this.shareFriend()
           }}>
             <Image style={styles.shareImage} source={shareIconWechat} resizeMode="cover"></Image>
             <Text style={styles.shareText} >微信好友</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {
+          <TouchableOpacity activeOpacity={0.95} onPress={() => {
             this.showPosterMoal()
           }}>
             <Image style={styles.shareImage} source={shareIconMoments} resizeMode="cover"></Image>

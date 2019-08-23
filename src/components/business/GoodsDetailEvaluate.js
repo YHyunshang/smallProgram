@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-07 14:08:42
+ * @LastEditTime: 2019-08-23 16:43:15
  */
 import React from 'react'
 import {
@@ -53,7 +53,7 @@ export default class GoodsDetailEvaluate extends React.Component {
                     : <Text></Text>
                   }
                 </View>
-                <TouchableOpacity onPress={() => {
+                <TouchableOpacity activeOpacity={0.95} onPress={() => {
                   this.seeAll()
                 }} >
                   <View style={styles.wrapperItem}>

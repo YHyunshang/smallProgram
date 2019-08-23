@@ -4,10 +4,10 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-21 14:17:14
+ * @LastEditTime: 2019-08-23 19:21:28
  */
 import React from 'react'
-import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
+import {ScrollView, View, Text, Image, TouchableOpacity, Platform, NativeModules} from 'react-native'
 import Icon from '../../components/Icon'
 import {transPenny} from '../../utils/FormatUtil'
 import ShareModal from '../../components/business/ShareModal'
@@ -15,12 +15,22 @@ import PosterModal from '../../components/business/PosterModal'
 import TabBar from '../../components/common/TabBar'
 import Loading from '../../components/common/Loading'
 import styles from './ProductDetailPage.styles'
-import {getGoodsDetailData, getPosterImgUrl} from '../../services/goodsDetail'
+import {Native} from '@utils'
+import {getGoodsDetailData, getPosterImgUrl, getSimilarProduct, addToCart} from '../../services/goodsDetail'
 import GoodsDetailSwiper from '../../components/business/GoodsDetailSwiper'
 import SimilarGoods from '../../components/business/SimilarGoods'
-import Tag from '../../components/business/Tag'
+// import Tag from '../../components/business/Tag'
+// import {similarGoods} from '../../utils/mock'
+// 商品产地图标
+const productPlace = Platform.OS === 'ios' ? require('@img/product-place.png') : {uri: 'asset:/src_assets_imgs_product-place.png'}
+// 商品规格图标
+const productSpecific = Platform.OS === 'ios' ? require('@img/product-specific.png') : {uri: 'asset:/src_assets_imgs_product-specific.png'}
+// 商品条件图标
+const productConditions = Platform.OS === 'ios' ? require('@img/product-conditions.png') : {uri: 'asset:/src_assets_imgs_product-conditions.png'}
+// 商品默认图片
+const placeholderProduct = Platform.OS === 'ios' ? require('@img/placeholder-product.png') : {uri: 'asset:/src_assets_imgs_placeholder-product.png'}
+const rnAppModule = NativeModules.RnAppModule// 原生模块
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
-const rnAppModule = NativeModules.RnAppModule// 原生商品详情模块
 export default class ProductDetailPage extends React.Component {
   constructor(props) {
     super(props)
@@ -33,6 +43,7 @@ export default class ProductDetailPage extends React.Component {
       productParams: {}, // 传给生成海报接口的参数
       productDetailImagesResponseVOList: [],
       currentIndex: 0, // 当前索引
+      storeCode: '', // 门店code
       tablist: [
         {id: 1, name: '商品'},
         {id: 2, name: '详情'}
@@ -41,7 +52,8 @@ export default class ProductDetailPage extends React.Component {
         url: 'https://static-yh.yonghui.cn/app/static/images/product-default.png'
       }],
       productImgList: [], // 商品详情图文
-      shopUrl: []// 商家文描
+      shopUrl: [], // 商家文描
+      similarProduct: []
     }
     this.shareIconHeight = 0// 分享按钮到高度
     this.goodsSwiperHeight = 0// 图文滚动组件到高度
@@ -51,7 +63,9 @@ export default class ProductDetailPage extends React.Component {
   componentDidMount() {
     let productInfo = goodsDetailManager.productInfo
     productInfo = productInfo ? JSON.parse(productInfo) : {}
+    this.setState({storeCode: productInfo.storeCode})
     this.getProductInfo(productInfo.productCode, productInfo.storeCode)
+    this.getSimilarProductList(productInfo.productCode, productInfo.storeCode)
   }
 
   componentWillUnmount() {
@@ -84,8 +98,28 @@ export default class ProductDetailPage extends React.Component {
         } else {
           rnAppModule.showToast(message, '0')
         }
-      }).catch((error) => {
-        rnAppModule.showToast(error, '0')
+      }).catch(({message}) => {
+        rnAppModule.showToast(message, '0')
+      })
+  }
+
+  /**
+   * @description: 根据商品编码、门店编码获取相似商品列表
+   */
+  getSimilarProductList = (productCode, storeCode) => {
+    getSimilarProduct(productCode, storeCode)
+      .then(({result: data, message, code}) => {
+        if (code === 200000 && data) {
+          this.setState(
+            {
+              similarProduct: data
+            }
+          )
+        } else {
+          rnAppModule.showToast(message, '0')
+        }
+      }).catch(({message}) => {
+        rnAppModule.showToast(message, '0')
       })
   }
   /**
@@ -104,15 +138,34 @@ export default class ProductDetailPage extends React.Component {
     this.sharePoster(productParams)
   }
   /**
+   * @description: 相似商品列表添加到购物车
+   */
+  handleAddCart=(item) => {
+    if (item.productNoteName) { // 有商品备注,展示原生的商品备注弹窗
+      // isShowNoteModal(item)
+    } else {
+      addToCart(item.productCode, 1, item.price)
+    }
+  }
+  /**
+   * @description: 点击相似商品列表跳转至商品详情
+   */
+  jumpGoodsDetail=(item) => {
+    Native.navigateTo('0', 'A003,A003', {params: {productCode: item.productCode}})
+  }
+  /**
   * @description:生成海报方法
   */
   sharePoster(productParams) {
     let params = {
       appId: 'wx6e85fc07ec7a02f3',
-      productDesc: productParams.productDesc,
-      productCode: productParams.productCode,
+      productName: productParams.productDesc,
+      pageUrl: 'pages/product-detail/product-detail',
       productPrice: `¥${transPenny(productParams.productPrice)}`,
-      productUrl: productParams.productUrl
+      productImgUrl: productParams.productUrl,
+      sceneValue: `${productParams.productCode},${this.state.storeCode}`,
+      width: 246
+
     }
     if (this.state.isFirst) {
       this.loadingModal.showLoading()
@@ -120,14 +173,14 @@ export default class ProductDetailPage extends React.Component {
         .then(({result: data, message, code}) => {
           this.loadingModal.dismissLoading()
           if (code === 200000 && data) {
-            this.setState({imgUrl: data.imgUrl || '', isFirst: false})
+            this.setState({imgUrl: data, isFirst: false})
           } else {
-            rnAppModule.showToast(JSON.stringify(message), '0')
+            rnAppModule.showToast(message, '0')
           }
         }
-        ).catch((error) => {
+        ).catch(({message}) => {
           this.loadingModal.dismissLoading()
-          rnAppModule.showToast(JSON.stringify(error), '0')
+          rnAppModule.showToast(message, '0')
         })
     }
   }
@@ -159,22 +212,6 @@ export default class ProductDetailPage extends React.Component {
    * @description: 页面滚动结束时回调函数
    */
   onMomentumScrollEnd(event) {
-    // 求出当前的页码
-    // rnAppModule.showToast(event.nativeEvent.contentOffset.y, '0')
-    // rnAppModule.showToast(this.detailLayoutY, '0')//1329
-    // rnAppModule.showToast(this.goodsLayoutY, '0')
-    // let currentPage = Math.floor(event.nativeEvent.contentOffset.y / this.detailLayoutY)
-    // rnAppModule.showToast(currentPage, '0')
-    // currentPage = currentPage == 0 ? 0 : 1
-    // let tablist = this.state.tablist
-    // tablist.map(index => {
-    //   let topTabY = event.nativeEvent.contentOffset.y
-    //   if (topTabY && topTabY >= this.goodsLayoutY && topTabY < this.detailLayoutY) {
-    //     this.tabs.setIndex(index)
-    //   } else if (topTabY && topTabY >= this.detailLayoutY) {
-    //     this.tabs.setIndex(index)
-    //   }
-    // })
     let topTabY = event.nativeEvent.contentOffset.y
     if (topTabY && topTabY >= this.goodsLayoutY && topTabY < this.detailLayoutY) {
       this.tabs.resetIndex(0)
@@ -189,13 +226,13 @@ export default class ProductDetailPage extends React.Component {
     goodsDetailManager.pushToEvaluationList()
   }
   render() {
-    const {imgData, goodsInfo, productImgList, shopUrl, imgUrl, productParams} = this.state
+    const {imgData, goodsInfo, productImgList, shopUrl, imgUrl, productParams, similarProduct} = this.state
     // let favorableRate = goodsInfo.favorableRate ? goodsInfo.favorableRate * 100 : 0
     // favorableRate = favorableRate && parseFloat(favorableRate.toFixed(2))
     // 商品详情图文列表
     const goodsImgList = productImgList ? productImgList.map(({url}, index) => (
       <Image style={styles.goodsDetailImage} source={{uri: url}} resizeMode="contain" key={index}/>
-    )) : <Image style={styles.goodsDetailImage} source={{uri: 'https://static-yh.yonghui.cn/app/static/images/product-default.png'}} resizeMode="contain"/>
+    )) : <Image style={styles.goodsDetailImage} source={placeholderProduct} resizeMode="contain"/>
     // 商家文描图文列表
     const shopImgList = shopUrl ? shopUrl.map((item, index) => (
       <Image style={styles.goodsDetailImage} source={{uri: item}} resizeMode="cover" key={index}/>
@@ -211,7 +248,7 @@ export default class ProductDetailPage extends React.Component {
                 data={this.state.tablist}
                 clickScroll={this.clickScroll}
                 onChange={index => {}} />
-              <TouchableOpacity onPress={() => {
+              <TouchableOpacity activeOpacity={0.95} onPress={() => {
                 this.handleShowModal()
               }} >
                 <Icon style={styles.rightShareIcon} name='share' size={17} color="#4D4D4D" />
@@ -245,19 +282,45 @@ export default class ProductDetailPage extends React.Component {
               <Text style={styles.goodsPriceSymbol}>¥</Text>
               <Text style={styles.goodsPrice}>{transPenny(goodsInfo.promotionPrice ? goodsInfo.promotionPrice : goodsInfo.price)}</Text>
               {
-                goodsInfo.promotionPrice ? <Text style={styles.throughLine} >¥{transPenny(goodsInfo.price)}</Text>
-                  : <Text></Text>
+                goodsInfo.promotionPrice
+                  ? <Text style={styles.throughLine} >¥{transPenny(goodsInfo.price)}</Text>
+                  : null
               }
             </View>
-            <Tag textValue='特价' marginLeft={15}></Tag>
+            {/* <Tag textValue='特价' marginLeft={15}></Tag> */}
             <View style={styles.goodsWrapper}>
-              <Text style={styles.goodsName}>{goodsInfo.productName}</Text>
-              <Text style={styles.goodsTips}>紧致口感 回味无穷 野生大小不定</Text>
+              <Text numberOfLines={1} style={styles.goodsName}>{goodsInfo.productName}</Text>
+              {
+                goodsInfo.subTitle ?
+                  <Text style={styles.goodsTips}>{goodsInfo.subTitle}</Text>
+                  : null
+              }
             </View>
             <View style={styles.goodsQualityFlex}>
-              <Text style={styles.goodsQualityValue}>{goodsInfo.productSpecific}</Text>
-              <Text style={styles.goodsQualityValue}>{goodsInfo.shelfLife}</Text>
-              <Text style={styles.goodsQualityValue}>{goodsInfo.originPlace}</Text>
+              {
+                goodsInfo.productSpecific ?
+                  <View style={styles.goodsQualityItemFlex}>
+                    <Image source={productSpecific}></Image>
+                    <Text style={styles.goodsQualityValue}>{goodsInfo.productSpecific}</Text>
+                  </View>
+                  : null
+              }
+              {
+                goodsInfo.shelfLife ?
+                  <View style={styles.goodsQualityItemFlex}>
+                    <Image source={productConditions}></Image>
+                    <Text style={styles.goodsQualityValue}>{goodsInfo.shelfLife}</Text>
+                  </View>
+                  : null
+              }
+              {
+                goodsInfo.originPlace ?
+                  <View style={styles.goodsQualityItemFlex}>
+                    <Image source={productPlace}></Image>
+                    <Text style={styles.goodsQualityValue}>{goodsInfo.originPlace}</Text>
+                  </View>
+                  : null
+              }
             </View>
             {/* <View style={styles.goodsMinBorder}></View> */}
           </View>
@@ -295,8 +358,8 @@ export default class ProductDetailPage extends React.Component {
           </View> */}
           {/* <View style={styles.goodsMaxBorder}></View> */}
           {
-            imgData ? <SimilarGoods imgData={imgData}></SimilarGoods>
-              : <Text></Text>
+            similarProduct ? <SimilarGoods similarProduct={similarProduct} addCart={this.handleAddCart} jumpGoodsDetail={this.jumpGoodsDetail} defaultImg={placeholderProduct}></SimilarGoods>
+              : null
           }
           <View onLayout={event => {
             this.detailLayoutY = event.nativeEvent.layout.y

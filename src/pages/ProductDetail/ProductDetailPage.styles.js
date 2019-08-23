@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-20 16:41:26
+ * @LastEditTime: 2019-08-23 11:30:35
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import {isIPhoneXMarginTop, isIPhoneXFooter} from '../../utils/IsIphoneX'
@@ -98,6 +98,12 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start'
   },
+  goodsQualityItemFlex: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 15
+  },
   goodsQualityRowFlex: {
     flex: 1,
     flexDirection: 'row',
@@ -107,6 +113,7 @@ export default StyleSheet.create({
   goodsPromotionPriceRowFlex: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
+    marginTop: 10,
     alignItems: 'center'
   },
   goodsQualityColumnFlex: {
@@ -129,8 +136,7 @@ export default StyleSheet.create({
   goodsQualityValue: {
     fontSize: 12,
     color: '#B3B3B3',
-    fontWeight: '600',
-    marginLeft: 15
+    fontWeight: '600'
   },
   goodsMaxBorder: {
     borderStyle: 'solid',

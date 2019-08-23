@@ -1,3 +1,11 @@
+/*
+ * @Description: host-mapper
+ * @Company: yh
+ * @Author: yuwen.liu
+ * @Date: 2019-08-16 09:55:16
+ * @LastEditors: yuwen.liu
+ * @LastEditTime: 2019-08-23 13:53:22
+ */
 /**
  * Created by 李华良 on 2019-07-26
  */
@@ -6,7 +14,7 @@ export default {
     cms: 'http://xszt-dev.yh-soi-2c-productcenter.devgw.yonghui.cn',
     cart: 'http://xszt-dev.2c-order.devgw.yonghui.cn',
     goodsDetail: 'http://xszt-dev.yh-soi-2c-productcenter.devgw.yonghui.cn',
-    userCenter: 'http://xszt-sit.yh-sod-usercenter.sitgw.yonghui.cn',
+    userCenter: 'http://xszt-dev.yh-sod-usercenter.devgw.yonghui.cn',
     mock: 'https://easy-mock.com/mock/5d391b1acf550c1615de1cba/mess',
   },
   test: {
