@@ -2,13 +2,14 @@
  * @Author: 李华良
  * @Date: 2019-08-19 10:16:23
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-08-19 11:01:05
+ * @Last Modified time: 2019-08-21 15:37:40
  */
 import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
   container: {
     height: 290,
+    marginBottom: 25,
   },
   pagination: {
     bottom: 10,

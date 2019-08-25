@@ -2,10 +2,10 @@
  * @Author: 李华良
  * @Date: 2019-08-02 16:31:42
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-08-20 22:15:44
+ * @Last Modified time: 2019-08-21 21:16:16
  */
 import * as React from 'react'
-import { View, FlatList } from 'react-native'
+import { View, FlatList, Animated } from 'react-native'
 import TopTabFloor from './TopTabFloor'
 import BannerFloorFull from './BannerFloorFull'
 import BoxFloor from './BoxFloor'
@@ -28,6 +28,7 @@ import styles from './CMS.styles'
 // }
 
 interface Props {
+  sceneIndex: number
   keyPrefix: string
   loading: boolean
   data: {
@@ -61,9 +62,17 @@ export default class CMS extends React.PureComponent<Props, State> {
 
   floorItemRender = ({
     item: { id, type, subType, templateDetailVOList: tplDetailData, img },
-  }) =>
-    type === 1 ? (
-      <BannerFloorFull data={tplDetailData} key={id} /> // 1: banner floor
+    index,
+  }) => {
+    const { sceneIndex } = this.props
+    return type === 1 ? ( // 1: banner floor
+      <Animated.View>
+        <BannerFloorFull
+          data={tplDetailData}
+          key={id}
+          imageHeight={index === 0 && sceneIndex === 0 ? 290 : 150}
+        />
+      </Animated.View>
     ) : type === 2 ? ( // 2: img-ad floor
       subType === 1 ? ( // 1v2 img add floor
         <AdSingleFloor
@@ -103,6 +112,7 @@ export default class CMS extends React.PureComponent<Props, State> {
     ) : type === 5 ? (
       <DividerFloor key={id} image={img} /> // divider floor
     ) : null
+  }
 
   render() {
     const { loading, onRefresh, data, keyPrefix, onScroll } = this.props

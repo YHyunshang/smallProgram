@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-08-19 10:18:07
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-08-19 10:51:51
+ * @Last Modified time: 2019-08-21 21:15:23
  */
 import * as React from 'react'
 import { View, Image, TouchableWithoutFeedback } from 'react-native'
@@ -11,7 +11,7 @@ import Styles from './BannerFloorFull.styles'
 import { Native } from '@utils'
 
 interface Props {
-  imageHeight: number
+  imageHeight?: number
   data: {
     imgUrl: string
     link: string
@@ -20,11 +20,11 @@ interface Props {
   }[]
 }
 
-export default function BannerFloorFull({ imageHeight, data }: Props) {
+export default function BannerFloorFull({ imageHeight = 290, data }: Props) {
   return (
     <View style={Styles.container}>
       <Swiper
-        height={290}
+        height={imageHeight}
         autoplay
         loop
         paginationStyle={Styles.pagination}
@@ -47,8 +47,4 @@ export default function BannerFloorFull({ imageHeight, data }: Props) {
       </Swiper>
     </View>
   )
-}
-
-BannerFloorFull.defaultProps = {
-  imageHeight: 290,
 }

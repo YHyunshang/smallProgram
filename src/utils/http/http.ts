@@ -1,10 +1,10 @@
 /**
  * Created by 李华良 on 2019-07-23
  */
-import { NativeModules } from "react-native"
-import RequestErr from "./http-err"
-import HostMapper from "./host-mapper"
-import * as Log from "../log"
+import { NativeModules } from 'react-native'
+import RequestErr from './http-err'
+import HostMapper from './host-mapper'
+import * as Log from '../log'
 import { showToast } from '../native'
 
 /**
@@ -14,15 +14,24 @@ import { showToast } from '../native'
  * @param data {object} post data
  * @returns {Promise}
  */
-async function request(method: string, url: string, data?: object) {
+async function request(
+  method: string,
+  url: string,
+  data?: object
+): Promise<{
+  code: number
+  message: string
+  result?: { [index: string]: any } | []
+  page?: { result: [] }
+}> {
   let request: Function
   try {
     request = NativeModules.HttpNativeManager.sendRequest
   } catch (e) {
     return Promise.reject(
       new RequestErr(
-        "RN",
-        "can not found HttpNativeManager.sendRequest in native module!"
+        'RN',
+        'can not found HttpNativeManager.sendRequest in native module!'
       )
     )
   }
@@ -32,7 +41,7 @@ async function request(method: string, url: string, data?: object) {
       request(
         method.toLowerCase(),
         url,
-        method.toLowerCase() === "get" ? null : JSON.stringify(data),
+        method.toLowerCase() === 'get' ? null : JSON.stringify(data),
         (errMsg, responseData) => {
           if (errMsg) {
             Log.debug(
@@ -40,7 +49,7 @@ async function request(method: string, url: string, data?: object) {
               errMsg
             )
             showToast(errMsg)
-            return reject(new RequestErr("NATIVE", errMsg))
+            return reject(new RequestErr('NATIVE', errMsg))
           }
 
           const result = responseData ? JSON.parse(responseData) : {}
@@ -50,7 +59,7 @@ async function request(method: string, url: string, data?: object) {
           )
           if (result.code !== 200000) {
             showToast(result.message || '系统异常')
-            return reject(new RequestErr("SYSTEM", result.message))
+            return reject(new RequestErr('SYSTEM', result.message))
           }
           return resolve(result)
         }
@@ -66,24 +75,24 @@ async function request(method: string, url: string, data?: object) {
  */
 export function formatUrl(hostKey: string, path: string, query = {}) {
   const nativeEnv = NativeModules.HttpNativeManager.envPathType
-  const env = { 0: "test", 1: "dev", 2: "prod" }[nativeEnv]
+  const env = { 0: 'test', 1: 'dev', 2: 'prod' }[nativeEnv]
   if (!env)
     throw new RequestErr(
-      "RN",
+      'RN',
       `map native env[${nativeEnv}] to RN env[${env}] failed`
     )
 
-  const host = (HostMapper[env][hostKey] || "").trim().replace(/\/+$/, "")
-  if (!host) throw new RequestErr("RN", `no host for hostKey[${hostKey}]`)
+  const host = (HostMapper[env][hostKey] || '').trim().replace(/\/+$/, '')
+  if (!host) throw new RequestErr('RN', `no host for hostKey[${hostKey}]`)
 
   const queryStr = Object.entries(query)
     .map(
       ([key, val]) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`
     )
-    .join("&")
-  const _path_ = path.trim().replace(/^\//, "")
+    .join('&')
+  const _path_ = path.trim().replace(/^\//, '')
 
-  return `${host}/${_path_}${queryStr ? `?${queryStr}` : ""}`
+  return `${host}/${_path_}${queryStr ? `?${queryStr}` : ''}`
 }
 
 /**
@@ -103,10 +112,10 @@ export default function Http(config: HttpModel.HttpConfig) {
 }
 
 export const get = (host: string, path: string, query = {}) =>
-  Http({ method: "get", host, path, query })
+  Http({ method: 'get', host, path, query })
 export const post = (host: string, path: string, query = {}, data = {}) =>
-  Http({ method: "post", host, path, query, data })
+  Http({ method: 'post', host, path, query, data })
 export const put = (host: string, path: string, query = {}, data = {}) =>
-  Http({ method: "put", host, path, query, data })
+  Http({ method: 'put', host, path, query, data })
 export const del = (host: string, path: string, query = {}) =>
-  Http({ method: "del", host, path, query })
+  Http({ method: 'del', host, path, query })

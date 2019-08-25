@@ -13,9 +13,8 @@ export default StyleSheet.create({
   tabBarContainer: {
     position: 'absolute',
     top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 100,
+    width: '100%',
+    zIndex: 1,
   },
   tabBar: {
     width: '100%',
@@ -26,4 +25,6 @@ export default StyleSheet.create({
     alignItems: 'center',
     padding: 16,
   },
+
+  sceneBox: {},
 })

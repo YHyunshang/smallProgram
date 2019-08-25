@@ -2,30 +2,40 @@
  * Created by 李华良 on 2019-07-23
  */
 import * as React from 'react'
-import {
-  View,
-  Animated,
-} from 'react-native'
-import { CMSServices } from '@services'
-import { Native, Log } from '@utils'
+import { View, Animated, FlatList, Dimensions } from 'react-native'
+import { CMSServices, ProductServices } from '@services'
+import { Native } from '@utils'
 import styles from './Page.styles'
-import CMSComp from '@components/business/CMS'
-import Tab from './components/Tab'
+import Carousel from '@components/business/Content/Carousel'
+import Ad1v2 from '@components/business/Content/Ad1v2'
+import Ad1v1 from '@components/business/Content/Ad1v1'
+import AdSingle from '@components/business/Content/AdSingle'
+import Divider from '@components/business/Content/Divider'
+import Box from '@components/business/Content/Box'
+import ProductList from '@components/business/Content/ProductList'
+import ProductGrid from '@components/business/Content/ProductGrid'
+import ProductSwiper from '@components/business/Content/ProductSwiper'
+import ProductSwiperWithBg from '@components/business/Content/ProductSwiperWithBg'
+import ProductListWithFilter from './components/ProductListWithFilter'
+import { TabView } from 'react-native-tab-view'
+import TabBar from './components/TabBar'
+
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
+const placeholderForNativeHeight = Native.getStatusBarHeight() + 86 + 34
 
 enum PageType {
   HOME = 'home',
   ACTIVITY = 'activity',
 }
 
-interface Props {
-  type: PageType // CMS 页面类型
-  activityCode?: string // 活动编码，type 为 activity 时必传
-  shopCode?: string // 门店编码，type 为 activity 时必传
-}
+interface Props {}
 
 interface State {
   loading: boolean // 加载中
-  shopCode: string // 门店编码
+  shop: {
+    code: string
+    type: string
+  }
   currentTabIdx: number // 当前激活的 tab index
   tabList: {}[] // tab 列表
   tabFloorMap: {
@@ -36,9 +46,7 @@ interface State {
     // tab 下数据是否在加载中
     [tabId: string]: boolean
   }
-  pageHeight: number // 页面高度
-
-  animatedValRefCmsScroll: Animated.AnimatedValue
+  animatedValRefCmsScrollY: Animated.AnimatedValue
 }
 
 class Page extends React.Component<Props, State> {
@@ -46,19 +54,17 @@ class Page extends React.Component<Props, State> {
     super(props)
   }
 
-  static defaultProps = {
-    type: PageType.HOME,
-  }
-
   state = {
     loading: false,
-    shopCode: '',
+    shop: {
+      code: '',
+      type: '',
+    },
     currentTabIdx: 0,
     tabList: [],
     tabFloorMap: {},
     tabLoadingMap: {},
-    pageHeight: 0,
-    animatedValRefCmsScroll: new Animated.Value(0),
+    animatedValRefCmsScrollY: new Animated.Value(0),
   }
 
   nativeSubscription: { remove: Function }
@@ -67,38 +73,22 @@ class Page extends React.Component<Props, State> {
     this.init()
   }
 
-  componentDidUpdate(preProps, preState, snapshot) {
-    if (
-      this.props.type !== preProps.type ||
-      ((this.props.type === PageType.ACTIVITY &&
-        this.props.activityCode !== preProps.activityCode) ||
-        this.props.shopCode !== preProps.shopCode)
-    ) {
-      this.init()
-    }
-  }
-
   componentWillUnmount(): void {
     this.nativeSubscription && this.nativeSubscription.remove()
   }
 
-  init = () =>
-    this.props.type === PageType.HOME
-      ? this.initHome()
-      : this.props.type === PageType.ACTIVITY
-      ? this.initActivity()
-      : null
-
   // 首页 CMS 初始化
-  async initHome() {
-    let { shopCode } = this.state
-    if (!shopCode) {
-      shopCode = await Native.getConstant('storeCode')
-    }
-
-    if (shopCode) {
-      this.setState({ shopCode })
-      this.requestInitData(shopCode)
+  async init() {
+    let { shop } = this.state
+    if (!shop.code || !shop.type) {
+      const [shopCode, shopType] = await Promise.all([
+        Native.getConstant('storeCode'),
+        Native.getConstant('storeTypeCode'),
+      ])
+      this.setState({ shop: { code: shopCode, type: shopType } })
+      this.requestTabData(shopCode, shopType)
+    } else {
+      this.requestTabData(shop.code, shop.type)
     }
 
     // 门店变化 native 事件监听
@@ -107,43 +97,56 @@ class Page extends React.Component<Props, State> {
     )
   }
 
-  initActivity() {
-    const { shopCode, activityCode } = this.props
-    this.setState({ shopCode })
-    this.requestActivityData(activityCode, shopCode)
-  }
-
   // 门店变化
-  onNativeShopChange = ({ storeCode }) => {
-    Log.debug(storeCode)
-    if (storeCode !== this.state.shopCode) {
-      this.setState({ shopCode: storeCode })
-      this.requestInitData(storeCode)
+  onNativeShopChange = ({ storeCode, storeTypeCode }) => {
+    const { shop } = this.state
+    if (storeCode !== shop.code || storeTypeCode !== shop.type) {
+      this.setState({ shop: { code: storeCode, type: storeTypeCode } })
+      this.requestTabData(storeCode, storeTypeCode)
     }
   }
 
   // 获取初始 CMS 数据
-  requestInitData = async (shopCode: string) => {
+  requestTabData = async (shopCode: string, shopType = '001') => {
     this.setState({ loading: true })
-    let data
+    let data: {}[]
     try {
-      data = (await CMSServices.getInitialData(shopCode)).result
+      data = await Promise.all([
+        CMSServices.getHomeTabs(shopCode).then(({ result }) => result),
+        ProductServices.getCategory(shopCode, shopType).then(
+          ({ result }) => result
+        ),
+      ])
     } finally {
       this.setState({ loading: false })
     }
 
+    const [cmsTabs, categories] = data
+    const tabList = [
+      ...cmsTabs.map(ele => ({
+        id: ele.id,
+        showName: ele.showName,
+        type: 'cms',
+      })),
+      ...categories.map(ele => ({
+        id: ele.categoryCode,
+        showName: ele.categoryName,
+        type: 'category',
+      })),
+    ]
+
     this.setState(preState => ({
       currentTabIdx: 0,
-      tabList: data,
+      tabList,
       tabFloorMap: {
         ...preState.tabFloorMap,
-        ...(data.length > 0
-          ? { [data[0].id]: this.formatFloorData(data[0].templateVOList) }
+        ...(cmsTabs.length > 0
+          ? { [cmsTabs[0].id]: this.formatFloorData(cmsTabs[0].templateVOList) }
           : {}),
       },
       tabLoadingMap: {
         ...preState.tabLoadingMap,
-        ...(data.length > 0 ? { [data[0].id]: false } : {}),
+        ...(cmsTabs.length > 0 ? { [cmsTabs[0].id]: false } : {}),
       },
     }))
   }
@@ -172,36 +175,196 @@ class Page extends React.Component<Props, State> {
       }))
     }
   }
-  // 获取活动数据
-  requestActivityData = async (activityCode, shopCode) => {
-    const { result: data } = await CMSServices.getActivity(
-      activityCode,
-      shopCode
+  // 获取 top 分类下的数据
+  requestCategoryContentData = async categoryCode => {
+    const { shop } = this.state
+    const { result: cateResult } = await ProductServices.getCategory(
+      shop.code,
+      shop.type,
+      categoryCode
     )
-    this.setState({
-      tabList: data,
-      tabFloorMap:
-        data.length === 0
-          ? {}
-          : { [data[0].id]: this.formatFloorData(data[0].templateVOList) },
-      currentTabIdx: 0,
-    })
+    const categories = cateResult.map(ele => ({
+      key: ele.categoryCode,
+      image: ele.categoryImage,
+      title: ele.categoryName,
+      link: {
+        type: 1,
+        uri: 'A002,A002',
+        params: { params: { code: categoryCode } },
+      },
+    }))
+
+    this.setState(({ tabFloorMap }) => ({
+      tabFloorMap: {
+        ...tabFloorMap,
+        [categoryCode]: [
+          {
+            key: '$$category-box',
+            component: Box,
+            wrapperStyle: { marginBottom: 15 },
+            props: { data: categories, columnNumber: 5 },
+          },
+          {
+            key: '$$product-list-with-filter',
+            component: ProductListWithFilter,
+            props: { categoryCode, shopCode: shop.code },
+          },
+        ],
+      },
+    }))
   }
 
-  formatFloorData = data =>
-    data
-      .sort((a, b) => a.pos - b.pos)
-      .filter(ele => ele.img || ele.templateDetailVOList.length > 0)
+  formatFloorData = data => {
+    let sortedData = data
+      .sort((a, b) => a.pos - b.pos) // step 1: 排序
+      .filter(
+        // step 2: 过滤掉空数据
+        ele =>
+          ele.img ||
+          (ele.templateDetailVOList && ele.templateDetailVOList.length > 0)
+      )
 
-  // native 设置门店编码
-  setShopData = shopCode => {
-    Log.debug(`received shopData from native ${shopCode}`)
-    this.setState({ shopCode })
-    this.requestInitData(shopCode)
-  }
-
-  onRootLayout = ({ nativeEvent: { layout } }) => {
-    this.setState({ pageHeight: layout.height })
+    // step 3: 整合成组件
+    const {
+      currentTabIdx,
+      shop: { code: shopCode },
+    } = this.state
+    let result = []
+    let i = 0
+    let length = sortedData.length
+    while (i < length) {
+      let floor = sortedData[i]
+      if (floor.type === 1) {
+        // 轮播图
+        result.push({
+          key: floor.id,
+          component: Carousel,
+          wrapperStyle: { paddingHorizontal: 0 },
+          props: {
+            imageHeight: currentTabIdx === 0 ? 290 : 150,
+            data: floor.templateDetailVOList.map(ele => ({
+              key: ele.id,
+              image: ele.imgUrl,
+              link: CMSServices.formatLink(ele),
+            })),
+          },
+        })
+      } else if (floor.type === 2) {
+        // 广告图
+        if (floor.subType === 1) {
+          // 单张广告图
+          const imgObj = floor.templateDetailVOList[0]
+          const nextFloor = sortedData[i + 1]
+          // 首页第一个 tab：单张广告图 + 商品横向滑动 则 合并为合成组件
+          if (
+            imgObj.name === '半包图' &&
+            nextFloor &&
+            nextFloor.type === 3 &&
+            nextFloor.subType === 4
+          ) {
+            result.push({
+              key: `c-${floor.id}&${nextFloor.id}`,
+              component: ProductSwiperWithBg,
+              wrapperStyle: { paddingHorizontal: 0 },
+              props: {
+                backgroundImage: imgObj.imgUrl,
+                products: nextFloor.templateDetailVOList.map(ele => ({
+                  ...CMSServices.formatProduct(ele),
+                  shopCode,
+                })),
+              },
+            })
+            i += 2
+            continue
+          }
+          result.push({
+            key: floor.id,
+            component: AdSingle,
+            wrapperStyle: { paddingHorizontal: currentTabIdx === 0 ? 10 : 0 },
+            props: {
+              image: imgObj.imgUrl,
+              link: CMSServices.formatLink(imgObj),
+            },
+          })
+        } else if (floor.subType === 2) {
+          // 1v2
+          result.push({
+            key: floor.id,
+            component: Ad1v2,
+            wrapperStyle: { paddingHorizontal: currentTabIdx === 0 ? 10 : 0 },
+            props: {
+              data: (floor.templateDetailVOList || []).map(ele => ({
+                image: ele.imgUrl,
+                link: CMSServices.formatLink(ele),
+              })),
+            },
+          })
+        } else if (floor.subType === 3) {
+          // 1v1
+          result.push({
+            key: floor.id,
+            component: Ad1v1,
+            wrapperStyle: { paddingHorizontal: currentTabIdx === 0 ? 10 : 0 },
+            props: {
+              data: floor.templateDetailVOList.slice(0, 2).map(ele => ({
+                image: ele.imgUrl,
+                link: CMSServices.formatLink(ele),
+              })),
+            },
+          })
+        }
+      } else if (floor.type === 3) {
+        // 商品
+        const component = {
+          1: ProductList,
+          2: ProductGrid,
+          3: ProductGrid,
+          4: ProductSwiper,
+        }[floor.subType]
+        if (component)
+          result.push({
+            key: floor.id,
+            component,
+            wrapperStyle: { paddingHorizontal: 0 },
+            props: {
+              products: floor.templateDetailVOList.map(ele => ({
+                ...CMSServices.formatProduct(ele),
+                shopCode,
+              })),
+              columnNumber:
+                floor.subType === 2 ? 2 : floor.subType === 3 ? 3 : undefined,
+            },
+          })
+      } else if (floor.type === 4 && [1, 2].indexOf(floor.subType) !== -1) {
+        // 分类入口，宫格
+        result.push({
+          key: floor.id,
+          component: Box,
+          wrapperStyle: { paddingHorizontal: 5 },
+          props: {
+            columnNumber: { 1: 4, 2: 5 }[floor.subType],
+            data: floor.templateDetailVOList.map(ele => ({
+              key: ele.id,
+              image: ele.imgUrl,
+              title: ele.name,
+              link: CMSServices.formatLink(ele),
+            })),
+          },
+        })
+      } else if (floor.type === 5) {
+        // 分割图
+        result.push({
+          key: floor.id,
+          component: Divider,
+          wrapperStyle: { paddingHorizontal: 0 },
+          props: {
+            image: floor.img,
+          },
+        })
+      }
+      i++
+    }
+    return result
   }
 
   // 页面滚动
@@ -213,71 +376,88 @@ class Page extends React.Component<Props, State> {
     CMSServices.pushScrollToNative(x, y)
   }
 
-  onTabChange = idx => {
-    this.setState({ currentTabIdx: idx })
+  onTabIndexChange = idx => {
+    this.setState({ currentTabIdx: idx }, () => {
+      Native.setHomeFirstTabActiveStatus(idx === 0)
+    })
     const { tabList, tabFloorMap } = this.state
     const currentTab = tabList[idx]
     if (currentTab && (tabFloorMap[currentTab.id] || []).length === 0) {
-      this.requestFloorData(currentTab.id)
+      const fn = {
+        cms: this.requestFloorData,
+        category: this.requestCategoryContentData,
+      }[currentTab.type]
+      fn(currentTab.id)
     }
   }
 
-  private renderHomeFloorItems = ({
-    item: { tabList, tabFloorMap, tabLoadingMap, currentTabIdx },
-  }) => {
-    const { pageHeight, animatedValRefCmsScroll } = this.state
-    const event = Animated.event([
-      {
-        nativeEvent: {
-          contentOffset: {
-            y: animatedValRefCmsScroll,
-          },
-        },
-      },
-    ])
-    const renderScene = ({ route: { key: tabId } }) => (
-      <CMSComp
-        keyPrefix={tabId}
-        data={tabFloorMap[tabId] || []}
-        loading={tabLoadingMap[tabId] || false}
-        onRefresh={
-          tabId === tabList[0].id
-            ? undefined
-            : () => this.requestFloorData(tabId)
-        }
-        onScroll={event}
-      />
+  renderFlatItem = ({ item: { wrapperStyle, component, props } }) => (
+    <View style={wrapperStyle}>{React.createElement(component, props)}</View>
+  )
+
+  renderScene = ({ route }) => {
+    const {
+      tabList,
+      tabFloorMap,
+      tabLoadingMap,
+      animatedValRefCmsScrollY,
+    } = this.state
+
+    const { key: tabId } = route
+    const routeIndex = tabList.findIndex(ele => ele.id === tabId)
+
+    const flatListStyles = {
+      paddingTop: routeIndex === 0 ? 0 : placeholderForNativeHeight,
+    }
+
+    const onRefresh =
+      tabId === tabList[0].id
+        ? undefined
+        : () => this.onTabIndexChange(routeIndex)
+    const onScroll = Animated.event(
+      [{ nativeEvent: { contentOffset: { y: animatedValRefCmsScrollY } } }],
+      { listener: this.onPageScroll, useNativeDriver: true }
     )
 
     return (
-      <Tab
-        currentTabIndex={currentTabIdx}
-        tabs={tabList}
-        renderScene={renderScene}
-        height={pageHeight}
-        onTabIndexChange={this.onTabChange}
-        animatedVal={animatedValRefCmsScroll}
+      <AnimatedFlatList
+        style={[styles.sceneBox, flatListStyles]}
+        data={tabFloorMap[tabId] || []}
+        renderItem={this.renderFlatItem}
+        keyExtractor={item => `${item.key}`}
+        refreshing={tabLoadingMap[tabId] || false}
+        onRefresh={onRefresh}
+        onScroll={onScroll}
+        showsVerticalScrollIndicator={false}
       />
     )
   }
 
-  // todo: activity floor item render
-  renderActivityFloorItems = ({ item }) => null
+  renderTabBar = props => {
+    const { animatedValRefCmsScrollY } = this.state
+    return (
+      <View style={styles.tabBarContainer}>
+        <TabBar {...props} animatedVal={animatedValRefCmsScrollY} />
+      </View>
+    )
+  }
 
   render() {
-    const { type } = this.props
-    const { tabList, tabFloorMap, tabLoadingMap, currentTabIdx } = this.state
+    const { currentTabIdx, tabList } = this.state
+
+    const navigationState = {
+      index: currentTabIdx,
+      routes: tabList.map(tab => ({ key: tab.id, title: tab.showName })),
+    }
 
     return (
-      <View style={styles.container} onLayout={this.onRootLayout}>
-        {this.renderHomeFloorItems({
-          item: {
-            tabList,
-            tabFloorMap,
-            tabLoadingMap,
-            currentTabIdx,
-          },
-        })}
+      <View style={styles.container}>
+        <TabView
+          navigationState={navigationState}
+          renderScene={this.renderScene}
+          renderTabBar={this.renderTabBar}
+          onIndexChange={this.onTabIndexChange}
+        />
       </View>
     )
   }

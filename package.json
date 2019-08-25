@@ -43,6 +43,7 @@
     "jest": "24.8.0",
     "lodash": "^4.17.15",
     "metro-react-native-babel-preset": "0.54.1",
+    "prettier": "^1.18.2",
     "react-test-renderer": "16.8.3",
     "tslint": "^5.18.0"
   },
