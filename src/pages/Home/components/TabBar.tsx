@@ -38,15 +38,17 @@ export default class TabBar extends React.Component {
       const currentActiveTabTextLayout =
         tabTextLayoutMap[currentActiveRoute.key]
       if (currentActiveTabTextLayout) {
-        const indicatorWidth = currentActiveTabTextLayout.width + 8
+        const indicatorWidth = currentActiveTabTextLayout.width * 1.4
         const routesBeforeCurrentActive = routes.slice(0, index)
         const tabLayoutsBeforeCurrentActive = routesBeforeCurrentActive.map(
           ele => tabBoxLayoutMap[ele.key]
         )
-        const indicatorTranslateY =
+        const indicatorTranslateX =
           sumBy(tabLayoutsBeforeCurrentActive, ele => ele.width) +
-          (currentActiveTabTextLayout.width - indicatorWidth / 2)
-        return [indicatorWidth, indicatorTranslateY]
+          currentActiveTabTextLayout.x +
+          currentActiveTabTextLayout.width / 2 -
+          indicatorWidth / 2
+        return [indicatorWidth, indicatorTranslateX]
       }
     }
     return [0, 0]
@@ -171,7 +173,9 @@ export default class TabBar extends React.Component {
           })
         : 1
 
-    const [indicatorWidth, indicatorTranslateY] = this.calcIndicatorPos()
+    const [indicatorWidth, indicatorTranslateX] = this.calcIndicatorPos()
+
+    console.log(indicatorWidth, indicatorTranslateX)
 
     return (
       <View style={styles.container}>
@@ -201,7 +205,7 @@ export default class TabBar extends React.Component {
                 width: indicatorWidth,
                 backgroundColor: '#FFF',
                 opacity: indicatorOpacity,
-                transform: [{ translateY: indicatorTranslateY }],
+                transform: [{ translateX: indicatorTranslateX }],
               },
             ]}
           />
@@ -212,7 +216,7 @@ export default class TabBar extends React.Component {
                 width: indicatorWidth,
                 backgroundColor: '#FF3914',
                 opacity: indicatorWhenScrollOpacity,
-                transform: [{ translateY: indicatorTranslateY }],
+                transform: [{ translateX: indicatorTranslateX }],
               },
             ]}
           />
