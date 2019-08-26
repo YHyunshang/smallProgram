@@ -1,16 +1,17 @@
+import { string } from 'prop-types'
 /**
  * Created by 李华良 on 2019-07-26
  */
-import { NativeEventEmitter, NativeModules } from "react-native"
-import { Http, Log, Native } from "@utils"
+import { NativeEventEmitter, NativeModules } from 'react-native'
+import { Http, Log, Native } from '@utils'
 
 /**
  * 获取 CMS 初始数据
  * @param shopCode {string} 门店编码
  * @return {Promise} Http request instance
  */
-export function getInitialData(shopCode) {
-  return Http.get("cms", `/cms/mobile/${shopCode}/getHomePage`)
+export function getHomeTabs(shopCode) {
+  return Http.get('productCenter', `/cms/mobile/${shopCode}/getHomePage`)
 }
 
 /**
@@ -20,7 +21,10 @@ export function getInitialData(shopCode) {
  * @return {Promise} Http request instance
  */
 export function getFloorDataByTab(tabId, shopCode) {
-  return Http.get("cms", `/cms/mobile/${tabId}/getDetailPage/${shopCode}`)
+  return Http.get(
+    'productCenter',
+    `/cms/mobile/${tabId}/getDetailPage/${shopCode}`
+  )
 }
 
 /**
@@ -35,12 +39,12 @@ export function addToCart(
   productPrice: number | string
 ) {
   return NativeModules.HomeNativeManager.addToCart(
-    "post",
-    Http.formatUrl("cart", "/shopping_cart/product"),
+    'post',
+    Http.formatUrl('cart', '/shopping_cart/product'),
     JSON.stringify({ productCode, productNum, productPrice }),
     (errMsg, responseData) => {
       if (errMsg) {
-        Log.error("add to cart failed")
+        Log.error('add to cart failed')
       }
     }
   )
@@ -52,7 +56,6 @@ export function addToCart(
  * @param y {string | number} y 轴偏移量
  */
 export function pushScrollToNative(x, y) {
-  Log.debug(`calling HomeNativeManager.sendContentOffset(${x}, ${y})`)
   return NativeModules.HomeNativeManager.sendContentOffset(
     x.toString(),
     y.toString()
@@ -65,7 +68,7 @@ export function pushScrollToNative(x, y) {
  */
 export function subscriptShopChange(handler: (...args: any[]) => any) {
   const eventEmitter = new NativeEventEmitter(NativeModules.SendRNEventManager)
-  return eventEmitter.addListener("storeChange", handler)
+  return eventEmitter.addListener('storeChange', handler)
 }
 
 /**
@@ -75,7 +78,107 @@ export function subscriptShopChange(handler: (...args: any[]) => any) {
  */
 export function getActivity(activityCode: string, shopCode: string) {
   return Http.get(
-    "cms",
+    'productCenter',
     `/cms/mobile/${activityCode}/getActivePage/${shopCode}`
+  )
+}
+
+/**
+ * 更新商品在购物车中的数量
+ * @param productCode 商品编码
+ * @param productNum 数量
+ * @param productPrice 价格
+ * @param remark 备注
+ * @param shopCode 门店编码
+ */
+export function updateProductCountInCart(
+  productCode: string,
+  productNum: number,
+  productPrice: number,
+  remark = '',
+  shopCode: string
+) {
+  return new Promise((resolve, reject) => {
+    NativeModules.HomeNativeManager.addToCart(
+      'post',
+      Http.formatUrl('cart', '/app/shoppingCart/product'),
+      JSON.stringify({
+        productCode,
+        productNum,
+        productPrice,
+        remark,
+        shopCode,
+      }),
+      (errMsg, responseData) => {
+        if (errMsg) {
+          Native.showToast('添加到购物车失败')
+          return reject('update cart failed')
+        }
+        const res = JSON.parse(responseData)
+        if (res.code !== 200000) {
+          Native.showToast(res.message || '系统异常')
+          return reject(res.message)
+        }
+        return resolve(responseData)
+      }
+    )
+  })
+}
+
+/**
+ * 获取发现页数据
+ * @param shopCode 门店编码
+ */
+export function getFoundPageData(shopCode: string) {
+  return Http.get('productCenter', `/cms/mobile/${shopCode}/getDiscoveryPage`)
+}
+
+/**
+ * 将 CMS 中的跳转数据格式化为 native 识别的格式
+ * @param param0 CMS 元数据，如图片等
+ */
+export function formatLink({
+  link,
+  linkType,
+}: {
+  link: string
+  linkType: string
+  code: string
+}) {
+  return {
+    type: '',
+    uri: '',
+    params: {},
+  }
+}
+
+/**
+ * 格式化 CMS 商品数据
+ * @param data CMS 商品数据
+ */
+export function formatProduct(data: { [index: string]: any }) {
+  return {
+    cartId: data.cartId,
+    code: data.code,
+    thumbnail: data.imgUrl,
+    name: data.name,
+    tag: (data.labelList || [])[0] || '特价',
+    spec: data.productDesc || '300g',
+    price: data.promotionPrice < data.price ? data.promotionPrice : data.price,
+    slashedPrice: data.promotionPrice < data.price ? data.price : undefined,
+    count: data.productNumber || 0,
+  }
+}
+
+/**
+ * 获取购物车概况：商品数量、总金额等
+ * @param shopCode 门店编码
+ */
+export function getCartInfo(shopCode: string) {
+  return Http.post(
+    'cart',
+    '/app/cart/selectNumTotalNumAmount',
+    {},
+    { shopCode }
   )
 }
