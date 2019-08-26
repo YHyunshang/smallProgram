@@ -4,14 +4,13 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-26 13:14:46
+ * @LastEditTime: 2019-08-26 15:56:25
  */
 
 import React from 'react'
 import {
   Text,
   View,
-  Platform,
   FlatList,
   TouchableOpacity
 } from 'react-native'
@@ -25,7 +24,7 @@ import styles from './SimilarGoods.styles'
 // 一些常量设置
 const cols = 2 // 列数
 // 商品购物车图标
-const cartImg = Platform.OS === 'ios' ? require('@img/cart.png') : require('@img/cart.png')
+const cartImg = require('@img/cart.png')
 export default class SimilarGoods extends React.Component {
   constructor(props) {
     super(props)

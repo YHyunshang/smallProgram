@@ -4,10 +4,10 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-26 13:17:26
+ * @LastEditTime: 2019-08-26 15:56:08
  */
 import React from 'react'
-import {ScrollView, View, Text, Image, TouchableOpacity, Platform, NativeModules} from 'react-native'
+import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
 import Icon from '../../components/Icon'
 import {transPenny} from '../../utils/FormatUtil'
 import ShareModal from '../../components/business/ShareModal'
@@ -22,13 +22,13 @@ import SimilarGoods from '../../components/business/SimilarGoods'
 // import Tag from '../../components/business/Tag'
 // import {similarGoods} from '../../utils/mock'
 // 商品产地图标
-const productPlace = Platform.OS === 'ios' ? require('@img/product-place.png') : require('@img/product-place.png')
+const productPlace = require('@img/product-place.png')
 // 商品规格图标
-const productSpecific = Platform.OS === 'ios' ? require('@img/product-specific.png') : require('@img/product-specific.png')
+const productSpecific = require('@img/product-specific.png')
 // 商品条件图标
-const productConditions = Platform.OS === 'ios' ? require('@img/product-conditions.png') : require('@img/product-conditions.png')
+const productConditions = require('@img/product-conditions.png')
 // 商品默认图片
-const placeholderProduct = Platform.OS === 'ios' ? require('@img/placeholder-product.png') : require('@img/placeholder-product.png')
+const placeholderProduct = require('@img/placeholder-product.png')
 const rnAppModule = NativeModules.RnAppModule// 原生模块
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
 export default class ProductDetailPage extends React.Component {
@@ -156,7 +156,6 @@ export default class ProductDetailPage extends React.Component {
       uri: 'A003,A003',
       params: {params: {productCode: item.productCode}}
     })
-    // Native.navigateTo('0', 'A003,A003', {params: {productCode: item.productCode}})
   }
   /**
   * @description:生成海报方法
@@ -218,7 +217,9 @@ export default class ProductDetailPage extends React.Component {
    */
   onMomentumScrollEnd(event) {
     let topTabY = event.nativeEvent.contentOffset.y
-    if (topTabY && topTabY >= this.goodsLayoutY && topTabY < this.detailLayoutY) {
+    if (topTabY === 0) {
+      this.tabs.resetIndex(0)
+    } else if (topTabY && topTabY >= this.goodsLayoutY && topTabY < this.detailLayoutY) {
       this.tabs.resetIndex(0)
     } else if (topTabY && topTabY >= this.detailLayoutY) {
       this.tabs.resetIndex(1)
@@ -262,12 +263,11 @@ export default class ProductDetailPage extends React.Component {
           )
         }
         <ScrollView
+          style={styles.scrollView}
           ref={(view) => {
             this.myScrollView = view
           }}
           showsVerticalScrollIndicator={false}
-          scrollEventThrottle = {200}
-          pagingEnabled={true}
           // 当一帧滚动完毕时调用
           onMomentumScrollEnd={(event) => this.onMomentumScrollEnd(event)}
         >
@@ -327,41 +327,7 @@ export default class ProductDetailPage extends React.Component {
                   : null
               }
             </View>
-            {/* <View style={styles.goodsMinBorder}></View> */}
           </View>
-          {/* <View style={styles.goodsQualityFlex}>
-            <View style={styles.goodsQualityRowFlex}>
-              <View style={styles.goodsQualityColumnFlex}>
-                <Text style={styles.goodsQualityName}>产地</Text>
-                <Text style={styles.goodsQualityValue}>{goodsInfo.originPlace}</Text>
-              </View>
-              <View style={styles.heightBorder}></View>
-            </View>
-            <View style={styles.goodsQualityRowFlex}>
-              <View style={styles.goodsQualityColumnFlex}>
-                <Text style={styles.goodsQualityName}>规格</Text>
-                <Text style={styles.goodsQualityValue}>{goodsInfo.productSpecific}</Text>
-              </View>
-              <View style={styles.heightBorder}></View>
-            </View>
-            <View style={styles.goodsQualityRowFlex}>
-              <View style={styles.goodsQualityColumnFlex}>
-                <Text style={styles.goodsQualityName}>保质期</Text>
-                <Text style={styles.goodsQualityValue}>{goodsInfo.shelfLife}</Text>
-              </View>
-            </View>
-          </View>
-          <View style={styles.goodsMaxBorder}></View> */}
-          {/* <View onLayout={event => {
-            this.evaluteLayoutY = event.nativeEvent.layout.y
-          }}>
-            {
-              evaluation ? <GoodsDetailEvaluate jumpToEvaluteList={this.jumpToNativeEvaluteList} evaluation={evaluation} favorableRate={favorableRate}/>
-                : <Text></Text>
-            }
-
-          </View> */}
-          {/* <View style={styles.goodsMaxBorder}></View> */}
           {
             similarProduct ? <SimilarGoods similarProduct={similarProduct} addCart={this.handleAddCart} jumpGoodsDetail={this.jumpGoodsDetail} defaultImg={placeholderProduct}></SimilarGoods>
               : null

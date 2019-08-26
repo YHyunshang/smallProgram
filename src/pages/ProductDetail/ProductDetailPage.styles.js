@@ -4,14 +4,14 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-23 11:30:35
+ * @LastEditTime: 2019-08-26 15:54:42
  */
 import {StyleSheet, Dimensions} from 'react-native'
-import {isIPhoneXMarginTop, isIPhoneXFooter} from '../../utils/IsIphoneX'
-const {width} = Dimensions.get('window')
+import {isIPhoneXMarginTop} from '../../utils/IsIphoneX'
+const {width, height} = Dimensions.get('window')
 export default StyleSheet.create({
   container: {
-    height: '100%',
+    height: height - 50,
     zIndex: 100,
     flexDirection: 'column',
     position: 'relative',
@@ -160,9 +160,7 @@ export default StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 15,
-    //iPhoneX底部兼容处理
-    marginBottom: isIPhoneXFooter(0)
+    paddingHorizontal: 15
   },
   topTab: {
     width: '100%',
