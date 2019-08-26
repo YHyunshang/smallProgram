@@ -70,6 +70,12 @@ class Page extends React.Component<Props, State> {
   nativeSubscription: { remove: Function }
 
   async componentDidMount() {
+    this.onPageScroll({
+      nativeEvent: {
+        contentOffset: { x: 0, y: 0 },
+      },
+    })
+    Native.setHomeFirstTabActiveStatus(true)
     this.init()
   }
 

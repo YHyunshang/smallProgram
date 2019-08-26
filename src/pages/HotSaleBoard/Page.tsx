@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-08-21 14:48:31
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-08-25 16:51:59
+ * @Last Modified time: 2019-08-26 10:03:27
  */
 import * as React from 'react'
 import { View, FlatList, Image } from 'react-native'
@@ -85,10 +85,13 @@ export default class Page extends React.Component<Object, State> {
       const { page } = await ProductServices.getHotSaleProductsUnderCategory(
         tabId
       )
-      this.setState(({ tabContentMap: preTabContentMap }) => ({
+      this.setState(({ tabContentMap: preTabContentMap, shop: { code } }) => ({
         tabContentMap: {
           ...preTabContentMap,
-          [tabId]: (page.result || []).map(ele => this.formateProductData(ele)),
+          [tabId]: (page.result || []).map(ele => ({
+            ...this.formateProductData(ele),
+            shopCode: code,
+          })),
         },
       }))
     } finally {

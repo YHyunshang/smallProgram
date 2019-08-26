@@ -52,18 +52,14 @@ export default class TabBar extends React.Component {
     return [0, 0]
   }
 
-  render() {
+  renderTabs = () => {
     const {
-      navigationState,
+      navigationState: { routes, index },
       jumpTo,
       animatedVal,
-      tabTextLayoutMap,
-      tabBoxLayoutMap,
     } = this.props
-    const { index, routes } = navigationState
-
     const routeTotal = routes.length
-    const tabs = routes.map((route, idx) => {
+    return routes.map((route, idx) => {
       const firstTabTextActiveScrollOpacity =
         index === 0
           ? animatedVal.interpolate({
@@ -125,6 +121,11 @@ export default class TabBar extends React.Component {
         </TouchableWithoutFeedback>
       )
     })
+  }
+
+  render() {
+    const { navigationState, animatedVal } = this.props
+    const { index } = navigationState
 
     const tabTranslateY = animatedVal.interpolate({
       inputRange: [0, 50],
@@ -192,7 +193,7 @@ export default class TabBar extends React.Component {
           horizontal
           showsHorizontalScrollIndicator={false}
         >
-          {tabs}
+          {this.renderTabs()}
           <Animated.View
             style={[
               styles.indicator,
