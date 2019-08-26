@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-26 15:56:25
+ * @LastEditTime: 2019-08-26 18:28:43
  */
 
 import React from 'react'
@@ -73,23 +73,23 @@ export default class SimilarGoods extends React.Component {
             ? <Text style={styles.throughLinePrice} >¥{transPenny(item.price)}</Text>
             : null
         }
-        <View style={styles.goodsPriceFlex}>
-          <View style={styles.goodsPriceWrap}>
-            <Text style={styles.goodsPriceSymbol}>¥</Text>
-            <Text style={styles.goodsPrice}>{transPenny(item.promotionPrice ? item.promotionPrice : item.price)}</Text>
-          </View>
-          <LinearGradient style={styles.container} colors={['#FF3914', '#FF6042']}>
-            <TouchableOpacity
-              activeOpacity={0.95}
-              onPress={() => {
-                this.handleAddCart(item)
-              }} >
-              <FitImage style={styles.goodsCartImg} source={cartImg}></FitImage>
-              {/* <Icon style={styles.rightShareIcon} name='cart' size={13} color="#FFFFFF" /> */}
-            </TouchableOpacity>
-          </LinearGradient>
-        </View>
       </TouchableOpacity>
+      <View style={styles.goodsPriceFlex}>
+        <View style={styles.goodsPriceWrap}>
+          <Text style={styles.goodsPriceSymbol}>¥</Text>
+          <Text style={styles.goodsPrice}>{transPenny(item.promotionPrice ? item.promotionPrice : item.price)}</Text>
+        </View>
+        <LinearGradient style={styles.container} colors={['#FF3914', '#FF6042']}>
+          <TouchableOpacity
+            activeOpacity={0.95}
+            onPress={() => {
+              this.handleAddCart(item)
+            }} >
+            <FitImage style={styles.goodsCartImg} source={cartImg}></FitImage>
+            {/* <Icon style={styles.rightShareIcon} name='cart' size={13} color="#FFFFFF" /> */}
+          </TouchableOpacity>
+        </LinearGradient>
+      </View>
     </View>
   )
 
