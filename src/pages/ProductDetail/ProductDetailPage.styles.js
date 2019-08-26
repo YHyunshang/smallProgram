@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-26 15:54:42
+ * @LastEditTime: 2019-08-26 17:46:05
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import {isIPhoneXMarginTop} from '../../utils/IsIphoneX'
@@ -26,7 +26,7 @@ export default StyleSheet.create({
   },
   goodsName: {
     width: width - 65,
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '600',
     color: '#333333',
     textAlign: 'left'
@@ -55,7 +55,7 @@ export default StyleSheet.create({
   goodsPrice: {
     fontSize: 18,
     color: '#FA8500',
-    fontWeight: '600'
+    fontWeight: '900'
   },
   goodsPriceSymbol: {
     fontSize: 12,

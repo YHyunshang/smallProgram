@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-26 15:56:08
+ * @LastEditTime: 2019-08-26 18:41:39
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -16,7 +16,7 @@ import TabBar from '../../components/common/TabBar'
 import Loading from '../../components/common/Loading'
 import styles from './ProductDetailPage.styles'
 import {Native} from '@utils'
-import {getGoodsDetailData, getPosterImgUrl, getSimilarProduct, addToCart} from '../../services/goodsDetail'
+import {getGoodsDetailData, getPosterImgUrl, getSimilarProduct, addToCart, subscriptCartNumberChange} from '../../services/goodsDetail'
 import GoodsDetailSwiper from '../../components/business/GoodsDetailSwiper'
 import SimilarGoods from '../../components/business/SimilarGoods'
 // import Tag from '../../components/business/Tag'
@@ -66,10 +66,22 @@ export default class ProductDetailPage extends React.Component {
     this.setState({storeCode: productInfo.storeCode})
     this.getProductInfo(productInfo.productCode, productInfo.storeCode)
     this.getSimilarProductList(productInfo.productCode, productInfo.storeCode)
+    // 相似商品列表购物车数量变化native 事件监听
+    // this.nativeSubscription = subscriptCartNumberChange(
+    //   this.onNativeCartNumberChange
+    // )
   }
-
+  /**
+   * @param {productCode}
+   * @param {productNumber}
+   * @description: 相似商品列表添加购物车返回productCode和productNumber
+   */
+  onNativeCartNumberChange = ({productCode, productNumber}) => {
+    rnAppModule.showToast(productCode, '0')
+    rnAppModule.showToast(productNumber, '0')
+  }
   componentWillUnmount() {
-
+    this.nativeSubscription && this.nativeSubscription.remove()
   }
   /**
    * @description: 获取原生返回的商品详情数据
@@ -141,11 +153,7 @@ export default class ProductDetailPage extends React.Component {
    * @description: 相似商品列表添加到购物车
    */
   handleAddCart=(item) => {
-    // if (item.productNoteName) { // 有商品备注,展示原生的商品备注弹窗
-    //   // isShowNoteModal(item)
-    // } else {
-    //   addToCart(item.productCode, 1, item.price)
-    // }
+    // addToCart(JSON.stringify(item), '1')
   }
   /**
    * @description: 点击相似商品列表跳转至商品详情
