@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-23 19:21:28
+ * @LastEditTime: 2019-08-26 11:53:55
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, Platform, NativeModules} from 'react-native'
@@ -151,7 +151,12 @@ export default class ProductDetailPage extends React.Component {
    * @description: 点击相似商品列表跳转至商品详情
    */
   jumpGoodsDetail=(item) => {
-    Native.navigateTo('0', 'A003,A003', {params: {productCode: item.productCode}})
+    Native.navigateTo({
+      type: 1,
+      uri: 'A003,A003',
+      params: {params: {productCode: item.productCode}}
+    })
+    // Native.navigateTo('0', 'A003,A003', {params: {productCode: item.productCode}})
   }
   /**
   * @description:生成海报方法

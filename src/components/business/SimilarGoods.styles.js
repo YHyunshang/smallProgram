@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-23 16:56:09
+ * @LastEditTime: 2019-08-26 11:22:33
  */
 
 import {
@@ -86,17 +86,19 @@ export default StyleSheet.create({
     fontWeight: '600'
   },
   goodsCartImg: {
-    width: 36,
-    height: 36
+    width: 14,
+    height: 14
   },
-  cartIcon: {
-    width: 24,
-    height: 24,
+  container: {
     marginRight: 10,
     marginBottom: 10,
-    borderRadius: 100,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center'
+    borderRadius: 24,
+    paddingTop: 6,
+    paddingRight: 6,
+    paddingBottom: 5,
+    paddingLeft: 5,
+    shadowColor: 'rgba(238,66,57,0.23)',
+    shadowOffset: {width: 0, height: 2},
+    shadowRadius: 4
   }
 })
