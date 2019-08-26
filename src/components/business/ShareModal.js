@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-26 13:18:40
+ * @LastEditTime: 2019-08-26 15:57:16
  */
 
 import React from 'react'
@@ -12,7 +12,6 @@ import {
   Text,
   View,
   Image,
-  Platform,
   TouchableOpacity,
   NativeModules
 } from 'react-native'
@@ -22,10 +21,8 @@ import Icon from '../../components/Icon'
 import styles from './ShareModal.styles'
 const rnAppModule = NativeModules.RnAppModule// 原生商品详情模块
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
-// const shareIconWechat = {uri: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/wechat-friend.png'}
-// const shareIconMoments = {uri: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/wechat-moments.png'}
-const shareIconWechat = Platform.OS === 'ios' ? require('@img/wechat-friend.png') : require('@img/wechat-friend.png')
-const shareIconMoments = Platform.OS === 'ios' ? require('@img/wechat-moments.png') : require('@img/wechat-moments.png')
+const shareIconWechat = require('@img/wechat-friend.png')
+const shareIconMoments = require('@img/wechat-moments.png')
 export default class ShareModal extends React.Component {
   constructor(props) {
     super(props)
