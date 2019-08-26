@@ -49,13 +49,17 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   cartBtnBox: {
+    shadowColor: '#EE4239',
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    shadowOpacity: 0.23,
+    elevation: 4,
+  },
+  gradientBox: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 6,
     borderRadius: 10,
-    shadowColor: 'rgba(238,66,57,0.23)',
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
   },
   addIcon: {
     width: 8,

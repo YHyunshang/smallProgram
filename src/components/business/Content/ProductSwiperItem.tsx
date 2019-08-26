@@ -70,13 +70,15 @@ function ProductSwiperItem({
 
       <View style={styles.cartBox}>
         <TouchableOpacity onPress={() => onModifyCount(count + 1)}>
-          <LinearGradient
-            colors={['#FF3914', '#FF6042']}
-            style={styles.cartBtnBox}
-          >
-            <Image style={styles.addIcon} source={require('@img/plus.png')} />
-            <Text style={styles.cartBtnText}>购物车</Text>
-          </LinearGradient>
+          <View style={styles.cartBtnBox}>
+            <LinearGradient
+              colors={['#FF3914', '#FF6042']}
+              style={styles.gradientBox}
+            >
+              <Image style={styles.addIcon} source={require('@img/plus.png')} />
+              <Text style={styles.cartBtnText}>购物车</Text>
+            </LinearGradient>
+          </View>
         </TouchableOpacity>
       </View>
     </View>
