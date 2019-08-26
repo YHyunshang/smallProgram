@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-26 11:32:12
+ * @LastEditTime: 2019-08-26 13:14:46
  */
 
 import React from 'react'
@@ -25,7 +25,7 @@ import styles from './SimilarGoods.styles'
 // 一些常量设置
 const cols = 2 // 列数
 // 商品购物车图标
-const cartImg = Platform.OS === 'ios' ? require('@img/cart.png') : {uri: 'asset:/src_assets_imgs_cart.png'}
+const cartImg = Platform.OS === 'ios' ? require('@img/cart.png') : require('@img/cart.png')
 export default class SimilarGoods extends React.Component {
   constructor(props) {
     super(props)

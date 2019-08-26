@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-26 11:53:55
+ * @LastEditTime: 2019-08-26 13:17:26
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, Platform, NativeModules} from 'react-native'
@@ -22,13 +22,13 @@ import SimilarGoods from '../../components/business/SimilarGoods'
 // import Tag from '../../components/business/Tag'
 // import {similarGoods} from '../../utils/mock'
 // 商品产地图标
-const productPlace = Platform.OS === 'ios' ? require('@img/product-place.png') : {uri: 'asset:/src_assets_imgs_product-place.png'}
+const productPlace = Platform.OS === 'ios' ? require('@img/product-place.png') : require('@img/product-place.png')
 // 商品规格图标
-const productSpecific = Platform.OS === 'ios' ? require('@img/product-specific.png') : {uri: 'asset:/src_assets_imgs_product-specific.png'}
+const productSpecific = Platform.OS === 'ios' ? require('@img/product-specific.png') : require('@img/product-specific.png')
 // 商品条件图标
-const productConditions = Platform.OS === 'ios' ? require('@img/product-conditions.png') : {uri: 'asset:/src_assets_imgs_product-conditions.png'}
+const productConditions = Platform.OS === 'ios' ? require('@img/product-conditions.png') : require('@img/product-conditions.png')
 // 商品默认图片
-const placeholderProduct = Platform.OS === 'ios' ? require('@img/placeholder-product.png') : {uri: 'asset:/src_assets_imgs_placeholder-product.png'}
+const placeholderProduct = Platform.OS === 'ios' ? require('@img/placeholder-product.png') : require('@img/placeholder-product.png')
 const rnAppModule = NativeModules.RnAppModule// 原生模块
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
 export default class ProductDetailPage extends React.Component {
@@ -141,11 +141,11 @@ export default class ProductDetailPage extends React.Component {
    * @description: 相似商品列表添加到购物车
    */
   handleAddCart=(item) => {
-    if (item.productNoteName) { // 有商品备注,展示原生的商品备注弹窗
-      // isShowNoteModal(item)
-    } else {
-      addToCart(item.productCode, 1, item.price)
-    }
+    // if (item.productNoteName) { // 有商品备注,展示原生的商品备注弹窗
+    //   // isShowNoteModal(item)
+    // } else {
+    //   addToCart(item.productCode, 1, item.price)
+    // }
   }
   /**
    * @description: 点击相似商品列表跳转至商品详情
