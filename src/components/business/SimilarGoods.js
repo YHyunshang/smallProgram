@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-23 16:39:08
+ * @LastEditTime: 2019-08-26 11:32:12
  */
 
 import React from 'react'
@@ -16,6 +16,7 @@ import {
   TouchableOpacity
 } from 'react-native'
 import FitImage from 'react-native-fit-image'
+import LinearGradient from 'react-native-linear-gradient'
 // import Icon from '../Icon'
 // import Tag from './Tag'
 import {transPenny} from '../../utils/FormatUtil'
@@ -78,14 +79,16 @@ export default class SimilarGoods extends React.Component {
             <Text style={styles.goodsPriceSymbol}>¥</Text>
             <Text style={styles.goodsPrice}>{transPenny(item.promotionPrice ? item.promotionPrice : item.price)}</Text>
           </View>
-          <TouchableOpacity
-            activeOpacity={0.95}
-            onPress={() => {
-              this.handleAddCart(item)
-            }} >
-            <FitImage style={styles.goodsCartImg} source={cartImg}></FitImage>
-            {/* <Icon style={styles.rightShareIcon} name='cart' size={13} color="#FFFFFF" /> */}
-          </TouchableOpacity>
+          <LinearGradient style={styles.container} colors={['#FF3914', '#FF6042']}>
+            <TouchableOpacity
+              activeOpacity={0.95}
+              onPress={() => {
+                this.handleAddCart(item)
+              }} >
+              <FitImage style={styles.goodsCartImg} source={cartImg}></FitImage>
+              {/* <Icon style={styles.rightShareIcon} name='cart' size={13} color="#FFFFFF" /> */}
+            </TouchableOpacity>
+          </LinearGradient>
         </View>
       </TouchableOpacity>
     </View>
