@@ -31,7 +31,11 @@ export default function Ad1v1({ data }: Props) {
           <TouchableWithoutFeedback onPress={() => Native.navigateTo(link)}>
             <Image
               source={{ uri: image }}
-              style={{ width: imgDim.width, height: imgDim.height }}
+              style={{
+                width: imgDim.width,
+                height: imgDim.height,
+                borderRadius: 5,
+              }}
             />
           </TouchableWithoutFeedback>
         </View>
