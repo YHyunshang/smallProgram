@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-26 11:22:33
+ * @LastEditTime: 2019-08-27 10:18:34
  */
 
 import {
@@ -34,7 +34,7 @@ export default StyleSheet.create({
   similarGoodsTitle: {
     fontSize: 18,
     color: '#333333',
-    fontWeight: '600'
+    fontWeight: 'bold'
   },
   similarGoodsList: {
     width: imageWidth,
@@ -78,12 +78,12 @@ export default StyleSheet.create({
     color: '#FA8500',
     paddingLeft: 10,
     paddingTop: 5,
-    fontWeight: '600'
+    fontWeight: 'bold'
   },
   goodsPrice: {
     fontSize: 18,
     color: '#FA8500',
-    fontWeight: '600'
+    fontWeight: 'bold'
   },
   goodsCartImg: {
     width: 14,

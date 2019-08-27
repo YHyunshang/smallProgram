@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-23 18:21:32
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-23 16:40:35
+ * @LastEditTime: 2019-08-27 10:07:12
  */
 
 import React, {Component} from 'react'
@@ -89,7 +89,8 @@ const tabBarStyle = StyleSheet.create({
   },
   active: {
     color: '#4D4D4D',
-    fontSize: 19
+    fontSize: 19,
+    fontWeight: '800'
   },
   sortimg: {
     width: 55,

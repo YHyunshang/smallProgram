@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-26 18:41:39
+ * @LastEditTime: 2019-08-27 10:48:12
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -255,13 +255,15 @@ export default class ProductDetailPage extends React.Component {
       <View style={styles.container}>
         {
           (
-            <View style={styles.topTab}>
-              <View></View>
-              <TabBar ref={e => this.tabs = e}
-                index={this.state.currentIndex}
-                data={this.state.tablist}
-                clickScroll={this.clickScroll}
-                onChange={index => {}} />
+            <View style={styles.topTabWraper}>
+              <View style={styles.topTab}>
+                {/* <View></View> */}
+                <TabBar ref={e => this.tabs = e}
+                  index={this.state.currentIndex}
+                  data={this.state.tablist}
+                  clickScroll={this.clickScroll}
+                  onChange={index => {}} />
+              </View>
               <TouchableOpacity activeOpacity={0.95} onPress={() => {
                 this.handleShowModal()
               }} >

@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-26 17:46:05
+ * @LastEditTime: 2019-08-27 11:08:46
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import {isIPhoneXMarginTop} from '../../utils/IsIphoneX'
@@ -27,7 +27,7 @@ export default StyleSheet.create({
   goodsName: {
     width: width - 65,
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: 'bold',
     color: '#333333',
     textAlign: 'left'
   },
@@ -53,17 +53,17 @@ export default StyleSheet.create({
     height: 375
   },
   goodsPrice: {
-    fontSize: 18,
+    fontSize: 24,
     color: '#FA8500',
-    fontWeight: '900'
+    fontWeight: 'bold'
   },
   goodsPriceSymbol: {
-    fontSize: 12,
+    fontSize: 18,
     color: '#FA8500',
     paddingLeft: 15,
     paddingRight: 2,
     paddingTop: 5,
-    fontWeight: '600'
+    fontWeight: 'bold'
   },
   goodsTag: {
     width: 30,
@@ -146,7 +146,7 @@ export default StyleSheet.create({
   goodsDetailTitle: {
     fontSize: 15,
     color: '#333333',
-    fontWeight: '900',
+    fontWeight: 'bold',
     marginTop: 9,
     marginLeft: 15
   },
@@ -162,13 +162,19 @@ export default StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 15
   },
+  topTabWraper: {
+    position: 'relative',
+    // top: 20,
+    // right: 17,
+    flexDirection: 'row'
+  },
   topTab: {
     width: '100%',
     height: 44,
     backgroundColor: '#FFFFFF',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     // iPhoneX头部兼容处理
     marginTop: isIPhoneXMarginTop(0)
   },
@@ -180,13 +186,9 @@ export default StyleSheet.create({
     marginLeft: 15
   },
   rightShareIcon: {
-    marginRight: 22
-  },
-  topTabInfo: {
-    height: 44,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between'
+    position: 'absolute',
+    right: 17,
+    top: 44
   },
   itemTitle: {
     fontSize: 14,
