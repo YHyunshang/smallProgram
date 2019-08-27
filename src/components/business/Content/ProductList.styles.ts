@@ -17,7 +17,7 @@ export default StyleSheet.create({
     bottom: 0,
     left: 105,
     right: 20,
-    height: 1,
+    height: 0.5,
     backgroundColor: '#EEE',
   },
 })

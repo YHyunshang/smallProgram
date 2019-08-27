@@ -41,7 +41,7 @@ export default theme =>
           flexDirection: 'row',
         },
         rowNotLast: {
-          borderBottomWidth: 1,
+          borderBottomWidth: 0.5,
           borderBottomColor: '#EEEEEE',
         },
         column: {
@@ -49,7 +49,7 @@ export default theme =>
           width: windowWidth / 3,
         },
         columnNotLast: {
-          borderRightWidth: 1,
+          borderRightWidth: 0.5,
           borderRightColor: '#EEEEEE',
         },
         productBox: {},

@@ -18,10 +18,12 @@ import ProductSwiper from '@components/business/Content/ProductSwiper'
 import ProductSwiperWithBg from '@components/business/Content/ProductSwiperWithBg'
 import ProductListWithFilter from './components/ProductListWithFilter'
 import { TabView } from 'react-native-tab-view'
-import TabBar from './components/TabBar'
+import TabBar, { TabHeight } from './components/TabBar'
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
-const placeholderForNativeHeight = Native.getStatusBarHeight() + 86 + 34
+const placeholderForNativeHeight = Native.getStatusBarHeight() + 86 + TabHeight
+const windowWidth = Dimensions.get('window').width
+const windowHeight = Dimensions.get('window').height
 
 enum PageType {
   HOME = 'home',
@@ -49,7 +51,7 @@ interface State {
   animatedValRefCmsScrollY: Animated.AnimatedValue
 }
 
-class Page extends React.Component<Props, State> {
+class Page extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props)
   }
@@ -157,67 +159,69 @@ class Page extends React.Component<Props, State> {
     }))
   }
   // 获取 tab 下的 CMS 数据
-  requestFloorData = async tabId => {
+  requestFloorData = tabId => {
     this.setState(({ tabLoadingMap }) => ({
       tabLoadingMap: { ...tabLoadingMap, [tabId]: true },
     }))
 
-    let data
-    try {
-      data = await CMSServices.getFloorDataByTab(tabId, this.state.shopCode)
-    } finally {
-      this.setState(({ tabLoadingMap }) => ({
-        tabLoadingMap: { ...tabLoadingMap, [tabId]: false },
-      }))
-    }
-
-    const { result } = data
-    if (result) {
-      this.setState(({ tabFloorMap }) => ({
-        tabFloorMap: {
-          ...tabFloorMap,
-          [tabId]: this.formatFloorData(result.templateVOList),
-        },
-      }))
-    }
+    return CMSServices.getFloorDataByTab(tabId, this.state.shop.code)
+      .then(({ result }) => {
+        this.setState(({ tabFloorMap }) => ({
+          tabFloorMap: {
+            ...tabFloorMap,
+            [tabId]: this.formatFloorData(result.templateVOList),
+          },
+        }))
+      })
+      .finally(() => {
+        this.setState(({ tabLoadingMap }) => ({
+          tabLoadingMap: { ...tabLoadingMap, [tabId]: false },
+        }))
+      })
   }
   // 获取 top 分类下的数据
-  requestCategoryContentData = async categoryCode => {
+  requestCategoryContentData = categoryCode => {
+    this.setState(({ tabLoadingMap }) => ({
+      tabLoadingMap: { ...tabLoadingMap, [categoryCode]: true },
+    }))
     const { shop } = this.state
-    const { result: cateResult } = await ProductServices.getCategory(
-      shop.code,
-      shop.type,
-      categoryCode
-    )
-    const categories = cateResult.map(ele => ({
-      key: ele.categoryCode,
-      image: ele.categoryImage,
-      title: ele.categoryName,
-      link: {
-        type: 1,
-        uri: 'A002,A002',
-        params: { params: { code: categoryCode } },
-      },
-    }))
+    return ProductServices.getCategory(shop.code, shop.type, categoryCode)
+      .then(({ result }) => {
+        const categories = result.map(ele => ({
+          key: ele.categoryCode,
+          image: ele.categoryImage,
+          title: ele.categoryName,
+          link: {
+            type: 1,
+            uri: 'A002,A002',
+            params: { params: { code: categoryCode } },
+          },
+        }))
 
-    this.setState(({ tabFloorMap }) => ({
-      tabFloorMap: {
-        ...tabFloorMap,
-        [categoryCode]: [
-          {
-            key: '$$category-box',
-            component: Box,
-            wrapperStyle: { marginBottom: 15 },
-            props: { data: categories, columnNumber: 5 },
+        this.setState(({ tabFloorMap }) => ({
+          tabFloorMap: {
+            ...tabFloorMap,
+            [categoryCode]: [
+              {
+                key: '$$category-box',
+                component: Box,
+                wrapperStyle: { marginBottom: 15 },
+                props: { data: categories, columnNumber: 5 },
+              },
+              {
+                key: '$$product-list-with-filter',
+                component: ProductListWithFilter,
+                props: { categoryCode, shopCode: shop.code },
+              },
+            ],
           },
-          {
-            key: '$$product-list-with-filter',
-            component: ProductListWithFilter,
-            props: { categoryCode, shopCode: shop.code },
-          },
-        ],
-      },
-    }))
+        }))
+      })
+      .finally(() =>
+        this.setState(({ tabLoadingMap }) => ({
+          tabLoadingMap: { ...tabLoadingMap, [categoryCode]: false },
+        }))
+      )
   }
 
   formatFloorData = data => {
@@ -342,11 +346,17 @@ class Page extends React.Component<Props, State> {
             },
           })
       } else if (floor.type === 4 && [1, 2].indexOf(floor.subType) !== -1) {
+        const isPreFloorBox = sortedData[i - 1] && sortedData[i - 1].type === 4
+        const isNextFloorBox = sortedData[i + 1] && sortedData[i + 1].type === 4
         // 分类入口，宫格
         result.push({
           key: floor.id,
           component: Box,
-          wrapperStyle: { paddingHorizontal: 5 },
+          wrapperStyle: {
+            paddingHorizontal: 5,
+            paddingTop: isPreFloorBox ? 20 : 25,
+            paddingBottom: isNextFloorBox ? 0 : 25,
+          },
           props: {
             columnNumber: { 1: 4, 2: 5 }[floor.subType],
             data: floor.templateDetailVOList.map(ele => ({
@@ -397,9 +407,83 @@ class Page extends React.Component<Props, State> {
     }
   }
 
+  onRefreshScene = idx => {
+    const { tabList, tabFloorMap } = this.state
+    const currentTab = tabList[idx]
+    const fn = {
+      cms: this.requestFloorData,
+      category: this.requestCategoryContentData,
+    }[currentTab.type]
+    fn(currentTab.id)
+  }
+
+  onContentScroll = Animated.event(
+    [
+      {
+        nativeEvent: {
+          contentOffset: { y: this.state.animatedValRefCmsScrollY },
+        },
+      },
+    ],
+    { listener: this.onPageScroll, useNativeDriver: true }
+  )
+
   renderFlatItem = ({ item: { wrapperStyle, component, props } }) => (
     <View style={wrapperStyle}>{React.createElement(component, props)}</View>
   )
+
+  renderSceneI = ({ route }) => {
+    const {
+      tabList,
+      tabFloorMap,
+      tabLoadingMap,
+      currentTabIdx,
+      animatedValRefCmsScrollY,
+    } = this.state
+
+    const { key: tabId } = route
+    const routeIndex = tabList.findIndex(ele => ele.id === tabId)
+
+    const contentInset = {
+      top: routeIndex === 0 ? 0 : placeholderForNativeHeight,
+    }
+
+    const onRefresh = () => {
+      console.log('-->>>refresh', routeIndex)
+      this.onTabIndexChange(routeIndex)
+    }
+    const onScroll = Animated.event(
+      [{ nativeEvent: { contentOffset: { y: animatedValRefCmsScrollY } } }],
+      { listener: this.onPageScroll, useNativeDriver: true }
+    )
+
+    const flatListTranslateY =
+      currentTabIdx === 0
+        ? 0
+        : animatedValRefCmsScrollY.interpolate({
+            inputRange: [0, 50],
+            outputRange: [placeholderForNativeHeight, 0],
+            extrapolate: 'clamp',
+          })
+
+    return (
+      <View style={{ position: 'relative', flex: 1 }}>
+        <AnimatedFlatList
+          style={[
+            styles.sceneBox,
+            { transform: [{ translateY: flatListTranslateY }] },
+          ]}
+          data={tabFloorMap[tabId] || []}
+          renderItem={this.renderFlatItem}
+          keyExtractor={item => `${item.key}`}
+          refreshing={tabLoadingMap[tabId] || false}
+          onRefresh={onRefresh}
+          onScroll={onScroll}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
+    )
+  }
 
   renderScene = ({ route }) => {
     const {
@@ -408,32 +492,49 @@ class Page extends React.Component<Props, State> {
       tabLoadingMap,
       animatedValRefCmsScrollY,
     } = this.state
+    const routeIndex = tabList.findIndex(tab => tab.id === route.key)
 
-    const { key: tabId } = route
-    const routeIndex = tabList.findIndex(ele => ele.id === tabId)
-
-    const flatListStyles = {
-      paddingTop: routeIndex === 0 ? 0 : placeholderForNativeHeight,
-    }
-
-    const onRefresh =
-      tabId === tabList[0].id
-        ? undefined
-        : () => this.onTabIndexChange(routeIndex)
     const onScroll = Animated.event(
       [{ nativeEvent: { contentOffset: { y: animatedValRefCmsScrollY } } }],
       { listener: this.onPageScroll, useNativeDriver: true }
     )
 
+    if (routeIndex === 0) {
+      return (
+        <AnimatedFlatList
+          key={route.key}
+          style={[styles.sceneBox, { transform: [{ translateY: 0 }] }]}
+          data={tabFloorMap[route.key] || []}
+          renderItem={this.renderFlatItem}
+          keyExtractor={item => `${item.key}`}
+          refreshing={tabLoadingMap[route.key] || false}
+          onRefresh={() => this.onRefreshScene(routeIndex)}
+          onScroll={onScroll}
+          scrollEventThrottle={1}
+          showsVerticalScrollIndicator={false}
+        />
+      )
+    }
+    const flatListTranslateY = animatedValRefCmsScrollY.interpolate({
+      inputRange: [-100, 1, 50],
+      outputRange: [placeholderForNativeHeight, placeholderForNativeHeight, 0],
+      extrapolate: 'clamp',
+    })
+
     return (
       <AnimatedFlatList
-        style={[styles.sceneBox, flatListStyles]}
-        data={tabFloorMap[tabId] || []}
+        style={[
+          styles.sceneBox,
+          {
+            transform: [{ translateY: flatListTranslateY }],
+          },
+        ]}
+        data={tabFloorMap[route.key] || []}
         renderItem={this.renderFlatItem}
         keyExtractor={item => `${item.key}`}
-        refreshing={tabLoadingMap[tabId] || false}
-        onRefresh={onRefresh}
-        onScroll={onScroll}
+        refreshing={false}
+        onRefresh={() => this.onRefreshScene(routeIndex)}
+        onScroll={tabLoadingMap[route.key] ? undefined : onScroll}
         showsVerticalScrollIndicator={false}
       />
     )
@@ -463,6 +564,7 @@ class Page extends React.Component<Props, State> {
           renderScene={this.renderScene}
           renderTabBar={this.renderTabBar}
           onIndexChange={this.onTabIndexChange}
+          initialLayout={{ height: 0, width: windowWidth }}
         />
       </View>
     )

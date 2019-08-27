@@ -1,7 +1,10 @@
 import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
-  container: {},
+  container: {
+    position: 'relative',
+    zIndex: 1,
+  },
   scrollView: {
     flexDirection: 'row',
     position: 'relative',
@@ -15,16 +18,17 @@ export default StyleSheet.create({
     left: 0,
   },
   tabBox: {
-    paddingVertical: 10,
     paddingHorizontal: 14,
     position: 'relative',
+    alignItems: 'center',
   },
   tabBoxDivider: {
     position: 'absolute',
+    top: '50%',
     right: 0,
-    top: 10,
     width: 1,
-    bottom: 10,
+    height: 14,
+    transform: [{ translateY: -7 }],
     backgroundColor: '#FFF',
     opacity: 0.2948,
   },
@@ -36,7 +40,6 @@ export default StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     position: 'absolute',
-    top: 10,
     left: 14,
     transform: [{ scale: 1.14 }],
   },
@@ -44,16 +47,14 @@ export default StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     position: 'absolute',
-    top: 10,
     left: 14,
     transform: [{ scale: 1.14 }],
     color: '#FF3914',
   },
-  firstTabTextDeactiveScroll: {
+  firstTabTextInactiveScroll: {
     fontSize: 14,
     fontWeight: '600',
     position: 'absolute',
-    top: 10,
     left: 14,
     color: '#4D4D4D',
   },

@@ -7,6 +7,9 @@ export default StyleSheet.create({
   container: {
     flexDirection: 'row',
     backgroundColor: '#fff',
+    borderColor: '#EBEBEB',
+    borderTopWidth: 0.5,
+    borderBottomWidth: 0.5,
   },
   productBox: {
     width: 112,
@@ -15,7 +18,7 @@ export default StyleSheet.create({
     paddingBottom: 11,
   },
   productBoxNotLast: {
-    borderRightColor: '#EBEBEB',
-    borderRightWidth: 1,
+    borderColor: '#EBEBEB',
+    borderRightWidth: 0.5,
   },
 })
