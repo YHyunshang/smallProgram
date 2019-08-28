@@ -240,7 +240,7 @@ export default class Page extends React.Component<Props, State> {
           onTabChange: this.onTabChange,
         },
       })
-    result.concat(currentTabContent.slice(1))
+    result = result.concat(currentTabContent.slice(1))
 
     return result
   }

@@ -9,18 +9,7 @@ import ProductCountOperator from '../ProductCountOperator'
 import { Native } from '@utils'
 import ProductCart from '../ProductCart'
 import withCartCountModify from './HOC/withCountInCartModifier'
-
-export interface Props {
-  code: string // 商品编码
-  thumbnail: string // 缩略图
-  name: string // 商品名称
-  tag?: string // 标签
-  spec: string // 规格
-  price: number // 当前价格
-  slashedPrice?: number // 划线价
-  count?: 0 // 当前数量
-  onModifyCount: Function
-}
+import { Product } from './typings'
 
 function ProductListItem({
   thumbnail,
@@ -32,12 +21,13 @@ function ProductListItem({
   slashedPrice,
   count,
   onModifyCount,
-}: Props) {
+  shopCode,
+}: Product) {
   const navigateToProductDetail = () => {
     Native.navigateTo({
-      type: 1,
+      type: Native.NavPageType.NATIVE,
       uri: 'A003,A003',
-      params: { params: { productCode: code } },
+      params: { productCode: code, storeCode: shopCode },
     })
   }
   return (

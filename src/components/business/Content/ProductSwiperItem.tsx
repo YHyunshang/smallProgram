@@ -11,33 +11,23 @@ import {
 import LinearGradient from 'react-native-linear-gradient'
 import { Native } from '@utils'
 import withCartCountModify from './HOC/withCountInCartModifier'
-
-export interface Props {
-  cartId: string
-  code: string
-  thumbnail: string // 缩略图
-  name: string // 商品名称
-  price: number // 当前价格
-  slashedPrice?: number // 划线价
-  count?: 0 // 当前数量
-  onModifyCount: Function
-}
+import { Product } from './typings'
 
 function ProductSwiperItem({
-  cartId,
   code,
   thumbnail,
   name,
   price,
   slashedPrice,
   count,
+  shopCode,
   onModifyCount,
-}: Props) {
+}: Product) {
   const navigateToProductDetail = () => {
     Native.navigateTo({
-      type: 1,
+      type: Native.NavPageType.NATIVE,
       uri: 'A003,A003',
-      params: { params: { productCode: code } },
+      params: { productCode: code, storeCode: shopCode },
     })
   }
   return (

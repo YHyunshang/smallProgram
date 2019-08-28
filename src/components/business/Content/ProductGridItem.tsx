@@ -29,6 +29,7 @@ function ProductGridItem({
   slashedPrice,
   theme,
   count,
+  shopCode,
   onModifyCount = (count: number) => null,
 }) {
   const styles = useTheme(theme)
@@ -36,7 +37,7 @@ function ProductGridItem({
     Native.navigateTo({
       type: Native.NavPageType.NATIVE,
       uri: 'A003,A003',
-      params: { productCode: code },
+      params: { productCode: code, storeCode: shopCode },
     })
   }
   return (

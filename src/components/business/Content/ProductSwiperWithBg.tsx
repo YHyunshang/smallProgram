@@ -9,31 +9,22 @@ import {
 import styles from './ProductSwiperWithBg.styles'
 import FitImage from 'react-native-fit-image'
 import { Native } from '@utils'
+import { Product } from './typings'
 
 interface Props {
   backgroundImage: string
-  products: {
-    cartId: string // 购物车商品id
-    code: string // 商品编码
-    thumbnail: string // 缩略图
-    name: string // 商品名称
-    tag?: string // 标签
-    spec: string // 规格
-    price: number // 当前价格
-    slashedPrice?: number | string // 划线价
-    count?: 0 // 当前数量
-  }[]
+  products: Product[]
 }
 
 export default function ProductSwiperWithBg({
   backgroundImage,
   products,
 }: Props) {
-  const navigateToProductDetail = productCode => {
+  const navigateToProductDetail = (productCode, storeCode) => {
     Native.navigateTo({
-      type: 1,
+      type: Native.NavPageType.NATIVE,
       uri: 'A003,A003',
-      params: { params: { productCode } },
+      params: { productCode, storeCode },
     })
   }
   return (
@@ -44,10 +35,10 @@ export default function ProductSwiperWithBg({
         horizontal
         showsHorizontalScrollIndicator={false}
       >
-        {products.map(({ code, thumbnail, name, price }) => (
+        {products.map(({ code, thumbnail, name, price, shopCode }) => (
           <TouchableWithoutFeedback
             key={code}
-            onPress={() => navigateToProductDetail(code)}
+            onPress={() => navigateToProductDetail(code, shopCode)}
           >
             <View style={styles.productBox}>
               <Image style={styles.thumbnail} source={{ uri: thumbnail }} />
