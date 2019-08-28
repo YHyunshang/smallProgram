@@ -192,9 +192,9 @@ class Page extends React.PureComponent<Props, State> {
           image: ele.categoryImage,
           title: ele.categoryName,
           link: {
-            type: 1,
+            type: Native.NavPageType.NATIVE,
             uri: 'A002,A002',
-            params: { params: { code: categoryCode } },
+            params: { code: categoryCode },
           },
         }))
 
@@ -346,25 +346,36 @@ class Page extends React.PureComponent<Props, State> {
             },
           })
       } else if (floor.type === 4 && [1, 2].indexOf(floor.subType) !== -1) {
-        const isPreFloorBox = sortedData[i - 1] && sortedData[i - 1].type === 4
-        const isNextFloorBox = sortedData[i + 1] && sortedData[i + 1].type === 4
         // 分类入口，宫格
+        const boxItemPropsFormatter = data =>
+          data.templateDetailVOList.map(ele => ({
+            key: ele.id,
+            image: ele.imgUrl,
+            title: ele.name,
+            link: CMSServices.formatLink(ele),
+          }))
+        let boxData = [...boxItemPropsFormatter(floor)]
+        while (true) {
+          i += 1
+          const nextFloor = sortedData[i]
+          if (
+            nextFloor &&
+            nextFloor.type === floor.type &&
+            nextFloor.subType === floor.subType
+          ) {
+            boxData = boxData.concat(boxItemPropsFormatter(nextFloor))
+          } else {
+            i -= 1
+            break
+          }
+        }
         result.push({
           key: floor.id,
           component: Box,
-          wrapperStyle: {
-            paddingHorizontal: 5,
-            paddingTop: isPreFloorBox ? 20 : 25,
-            paddingBottom: isNextFloorBox ? 0 : 25,
-          },
+          wrapperStyle: { paddingVertical: 25 },
           props: {
             columnNumber: { 1: 4, 2: 5 }[floor.subType],
-            data: floor.templateDetailVOList.map(ele => ({
-              key: ele.id,
-              image: ele.imgUrl,
-              title: ele.name,
-              link: CMSServices.formatLink(ele),
-            })),
+            data: boxData,
           },
         })
       } else if (floor.type === 5) {
@@ -390,7 +401,6 @@ class Page extends React.PureComponent<Props, State> {
         contentOffset: { x, y },
       },
     } = e
-    console.log('----->>>>>>', y, e.nativeEvent)
     CMSServices.pushScrollToNative(x, y)
   }
 
