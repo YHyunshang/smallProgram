@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-27 11:08:46
+ * @LastEditTime: 2019-08-28 11:15:42
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import {isIPhoneXMarginTop} from '../../utils/IsIphoneX'
@@ -96,7 +96,8 @@ export default StyleSheet.create({
     height: 30,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    marginBottom: 6
   },
   goodsQualityItemFlex: {
     flexDirection: 'row',
@@ -135,6 +136,7 @@ export default StyleSheet.create({
   },
   goodsQualityValue: {
     fontSize: 12,
+    marginLeft: 3,
     color: '#B3B3B3',
     fontWeight: '600'
   },
@@ -162,14 +164,8 @@ export default StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 15
   },
-  topTabWraper: {
-    position: 'relative',
-    // top: 20,
-    // right: 17,
-    flexDirection: 'row'
-  },
   topTab: {
-    width: '100%',
+    position: 'relative',
     height: 44,
     backgroundColor: '#FFFFFF',
     flexDirection: 'row',
@@ -178,17 +174,12 @@ export default StyleSheet.create({
     // iPhoneX头部兼容处理
     marginTop: isIPhoneXMarginTop(0)
   },
-  blankContent: {
-    width: '100%',
-    height: 44
-  },
-  leftIcon: {
-    marginLeft: 15
-  },
-  rightShareIcon: {
+  shareTouchableOpacity: {
+    width: 24,
+    height: 24,
     position: 'absolute',
-    right: 17,
-    top: 44
+    right: 10,
+    top: 13
   },
   itemTitle: {
     fontSize: 14,

@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-26 18:28:43
+ * @LastEditTime: 2019-08-28 10:04:52
  */
 
 import React from 'react'
@@ -65,7 +65,9 @@ export default class SimilarGoods extends React.Component {
           this.handleJumpGoodsDetail(item)
         }}
       >
-        <FitImage style={styles.similarGoodsImg} source={{uri: item.mainUrl.url || this.props.defaultImg}} indicator={false} />
+        <View style={styles.similarGoodsWrapper}>
+          <FitImage style={styles.similarGoodsImg} source={{uri: item.mainUrl.url || this.props.defaultImg}} indicator={false} />
+        </View>
         {/* <Tag textValue='特价' marginLeft={10}></Tag> */}
         <Text numberOfLines={1} style={styles.goodsDesc}>{item.productName}</Text>
         {
@@ -79,16 +81,18 @@ export default class SimilarGoods extends React.Component {
           <Text style={styles.goodsPriceSymbol}>¥</Text>
           <Text style={styles.goodsPrice}>{transPenny(item.promotionPrice ? item.promotionPrice : item.price)}</Text>
         </View>
-        <LinearGradient style={styles.container} colors={['#FF3914', '#FF6042']}>
-          <TouchableOpacity
-            activeOpacity={0.95}
-            onPress={() => {
-              this.handleAddCart(item)
-            }} >
-            <FitImage style={styles.goodsCartImg} source={cartImg}></FitImage>
-            {/* <Icon style={styles.rightShareIcon} name='cart' size={13} color="#FFFFFF" /> */}
-          </TouchableOpacity>
-        </LinearGradient>
+        <View style={styles.container}>
+          <LinearGradient style={styles.linearGradient} colors={['#FF6042', '#FF3914']}>
+            <TouchableOpacity
+              activeOpacity={0.95}
+              onPress={() => {
+                this.handleAddCart(item)
+              }} >
+              <FitImage style={styles.goodsCartImg} source={cartImg}></FitImage>
+              {/* <Icon style={styles.rightShareIcon} name='cart' size={13} color="#FFFFFF" /> */}
+            </TouchableOpacity>
+          </LinearGradient>
+        </View>
       </View>
     </View>
   )
