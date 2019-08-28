@@ -251,7 +251,7 @@ class Page extends React.PureComponent<Props, State> {
           component: Carousel,
           wrapperStyle: { paddingHorizontal: 0 },
           props: {
-            imageHeight: currentTabIdx === 0 ? 290 : 150,
+            imageHeight: currentTabIdx === 0 && i === 0 ? 290 : 150,
             data: floor.templateDetailVOList.map(ele => ({
               key: ele.id,
               image: ele.imgUrl,
@@ -384,11 +384,13 @@ class Page extends React.PureComponent<Props, State> {
   }
 
   // 页面滚动
-  onPageScroll = ({
-    nativeEvent: {
-      contentOffset: { x, y },
-    },
-  }) => {
+  onPageScroll = e => {
+    const {
+      nativeEvent: {
+        contentOffset: { x, y },
+      },
+    } = e
+    console.log('----->>>>>>', y, e.nativeEvent)
     CMSServices.pushScrollToNative(x, y)
   }
 
@@ -432,59 +434,6 @@ class Page extends React.PureComponent<Props, State> {
     <View style={wrapperStyle}>{React.createElement(component, props)}</View>
   )
 
-  renderSceneI = ({ route }) => {
-    const {
-      tabList,
-      tabFloorMap,
-      tabLoadingMap,
-      currentTabIdx,
-      animatedValRefCmsScrollY,
-    } = this.state
-
-    const { key: tabId } = route
-    const routeIndex = tabList.findIndex(ele => ele.id === tabId)
-
-    const contentInset = {
-      top: routeIndex === 0 ? 0 : placeholderForNativeHeight,
-    }
-
-    const onRefresh = () => {
-      console.log('-->>>refresh', routeIndex)
-      this.onTabIndexChange(routeIndex)
-    }
-    const onScroll = Animated.event(
-      [{ nativeEvent: { contentOffset: { y: animatedValRefCmsScrollY } } }],
-      { listener: this.onPageScroll, useNativeDriver: true }
-    )
-
-    const flatListTranslateY =
-      currentTabIdx === 0
-        ? 0
-        : animatedValRefCmsScrollY.interpolate({
-            inputRange: [0, 50],
-            outputRange: [placeholderForNativeHeight, 0],
-            extrapolate: 'clamp',
-          })
-
-    return (
-      <View style={{ position: 'relative', flex: 1 }}>
-        <AnimatedFlatList
-          style={[
-            styles.sceneBox,
-            { transform: [{ translateY: flatListTranslateY }] },
-          ]}
-          data={tabFloorMap[tabId] || []}
-          renderItem={this.renderFlatItem}
-          keyExtractor={item => `${item.key}`}
-          refreshing={tabLoadingMap[tabId] || false}
-          onRefresh={onRefresh}
-          onScroll={onScroll}
-          showsVerticalScrollIndicator={false}
-        />
-      </View>
-    )
-  }
-
   renderScene = ({ route }) => {
     const {
       tabList,
@@ -502,8 +451,7 @@ class Page extends React.PureComponent<Props, State> {
     if (routeIndex === 0) {
       return (
         <AnimatedFlatList
-          key={route.key}
-          style={[styles.sceneBox, { transform: [{ translateY: 0 }] }]}
+          style={styles.sceneBox}
           data={tabFloorMap[route.key] || []}
           renderItem={this.renderFlatItem}
           keyExtractor={item => `${item.key}`}
@@ -515,20 +463,11 @@ class Page extends React.PureComponent<Props, State> {
         />
       )
     }
-    const flatListTranslateY = animatedValRefCmsScrollY.interpolate({
-      inputRange: [-100, 1, 50],
-      outputRange: [placeholderForNativeHeight, placeholderForNativeHeight, 0],
-      extrapolate: 'clamp',
-    })
 
     return (
       <AnimatedFlatList
-        style={[
-          styles.sceneBox,
-          {
-            transform: [{ translateY: flatListTranslateY }],
-          },
-        ]}
+        style={styles.sceneBox}
+        contentContainerStyle={{ paddingTop: placeholderForNativeHeight }}
         data={tabFloorMap[route.key] || []}
         renderItem={this.renderFlatItem}
         keyExtractor={item => `${item.key}`}
@@ -542,11 +481,7 @@ class Page extends React.PureComponent<Props, State> {
 
   renderTabBar = props => {
     const { animatedValRefCmsScrollY } = this.state
-    return (
-      <View style={styles.tabBarContainer}>
-        <TabBar {...props} animatedVal={animatedValRefCmsScrollY} />
-      </View>
-    )
+    return <TabBar {...props} animatedVal={animatedValRefCmsScrollY} />
   }
 
   render() {

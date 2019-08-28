@@ -3,16 +3,18 @@ import styles from './ProductFilter.styles'
 import { View, Image, Text } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
+// enum StorageType =
+
 interface Props {
   filters: {
-    hasStorage: boolean
+    storage: boolean
     priceSorter: string
   }
   onFilterChange: {}
 }
 
 export default function ProductFilter({ filters, onFilterChange }: Props) {
-  const storeFilterImg = filters.hasStorage
+  const storeFilterImg = filters.storage
     ? require('@img/icon-checked.png')
     : require('@img/icon-unchecked.png')
   const sortImg =
@@ -22,11 +24,11 @@ export default function ProductFilter({ filters, onFilterChange }: Props) {
     }[filters.priceSorter] || require('@img/icon-sort.png')
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.filterBox}>
+      <TouchableOpacity>
         <Text
           style={[
             styles.filterText,
-            filters.hasStorage && styles.filterTextActive,
+            filters.storage && styles.filterTextActive,
           ]}
         >
           有货

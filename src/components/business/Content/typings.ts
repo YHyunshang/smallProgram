@@ -10,11 +10,3 @@ export interface Product {
   count: number // 商品在购物车中的数量
   onModifyCount?: (count: number) => any // 修改数量
 }
-
-export interface Link {
-  type: string
-  uri: string
-  params: {
-    [index: string]: any
-  }
-}

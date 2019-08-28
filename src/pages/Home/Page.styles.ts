@@ -10,12 +10,6 @@ export default StyleSheet.create({
     flex: 1,
   },
 
-  tabBarContainer: {
-    position: 'absolute',
-    top: 0,
-    width: '100%',
-    zIndex: 1,
-  },
   tabBar: {
     width: '100%',
     backgroundColor: 'transparent',
@@ -26,5 +20,7 @@ export default StyleSheet.create({
     padding: 16,
   },
 
-  sceneBox: {},
+  sceneBox: {
+    flex: 1,
+  },
 })

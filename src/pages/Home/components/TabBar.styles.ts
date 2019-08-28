@@ -2,20 +2,26 @@ import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
   container: {
-    position: 'relative',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
     zIndex: 1,
   },
   scrollView: {
-    flexDirection: 'row',
-    position: 'relative',
-    zIndex: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    zIndex: 2,
   },
   background: {
     backgroundColor: '#FFF',
     position: 'absolute',
     top: 0,
-    right: 0,
     left: 0,
+    width: '100%',
+    zIndex: 1,
   },
   tabBox: {
     paddingHorizontal: 14,
