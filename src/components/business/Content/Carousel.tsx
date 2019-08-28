@@ -11,13 +11,14 @@ import { Native } from '@utils'
 interface Props {
   imageHeight: number
   data: {
-    key: string,
-    image: string,
-    link: {}
+    key: string
+    image: string
+    link: Native.Navigation
   }[]
 }
 
 export default function Carousel({ imageHeight = 290, data }: Props) {
+  console.log('carousel links', data.map(ele => ele.link))
   return (
     <View style={Styles.container}>
       <Swiper
@@ -31,7 +32,7 @@ export default function Carousel({ imageHeight = 290, data }: Props) {
         {data.map(({ image, link, key }) => (
           <TouchableWithoutFeedback
             key={key}
-            onPress={() => Native.navigateTo(link)}
+            onPress={() => link.type && Native.navigateTo(link)}
           >
             <View style={Styles.slider}>
               <Image

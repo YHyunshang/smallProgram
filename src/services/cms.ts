@@ -143,12 +143,10 @@ export function formatLink({
 }: {
   link: string
   linkType: string
-  code: string
 }) {
   return {
-    type: '',
-    uri: '',
-    params: {},
+    type: linkType,
+    uri: link || '',
   }
 }
 

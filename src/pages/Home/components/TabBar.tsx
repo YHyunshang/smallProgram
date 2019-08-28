@@ -1,10 +1,9 @@
 import * as React from 'react'
 import styles from './TabBar.styles'
 import {
-  ScrollView,
   View,
   Text,
-  TouchableWithoutFeedback,
+  TouchableOpacity,
   Animated,
   Dimensions,
 } from 'react-native'
@@ -44,7 +43,7 @@ interface State {
   }
 }
 
-export default class TabBar extends React.PureComponent<Props, State> {
+export default class TabBar extends React.Component<Props, State> {
   constructor(props) {
     super(props)
   }
@@ -136,10 +135,7 @@ export default class TabBar extends React.PureComponent<Props, State> {
             })
           : 0
       return (
-        <TouchableWithoutFeedback
-          onPress={() => jumpTo(route.key)}
-          key={route.key}
-        >
+        <TouchableOpacity onPress={() => jumpTo(route.key)} key={route.key}>
           <View
             style={[styles.tabBox, { height: TabHeight }]}
             onLayout={e => this.onTabBoxLayout(route.key, e)}
@@ -187,9 +183,9 @@ export default class TabBar extends React.PureComponent<Props, State> {
                 {route.title}
               </Animated.Text>
             )}
-            {idx < routeTotal - 1 && <View style={styles.tabBoxDivider}></View>}
+            {idx < routeTotal - 1 && <View style={styles.tabBoxDivider} />}
           </View>
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
       )
     })
   }
@@ -248,7 +244,11 @@ export default class TabBar extends React.PureComponent<Props, State> {
           ref={c => (this.scrollViewRef = c)}
           style={[
             styles.scrollView,
-            { transform: [{ translateY: tabTranslateY }], opacity: tabOpacity },
+            {
+              height: TabHeight,
+              transform: [{ translateY: tabTranslateY }],
+              opacity: tabOpacity,
+            },
           ]}
           horizontal
           showsHorizontalScrollIndicator={false}

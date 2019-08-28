@@ -2,15 +2,27 @@
  * Created by 李华良 on 2019-07-29
  */
 import { NativeModules, Platform, Dimensions, StatusBar } from 'react-native'
-import * as Log from './log'
+import { Log } from '@utils'
 
+export enum NavPageType {
+  NATIVE = '0',
+  RN = '1',
+  H5 = '2',
+}
+export interface Navigation {
+  type: NavPageType
+  uri: string
+  extraData: {
+    params?: {}
+  }
+}
 /**
- * navigate based on native router
- * @param type link type: 0 - native, 1 - RN, 2 - h5
- * @param uri link uri
- * @param params parameters passed to the linked page
+ * 跳转页面
+ * @param param0 type: 页面类型，使用枚举 NavPageType;
+ *               uri: native 页面 Key / RN 页面 module 名称；
+ *               extraData：页面参数，如果需要给跳转的页面传参，参数放在 extraData.params 对象中
  */
-export async function navigateTo({ type, uri, params = {} }) {
+export async function navigateTo({ type, uri, extraData }: Navigation) {
   let navigate: Function
   try {
     navigate = NativeModules.HomeNativeManager.pushToNewPage
@@ -18,38 +30,15 @@ export async function navigateTo({ type, uri, params = {} }) {
     throw new Error('Native error: no HomeNativeManager.pushToNewPage function')
   }
 
-  let _uri_ = uri
-  let _extraData_ = { ...params }
-
-  const _type_ =
-    {
-      1: '0', // 原生
-      2: '1', // RN 活动
-      3: '2', // h5
-    }[type] || type
-
-  if (!_type_) return
-
-  if (_type_ === '0') {
-    let uriArr = uri.split(',')
-    _uri_ =
-      Platform.OS === 'ios'
-        ? uriArr[0]
-        : Platform.OS === 'android'
-        ? uriArr[1]
-        : ''
-  } else if (_type_ === '1') {
-    _uri_ = 'RNActivity'
-    _extraData_ = { params: { activityCode: uri, type: 'activity' } }
-  }
+  const pageType = type
+  const pageUri = uri.split('?')[0]
 
   Log.debug(
-    'calling HomeNativeManager.pushToNewPage:',
-    _type_,
-    _uri_,
-    _extraData_
+    'calling HomeNativeManager.pushToNewPage with arguments',
+    JSON.stringify([pageType, pageUri, extraData])
   )
-  return navigate(_type_, _uri_, JSON.stringify(_extraData_))
+
+  return navigate(pageType, pageUri, JSON.stringify(extraData))
 }
 
 /**
@@ -116,6 +105,9 @@ export const isiPhoneX = () => {
 
 /**
  * 获取系统 StatusBar 高度
+ *
+ * iPhone X* 预设 44；其他 iPhone 预设 20
+ * Android 统一为当前 StatusBar 高度 + 5（美人尖高度）
  */
 export const getStatusBarHeight = () =>
-  isiOS() ? (isiPhoneX() ? 44 : 20) : StatusBar.currentHeight
+  isiOS() ? (isiPhoneX() ? 44 : 20) : StatusBar.currentHeight + 5
