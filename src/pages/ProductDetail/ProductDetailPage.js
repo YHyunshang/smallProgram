@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-28 11:00:19
+ * @LastEditTime: 2019-08-28 15:45:55
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -273,7 +273,7 @@ export default class ProductDetailPage extends React.Component {
                 onChange={index => {}} />
               <TouchableOpacity
                 style={styles.shareTouchableOpacity}
-                // activeOpacity={0.95}
+                activeOpacity={0.95}
                 onPress={() => {
                   this.handleShowModal()
                 }} >
