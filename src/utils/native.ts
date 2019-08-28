@@ -12,17 +12,17 @@ export enum NavPageType {
 export interface Navigation {
   type: NavPageType
   uri: string
-  extraData: {
-    params?: {}
-  }
+  params?: {}
+  title?: string
 }
 /**
  * 跳转页面
- * @param param0 type: 页面类型，使用枚举 NavPageType;
- *               uri: native 页面 Key / RN 页面 module 名称；
- *               extraData：页面参数，如果需要给跳转的页面传参，参数放在 extraData.params 对象中
+ * @param param0 type：页面类型，使用枚举 NavPageType;
+ *               uri：native 页面 Key / RN 页面 module 名称；
+ *               params： 跳转页面所需参数
+ *               title：页面标题
  */
-export async function navigateTo({ type, uri, extraData }: Navigation) {
+export async function navigateTo({ type, uri, params, title }: Navigation) {
   let navigate: Function
   try {
     navigate = NativeModules.HomeNativeManager.pushToNewPage
@@ -30,15 +30,20 @@ export async function navigateTo({ type, uri, extraData }: Navigation) {
     throw new Error('Native error: no HomeNativeManager.pushToNewPage function')
   }
 
+  const uriArr = uri.split(',')
+  const platformUri = (Platform.OS === 'ios' ? uriArr[0] : uriArr[1]) || ''
+
   const pageType = type
-  const pageUri = uri.split('?')[0]
+  const pageUri = platformUri.split('?')[0]
 
   Log.debug(
     'calling HomeNativeManager.pushToNewPage with arguments',
-    JSON.stringify([pageType, pageUri, extraData])
+    pageType,
+    pageUri,
+    JSON.stringify({ params, title })
   )
 
-  return navigate(pageType, pageUri, JSON.stringify(extraData))
+  return navigate(pageType, pageUri, JSON.stringify({ params, title }))
 }
 
 /**
