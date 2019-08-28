@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-28 15:45:48
+ * @LastEditTime: 2019-08-28 20:39:57
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import {isIPhoneXMarginTop} from '../../utils/IsIphoneX'
@@ -37,7 +37,7 @@ export default StyleSheet.create({
     fontSize: 22,
     color: 'green',
     fontWeight: 'bold',
-    marginTop: 30,
+    marginTop: 25,
     marginLeft: 15
   },
   questionItemFlex: {

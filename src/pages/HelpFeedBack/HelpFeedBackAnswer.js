@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-28 18:42:51
+ * @LastEditTime: 2019-08-28 20:49:31
  */
 import React from 'react'
 import {ScrollView, View, Text, NativeModules} from 'react-native'
@@ -20,7 +20,6 @@ export default class HelpFeedBackPage extends React.Component {
   }
 
   componentDidMount() {
-    Native.setTitle('帮助与反馈')
   }
   /**
    * @description: 跳转到帮助与反馈问题项
@@ -30,10 +29,32 @@ export default class HelpFeedBackPage extends React.Component {
   }
 
   render() {
-    const aa = this.props
-    rnAppModule.showToast(JSON.stringify(aa), '0')
-    const answerItems = helpFeedBackAnswer.refundQuestion ? helpFeedBackAnswer.refundQuestion.map(({questionTitle, questionContent}, index) => (
-      <View style={[styles.questionItemFlex, index == helpFeedBackAnswer.refundQuestion.length - 1 ? {borderBottomWidth: 0} : {borderBottomWidth: 1}]}>
+    const {activityCode, type} = this.props
+    let questionType
+    Native.setTitle(type)
+    switch (Number(activityCode)) {
+      case 1:
+        questionType = 'goodsQuestion'
+        break
+      case 2:
+        questionType = 'deliveryQuestion'
+        break
+      case 3:
+        questionType = 'orderQuestion'
+        break
+      case 4:
+        questionType = 'memberQuestion'
+        break
+      case 5:
+        questionType = 'invoiceQuestion'
+        break
+      case 6:
+        questionType = 'refundQuestion'
+        break
+    }
+
+    const answerItems = helpFeedBackAnswer[questionType] ? helpFeedBackAnswer[questionType].map(({questionTitle, questionContent}, index) => (
+      <View style={[styles.questionItemFlex, index == helpFeedBackAnswer[questionType].length - 1 ? {borderBottomWidth: 0, paddingBottom: 30} : {borderBottomWidth: 1}]}>
         <View style={styles.questionTitleFlex}>
           <Text style={styles.questionIndex}>Q{Number(index + 1)}:</Text>
           <Text style={styles.questionTitle}>{questionTitle}</Text>

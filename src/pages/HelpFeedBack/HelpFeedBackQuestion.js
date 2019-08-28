@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-28 18:13:29
+ * @LastEditTime: 2019-08-28 20:50:20
  */
 import React from 'react'
 import {ScrollView, View, Text, TouchableOpacity, NativeModules} from 'react-native'
@@ -34,8 +34,7 @@ export default class HelpFeedBackPage extends React.Component {
    * @description: 跳转到帮助与反馈问题项
    */
   handleJumpToFeedBackItem(id, name) {
-    // rnAppModule.showToast(String(name), '0')
-    Native.navigateTo({type: 2, uri: 'RNHelpFeedBackAnswer', params: {id, name}})
+    NativeModules.HomeNativeManager.pushToNewPage('1', 'RNHelpFeedBackAnswer', JSON.stringify({title: String(name), params: {activityCode: String(id), type: String(name)}}))
   }
 
   render() {
@@ -57,9 +56,6 @@ export default class HelpFeedBackPage extends React.Component {
       : null
     return (
       <View style={styles.container}>
-        {/* <View style={styles.feedBackTopBanner}>
-          <Text style={styles.feedBackTitle}>帮助与反馈</Text>
-        </View> */}
         <ScrollView
           style={styles.scrollView}
           showsVerticalScrollIndicator={false}

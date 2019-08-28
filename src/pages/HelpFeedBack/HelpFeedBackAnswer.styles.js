@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-28 16:52:05
+ * @LastEditTime: 2019-08-28 20:49:17
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import {isIPhoneXMarginTop} from '../../utils/IsIphoneX'
