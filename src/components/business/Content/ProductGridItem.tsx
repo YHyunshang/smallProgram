@@ -34,9 +34,9 @@ function ProductGridItem({
   const styles = useTheme(theme)
   const navigateToProductDetail = () => {
     Native.navigateTo({
-      type: 1,
+      type: Native.NavPageType.NATIVE,
       uri: 'A003,A003',
-      params: { params: { productCode: code } },
+      params: { productCode: code },
     })
   }
   return (

@@ -144,9 +144,17 @@ export function formatLink({
   link: string
   linkType: string
 }) {
+  const apiType2NativeType = {
+    1: Native.NavPageType.NATIVE,
+    2: Native.NavPageType.RN,
+    3: Native.NavPageType.H5,
+  }
+  const type = apiType2NativeType[linkType]
   return {
-    type: linkType,
-    uri: link || '',
+    type: type,
+    uri: type === Native.NavPageType.RN ? 'RNActivity' : link,
+    params:
+      type === Native.NavPageType.RN ? { categoryCode: link, type: '' } : {},
   }
 }
 
