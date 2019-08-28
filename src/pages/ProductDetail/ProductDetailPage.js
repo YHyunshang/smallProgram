@@ -4,12 +4,12 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-27 10:48:12
+ * @LastEditTime: 2019-08-28 11:00:19
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
 import Icon from '../../components/Icon'
-import {transPenny} from '../../utils/FormatUtil'
+import {transPenny, Map} from '../../utils/FormatUtil'
 import ShareModal from '../../components/business/ShareModal'
 import PosterModal from '../../components/business/PosterModal'
 import TabBar from '../../components/common/TabBar'
@@ -21,6 +21,8 @@ import GoodsDetailSwiper from '../../components/business/GoodsDetailSwiper'
 import SimilarGoods from '../../components/business/SimilarGoods'
 // import Tag from '../../components/business/Tag'
 // import {similarGoods} from '../../utils/mock'
+// 实列化一个map
+let map = new Map()
 // 商品产地图标
 const productPlace = require('@img/product-place.png')
 // 商品规格图标
@@ -35,6 +37,7 @@ export default class ProductDetailPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      cartNumber: 0,
       isFirst: true, // 是否是第一次请求生成海报接口
       goodsDetail: {}, // 商品详情
       evaluation: {}, // 商品评价信息
@@ -67,9 +70,9 @@ export default class ProductDetailPage extends React.Component {
     this.getProductInfo(productInfo.productCode, productInfo.storeCode)
     this.getSimilarProductList(productInfo.productCode, productInfo.storeCode)
     // 相似商品列表购物车数量变化native 事件监听
-    // this.nativeSubscription = subscriptCartNumberChange(
-    //   this.onNativeCartNumberChange
-    // )
+    this.nativeSubscription = subscriptCartNumberChange(
+      this.onNativeCartNumberChange
+    )
   }
   /**
    * @param {productCode}
@@ -77,8 +80,11 @@ export default class ProductDetailPage extends React.Component {
    * @description: 相似商品列表添加购物车返回productCode和productNumber
    */
   onNativeCartNumberChange = ({productCode, productNumber}) => {
-    rnAppModule.showToast(productCode, '0')
-    rnAppModule.showToast(productNumber, '0')
+    map.put(productCode, productNumber)
+    // this.setState({cartNumber: Number(productNumber)})
+    // rnAppModule.showToast(productCode, '0')
+    // rnAppModule.showToast(`productNum:::${String(productNumber)}`, '0')
+    // rnAppModule.showToast(`productNumber33:${productNumber}`, '0')
   }
   componentWillUnmount() {
     this.nativeSubscription && this.nativeSubscription.remove()
@@ -153,7 +159,10 @@ export default class ProductDetailPage extends React.Component {
    * @description: 相似商品列表添加到购物车
    */
   handleAddCart=(item) => {
-    // addToCart(JSON.stringify(item), '1')
+    let cartNumber = map.get(item.productCode) || 0
+    // rnAppModule.showToast(`productCode:::${String(item.productCode)},cartNumber:::${String(cartNumber)}`, '0')
+    item.productNum = Number(cartNumber)
+    addToCart(JSON.stringify(item), '1')
   }
   /**
    * @description: 点击相似商品列表跳转至商品详情
@@ -255,19 +264,20 @@ export default class ProductDetailPage extends React.Component {
       <View style={styles.container}>
         {
           (
-            <View style={styles.topTabWraper}>
-              <View style={styles.topTab}>
-                {/* <View></View> */}
-                <TabBar ref={e => this.tabs = e}
-                  index={this.state.currentIndex}
-                  data={this.state.tablist}
-                  clickScroll={this.clickScroll}
-                  onChange={index => {}} />
-              </View>
-              <TouchableOpacity activeOpacity={0.95} onPress={() => {
-                this.handleShowModal()
-              }} >
-                <Icon style={styles.rightShareIcon} name='share' size={17} color="#4D4D4D" />
+            <View style={styles.topTab}>
+              {/* <View></View> */}
+              <TabBar ref={e => this.tabs = e}
+                index={this.state.currentIndex}
+                data={this.state.tablist}
+                clickScroll={this.clickScroll}
+                onChange={index => {}} />
+              <TouchableOpacity
+                style={styles.shareTouchableOpacity}
+                // activeOpacity={0.95}
+                onPress={() => {
+                  this.handleShowModal()
+                }} >
+                <Icon name='share' size={18} color="#4D4D4D" />
               </TouchableOpacity>
             </View>
           )

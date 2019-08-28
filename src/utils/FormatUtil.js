@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-22 13:37:10
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-20 16:30:11
+ * @LastEditTime: 2019-08-28 11:17:18
  */
 
 /**
@@ -36,4 +36,57 @@ export const formatYMDEn = (timestamp) => {
   const month = parseInt(date.getMonth()) + 1
   const day = date.getDate()
   return `${year}-${month}-${day}`
+}
+/**
+ * @description:创建map数据结构的函数
+ */
+export const Map = function() {
+  let struct = function(key, value) {
+      this.key = key
+      this.value = value
+    },
+    // 添加map键值对
+    put = function(key, value) {
+      for (let i = 0; i < this.arr.length; i++) {
+        if (this.arr[i].key === key) {
+          this.arr[i].value = value
+          return
+        }
+      }
+      this.arr[this.arr.length] = new struct(key, value)
+    },
+    //  根据key获取value
+    get = function(key) {
+      for (let i = 0; i < this.arr.length; i++) {
+        if (this.arr[i].key === key) {
+          return this.arr[i].value
+        }
+      }
+      return null
+    },
+    //   根据key删除
+    remove = function(key) {
+      let v
+      for (let i = 0; i < this.arr.length; i++) {
+        v = this.arr.pop()
+        if (v.key === key) {
+          continue
+        }
+        this.arr.unshift(v)
+      }
+    }
+  //   获取map键值对个数
+  let size = function() {
+      return this.arr.length
+    },
+    // 判断map是否为空
+    isEmpty = function() {
+      return this.arr.length <= 0
+    }
+  this.arr = new Array()
+  this.get = get
+  this.put = put
+  this.remove = remove
+  this.size = size
+  this.isEmpty = isEmpty
 }

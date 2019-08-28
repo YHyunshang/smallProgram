@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-27 10:18:34
+ * @LastEditTime: 2019-08-28 11:14:34
  */
 
 import {
@@ -38,15 +38,19 @@ export default StyleSheet.create({
   },
   similarGoodsList: {
     width: imageWidth,
-    // height: imageWidth * 0.8,
     marginLeft: left,
     marginBottom: bottom,
     backgroundColor: '#FFFFFF',
     borderRadius: 5
   },
+  similarGoodsWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   similarGoodsImg: {
-    width: imageWidth,
-    height: imageWidth
+    width: 150,
+    height: 150
   },
   goodsDesc: {
     width: 152,
@@ -89,16 +93,20 @@ export default StyleSheet.create({
     width: 14,
     height: 14
   },
-  container: {
-    marginRight: 10,
-    marginBottom: 10,
+  linearGradient: {
     borderRadius: 24,
     paddingTop: 6,
     paddingRight: 6,
     paddingBottom: 5,
-    paddingLeft: 5,
-    shadowColor: 'rgba(238,66,57,0.23)',
+    paddingLeft: 5
+  },
+  container: {
+    marginRight: 10,
+    marginBottom: 10,
+    shadowColor: '#EE4239',
     shadowOffset: {width: 0, height: 2},
-    shadowRadius: 4
+    shadowRadius: 4,
+    shadowOpacity: 0.23,
+    elevation: 2
   }
 })
