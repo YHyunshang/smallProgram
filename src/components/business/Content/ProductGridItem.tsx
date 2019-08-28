@@ -3,9 +3,8 @@
  * Created by 李华良 on 2019-08-19
  */
 import * as React from 'react'
-import { View, Text, TouchableWithoutFeedback } from 'react-native'
+import { View, Text, TouchableWithoutFeedback, Image } from 'react-native'
 import useTheme from './ProductGridItem.styles'
-import { FitImg } from '@components'
 import ProductCart from '../ProductCart'
 import { Product } from './typings'
 import withCartCountModify from './HOC/withCountInCartModifier'
@@ -33,6 +32,7 @@ function ProductGridItem({
   onModifyCount = (count: number) => null,
 }) {
   const styles = useTheme(theme)
+  console.log(styles)
   const navigateToProductDetail = () => {
     Native.navigateTo({
       type: Native.NavPageType.NATIVE,
@@ -45,8 +45,10 @@ function ProductGridItem({
       <TouchableWithoutFeedback onPress={navigateToProductDetail}>
         <View style={styles.productBox}>
           <View style={styles.thumbnailBox}>
-            <FitImg
-              imageProps={{ source: { uri: thumbnail }, resizeMode: 'contain' }}
+            <Image
+              style={styles.thumbnail}
+              source={{ uri: thumbnail }}
+              resizeMode="cover"
             />
             <View style={styles.tagRow}>
               {!!tag && <Text style={styles.tag}>{tag}</Text>}

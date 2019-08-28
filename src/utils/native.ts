@@ -2,7 +2,7 @@
  * Created by 李华良 on 2019-07-29
  */
 import { NativeModules, Platform, Dimensions, StatusBar } from 'react-native'
-import { Log } from '@utils'
+import * as Log from './log'
 
 export enum NavPageType {
   NATIVE = '0',

@@ -16,7 +16,8 @@ interface Props {
 
 export default function ProductGrid({ products, columnNumber }: Props) {
   const gridProducts = chunk(products, columnNumber)
-  const styles = useTheme({ 2: '2x', 3: '3x' }[columnNumber] || '2x')
+  const theme = { 2: '2x', 3: '3x' }[columnNumber]
+  const styles = useTheme(theme || '2x')
   const rowTotal = gridProducts.length
 
   const colRender = columns =>
@@ -29,7 +30,7 @@ export default function ProductGrid({ products, columnNumber }: Props) {
         key={product.code}
       >
         <View style={styles.productBox}>
-          <ProductGridItem {...product} />
+          <ProductGridItem {...product} theme={theme} />
         </View>
       </View>
     ))

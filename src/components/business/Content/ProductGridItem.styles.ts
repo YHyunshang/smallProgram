@@ -19,7 +19,10 @@ export default theme =>
           '3x': 0,
         }[theme] || 5,
     },
-    thumbnail: {},
+    thumbnail: {
+      '2x': { width: 155, height: 155 },
+      '3x': { width: 105, height: 105 },
+    }[theme],
 
     infoBox: {},
 

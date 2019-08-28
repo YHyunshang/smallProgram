@@ -2,7 +2,15 @@
  * Created by 李华良 on 2019-07-23
  */
 import * as React from 'react'
-import { View, Animated, FlatList, Dimensions } from 'react-native'
+import {
+  View,
+  Animated,
+  FlatList,
+  Dimensions,
+  ScrollView,
+  TouchableWithoutFeedback,
+  Text,
+} from 'react-native'
 import { CMSServices, ProductServices } from '@services'
 import { Native } from '@utils'
 import styles from './Page.styles'
@@ -51,7 +59,7 @@ interface State {
   animatedValRefCmsScrollY: Animated.AnimatedValue
 }
 
-class Page extends React.PureComponent<Props, State> {
+class Page1 extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props)
   }
@@ -516,4 +524,77 @@ class Page extends React.PureComponent<Props, State> {
   }
 }
 
-export default Page
+function Page2() {
+  return (
+    <View style={{ flex: 1 }}>
+      <ScrollView
+        style={{
+          position: 'absolute',
+          top: 180,
+          left: 0,
+          width: '100%',
+          height: 34,
+        }}
+        horizontal
+      >
+        <TouchableWithoutFeedback onPress={() => console.log('------>>>>>>')}>
+          <Text style={{ lineHeight: 34, height: 34, paddingHorizontal: 20 }}>
+            123444222
+          </Text>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => console.log('------>>>>>>')}>
+          <Text style={{ lineHeight: 34, height: 34, paddingHorizontal: 20 }}>
+            123444222
+          </Text>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => console.log('------>>>>>>')}>
+          <Text style={{ lineHeight: 34, height: 34, paddingHorizontal: 20 }}>
+            123444222
+          </Text>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => console.log('------>>>>>>')}>
+          <Text style={{ lineHeight: 34, height: 34, paddingHorizontal: 20 }}>
+            123444222
+          </Text>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => console.log('------>>>>>>')}>
+          <Text style={{ lineHeight: 34, height: 34, paddingHorizontal: 20 }}>
+            123444222
+          </Text>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => console.log('------>>>>>>')}>
+          <Text style={{ lineHeight: 34, height: 34, paddingHorizontal: 20 }}>
+            123444222
+          </Text>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => console.log('------>>>>>>')}>
+          <Text style={{ lineHeight: 34, height: 34, paddingHorizontal: 20 }}>
+            123444222
+          </Text>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => console.log('------>>>>>>')}>
+          <Text style={{ lineHeight: 34, height: 34, paddingHorizontal: 20 }}>
+            123444222
+          </Text>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => console.log('------>>>>>>')}>
+          <Text style={{ lineHeight: 34, height: 34, paddingHorizontal: 20 }}>
+            123444222
+          </Text>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => console.log('------>>>>>>')}>
+          <Text style={{ lineHeight: 34, height: 34, paddingHorizontal: 20 }}>
+            123444222
+          </Text>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => console.log('------>>>>>>')}>
+          <Text style={{ lineHeight: 34, height: 34, paddingHorizontal: 20 }}>
+            123444222
+          </Text>
+        </TouchableWithoutFeedback>
+      </ScrollView>
+    </View>
+  )
+}
+
+export default Page1

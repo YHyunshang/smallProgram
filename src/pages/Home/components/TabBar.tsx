@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Animated,
   Dimensions,
+  Platform,
 } from 'react-native'
 import { Native } from '@utils'
 import sumBy from 'lodash/sumBy'
@@ -91,6 +92,8 @@ export default class TabBar extends React.Component<Props, State> {
 
   componentDidUpdate() {
     const { indicatorTranslateX, indicatorWidth } = this.state
+    if (!indicatorWidth) return
+
     const scrollToX = Math.max(
       indicatorTranslateX + indicatorWidth / 2 - windowWidth / 2,
       0
@@ -137,7 +140,7 @@ export default class TabBar extends React.Component<Props, State> {
       return (
         <TouchableOpacity onPress={() => jumpTo(route.key)} key={route.key}>
           <View
-            style={[styles.tabBox, { height: TabHeight }]}
+            style={styles.tabBox}
             onLayout={e => this.onTabBoxLayout(route.key, e)}
           >
             <Text
@@ -229,7 +232,7 @@ export default class TabBar extends React.Component<Props, State> {
     })
 
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, Platform.OS === 'ios' && { zIndex: 1 }]}>
         <Animated.View
           style={[
             styles.background,
@@ -242,6 +245,13 @@ export default class TabBar extends React.Component<Props, State> {
         />
         <Animated.ScrollView
           ref={c => (this.scrollViewRef = c)}
+          keyboardShouldPersistTaps="handled"
+          alwaysBounceHorizontal={false}
+          scrollsToTop={false}
+          showsHorizontalScrollIndicator={false}
+          automaticallyAdjustContentInsets={false}
+          overScrollMode="never"
+          scrollEventThrottle={16}
           style={[
             styles.scrollView,
             {
@@ -251,7 +261,6 @@ export default class TabBar extends React.Component<Props, State> {
             },
           ]}
           horizontal
-          showsHorizontalScrollIndicator={false}
         >
           {this.renderTabs()}
           <Animated.View
