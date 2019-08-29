@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-28 15:45:55
+ * @LastEditTime: 2019-08-29 13:58:15
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -14,6 +14,7 @@ import ShareModal from '../../components/business/ShareModal'
 import PosterModal from '../../components/business/PosterModal'
 import TabBar from '../../components/common/TabBar'
 import Loading from '../../components/common/Loading'
+import PreloadingImage from '../../components/common/PreloadingImage'
 import styles from './ProductDetailPage.styles'
 import {Native} from '@utils'
 import {getGoodsDetailData, getPosterImgUrl, getSimilarProduct, addToCart, subscriptCartNumberChange} from '../../services/goodsDetail'
@@ -29,8 +30,6 @@ const productPlace = require('@img/product-place.png')
 const productSpecific = require('@img/product-specific.png')
 // 商品条件图标
 const productConditions = require('@img/product-conditions.png')
-// 商品默认图片
-const placeholderProduct = require('@img/placeholder-product.png')
 const rnAppModule = NativeModules.RnAppModule// 原生模块
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
 export default class ProductDetailPage extends React.Component {
@@ -169,9 +168,9 @@ export default class ProductDetailPage extends React.Component {
    */
   jumpGoodsDetail=(item) => {
     Native.navigateTo({
-      type: 1,
+      type: Native.NavPageType.NATIVE,
       uri: 'A003,A003',
-      params: {params: {productCode: item.productCode}}
+      params: {productCode: item.productCode}
     })
   }
   /**
@@ -254,12 +253,14 @@ export default class ProductDetailPage extends React.Component {
     // favorableRate = favorableRate && parseFloat(favorableRate.toFixed(2))
     // 商品详情图文列表
     const goodsImgList = productImgList ? productImgList.map(({url}, index) => (
-      <Image style={styles.goodsDetailImage} source={{uri: url}} resizeMode="contain" key={index}/>
-    )) : <Image style={styles.goodsDetailImage} source={placeholderProduct} resizeMode="contain"/>
+      <PreloadingImage style={styles.goodsDetailImage} uri={url}></PreloadingImage>
+      // <Image style={styles.goodsDetailImage} source={{uri: url}} resizeMode="contain" key={index}/>
+    )) : null
     // 商家文描图文列表
     const shopImgList = shopUrl ? shopUrl.map((item, index) => (
-      <Image style={styles.goodsDetailImage} source={{uri: item}} resizeMode="cover" key={index}/>
-    )) : []
+      <PreloadingImage style={styles.goodsDetailImage} uri={item} ></PreloadingImage>
+      // <Image style={styles.goodsDetailImage} source={{uri: item}} resizeMode="cover" key={index}/>
+    )) : null
     return (
       <View style={styles.container}>
         {
@@ -349,7 +350,7 @@ export default class ProductDetailPage extends React.Component {
             </View>
           </View>
           {
-            similarProduct ? <SimilarGoods similarProduct={similarProduct} addCart={this.handleAddCart} jumpGoodsDetail={this.jumpGoodsDetail} defaultImg={placeholderProduct}></SimilarGoods>
+            similarProduct ? <SimilarGoods similarProduct={similarProduct} addCart={this.handleAddCart} jumpGoodsDetail={this.jumpGoodsDetail} ></SimilarGoods>
               : null
           }
           <View onLayout={event => {

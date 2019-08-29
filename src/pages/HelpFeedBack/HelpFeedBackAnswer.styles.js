@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-28 20:49:17
+ * @LastEditTime: 2019-08-29 10:54:23
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import {isIPhoneXMarginTop} from '../../utils/IsIphoneX'
@@ -49,9 +49,10 @@ export default StyleSheet.create({
     alignItems: 'flex-start'
   },
   questionTitleFlex: {
+    width: '95%',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'flex-start'
   },
   questionIndex: {
     fontSize: 16,
