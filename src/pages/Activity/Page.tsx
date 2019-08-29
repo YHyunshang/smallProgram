@@ -220,7 +220,6 @@ export default class Page extends React.Component<Props, State> {
       i++
     }
 
-    console.log(result)
     return result
   }
 
@@ -235,6 +234,7 @@ export default class Page extends React.Component<Props, State> {
 
     if (tabList.length > 1 && currentTabContent.length > 0) {
       const tabComp = {
+        key: '$$tab',
         component: Tab,
         props: {
           data: tabList,
@@ -249,7 +249,8 @@ export default class Page extends React.Component<Props, State> {
     return currentTabContent
   }
 
-  renderFlatItem = ({ item: { component: Comp, props } }) => <Comp {...props} />
+  renderFlatItem = ({ item: { component: Comp, props } }) =>
+    React.createElement(Comp, props)
 
   render() {
     const {
@@ -261,13 +262,15 @@ export default class Page extends React.Component<Props, State> {
     return (
       <View style={styles.container}>
         <FlatList
+          style={styles.flatList}
           data={flatData}
           renderItem={this.renderFlatItem}
           keyExtractor={item => `${item.key}`}
           showsVerticalScrollIndicator={false}
-          stickyHeaderIndices={[
-            stickyHeaderIndices === -1 ? undefined : stickyHeaderIndices,
-          ]}
+          stickyHeaderIndices={
+            stickyHeaderIndices === -1 ? [] : [stickyHeaderIndices]
+          }
+          removeClippedSubviews={false}
           refreshing={false}
           onRefresh={this.componentDidMount.bind(this)}
           ListEmptyComponent={Empty}

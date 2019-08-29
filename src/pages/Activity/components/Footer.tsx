@@ -19,7 +19,20 @@ export default function Footer({ cartCount, amount }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.cartIconBox}>
-        <Image style={styles.cartImg} source={require('@img/cart-gray.png')} />
+        <TouchableOpacity
+          activeOpacity={0.95}
+          onPress={() =>
+            Native.navigateTo({
+              type: Native.NavPageType.NATIVE,
+              uri: 'B001,B001',
+            })
+          }
+        >
+          <Image
+            style={styles.cartImg}
+            source={require('@img/cart-gray.png')}
+          />
+        </TouchableOpacity>
         {!!cartCount && (
           <Text
             style={[
@@ -52,6 +65,8 @@ export default function Footer({ cartCount, amount }: Props) {
       >
         <LinearGradient
           style={styles.cartPageNavBox}
+          start={{ x: 1, y: 0 }}
+          end={{ x: 0, y: 0 }}
           colors={['#FF3914', '#FF6042']}
         >
           <Text style={styles.navText}>去结算</Text>

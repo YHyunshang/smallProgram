@@ -3,12 +3,12 @@ import { StyleSheet } from 'react-native'
 export default StyleSheet.create({
   container: {
     flex: 1,
-    position: 'relative',
+  },
+  flatList: {
+    flex: 1,
   },
   footerBox: {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
+    elevation: 1,
     backgroundColor: '#FFF',
     shadowColor: 'rgba(0,0,0,0.1)',
     shadowOpacity: 1,

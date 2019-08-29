@@ -6,7 +6,7 @@ export default StyleSheet.create({
     shadowColor: '#000',
     shadowOpacity: 0.06,
     shadowRadius: 11,
-    elevation: 5,
+    elevation: 0.8,
   },
   tabItemBox: {
     padding: 18,
