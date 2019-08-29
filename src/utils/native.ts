@@ -30,8 +30,12 @@ export async function navigateTo({ type, uri, params, title }: Navigation) {
     throw new Error('Native error: no HomeNativeManager.pushToNewPage function')
   }
 
-  const uriArr = uri.split(',')
-  const platformUri = (Platform.OS === 'ios' ? uriArr[0] : uriArr[1]) || ''
+  let platformUri: string
+  if (type === NavPageType.H5) platformUri = uri
+  else {
+    const uriArr = uri.split(',')
+    platformUri = (Platform.OS === 'ios' ? uriArr[0] : uriArr[1]) || ''
+  }
 
   const pageType = type
   const pageUri = platformUri
