@@ -18,7 +18,8 @@ export default StyleSheet.create({
   },
 
   infoBox: {
-    flexGrow: 0,
+    flex: 1,
+    minWidth: 0,
   },
 
   thumbnail: {
@@ -27,6 +28,7 @@ export default StyleSheet.create({
   },
 
   name: {
+    flex: 1,
     fontSize: 18,
     fontWeight: '700',
     color: '#4D4D4D',
