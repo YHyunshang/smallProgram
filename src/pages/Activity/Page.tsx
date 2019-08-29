@@ -90,11 +90,11 @@ export default class Page extends React.Component<Props, State> {
   }
 
   requestTabContent = async tabKey => {
-    const { shopCode } = this.props
+    const { shopCode } = this.state
     const { result } = await CMSServices.getFloorDataByTab(tabKey, shopCode)
-    this.setState(({ tabContentMap }) => ({
+    this.setState(({ tabContentMap: preTabContentMap }) => ({
       tabContentMap: {
-        ...tabContentMap,
+        ...preTabContentMap,
         [tabKey]: this.floorDataFormatter(result.templateVOList),
       },
     }))
@@ -219,6 +219,8 @@ export default class Page extends React.Component<Props, State> {
       }
       i++
     }
+
+    console.log(result)
     return result
   }
 
@@ -231,24 +233,20 @@ export default class Page extends React.Component<Props, State> {
     const { currentTabKey, tabList, tabContentMap } = this.state
     const currentTabContent = tabContentMap[currentTabKey] || []
 
-    let result = []
-    if (
-      currentTabContent.length > 0 &&
-      currentTabContent[0].component === AdSingle
-    )
-      result.push(currentTabContent[0])
-    if (tabList.length > 1)
-      result.push({
+    if (tabList.length > 1 && currentTabContent.length > 0) {
+      const tabComp = {
         component: Tab,
         props: {
           data: tabList,
           currentActive: currentTabKey,
           onTabChange: this.onTabChange,
         },
-      })
-    result = result.concat(currentTabContent.slice(1))
-
-    return result
+      }
+      return currentTabContent[0].component === AdSingle
+        ? [currentTabContent[0], tabComp, ...currentTabContent.slice(1)]
+        : [tabComp, ...currentTabContent]
+    }
+    return currentTabContent
   }
 
   renderFlatItem = ({ item: { component: Comp, props } }) => <Comp {...props} />
