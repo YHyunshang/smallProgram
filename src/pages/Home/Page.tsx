@@ -2,7 +2,14 @@
  * Created by 李华良 on 2019-07-23
  */
 import * as React from 'react'
-import { View, Animated, FlatList, Dimensions } from 'react-native'
+import {
+  View,
+  Animated,
+  FlatList,
+  Dimensions,
+  RefreshControl,
+  Platform,
+} from 'react-native'
 import { CMSServices, ProductServices } from '@services'
 import { Native } from '@utils'
 import styles from './Page.styles'
@@ -473,28 +480,73 @@ class Page extends React.PureComponent<Props, State> {
           data={tabFloorMap[route.key] || []}
           renderItem={this.renderFlatItem}
           keyExtractor={item => `${item.key}`}
-          refreshing={tabLoadingMap[route.key] || false}
-          onRefresh={() => this.onRefreshScene(routeIndex)}
+          refreshControl={
+            <RefreshControl
+              refreshing={!!tabLoadingMap[route.key]}
+              onRefresh={() => this.onRefreshScene(routeIndex)}
+              colors={['rgba(238, 66, 57, 1)', 'rgba(238, 66, 57, 0)']}
+              tintColor={'rgba(238, 66, 57, 1)'}
+            />
+          }
           onScroll={onScroll}
-          scrollEventThrottle={1}
           showsVerticalScrollIndicator={false}
         />
       )
     }
+    if (Platform.OS === 'ios') {
+      const translateY = animatedValRefCmsScrollY.interpolate({
+        inputRange: [-100, 1, 50],
+        outputRange: [
+          placeholderForNativeHeight,
+          placeholderForNativeHeight,
+          0,
+        ],
+        extrapolate: 'clamp',
+      })
 
-    return (
-      <AnimatedFlatList
-        style={styles.sceneBox}
-        contentContainerStyle={{ paddingTop: placeholderForNativeHeight }}
-        data={tabFloorMap[route.key] || []}
-        renderItem={this.renderFlatItem}
-        keyExtractor={item => `${item.key}`}
-        refreshing={false}
-        onRefresh={() => this.onRefreshScene(routeIndex)}
-        onScroll={tabLoadingMap[route.key] ? undefined : onScroll}
-        showsVerticalScrollIndicator={false}
-      />
-    )
+      return (
+        <AnimatedFlatList
+          style={[styles.sceneBox, { transform: [{ translateY }] }]}
+          data={tabFloorMap[route.key] || []}
+          renderItem={this.renderFlatItem}
+          keyExtractor={item => `${item.key}`}
+          refreshControl={
+            <RefreshControl
+              refreshing={!!tabLoadingMap[route.key]}
+              onRefresh={() => this.onRefreshScene(routeIndex)}
+              colors={['rgba(238, 66, 57, 1)', 'rgba(238, 66, 57, 0)']}
+              tintColor={'rgba(238, 66, 57, 1)'}
+            />
+          }
+          onScroll={tabLoadingMap[route.key] ? undefined : onScroll}
+          showsVerticalScrollIndicator={false}
+        />
+      )
+    } else {
+      // android 使用 translate 方式会动画抖动，因此使用 Header 占位并且设置 refreshControl topOffset
+      return (
+        <AnimatedFlatList
+          style={styles.sceneBox}
+          data={tabFloorMap[route.key] || []}
+          renderItem={this.renderFlatItem}
+          keyExtractor={item => `${item.key}`}
+          refreshControl={
+            <RefreshControl
+              refreshing={!!tabLoadingMap[route.key]}
+              onRefresh={() => this.onRefreshScene(routeIndex)}
+              colors={['rgba(238, 66, 57, 1)', 'rgba(238, 66, 57, 0)']}
+              tintColor={'rgba(238, 66, 57, 1)'}
+              progressViewOffset={placeholderForNativeHeight}
+            />
+          }
+          onScroll={tabLoadingMap[route.key] ? undefined : onScroll}
+          showsVerticalScrollIndicator={false}
+          ListHeaderComponent={
+            <View style={{ height: placeholderForNativeHeight }}></View>
+          }
+        />
+      )
+    }
   }
 
   renderTabBar = props => {
