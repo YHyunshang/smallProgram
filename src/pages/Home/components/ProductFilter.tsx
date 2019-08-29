@@ -72,7 +72,8 @@ export default function ProductFilter({ filters, onFilterChange }: Props) {
           <Text
             style={[
               styles.filterText,
-              filters.storage && styles.filterTextActive,
+              filters.storage === StorageChoices.InStore &&
+                styles.filterTextActive,
             ]}
           >
             有货
