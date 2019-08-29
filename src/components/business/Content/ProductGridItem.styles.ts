@@ -81,7 +81,7 @@ export default theme =>
           '2x': 12,
           '3x': 11,
         }[theme] || 12,
-      height: 12,
+      height: 13,
       textDecorationLine: 'line-through',
       marginBottom: 4,
     },

@@ -69,15 +69,18 @@ export default StyleSheet.create({
     fontWeight: '600',
     fontSize: 22,
     marginRight: 13,
+    textAlignVertical: 'bottom',
   },
   slashedPrice: {
     color: '#B3B3B3',
     fontWeight: '400',
     fontSize: 12,
+    lineHeight: 22,
     textDecorationLine: 'line-through',
+    textAlignVertical: 'bottom',
   },
   pricePrefix: {
-    fontSize: 12,
+    fontSize: 15,
   },
 
   cartBox: {
