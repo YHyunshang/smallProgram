@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-29 13:58:15
+ * @LastEditTime: 2019-08-29 17:54:57
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -80,10 +80,6 @@ export default class ProductDetailPage extends React.Component {
    */
   onNativeCartNumberChange = ({productCode, productNumber}) => {
     map.put(productCode, productNumber)
-    // this.setState({cartNumber: Number(productNumber)})
-    // rnAppModule.showToast(productCode, '0')
-    // rnAppModule.showToast(`productNum:::${String(productNumber)}`, '0')
-    // rnAppModule.showToast(`productNumber33:${productNumber}`, '0')
   }
   componentWillUnmount() {
     this.nativeSubscription && this.nativeSubscription.remove()
@@ -159,7 +155,6 @@ export default class ProductDetailPage extends React.Component {
    */
   handleAddCart=(item) => {
     let cartNumber = map.get(item.productCode) || 0
-    // rnAppModule.showToast(`productCode:::${String(item.productCode)},cartNumber:::${String(cartNumber)}`, '0')
     item.productNum = Number(cartNumber)
     addToCart(JSON.stringify(item), '1')
   }
@@ -254,19 +249,16 @@ export default class ProductDetailPage extends React.Component {
     // 商品详情图文列表
     const goodsImgList = productImgList ? productImgList.map(({url}, index) => (
       <PreloadingImage style={styles.goodsDetailImage} uri={url}></PreloadingImage>
-      // <Image style={styles.goodsDetailImage} source={{uri: url}} resizeMode="contain" key={index}/>
     )) : null
     // 商家文描图文列表
     const shopImgList = shopUrl ? shopUrl.map((item, index) => (
       <PreloadingImage style={styles.goodsDetailImage} uri={item} ></PreloadingImage>
-      // <Image style={styles.goodsDetailImage} source={{uri: item}} resizeMode="cover" key={index}/>
     )) : null
     return (
       <View style={styles.container}>
         {
           (
             <View style={styles.topTab}>
-              {/* <View></View> */}
               <TabBar ref={e => this.tabs = e}
                 index={this.state.currentIndex}
                 data={this.state.tablist}
@@ -331,14 +323,14 @@ export default class ProductDetailPage extends React.Component {
                   </View>
                   : null
               }
-              {
+              {/* {
                 goodsInfo.shelfLife ?
                   <View style={styles.goodsQualityItemFlex}>
                     <Image source={productConditions}></Image>
                     <Text style={styles.goodsQualityValue}>{goodsInfo.shelfLife}</Text>
                   </View>
                   : null
-              }
+              } */}
               {
                 goodsInfo.originPlace ?
                   <View style={styles.goodsQualityItemFlex}>
