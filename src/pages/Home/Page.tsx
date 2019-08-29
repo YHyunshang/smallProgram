@@ -301,10 +301,16 @@ class Page extends React.PureComponent<Props, State> {
           result.push({
             key: floor.id,
             component: AdSingle,
-            wrapperStyle: {
-              paddingHorizontal:
-                currentTabIdx === 0 && imgObj.name === '查看更多' ? 10 : 0,
-            },
+            wrapperStyle: [
+              {
+                marginHorizontal:
+                  currentTabIdx === 0 && imgObj.name !== '查看更多' ? 10 : 0,
+              },
+              currentTabIdx === 0 && {
+                borderRadius: 10,
+                overflow: 'hidden',
+              },
+            ],
             props: {
               image: imgObj.imgUrl,
               link: CMSServices.formatLink(imgObj),
