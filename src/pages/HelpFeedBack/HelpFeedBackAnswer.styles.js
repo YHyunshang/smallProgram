@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-29 14:29:20
+ * @LastEditTime: 2019-08-29 18:23:43
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import {isIPhoneXMarginTop} from '../../utils/IsIphoneX'
@@ -69,6 +69,6 @@ export default StyleSheet.create({
     fontSize: 13,
     color: '#4D4D4D',
     lineHeight: 20,
-    paddingVertical: 15
+    paddingTop: 10
   }
 })
