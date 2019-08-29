@@ -32,7 +32,6 @@ function ProductGridItem({
   onModifyCount = (count: number) => null,
 }) {
   const styles = useTheme(theme)
-  console.log(styles)
   const navigateToProductDetail = () => {
     Native.navigateTo({
       type: Native.NavPageType.NATIVE,

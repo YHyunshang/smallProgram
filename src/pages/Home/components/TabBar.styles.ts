@@ -14,6 +14,10 @@ export default StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 1,
+    backgroundColor: 'rgba(255,255,255,0.0001)',
+    shadowColor: '#000000',
+    shadowOpacity: 0.06,
+    shadowRadius: 11,
   },
   background: {
     backgroundColor: '#FFF',

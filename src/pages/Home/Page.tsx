@@ -2,15 +2,7 @@
  * Created by 李华良 on 2019-07-23
  */
 import * as React from 'react'
-import {
-  View,
-  Animated,
-  FlatList,
-  Dimensions,
-  ScrollView,
-  TouchableWithoutFeedback,
-  Text,
-} from 'react-native'
+import { View, Animated, FlatList, Dimensions } from 'react-native'
 import { CMSServices, ProductServices } from '@services'
 import { Native } from '@utils'
 import styles from './Page.styles'
@@ -31,12 +23,6 @@ import TabBar, { TabHeight } from './components/TabBar'
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
 const placeholderForNativeHeight = Native.getStatusBarHeight() + 86 + TabHeight
 const windowWidth = Dimensions.get('window').width
-const windowHeight = Dimensions.get('window').height
-
-enum PageType {
-  HOME = 'home',
-  ACTIVITY = 'activity',
-}
 
 interface Props {}
 
@@ -123,7 +109,7 @@ class Page extends React.PureComponent<Props, State> {
   }
 
   // 获取初始 CMS 数据
-  requestTabData = async (shopCode: string, shopType = '001') => {
+  requestTabData = async (shopCode: string, shopType) => {
     this.setState({ loading: true })
     let data: {}[]
     try {
@@ -213,12 +199,17 @@ class Page extends React.PureComponent<Props, State> {
               {
                 key: '$$category-box',
                 component: Box,
-                wrapperStyle: { marginBottom: 15 },
+                wrapperStyle: {
+                  paddingVertical: 25,
+                  marginBottom: 10,
+                  backgroundColor: '#FFF',
+                },
                 props: { data: categories, columnNumber: 5 },
               },
               {
                 key: '$$product-list-with-filter',
                 component: ProductListWithFilter,
+                wrapperStyle: { backgroundColor: '#FFF' },
                 props: { categoryCode, shopCode: shop.code },
               },
             ],
@@ -298,7 +289,10 @@ class Page extends React.PureComponent<Props, State> {
           result.push({
             key: floor.id,
             component: AdSingle,
-            wrapperStyle: { paddingHorizontal: currentTabIdx === 0 ? 10 : 0 },
+            wrapperStyle: {
+              paddingHorizontal:
+                currentTabIdx === 0 && imgObj.name === '查看更多' ? 10 : 0,
+            },
             props: {
               image: imgObj.imgUrl,
               link: CMSServices.formatLink(imgObj),
@@ -380,7 +374,7 @@ class Page extends React.PureComponent<Props, State> {
         result.push({
           key: floor.id,
           component: Box,
-          wrapperStyle: { paddingVertical: 25 },
+          wrapperStyle: { paddingVertical: 25, backgroundColor: '#FFF' },
           props: {
             columnNumber: { 1: 4, 2: 5 }[floor.subType],
             data: boxData,
@@ -518,6 +512,7 @@ class Page extends React.PureComponent<Props, State> {
           renderTabBar={this.renderTabBar}
           onIndexChange={this.onTabIndexChange}
           initialLayout={{ height: 0, width: windowWidth }}
+          sceneContainerStyle={{ backgroundColor: '#FAFAFA' }}
         />
       </View>
     )

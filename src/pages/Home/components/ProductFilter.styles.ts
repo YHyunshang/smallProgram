@@ -4,13 +4,17 @@ export default StyleSheet.create({
   container: {
     flexDirection: 'row',
   },
+  filterItemBox: {
+    flex: 1,
+  },
   filterBox: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 76,
     paddingVertical: 10,
     borderBottomColor: '#EBEBEB',
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.5,
+    flex: 1,
   },
   filterText: {
     fontSize: 12,

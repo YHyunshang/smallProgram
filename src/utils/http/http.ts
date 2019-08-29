@@ -45,7 +45,11 @@ async function request(
         (errMsg, responseData) => {
           if (errMsg) {
             Log.debug(
-              `NativeModules.HttpNativeManager.sendRequest(${method}, ${url}, ${data}) returned an error:`,
+              `NativeModules.HttpNativeManager.sendRequest returned an error. ARGS:`,
+              method,
+              url,
+              data,
+              `ERR:`,
               errMsg
             )
             showToast(errMsg)
@@ -54,7 +58,11 @@ async function request(
 
           const result = responseData ? JSON.parse(responseData) : {}
           Log.debug(
-            `NativeModules.HttpNativeManager.sendRequest(${method}, ${url}, ${data}) returned:`,
+            `NativeModules.HttpNativeManager.sendRequest returned. ARGS:`,
+            method,
+            url,
+            data,
+            `RESULT:`,
             result
           )
           if (result.code !== 200000) {

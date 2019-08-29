@@ -2,7 +2,11 @@ import * as React from 'react'
 import styles from './ProductListWithFilter.styles'
 import { ProductServices } from '@services'
 import { FlatList, View } from 'react-native'
-import ProductFilter from './ProductFilter'
+import ProductFilter, {
+  StorageChoices,
+  Sort,
+  sort2String,
+} from './ProductFilter'
 import ProductListItem from '@components/business/Content/ProductListItem'
 
 interface Props {
@@ -10,15 +14,10 @@ interface Props {
   categoryCode: string
 }
 
-enum OrderType {
-  ASC = 'asc',
-  DESC = 'desc',
-}
-
 interface State {
-  hasStorage: boolean
+  storeFilter: StorageChoices
   orderFiled: string
-  orderType: OrderType
+  orderType: Sort
   productList: {}[]
   page: number
   pageSize: number
@@ -29,9 +28,9 @@ export default class ProductListWithFilter extends React.Component<
   State
 > {
   state = {
-    hasStorage: true,
+    storeFilter: StorageChoices.InStore,
     orderFiled: 'price',
-    orderType: OrderType.ASC,
+    orderType: Sort.ASC,
     productList: [],
     page: 1,
     pageSize: 30,
@@ -43,13 +42,13 @@ export default class ProductListWithFilter extends React.Component<
 
   requestProductList = async () => {
     const { shopCode, categoryCode } = this.props
-    const { hasStorage, orderType, page, pageSize } = this.state
+    const { storeFilter, orderType, page, pageSize } = this.state
     const { page: pageResult } = await ProductServices.queryProductList(
       shopCode,
       categoryCode,
-      hasStorage ? '1' : '0',
+      storeFilter === StorageChoices.InStore ? '1' : '0',
       'price',
-      orderType.toUpperCase(),
+      sort2String(orderType),
       page,
       pageSize
     )
@@ -79,17 +78,21 @@ export default class ProductListWithFilter extends React.Component<
     }
   }
 
-  onFilterChange = data =>
-    this.setState({
-      hasStorage: data.hasStorage,
-      orderType: data.priceSorter,
-    })
+  onFilterChange = data => {
+    this.setState(
+      {
+        storeFilter: data.storage,
+        orderType: data.priceSorter,
+      },
+      this.requestProductList
+    )
+  }
 
   renderFlatItem = ({ item }) =>
     item.code === '$$filter' ? (
       <ProductFilter
         filters={{
-          hasStorage: this.state.hasStorage,
+          storage: this.state.storeFilter,
           priceSorter: this.state.orderType,
         }}
         onFilterChange={this.onFilterChange}
