@@ -39,13 +39,23 @@ function ProductGridItem({
       params: { productCode: code, storeCode: shopCode },
     })
   }
+  const [thumbnailWidth, setThumbnailWidth] = React.useState()
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={navigateToProductDetail}>
         <View style={styles.productBox}>
-          <View style={styles.thumbnailBox}>
+          <View
+            style={styles.thumbnailBox}
+            onLayout={e => setThumbnailWidth(e.nativeEvent.layout.width)}
+          >
             <Image
-              style={styles.thumbnail}
+              style={[
+                styles.thumbnail,
+                thumbnailWidth && {
+                  width: thumbnailWidth,
+                  height: thumbnailWidth,
+                },
+              ]}
               source={{ uri: thumbnail }}
               resizeMode="cover"
             />

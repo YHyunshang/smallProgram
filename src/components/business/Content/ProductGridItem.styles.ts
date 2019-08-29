@@ -13,6 +13,7 @@ export default theme =>
 
     thumbnailBox: {
       position: 'relative',
+      overflow: 'hidden',
       marginBottom:
         {
           '2x': 5,

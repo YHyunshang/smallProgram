@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-08-21 20:46:20
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-08-29 15:04:13
+ * @Last Modified time: 2019-08-29 20:49:05
  */
 import * as React from 'react'
 import { View, Text } from 'react-native'
@@ -28,6 +28,8 @@ export default function ProductList({ products }: Props) {
         key={ele.code}
       >
         <LinearGradient
+          start={{ x: 1, y: 0 }}
+          end={{ x: 0, y: 0 }}
           colors={['#FF6042', '#FF3914']}
           style={styles.positionTextBox}
         >

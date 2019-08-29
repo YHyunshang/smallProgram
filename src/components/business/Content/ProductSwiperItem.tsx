@@ -65,8 +65,10 @@ function ProductSwiperItem({
         >
           <View style={styles.cartBtnBox}>
             <LinearGradient
-              colors={['#FF3914', '#FF6042']}
               style={styles.gradientBox}
+              start={{ x: 1, y: 0 }}
+              end={{ x: 0, y: 0 }}
+              colors={['#FF3914', '#FF6042']}
             >
               <Image style={styles.addIcon} source={require('@img/plus.png')} />
               <Text style={styles.cartBtnText}>购物车</Text>

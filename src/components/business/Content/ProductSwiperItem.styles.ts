@@ -60,6 +60,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 6,
     borderRadius: 10,
+    height: 18,
   },
   addIcon: {
     width: 8,
@@ -70,6 +71,8 @@ export default StyleSheet.create({
     color: '#FFF',
     fontSize: 12,
     fontWeight: '400',
-    lineHeight: 18,
+    // 安卓垂直居中
+    textAlignVertical: 'center',
+    includeFontPadding: false,
   },
 })

@@ -8,6 +8,8 @@ export default function ProductCart({ onPress }) {
     <View style={styles.container}>
       <LinearGradient
         style={styles.gradientBox}
+        start={{ x: 1, y: 0 }}
+        end={{ x: 0, y: 0 }}
         colors={['#FF3914', '#FF6042']}
       >
         <TouchableOpacity onPress={onPress}>
