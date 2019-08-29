@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-29 17:54:57
+ * @LastEditTime: 2019-08-29 22:07:28
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -21,7 +21,6 @@ import {getGoodsDetailData, getPosterImgUrl, getSimilarProduct, addToCart, subsc
 import GoodsDetailSwiper from '../../components/business/GoodsDetailSwiper'
 import SimilarGoods from '../../components/business/SimilarGoods'
 // import Tag from '../../components/business/Tag'
-// import {similarGoods} from '../../utils/mock'
 // 实列化一个map
 let map = new Map()
 // 商品产地图标
@@ -29,7 +28,7 @@ const productPlace = require('@img/product-place.png')
 // 商品规格图标
 const productSpecific = require('@img/product-specific.png')
 // 商品条件图标
-const productConditions = require('@img/product-conditions.png')
+// const productConditions = require('@img/product-conditions.png')
 const rnAppModule = NativeModules.RnAppModule// 原生模块
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
 export default class ProductDetailPage extends React.Component {
