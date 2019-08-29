@@ -4,7 +4,7 @@
  * @Author: 李华良
  * @Date: 2019-08-24 18:09:24
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-08-29 10:01:43
+ * @Last Modified time: 2019-08-29 15:21:38
  */
 import * as React from 'react'
 import styles from './ActivityWithIPS.styles'
@@ -34,7 +34,11 @@ export default function ActivityWithIPS({
   const total = products.length
   const productList = products.map(
     ({ code, thumbnail, name, price }, index) => (
-      <TouchableOpacity onPress={navigateToActivity} key={code}>
+      <TouchableOpacity
+        activeOpacity={0.95}
+        onPress={navigateToActivity}
+        key={code}
+      >
         <View
           style={[
             styles.productBox,
@@ -62,7 +66,7 @@ export default function ActivityWithIPS({
   )
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={navigateToActivity}>
+      <TouchableOpacity activeOpacity={0.95} onPress={navigateToActivity}>
         <FitImage
           style={styles.image}
           source={{ uri: image }}

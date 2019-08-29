@@ -3,6 +3,8 @@ import styles from './Footer.styles'
 import { View, Image, Text } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import LinearGradient from 'react-native-linear-gradient'
+import { Native } from '@utils'
+import { NavPageType } from 'src/utils/native'
 
 interface Props {
   cartCount: number
@@ -40,7 +42,12 @@ export default function Footer({ cartCount, amount }: Props) {
         <Text style={styles.pricePrefix}>¥ </Text>
         {amount / 100}
       </Text>
-      <TouchableOpacity>
+      <TouchableOpacity
+        activeOpacity={0.95}
+        onPress={() =>
+          Native.navigateTo({ type: NavPageType.NATIVE, uri: 'B001,B001' })
+        }
+      >
         <LinearGradient
           style={styles.cartPageNavBox}
           colors={['#FF3914', '#FF6042']}

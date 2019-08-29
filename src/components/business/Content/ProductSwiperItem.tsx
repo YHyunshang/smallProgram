@@ -59,7 +59,10 @@ function ProductSwiperItem({
       </TouchableWithoutFeedback>
 
       <View style={styles.cartBox}>
-        <TouchableOpacity onPress={() => onModifyCount(count + 1)}>
+        <TouchableOpacity
+          activeOpacity={0.95}
+          onPress={() => onModifyCount(count + 1)}
+        >
           <View style={styles.cartBtnBox}>
             <LinearGradient
               colors={['#FF3914', '#FF6042']}

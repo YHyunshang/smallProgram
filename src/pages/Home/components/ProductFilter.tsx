@@ -59,6 +59,7 @@ export default function ProductFilter({ filters, onFilterChange }: Props) {
     <View style={styles.container}>
       <View style={styles.filterItemBox}>
         <TouchableOpacity
+          activeOpacity={0.95}
           style={styles.filterBox}
           onPress={() =>
             onFilterChange({
@@ -81,6 +82,7 @@ export default function ProductFilter({ filters, onFilterChange }: Props) {
       </View>
       <View style={styles.filterItemBox}>
         <TouchableOpacity
+          activeOpacity={0.95}
           style={styles.filterBox}
           onPress={() =>
             onFilterChange({

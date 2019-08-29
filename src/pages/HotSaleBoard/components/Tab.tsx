@@ -94,7 +94,11 @@ export default class Tab extends React.PureComponent<Props, State> {
         ref={this.scrollViewRef}
       >
         {data.map(({ key, label }) => (
-          <TouchableOpacity key={key} onPress={() => onTabChange(key)}>
+          <TouchableOpacity
+            activeOpacity={0.95}
+            key={key}
+            onPress={() => onTabChange(key)}
+          >
             <View style={styles.tabItemBox}>
               <Text
                 style={styles.tabItem}
