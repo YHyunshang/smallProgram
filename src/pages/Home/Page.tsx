@@ -327,12 +327,13 @@ class Page extends React.PureComponent<Props, State> {
         }
       } else if (floor.type === 3) {
         // 商品
-        const component = {
-          1: ProductList,
-          2: ProductGrid,
-          3: ProductGrid,
-          4: ProductSwiper,
-        }[floor.subType]
+        const component =
+          {
+            1: ProductList,
+            2: ProductGrid,
+            3: ProductGrid,
+            4: ProductSwiper,
+          }[floor.subType] || ProductSwiper
         if (component)
           result.push({
             key: floor.id,

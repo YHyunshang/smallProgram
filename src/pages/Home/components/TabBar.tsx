@@ -98,7 +98,7 @@ export default class TabBar extends React.Component<Props, State> {
       indicatorTranslateX + indicatorWidth / 2 - windowWidth / 2,
       0
     )
-    this.scrollViewRef.getNode().scrollTo({ x: scrollToX, Animated: true })
+    this.scrollViewRef.getNode().scrollTo({ x: scrollToX, animated: true })
   }
 
   onTabTextLayout = (tabKey, { nativeEvent: { layout } }) => {

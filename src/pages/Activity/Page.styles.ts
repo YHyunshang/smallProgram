@@ -4,7 +4,6 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     position: 'relative',
-    paddingBottom: 60,
   },
   footerBox: {
     position: 'absolute',

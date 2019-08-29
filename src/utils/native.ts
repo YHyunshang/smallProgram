@@ -34,7 +34,7 @@ export async function navigateTo({ type, uri, params, title }: Navigation) {
   const platformUri = (Platform.OS === 'ios' ? uriArr[0] : uriArr[1]) || ''
 
   const pageType = type
-  const pageUri = platformUri.split('?')[0]
+  const pageUri = platformUri
 
   Log.debug(
     'calling HomeNativeManager.pushToNewPage with arguments',

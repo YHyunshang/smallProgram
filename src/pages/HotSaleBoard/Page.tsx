@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-08-21 14:48:31
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-08-29 11:13:50
+ * @Last Modified time: 2019-08-29 19:26:10
  */
 import * as React from 'react'
 import { View, FlatList, Image } from 'react-native'
@@ -124,8 +124,7 @@ export default class Page extends React.Component<Object, State> {
     this.requestProductListUnderTab(key)
   }
 
-  renderFlatItem = ({ item: { component, props } }) =>
-    React.createElement(React.memo(component), props)
+  renderFlatItem = ({ item: { component: Comp, props } }) => <Comp {...props} />
 
   render() {
     const { tabList, tabContentMap, tabLoadingMap, currentTabId } = this.state
@@ -137,7 +136,7 @@ export default class Page extends React.Component<Object, State> {
         props: {
           resizeMode: 'cover',
           source: require('@img/hot-sale-banner.png'),
-          style: { marginBottom: -40, width: '100%' },
+          style: { marginBottom: -35.2941, width: '100%' },
         },
       },
       {

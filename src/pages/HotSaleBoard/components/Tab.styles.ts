@@ -1,25 +1,27 @@
 import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
-  container: {
-    padding: 3,
+  container: {},
+  scrollView: {
     position: 'relative',
-    marginBottom: 10,
   },
   tabItemBox: {
     paddingHorizontal: 12,
-    paddingVertical: 10,
   },
   tabItem: {
     color: '#FFF',
     fontSize: 14,
     fontWeight: '600',
+    lineHeight: 35.2941,
+    height: 35.2941,
+    textAlignVertical: 'center',
   },
   indicator: {
     position: 'absolute',
     bottom: 0,
     height: 2,
     backgroundColor: '#fff',
+    borderRadius: 2,
     zIndex: 1,
   },
 })
