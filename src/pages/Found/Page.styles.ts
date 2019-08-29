@@ -6,6 +6,8 @@ export default StyleSheet.create({
   floorBox: {
     marginHorizontal: 10,
     marginVertical: 7.5,
+    borderRadius: 10,
+    overflow: 'hidden',
     backgroundColor: '#FFF',
     shadowColor: '#000000',
     shadowOpacity: 0.06,
