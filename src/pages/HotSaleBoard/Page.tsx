@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-08-21 14:48:31
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-08-29 19:26:10
+ * @Last Modified time: 2019-08-29 23:28:16
  */
 import * as React from 'react'
 import { View, FlatList, Image } from 'react-native'
@@ -81,9 +81,13 @@ export default class Page extends React.Component<Object, State> {
     this.setState(({ tabLoadingMap: preTabLoadingMap }) => ({
       tabLoadingMap: { ...preTabLoadingMap, [tabId]: true },
     }))
+    const {
+      shop: { code: shopCode },
+    } = this.state
     try {
       const { page } = await ProductServices.getHotSaleProductsUnderCategory(
-        tabId
+        tabId,
+        shopCode
       )
       this.setState(({ tabContentMap: preTabContentMap, shop: { code } }) => ({
         tabContentMap: {
@@ -174,7 +178,7 @@ export default class Page extends React.Component<Object, State> {
         style={styles.container}
         data={floorData}
         renderItem={this.renderFlatItem}
-        stickyHeaderIndices={[1]}
+        // stickyHeaderIndices={[1]}
         ListFooterComponent={<View style={styles.footer} />}
       />
     )

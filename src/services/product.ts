@@ -15,13 +15,14 @@ export function getTabList() {
  */
 export function getHotSaleProductsUnderCategory(
   tabId: string,
+  storeCode: string,
   page = 1,
-  size = 20
+  size = 50
 ) {
   return Http.get(
     'productCenter',
     '/app/product/queryProductSellwelByCategorie',
-    { categorie: tabId, page, size }
+    { categorie: tabId, storeCode, page, size }
   )
 }
 
