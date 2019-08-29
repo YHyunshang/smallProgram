@@ -31,7 +31,7 @@ export async function navigateTo({ type, uri, params, title }: Navigation) {
   }
 
   let platformUri: string
-  if (type === NavPageType.H5) platformUri = uri
+  if (type === NavPageType.H5 || type === NavPageType.RN) platformUri = uri
   else {
     const uriArr = uri.split(',')
     platformUri = (Platform.OS === 'ios' ? uriArr[0] : uriArr[1]) || ''

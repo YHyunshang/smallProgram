@@ -10,9 +10,10 @@ import ProductSwiperItem, {
 
 interface Props {
   products: ProductSwiperItemProps[]
+  afterModifyCount: Function
 }
 
-export default function ProductSwiper({ products }: Props) {
+export default function ProductSwiper({ products, afterModifyCount }: Props) {
   const total = products.length
   return (
     <ScrollView
@@ -29,7 +30,7 @@ export default function ProductSwiper({ products }: Props) {
           ]}
           key={product.code}
         >
-          <ProductSwiperItem {...product} />
+          <ProductSwiperItem {...product} afterModifyCount={afterModifyCount} />
         </View>
       ))}
     </ScrollView>

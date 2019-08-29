@@ -5,6 +5,7 @@ import { CMSServices } from '@services'
 
 interface Props extends Product {
   shopCode: string // 门店编码
+  afterModifyCount: Function
 }
 
 interface State {
@@ -20,9 +21,12 @@ export default function withCartCountModify(WrappedComponent) {
     }
 
     requestUpdateCount = debounce(function(count) {
-      const { code, price, shopCode } = this.props
+      const { code, price, shopCode, afterModifyCount } = this.props
       CMSServices.updateProductCountInCart(code, count, price, '', shopCode)
-        .then(() => this.setState({ count }))
+        .then(
+          () => this.setState({ count }),
+          () => afterModifyCount && afterModifyCount(count)
+        )
         .catch(err => {
           this.setState({ modifiedCount: count })
           throw err

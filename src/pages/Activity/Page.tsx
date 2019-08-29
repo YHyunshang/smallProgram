@@ -189,6 +189,7 @@ export default class Page extends React.Component<Props, State> {
               })),
               columnNumber:
                 [2, 3].indexOf(floor.subType) > -1 ? floor.subType : undefined,
+              afterAddToCart: this.requestCartInfo
             },
           })
       } else if (floor.type === 4 && [1, 2].indexOf(floor.subType) !== -1) {

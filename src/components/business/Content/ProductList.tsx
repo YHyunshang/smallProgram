@@ -4,21 +4,21 @@
 import * as React from 'react'
 import { View } from 'react-native'
 import styles from './ProductList.styles'
-import ProductListItem, {
-  Props as ProductListItemProps,
-} from '@components/business/Content/ProductListItem'
+import ProductListItem from '@components/business/Content/ProductListItem'
+import { Product } from './typings'
 
 interface Props {
-  products: ProductListItemProps[]
+  products: Product[]
+  afterModifyCount: Function
 }
 
-export default function ProductList({ products }: Props) {
+export default function ProductList({ products, afterModifyCount }: Props) {
   const total = products.length
   return (
     <View style={styles.container}>
       {products.map((product, idx) => (
         <View style={styles.productBox} key={product.code}>
-          <ProductListItem {...product} />
+          <ProductListItem {...product} afterModifyCount={afterModifyCount} />
           {idx < total - 1 && <View style={styles.fakeBorder}></View>}
         </View>
       ))}

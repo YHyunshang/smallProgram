@@ -12,9 +12,14 @@ import ProductGridItem, {
 interface Props {
   products: ProductGridItemProps[]
   columnNumber: number
+  afterModifyCount
 }
 
-export default function ProductGrid({ products, columnNumber }: Props) {
+export default function ProductGrid({
+  products,
+  columnNumber,
+  afterModifyCount,
+}: Props) {
   const gridProducts = chunk(products, columnNumber)
   const theme = { 2: '2x', 3: '3x' }[columnNumber]
   const styles = useTheme(theme || '2x')
@@ -30,7 +35,11 @@ export default function ProductGrid({ products, columnNumber }: Props) {
         key={product.code}
       >
         <View style={styles.productBox}>
-          <ProductGridItem {...product} theme={theme} />
+          <ProductGridItem
+            {...product}
+            theme={theme}
+            afterModifyCount={afterModifyCount}
+          />
         </View>
       </View>
     ))

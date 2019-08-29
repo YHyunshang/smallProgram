@@ -22,6 +22,7 @@ export default StyleSheet.create({
     paddingHorizontal: 9,
     borderTopStartRadius: 4,
     borderBottomEndRadius: 4,
+    overflow: 'hidden',
   },
   positionText: {
     fontSize: 10,
