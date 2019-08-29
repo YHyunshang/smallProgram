@@ -53,7 +53,7 @@ export default class Page extends React.Component<Object, State> {
       const curFloor = validData[i]
       const nextFloor = validData[i + 1]
 
-      if (curFloor.type === 2 && nextFloor.type === 3) {
+      if (curFloor.type === 2 && nextFloor && nextFloor.type === 3) {
         const imgObj = (curFloor.templateDetailVOList || [{ imgUrl: null }])[0]
         floorData.push({
           key: curFloor.id,
