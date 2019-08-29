@@ -14,6 +14,7 @@ import { FlatList, View } from 'react-native'
 import { Native } from '@utils'
 import Tab from './components/Tab'
 import Footer from './components/Footer'
+import Empty from './components/Empty'
 
 interface Props {
   activityCode: string // 活动编码
@@ -266,6 +267,7 @@ export default class Page extends React.Component<Props, State> {
           renderItem={this.renderFlatItem}
           keyExtractor={item => `${item.key}`}
           showsVerticalScrollIndicator={false}
+          ListEmptyComponent={Empty}
         />
         <View style={styles.footerBox}>
           <Footer amount={amount} cartCount={count} />

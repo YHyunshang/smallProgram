@@ -2,18 +2,17 @@
  * @Author: 李华良
  * @Date: 2019-08-21 20:46:20
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-08-24 16:59:09
+ * @Last Modified time: 2019-08-29 15:04:13
  */
 import * as React from 'react'
 import { View, Text } from 'react-native'
-import ProductListItem, {
-  Props as ProductListItemProps,
-} from '@components/business/Content/ProductListItem'
+import ProductListItem from '@components/business/Content/ProductListItem'
 import styles from './ProductList.styles'
 import LinearGradient from 'react-native-linear-gradient'
+import { Product } from '@components/business/Content/typings'
 
 interface Props {
-  products: ProductListItemProps[]
+  products: Product[]
 }
 
 export default function ProductList({ products }: Props) {
