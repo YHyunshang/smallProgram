@@ -187,7 +187,7 @@ class Page extends React.PureComponent<Props, State> {
           title: ele.categoryName,
           link: {
             type: Native.NavPageType.NATIVE,
-            uri: 'A002,A002',
+            uri: `A002?cate=${categoryCode},A002?cate=${categoryCode}`,
             params: { code: categoryCode },
           },
         }))
