@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-08-16 09:54:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-29 14:25:35
+ * @LastEditTime: 2019-08-29 15:09:46
  */
 
 /**
@@ -90,7 +90,7 @@ export const helpFeedBackAnswer = {
   deliveryQuestion: [
     {
       questionTitle: '为什么我定位的地址不能配送？',
-      questionContent: '大部分门店的配送范围是3KM内，实际根据交通路线而定，如超出范围，您可以选择门店自提。'
+      questionContent: '大部分门店的配送范围是3KM内，实际根据交通路线而定'
     },
     {
       questionTitle: '下单完成后，多久能配送到？',
