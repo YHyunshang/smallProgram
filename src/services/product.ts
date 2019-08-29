@@ -16,7 +16,7 @@ export function getTabList() {
 export function getHotSaleProductsUnderCategory(
   tabId: string,
   page = 1,
-  size = 10
+  size = 20
 ) {
   return Http.get(
     'productCenter',
