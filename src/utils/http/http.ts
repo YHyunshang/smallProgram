@@ -65,7 +65,10 @@ async function request(
             `RESULT:`,
             result
           )
-          if (result.code !== 200000) {
+          if (result.code === 400109) {
+            // token 过期或未登录
+            return reject(new RequestErr('SYSTEM', result.message))
+          } else if (result.code !== 200000) {
             showToast(result.message || '系统异常')
             return reject(new RequestErr('SYSTEM', result.message))
           }
