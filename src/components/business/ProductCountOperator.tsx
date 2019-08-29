@@ -5,20 +5,20 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import LinearGradient from 'react-native-linear-gradient'
 
 export interface Props {
-  initialCount: number
-  product: {
-    code: string
-  }
+  count: number
+  onCountChange: Function
 }
 
 export default function ProductCountOperator({
-  initialCount = 0,
-  product,
+  count = 0,
+  onCountChange,
 }: Props) {
-  const [count, setCount] = React.useState(initialCount)
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
+      <TouchableOpacity
+        activeOpacity={0.95}
+        onPress={() => count - 1 >= 0 && onCountChange(count - 1)}
+      >
         <Image
           style={styles.operatorImg}
           source={require('@img/minus-circle.png')}
@@ -27,7 +27,10 @@ export default function ProductCountOperator({
       <Text style={styles.countText} numberOfLines={1} ellipsizeMode="tail">
         {count}
       </Text>
-      <TouchableOpacity>
+      <TouchableOpacity
+        activeOpacity={0.95}
+        onPress={() => onCountChange(count + 1)}
+      >
         <Image
           style={styles.operatorImg}
           source={require('@img/plus-circle.png')}

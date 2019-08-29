@@ -63,10 +63,7 @@ function ProductListItem({
       </TouchableWithoutFeedback>
 
       <View style={styles.cartBox}>
-        {/* <TouchableWithoutFeedback>
-          <ProductCountOperator initialCount={count} product={arguments[0]} />
-        </TouchableWithoutFeedback> */}
-        <ProductCart onPress={() => onModifyCount(count + 1)} />
+        <ProductCart count={count} onCountChange={onModifyCount} />
       </View>
     </View>
   )

@@ -2,6 +2,12 @@ import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
   container: {
+    position: 'relative',
+  },
+  cartBox: {
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
     shadowColor: '#EE4239',
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
@@ -18,5 +24,11 @@ export default StyleSheet.create({
   cartImg: {
     width: 14,
     height: 14,
+  },
+
+  countOperBox: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
   },
 })

@@ -7,8 +7,8 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   operatorImg: {
-    width: 17,
-    height: 17,
+    width: 24,
+    height: 24,
   },
   countText: {
     fontSize: 13,

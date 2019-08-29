@@ -75,6 +75,11 @@ class Page extends React.PureComponent<Props, State> {
     this.init()
   }
 
+  async componentDidUpdate() {
+    const { currentTabIdx } = this.state
+    Native.setHomeFirstTabActiveStatus(currentTabIdx === 0)
+  }
+
   componentWillUnmount(): void {
     this.nativeSubscription && this.nativeSubscription.remove()
   }
@@ -408,9 +413,7 @@ class Page extends React.PureComponent<Props, State> {
   }
 
   onTabIndexChange = idx => {
-    this.setState({ currentTabIdx: idx }, () => {
-      Native.setHomeFirstTabActiveStatus(idx === 0)
-    })
+    this.setState({ currentTabIdx: idx })
     const { tabList, tabFloorMap } = this.state
     const currentTab = tabList[idx]
     if (currentTab && (tabFloorMap[currentTab.id] || []).length === 0) {

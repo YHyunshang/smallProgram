@@ -80,7 +80,7 @@ function ProductGridItem({
         </View>
       </TouchableWithoutFeedback>
       <View style={styles.cartBox}>
-        <ProductCart onPress={() => onModifyCount(count + 1)} />
+        <ProductCart count={count} onCountChange={onModifyCount} />
       </View>
     </View>
   )
