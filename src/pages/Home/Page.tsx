@@ -443,8 +443,10 @@ class Page extends React.PureComponent<Props, State> {
     { listener: this.onPageScroll, useNativeDriver: true }
   )
 
-  renderFlatItem = ({ item: { wrapperStyle, component, props } }) => (
-    <View style={wrapperStyle}>{React.createElement(component, props)}</View>
+  renderFlatItem = ({ item: { wrapperStyle, component: Comp, props } }) => (
+    <View style={wrapperStyle}>
+      <Comp {...props} />
+    </View>
   )
 
   renderScene = ({ route }) => {
