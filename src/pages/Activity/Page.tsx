@@ -41,8 +41,6 @@ export default class Page extends React.Component<Props, State> {
   constructor(props) {
     super(props)
 
-    console.log('activity props', props)
-
     this.state = {
       shopCode: props.shopCode,
       currentTabKey: '',
@@ -82,7 +80,7 @@ export default class Page extends React.Component<Props, State> {
     }
     if (result.length > 0) {
       const tab = result[0]
-      Native.setTitle(tab.showName || '优选商品')
+      Native.setTitle(tab.pageName || '优选商品')
       nextState.currentTabKey = tab.id
       nextState.tabContentMap = {
         [tab.id]: this.floorDataFormatter(tab.templateVOList),
@@ -259,6 +257,7 @@ export default class Page extends React.Component<Props, State> {
       cart: { amount, count },
     } = this.state
     const flatData = this.flatDataFormatter()
+    const stickyHeaderIndices = flatData.findIndex(ele => ele.component === Tab)
 
     return (
       <View style={styles.container}>
@@ -267,6 +266,11 @@ export default class Page extends React.Component<Props, State> {
           renderItem={this.renderFlatItem}
           keyExtractor={item => `${item.key}`}
           showsVerticalScrollIndicator={false}
+          stickyHeaderIndices={[
+            stickyHeaderIndices === -1 ? undefined : stickyHeaderIndices,
+          ]}
+          refreshing={false}
+          onRefresh={this.componentDidMount.bind(this)}
           ListEmptyComponent={Empty}
         />
         <View style={styles.footerBox}>

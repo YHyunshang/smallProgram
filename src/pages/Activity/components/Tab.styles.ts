@@ -1,7 +1,13 @@
 import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
-  container: {},
+  container: {
+    backgroundColor: '#FFF',
+    shadowColor: '#000',
+    shadowOpacity: 0.06,
+    shadowRadius: 11,
+    elevation: 5,
+  },
   tabItemBox: {
     padding: 18,
   },
