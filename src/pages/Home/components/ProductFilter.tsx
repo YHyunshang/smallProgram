@@ -1,7 +1,6 @@
 import * as React from 'react'
 import styles from './ProductFilter.styles'
-import { View, Image, Text } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { View, Image, Text, TouchableOpacity } from 'react-native'
 import { object } from 'prop-types'
 
 export enum StorageChoices {
@@ -57,18 +56,18 @@ export default function ProductFilter({ filters, onFilterChange }: Props) {
   }[priceSorter]
   return (
     <View style={styles.container}>
-      <View style={styles.filterItemBox}>
-        <TouchableOpacity
-          activeOpacity={0.95}
-          style={styles.filterBox}
-          onPress={() =>
-            onFilterChange({
-              ...filters,
-              // @ts-ignore
-              storage: enumNext(StorageChoices, storage),
-            })
-          }
-        >
+      <TouchableOpacity
+        style={styles.filterBtn}
+        activeOpacity={0.95}
+        onPress={() =>
+          onFilterChange({
+            ...filters,
+            // @ts-ignore
+            storage: enumNext(StorageChoices, storage),
+          })
+        }
+      >
+        <View style={styles.filterBox}>
           <Text
             style={[
               styles.filterText,
@@ -79,24 +78,24 @@ export default function ProductFilter({ filters, onFilterChange }: Props) {
             有货
           </Text>
           <Image style={styles.filterImg} source={storeFilterImg}></Image>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.filterItemBox}>
-        <TouchableOpacity
-          activeOpacity={0.95}
-          style={styles.filterBox}
-          onPress={() =>
-            onFilterChange({
-              ...filters,
-              // @ts-ignore
-              priceSorter: enumNext(Sort, priceSorter),
-            })
-          }
-        >
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.filterBtn}
+        activeOpacity={0.95}
+        onPress={() =>
+          onFilterChange({
+            ...filters,
+            // @ts-ignore
+            priceSorter: enumNext(Sort, priceSorter),
+          })
+        }
+      >
+        <View style={styles.filterBox}>
           <Text style={styles.filterText}>价格</Text>
           <Image style={styles.sortImg} source={sortImg}></Image>
-        </TouchableOpacity>
-      </View>
+        </View>
+      </TouchableOpacity>
     </View>
   )
 }

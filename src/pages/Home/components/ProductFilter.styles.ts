@@ -4,7 +4,7 @@ export default StyleSheet.create({
   container: {
     flexDirection: 'row',
   },
-  filterItemBox: {
+  filterBtn: {
     flex: 1,
   },
   filterBox: {

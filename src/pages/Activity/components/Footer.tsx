@@ -1,7 +1,6 @@
 import * as React from 'react'
 import styles from './Footer.styles'
-import { View, Image, Text } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { View, Image, Text, TouchableOpacity } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import { Native } from '@utils'
 
@@ -69,7 +68,7 @@ export default function Footer({ cartCount, amount }: Props) {
           end={{ x: 0, y: 0 }}
           colors={['#FF3914', '#FF6042']}
         >
-          <Text style={styles.navText}>去结算</Text>
+          <Text style={styles.navText}>去购物车</Text>
         </LinearGradient>
       </TouchableOpacity>
     </View>
