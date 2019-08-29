@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-08-21 14:48:31
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-08-29 10:58:55
+ * @Last Modified time: 2019-08-29 11:13:50
  */
 import * as React from 'react'
 import { View, FlatList, Image } from 'react-native'
@@ -63,7 +63,6 @@ export default class Page extends React.Component<Object, State> {
   }
 
   requestTabList = async () => {
-    // todo: get shop info from state
     const {
       shop: { code, type },
     } = this.state
@@ -122,6 +121,7 @@ export default class Page extends React.Component<Object, State> {
   onTabChange = key => {
     this.setState({ currentTabId: key })
     this.flatListRef.current.scrollToIndex({ index: 1 })
+    this.requestProductListUnderTab(key)
   }
 
   renderFlatItem = ({ item: { component, props } }) =>
