@@ -12,7 +12,6 @@ import ProductList from './components/ProductList'
 import Tab from './components/Tab'
 import { Native } from '@utils'
 import ProductGrid from '@components/business/Content/ProductGrid'
-import FitImage from 'react-native-fit-image'
 import Empty from './components/Empty'
 
 interface State {
@@ -124,7 +123,9 @@ export default class Page extends React.Component<Object, State> {
 
   onTabChange = key => {
     this.setState({ currentTabId: key })
-    this.flatListRef.current.scrollToIndex({ index: 1 })
+    const { tabContentMap } = this.state
+    if (tabContentMap[key] && tabContentMap[key].length > 0)
+      this.flatListRef.current.scrollToIndex({ index: 1 })
     this.requestProductListUnderTab(key)
   }
 
@@ -178,7 +179,7 @@ export default class Page extends React.Component<Object, State> {
         style={styles.container}
         data={floorData}
         renderItem={this.renderFlatItem}
-        // stickyHeaderIndices={[1]}
+        stickyHeaderIndices={[1]}
         ListFooterComponent={<View style={styles.footer} />}
       />
     )
