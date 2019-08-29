@@ -59,11 +59,7 @@ export default class Page extends React.Component<Object, State> {
           key: curFloor.id,
           image: imgObj.imgUrl,
           products: nextFloor.templateDetailVOList.map(this.productFormatter),
-          link: {
-            type: imgObj.linkType,
-            uri: imgObj.link,
-            params: {},
-          },
+          activityCode: imgObj.link,
         })
         i += 2
         continue
@@ -73,11 +69,7 @@ export default class Page extends React.Component<Object, State> {
           key: curFloor.id,
           image: imgObj.imgUrl,
           products: [],
-          link: {
-            type: imgObj.linkType,
-            uri: imgObj.link,
-            params: {},
-          },
+          activityCode: imgObj.link,
         })
       } else if (curFloor.type === 3) {
         floorData.push({

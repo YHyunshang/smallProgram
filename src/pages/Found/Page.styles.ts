@@ -4,7 +4,12 @@ export default StyleSheet.create({
   container: {},
 
   floorBox: {
-    paddingHorizontal: 10,
-    paddingBottom: 15,
+    marginHorizontal: 10,
+    marginVertical: 7.5,
+    backgroundColor: '#FFF',
+    shadowColor: '#000000',
+    shadowOpacity: 0.06,
+    shadowRadius: 11,
+    elevation: 5,
   },
 })

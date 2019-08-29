@@ -4,11 +4,11 @@
  * @Author: 李华良
  * @Date: 2019-08-24 18:09:24
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-08-25 21:39:41
+ * @Last Modified time: 2019-08-29 10:01:43
  */
 import * as React from 'react'
 import styles from './ActivityWithIPS.styles'
-import { Product, Link } from './typings'
+import { Product } from './typings'
 import { View, Image, TouchableOpacity, Text, ScrollView } from 'react-native'
 import { Native } from '@utils'
 import FitImage from 'react-native-fit-image'
@@ -25,7 +25,12 @@ export default function ActivityWithIPS({
   activityCode,
 }: Props) {
   const navigateToActivity = () =>
-    Native.navigateTo({ type: 2, uri: '', params: { code: activityCode } })
+    activityCode &&
+    Native.navigateTo({
+      type: Native.NavPageType.RN,
+      uri: 'RNActivity',
+      params: { activityCode, type: 'activity' },
+    })
   const total = products.length
   const productList = products.map(
     ({ code, thumbnail, name, price }, index) => (
@@ -37,9 +42,13 @@ export default function ActivityWithIPS({
             index === total - 1 && styles.productBoxLast,
           ]}
         >
-          <Image style={styles.thumbnail} source={{ uri: thumbnail }} />
+          <Image
+            style={styles.thumbnail}
+            source={{ uri: thumbnail }}
+            defaultSource={require('@img/placeholder-product.png')}
+          />
           <View style={styles.nameBox}>
-            <Text style={styles.name} lineBreakMode="tail" numberOfLines={2}>
+            <Text style={styles.name} numberOfLines={2}>
               {name}
             </Text>
           </View>
@@ -53,9 +62,12 @@ export default function ActivityWithIPS({
   )
   return (
     <View style={styles.container}>
-      {/* todo: navigate to activity */}
       <TouchableOpacity onPress={navigateToActivity}>
-        <FitImage style={styles.image} source={{ uri: image }} />
+        <FitImage
+          style={styles.image}
+          source={{ uri: image }}
+          indicator={false}
+        />
       </TouchableOpacity>
       <ScrollView
         style={styles.productSwiper}

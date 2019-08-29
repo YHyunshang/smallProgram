@@ -30,9 +30,10 @@ export default StyleSheet.create({
   },
 
   thumbnail: {
-    width: 92,
-    height: 92,
-    marginBottom: 6,
+    margin: 10,
+    width: 72,
+    height: 72,
+    marginBottom: 16,
   },
 
   nameBox: {
@@ -44,7 +45,7 @@ export default StyleSheet.create({
 
   name: {
     fontSize: 13,
-    lineHeight: 17,
+    lineHeight: 15,
     textAlign: 'center',
   },
 

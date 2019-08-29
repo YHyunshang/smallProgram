@@ -154,7 +154,9 @@ export function formatLink({
     type: type,
     uri: type === Native.NavPageType.RN ? 'RNActivity' : link,
     params:
-      type === Native.NavPageType.RN ? { activityCode: link, type: '' } : {},
+      type === Native.NavPageType.RN
+        ? { activityCode: link, type: 'activity' }
+        : {},
   }
 }
 

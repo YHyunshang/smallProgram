@@ -16,7 +16,8 @@ import Tab from './components/Tab'
 import Footer from './components/Footer'
 
 interface Props {
-  code: string // 活动编码
+  activityCode: string // 活动编码
+  shopCode?: string
 }
 
 interface State {
@@ -36,24 +37,26 @@ interface State {
 }
 
 export default class Page extends React.Component<Props, State> {
-  state = {
-    shopCode: '',
-    currentTabKey: '',
-    tabList: [],
-    tabContentMap: {},
-    cart: {
-      amount: 0,
-      count: 0,
-    },
+  constructor(props) {
+    super(props)
+
+    console.log('activity props', props)
+
+    this.state = {
+      shopCode: props.shopCode,
+      currentTabKey: '',
+      tabList: [],
+      tabContentMap: {},
+      cart: {
+        amount: 0,
+        count: 0,
+      },
+    }
   }
 
   componentDidMount() {
-    Native.getConstant('storeCode').then(shopCode => {
-      this.setState({ shopCode }, () => {
-        this.requestTabList()
-        this.requestCartInfo()
-      })
-    })
+    this.requestTabList()
+    this.requestCartInfo()
   }
 
   requestCartInfo = async () => {
@@ -68,7 +71,7 @@ export default class Page extends React.Component<Props, State> {
   }
 
   requestTabList = async () => {
-    const { code } = this.props
+    const { activityCode: code } = this.props
     const { shopCode } = this.state
     const { result } = await CMSServices.getActivity(code, shopCode)
     let nextState = {
@@ -78,9 +81,11 @@ export default class Page extends React.Component<Props, State> {
     }
     if (result.length > 0) {
       const tab = result[0]
-      Native.setTitle(tab.pageName)
+      Native.setTitle(tab.showName || '优选商品')
       nextState.currentTabKey = tab.id
-      nextState.tabContentMap = this.floorDataFormatter(tab.templateVOList)
+      nextState.tabContentMap = {
+        [tab.id]: this.floorDataFormatter(tab.templateVOList),
+      }
     }
     this.setState(nextState)
   }
@@ -231,7 +236,7 @@ export default class Page extends React.Component<Props, State> {
       currentTabContent[0].component === AdSingle
     )
       result.push(currentTabContent[0])
-    if (tabList.length > 0)
+    if (tabList.length > 1)
       result.push({
         component: Tab,
         props: {
@@ -268,8 +273,4 @@ export default class Page extends React.Component<Props, State> {
       </View>
     )
   }
-}
-
-Page.defaultProps = {
-  shopCode: '9010',
 }

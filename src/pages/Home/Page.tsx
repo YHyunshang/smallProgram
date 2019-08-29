@@ -59,7 +59,7 @@ interface State {
   animatedValRefCmsScrollY: Animated.AnimatedValue
 }
 
-class Page1 extends React.PureComponent<Props, State> {
+class Page extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props)
   }
@@ -524,77 +524,4 @@ class Page1 extends React.PureComponent<Props, State> {
   }
 }
 
-function Page2() {
-  return (
-    <View style={{ flex: 1 }}>
-      <ScrollView
-        style={{
-          position: 'absolute',
-          top: 180,
-          left: 0,
-          width: '100%',
-          height: 34,
-        }}
-        horizontal
-      >
-        <TouchableWithoutFeedback onPress={() => console.log('------>>>>>>')}>
-          <Text style={{ lineHeight: 34, height: 34, paddingHorizontal: 20 }}>
-            123444222
-          </Text>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => console.log('------>>>>>>')}>
-          <Text style={{ lineHeight: 34, height: 34, paddingHorizontal: 20 }}>
-            123444222
-          </Text>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => console.log('------>>>>>>')}>
-          <Text style={{ lineHeight: 34, height: 34, paddingHorizontal: 20 }}>
-            123444222
-          </Text>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => console.log('------>>>>>>')}>
-          <Text style={{ lineHeight: 34, height: 34, paddingHorizontal: 20 }}>
-            123444222
-          </Text>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => console.log('------>>>>>>')}>
-          <Text style={{ lineHeight: 34, height: 34, paddingHorizontal: 20 }}>
-            123444222
-          </Text>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => console.log('------>>>>>>')}>
-          <Text style={{ lineHeight: 34, height: 34, paddingHorizontal: 20 }}>
-            123444222
-          </Text>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => console.log('------>>>>>>')}>
-          <Text style={{ lineHeight: 34, height: 34, paddingHorizontal: 20 }}>
-            123444222
-          </Text>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => console.log('------>>>>>>')}>
-          <Text style={{ lineHeight: 34, height: 34, paddingHorizontal: 20 }}>
-            123444222
-          </Text>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => console.log('------>>>>>>')}>
-          <Text style={{ lineHeight: 34, height: 34, paddingHorizontal: 20 }}>
-            123444222
-          </Text>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => console.log('------>>>>>>')}>
-          <Text style={{ lineHeight: 34, height: 34, paddingHorizontal: 20 }}>
-            123444222
-          </Text>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => console.log('------>>>>>>')}>
-          <Text style={{ lineHeight: 34, height: 34, paddingHorizontal: 20 }}>
-            123444222
-          </Text>
-        </TouchableWithoutFeedback>
-      </ScrollView>
-    </View>
-  )
-}
-
-export default Page1
+export default Page

@@ -18,7 +18,6 @@ interface Props {
 }
 
 export default function Carousel({ imageHeight = 290, data }: Props) {
-  console.log('carousel links', data.map(ele => ele.link))
   return (
     <View style={Styles.container}>
       <Swiper
