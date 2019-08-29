@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-28 20:39:57
+ * @LastEditTime: 2019-08-29 11:15:23
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import {isIPhoneXMarginTop} from '../../utils/IsIphoneX'
@@ -34,7 +34,7 @@ export default StyleSheet.create({
     fontWeight: 'bold'
   },
   basicQuestionTitle: {
-    fontSize: 22,
+    fontSize: 24,
     color: 'green',
     fontWeight: 'bold',
     marginTop: 25,

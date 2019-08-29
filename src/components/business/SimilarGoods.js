@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-28 10:04:52
+ * @LastEditTime: 2019-08-29 11:47:43
  */
 
 import React from 'react'
@@ -15,6 +15,7 @@ import {
   TouchableOpacity
 } from 'react-native'
 import FitImage from 'react-native-fit-image'
+import PreloadingImage from '../common/PreloadingImage'
 import LinearGradient from 'react-native-linear-gradient'
 // import Icon from '../Icon'
 // import Tag from './Tag'
@@ -66,7 +67,7 @@ export default class SimilarGoods extends React.Component {
         }}
       >
         <View style={styles.similarGoodsWrapper}>
-          <FitImage style={styles.similarGoodsImg} source={{uri: item.mainUrl.url || this.props.defaultImg}} indicator={false} />
+          <PreloadingImage style={styles.similarGoodsImg} uri={item.mainUrl.url}></PreloadingImage>
         </View>
         {/* <Tag textValue='特价' marginLeft={10}></Tag> */}
         <Text numberOfLines={1} style={styles.goodsDesc}>{item.productName}</Text>
