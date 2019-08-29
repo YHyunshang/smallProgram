@@ -468,6 +468,9 @@ class Page extends React.PureComponent<Props, State> {
     } = this.state
     const routeIndex = tabList.findIndex(tab => tab.id === route.key)
 
+    const currentTabContent = tabFloorMap[route.key] || []
+    const currentTabLoading = !!tabLoadingMap[route.key]
+
     const onScroll = Animated.event(
       [{ nativeEvent: { contentOffset: { y: animatedValRefCmsScrollY } } }],
       { listener: this.onPageScroll, useNativeDriver: true }
@@ -477,7 +480,7 @@ class Page extends React.PureComponent<Props, State> {
       return (
         <AnimatedFlatList
           style={styles.sceneBox}
-          data={tabFloorMap[route.key] || []}
+          data={currentTabContent}
           renderItem={this.renderFlatItem}
           keyExtractor={item => `${item.key}`}
           refreshControl={
@@ -507,18 +510,22 @@ class Page extends React.PureComponent<Props, State> {
       return (
         <AnimatedFlatList
           style={[styles.sceneBox, { transform: [{ translateY }] }]}
-          data={tabFloorMap[route.key] || []}
+          data={currentTabContent}
           renderItem={this.renderFlatItem}
           keyExtractor={item => `${item.key}`}
           refreshControl={
             <RefreshControl
-              refreshing={!!tabLoadingMap[route.key]}
+              refreshing={currentTabLoading}
               onRefresh={() => this.onRefreshScene(routeIndex)}
               colors={['rgba(238, 66, 57, 1)', 'rgba(238, 66, 57, 0)']}
               tintColor={'rgba(238, 66, 57, 1)'}
             />
           }
-          onScroll={tabLoadingMap[route.key] ? undefined : onScroll}
+          onScroll={
+            currentTabContent.length === 0 || currentTabLoading
+              ? undefined
+              : onScroll
+          }
           showsVerticalScrollIndicator={false}
         />
       )
@@ -527,19 +534,23 @@ class Page extends React.PureComponent<Props, State> {
       return (
         <AnimatedFlatList
           style={styles.sceneBox}
-          data={tabFloorMap[route.key] || []}
+          data={currentTabContent}
           renderItem={this.renderFlatItem}
           keyExtractor={item => `${item.key}`}
           refreshControl={
             <RefreshControl
-              refreshing={!!tabLoadingMap[route.key]}
+              refreshing={currentTabLoading}
               onRefresh={() => this.onRefreshScene(routeIndex)}
               colors={['rgba(238, 66, 57, 1)', 'rgba(238, 66, 57, 0)']}
               tintColor={'rgba(238, 66, 57, 1)'}
               progressViewOffset={placeholderForNativeHeight}
             />
           }
-          onScroll={tabLoadingMap[route.key] ? undefined : onScroll}
+          onScroll={
+            currentTabContent.length === 0 || currentTabLoading
+              ? undefined
+              : onScroll
+          }
           showsVerticalScrollIndicator={false}
           ListHeaderComponent={
             <View style={{ height: placeholderForNativeHeight }}></View>
