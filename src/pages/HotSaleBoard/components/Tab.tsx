@@ -35,10 +35,13 @@ export default class Tab extends React.PureComponent<Props, State> {
 
   scrollViewRef = React.createRef<ScrollView>()
 
+  cachedTabLabelLayout = {}
+
   onTabLabelLayout = (tabKey, { nativeEvent: { layout } }) => {
-    this.setState(({ itemLayoutMap: preItemLayout }) => ({
-      itemLayoutMap: { ...preItemLayout, [tabKey]: layout },
-    }))
+    this.cachedTabLabelLayout[tabKey] = layout
+    if (this.props.data.every(ele => !!this.cachedTabLabelLayout[ele.key])) {
+      this.setState({ itemLayoutMap: this.cachedTabLabelLayout })
+    }
   }
 
   componentDidUpdate() {

@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-08-21 14:48:31
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-08-26 10:03:27
+ * @Last Modified time: 2019-08-29 10:58:55
  */
 import * as React from 'react'
 import { View, FlatList, Image } from 'react-native'
@@ -13,6 +13,7 @@ import Tab from './components/Tab'
 import { Native } from '@utils'
 import ProductGrid from '@components/business/Content/ProductGrid'
 import FitImage from 'react-native-fit-image'
+import Empty from './components/Empty'
 
 interface State {
   tabList: {
@@ -148,16 +149,25 @@ export default class Page extends React.Component<Object, State> {
           onTabChange: this.onTabChange,
         },
       },
-      {
-        key: '$$product-list',
-        component: ProductList,
-        props: { products: productsUnderCurrentTab.slice(0, 6) },
-      },
-      {
-        key: '$$product-grid',
-        component: ProductGrid,
-        props: { products: productsUnderCurrentTab.slice(6), columnNumber: 2 },
-      },
+      ...(productsUnderCurrentTab.length > 0
+        ? [
+            {
+              key: '$$product-list',
+              component: ProductList,
+              props: { products: productsUnderCurrentTab.slice(0, 6) },
+            },
+            {
+              key: '$$product-grid',
+              component: ProductGrid,
+              props: {
+                products: productsUnderCurrentTab.slice(6),
+                columnNumber: 2,
+              },
+            },
+          ]
+        : tabLoadingMap[currentTabId]
+        ? []
+        : [{ key: '$$empty', component: Empty }]),
     ]
     return (
       <FlatList
@@ -165,6 +175,7 @@ export default class Page extends React.Component<Object, State> {
         style={styles.container}
         data={floorData}
         renderItem={this.renderFlatItem}
+        stickyHeaderIndices={[1]}
         ListFooterComponent={<View style={styles.footer} />}
       />
     )
