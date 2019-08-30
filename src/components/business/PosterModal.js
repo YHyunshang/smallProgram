@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-23 16:42:05
+ * @LastEditTime: 2019-08-30 12:28:12
  */
 
 import React from 'react'
@@ -12,6 +12,7 @@ import {
   Text,
   View,
   Image,
+  PermissionsAndroid,
   TouchableOpacity,
   NativeModules
 } from 'react-native'
@@ -45,6 +46,32 @@ export default class PosterModal extends React.Component {
   hidePosterModal() {
     this.popUp.hide()
     goodsDetailManager.showBottomViews()// 展示底部购物车模块
+  }
+  /*
+    * 弹出提示框向用户请求某项权限。返回一个promise，最终值为用户是否同意了权限申请的布尔值。
+    * 其中rationale参数是可选的，其结构为包含title和message)的对象。
+    * 此方法会和系统协商，是弹出系统内置的权限申请对话框，
+    * 还是显示rationale中的信息以向用户进行解释。
+    * */
+  async requestReadPermission() {
+    try {
+      // 返回string类型
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        {
+          // 第一次请求拒绝后提示用户你为什么要这个权限
+          title: '我要读写权限',
+          message: '没权限我不能工作，同意就好了'
+        }
+      )
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        this.show('你已获取了读写权限')
+      } else {
+        this.show('获取读写权限失败')
+      }
+    } catch (err) {
+      this.show(err.toString())
+    }
   }
 
   /**
