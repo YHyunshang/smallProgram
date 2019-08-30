@@ -2,6 +2,13 @@ import * as React from 'react'
 import styles from './ProductFilter.styles'
 import { View, Image, Text, TouchableOpacity } from 'react-native'
 import { object } from 'prop-types'
+import {
+  iconChecked,
+  iconSort,
+  iconSortAsc,
+  iconSortDesc,
+  iconUnchecked,
+} from '@const/resources'
 
 export enum StorageChoices {
   InStore, // 有货
@@ -46,13 +53,11 @@ export default function ProductFilter({ filters, onFilterChange }: Props) {
   console.log(filters)
   const { storage, priceSorter } = filters
   const storeFilterImg =
-    storage === StorageChoices.InStore
-      ? require('@img/icon-checked.png')
-      : require('@img/icon-unchecked.png')
+    storage === StorageChoices.InStore ? iconChecked : iconUnchecked
   const sortImg = {
-    [Sort.ASC]: require('@img/icon-sort-asc.png'),
-    [Sort.DESC]: require('@img/icon-sort-desc.png'),
-    [Sort.None]: require('@img/icon-sort.png'),
+    [Sort.ASC]: iconSortAsc,
+    [Sort.DESC]: iconSortDesc,
+    [Sort.None]: iconSort,
   }[priceSorter]
   return (
     <View style={styles.container}>

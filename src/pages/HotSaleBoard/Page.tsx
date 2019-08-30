@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-08-21 14:48:31
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-08-29 23:28:16
+ * @Last Modified time: 2019-08-30 12:31:36
  */
 import * as React from 'react'
 import { View, FlatList, Image } from 'react-native'
@@ -13,6 +13,7 @@ import Tab from './components/Tab'
 import { Native } from '@utils'
 import ProductGrid from '@components/business/Content/ProductGrid'
 import Empty from './components/Empty'
+import { hotSaleBanner } from '@const/resources'
 
 interface State {
   tabList: {
@@ -140,7 +141,7 @@ export default class Page extends React.Component<Object, State> {
         component: Image,
         props: {
           resizeMode: 'cover',
-          source: require('@img/hot-sale-banner.png'),
+          source: hotSaleBanner,
           style: { marginBottom: -35.2941, width: '100%' },
         },
       },

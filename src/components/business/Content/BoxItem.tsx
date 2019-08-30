@@ -13,11 +13,7 @@ import {
 } from 'react-native'
 import { Native } from '@utils'
 import styles from './BoxItem.styles'
-
-const boxPlaceholder =
-  Platform.OS === 'ios'
-    ? require('@img/placeholder-box.png')
-    : { uri: 'asset:/src_assets_imgs_placeholderbox.png' }
+import { placeholderBox } from '@const/resources'
 
 export interface Props {
   link: {} // 跳转链接
@@ -29,7 +25,7 @@ export default function BoxItem({ link, image, title }: Props) {
   return (
     <TouchableWithoutFeedback onPress={() => Native.navigateTo(link)}>
       <View style={styles.box}>
-        <ImageBackground style={styles.boxImg} source={boxPlaceholder}>
+        <ImageBackground style={styles.boxImg} source={placeholderBox}>
           <Image
             style={styles.boxImg}
             source={{ uri: image }}

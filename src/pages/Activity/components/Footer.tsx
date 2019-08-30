@@ -3,6 +3,7 @@ import styles from './Footer.styles'
 import { View, Image, Text, TouchableOpacity } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import { Native } from '@utils'
+import { cartGray } from '@const/resources'
 
 interface Props {
   cartCount: number
@@ -27,10 +28,7 @@ export default function Footer({ cartCount, amount }: Props) {
             })
           }
         >
-          <Image
-            style={styles.cartImg}
-            source={require('@img/cart-gray.png')}
-          />
+          <Image style={styles.cartImg} source={cartGray} />
         </TouchableOpacity>
         {!!cartCount && (
           <Text

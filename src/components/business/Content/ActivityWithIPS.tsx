@@ -12,6 +12,7 @@ import { Product } from './typings'
 import { View, Image, TouchableOpacity, Text, ScrollView } from 'react-native'
 import { Native } from '@utils'
 import FitImage from 'react-native-fit-image'
+import { placeholderProduct } from '@const/resources'
 
 interface Props {
   image: string
@@ -49,7 +50,7 @@ export default function ActivityWithIPS({
           <Image
             style={styles.thumbnail}
             source={{ uri: thumbnail }}
-            defaultSource={require('@img/placeholder-product.png')}
+            defaultSource={placeholderProduct}
           />
           <View style={styles.nameBox}>
             <Text style={styles.name} numberOfLines={2}>

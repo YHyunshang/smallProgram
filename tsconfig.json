@@ -8,7 +8,8 @@
       "@services": ["./src/services"],
       "@components": ["./src/components"],
       "@components/*": ["./src/components/*"],
-      "@img": ["./src/assets/imgs"]
+      "@img": ["./src/assets/imgs"],
+      "@const/*": ["src/constants/*"]
     }
   }
 }
