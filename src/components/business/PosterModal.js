@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-30 16:49:17
+ * @LastEditTime: 2019-08-30 17:12:15
  */
 
 import React from 'react'
@@ -30,14 +30,18 @@ export default class PosterModal extends React.Component {
   }
 
   componentDidMount() {
+    if (!isIOS) {
     // 保存图片到相册到权限申请事件native 事件监听
-    this.nativeSubscription = subscriptApplyPermissionChange(
-      this.onNativeApplyPermissionChange
-    )
+      this.nativeSubscription = subscriptApplyPermissionChange(
+        this.onNativeApplyPermissionChange
+      )
+    }
   }
 
   componentWillUnmount() {
-    this.nativeSubscription && this.nativeSubscription.remove()
+    if (!isIOS) {
+      this.nativeSubscription && this.nativeSubscription.remove()
+    }
   }
   /**
   * @description: 显示生成海报弹层
