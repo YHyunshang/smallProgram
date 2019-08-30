@@ -1,6 +1,6 @@
 {
-  "version": "0.1.2",
-  "iosDownloadUrl": "http://static-yh.yonghui.cn/xsztRN/0.2.0-alpha/ios/dist-ios.zip",
-  "androidDownloadUrl": "http://static-yh.yonghui.cn/xsztRN/0.2.0-alpha/android/index.jsbundle",
-  "versionDesc": ["首页联调"]
+  "version": "0.1.3",
+  "iosDownloadUrl": "http://static-yh.yonghui.cn/xsztRN/0.1.3/ios/dist-ios.zip",
+  "androidDownloadUrl": "http://static-yh.yonghui.cn/xsztRN/0.1.3/android/index.jsbundle",
+  "versionDesc": ["UI 改版"]
 }
