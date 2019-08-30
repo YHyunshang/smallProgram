@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-30 14:26:35
+ * @LastEditTime: 2019-08-30 14:53:30
  */
 
 import React from 'react'
@@ -49,8 +49,8 @@ export default class PosterModal extends React.Component {
     this.popUp.hide()
     goodsDetailManager.showBottomViews()// 展示底部购物车模块
   }
-  /*
-    * 弹出提示框向用户请求某项权限。返回一个promise，最终值为用户是否同意了权限申请的布尔值。
+  /**
+    * @description: 弹出提示框向用户请求某项权限。返回一个promise，最终值为用户是否同意了权限申请的布尔值。
     * 其中rationale参数是可选的，其结构为包含title和message)的对象。
     * 此方法会和系统协商，是弹出系统内置的权限申请对话框，
     * 还是显示rationale中的信息以向用户进行解释。
@@ -68,7 +68,7 @@ export default class PosterModal extends React.Component {
       )
       rnAppModule.showToast(String(granted), '0')
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        // rnAppModule.showToast('你已获取了存储权限', '0')
+        rnAppModule.showToast('你已获取了存储权限', '0')
       } else {
         rnAppModule.showToast('获取存储权限失败', '0')
       }
@@ -76,6 +76,9 @@ export default class PosterModal extends React.Component {
       // rnAppModule.showToast(String(err), '0')
     }
   }
+  /**
+   * @description: 调用下载图片的方法
+   */
   downloadImage() {
     const {imgUrl} = this.props
     if (imgUrl) {
