@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-08-16 09:54:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-26 18:24:51
+ * @LastEditTime: 2019-08-30 16:33:49
  */
 /**
  * Created by 李华良 on 2019-07-26
@@ -41,10 +41,26 @@ export const addToCart = (item, type) => {
 }
 
 /**
- * 添加 native 门店变化事件监听
+ * 添加 native 相似商品列表购物车数量事件监听
  * @param handler 事件处理函数
  */
 export function subscriptCartNumberChange(handler) {
   const eventEmitter = new NativeEventEmitter(NativeModules.SendRNEventManager)
   return eventEmitter.addListener('setItemNumberByProductcode', handler)
+}
+/**
+ * 保存图片至相册申请存储权限到方法
+ * @return {Promise} Http request instance
+ */
+export const applyPermission = () => {
+  NativeModules.GoodsDetailsNativeManager.applyPermission()
+}
+
+/**
+ * 添加 native 保存图片到相册到权限申请事件监听
+ * @param handler 事件处理函数
+ */
+export function subscriptApplyPermissionChange(handler) {
+  const eventEmitter = new NativeEventEmitter(NativeModules.SendRNEventManager)
+  return eventEmitter.addListener('applyResult', handler)
 }
