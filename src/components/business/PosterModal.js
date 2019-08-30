@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-30 12:28:12
+ * @LastEditTime: 2019-08-30 14:26:35
  */
 
 import React from 'react'
@@ -12,6 +12,7 @@ import {
   Text,
   View,
   Image,
+  Platform,
   PermissionsAndroid,
   TouchableOpacity,
   NativeModules
@@ -20,6 +21,7 @@ import PopUp from '../common/PopUp'
 import {downloadImage} from '../common/DownLoadImage'
 import Icon from '../../components/Icon'
 import styles from './PosterModal.styles'
+const isIOS = Platform.OS === 'ios'
 const rnAppModule = NativeModules.RnAppModule// 原生商品详情模块
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
 export default class PosterModal extends React.Component {
@@ -60,24 +62,21 @@ export default class PosterModal extends React.Component {
         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
         {
           // 第一次请求拒绝后提示用户你为什么要这个权限
-          title: '我要读写权限',
-          message: '没权限我不能工作，同意就好了'
+          title: '我要存储权限',
+          message: '同意就好了'
         }
       )
+      rnAppModule.showToast(String(granted), '0')
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        this.show('你已获取了读写权限')
+        // rnAppModule.showToast('你已获取了存储权限', '0')
       } else {
-        this.show('获取读写权限失败')
+        rnAppModule.showToast('获取存储权限失败', '0')
       }
     } catch (err) {
-      this.show(err.toString())
+      // rnAppModule.showToast(String(err), '0')
     }
   }
-
-  /**
-  * @description: 保存图片到本地相册
-  */
-  saveImage() {
+  downloadImage() {
     const {imgUrl} = this.props
     if (imgUrl) {
       downloadImage(imgUrl).then((res) => {
@@ -93,6 +92,19 @@ export default class PosterModal extends React.Component {
       })
     } else {
       rnAppModule.showToast('图片地址为空', '0')
+    }
+  }
+
+  /**
+  * @description: 保存图片到本地相册
+  */
+  saveImage() {
+    if (isIOS) {
+      this.downloadImage()
+    } else {
+      this.requestReadPermission()
+        .then(this.downloadImage())
+        .catch()
     }
   }
 
