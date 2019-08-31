@@ -27,6 +27,7 @@ export default function Carousel({ imageHeight = 290, data }: Props) {
         paginationStyle={Styles.pagination}
         dotStyle={Styles.dot}
         activeDotStyle={Styles.activeDot}
+        autoplayTimeout={4}
       >
         {data.map(({ image, link, key }) => (
           <TouchableWithoutFeedback
