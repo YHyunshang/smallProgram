@@ -2,18 +2,19 @@ import * as React from 'react'
 import styles from './Page.styles'
 import { Native } from '@utils'
 import { CMSServices } from '@services'
-import { tsImportEqualsDeclaration } from '@babel/types'
 import { FlatList } from 'react-native-gesture-handler'
 import ActivityWithIPS from '@components/business/Content/ActivityWithIPS'
-import { View } from 'react-native'
+import { RefreshControl, View } from 'react-native'
 
 interface State {
+  loading: boolean
   floorData: {}[]
   shopCode: string
 }
 
 export default class Page extends React.Component<Object, State> {
   state = {
+    loading: false,
     floorData: [],
     shopCode: '',
   }
@@ -41,7 +42,14 @@ export default class Page extends React.Component<Object, State> {
   }
 
   requestPageData = async shopCode => {
-    const { result } = await CMSServices.getFoundPageData(shopCode)
+    this.setState({ loading: true })
+    let res
+    try {
+      res = await CMSServices.getFoundPageData(shopCode)
+    } finally {
+      this.setState({ loading: false })
+    }
+    const { result } = res
     const validData = result.templateVOList
       .filter(floor => floor.type === 2 || floor.type === 3)
       .sort((a, b) => a.pos - b.pos)
@@ -103,13 +111,21 @@ export default class Page extends React.Component<Object, State> {
   )
 
   render() {
-    const { floorData } = this.state
+    const { floorData, loading, shopCode } = this.state
     return (
       <FlatList
         data={floorData}
         keyExtractor={item => `${item.key}`}
         renderItem={this.renderFlatItem}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={loading}
+            onRefresh={() => this.requestPageData(shopCode)}
+            colors={['rgba(238, 66, 57, 1)', 'rgba(238, 66, 57, 0)']}
+            tintColor={'rgba(238, 66, 57, 1)'}
+          />
+        }
       />
     )
   }
