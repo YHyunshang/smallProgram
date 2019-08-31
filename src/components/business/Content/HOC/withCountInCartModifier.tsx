@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Product } from '../typings'
 import debounce from 'lodash/debounce'
 import { CMSServices } from '@services'
+import { Log } from '@utils'
 
 interface Props extends Product {
   shopCode: string // 门店编码
@@ -15,12 +16,27 @@ interface State {
 
 export default function withCartCountModify(WrappedComponent) {
   return class extends React.Component<Props, State> {
-    state = {
-      count: this.props.count || 0,
-      modifiedCount: this.props.count || 0,
+    constructor(props) {
+      super(props)
+      this.state = {
+        count: props.count || 0,
+        modifiedCount: props.count || 0,
+      }
     }
 
-    requestUpdateCount = debounce(function(count) {
+    componentWillReceiveProps(
+      nextProps: Readonly<Props>,
+      nextContext: any
+    ): void {
+      if (nextProps.count !== this.state.count) {
+        this.setState({
+          count: nextProps.count,
+          modifiedCount: nextProps.count,
+        })
+      }
+    }
+
+    requestUpdateCount = debounce(count => {
       const { code, price, shopCode, afterModifyCount } = this.props
       CMSServices.updateProductCountInCart(code, count, price, '', shopCode)
         .then(() => {

@@ -1,7 +1,13 @@
 /**
  * Created by 李华良 on 2019-07-29
  */
-import { NativeModules, Platform, Dimensions, StatusBar } from 'react-native'
+import {
+  NativeModules,
+  Platform,
+  Dimensions,
+  StatusBar,
+  DeviceEventEmitter,
+} from 'react-native'
 import * as Log from './log'
 
 export enum NavPageType {
@@ -120,3 +126,11 @@ export const isiPhoneX = () => {
  */
 export const getStatusBarHeight = () =>
   isiOS() ? (isiPhoneX() ? 44 : 20) : StatusBar.currentHeight + 5
+
+/**
+ * 监听购物车变化
+ * @param handler
+ */
+export function onCartChange(handler: (...args: any) => any) {
+  return DeviceEventEmitter.addListener('notifyRefreshCartNum', handler)
+}

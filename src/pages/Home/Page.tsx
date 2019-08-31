@@ -9,9 +9,10 @@ import {
   Dimensions,
   RefreshControl,
   Platform,
+  Alert,
 } from 'react-native'
 import { CMSServices, ProductServices } from '@services'
-import { Native } from '@utils'
+import { Log, Native } from '@utils'
 import styles from './Page.styles'
 import Carousel from '@components/business/Content/Carousel'
 import Ad1v2 from '@components/business/Content/Ad1v2'
@@ -26,6 +27,7 @@ import ProductSwiperWithBg from '@components/business/Content/ProductSwiperWithB
 import ProductListWithFilter from './components/ProductListWithFilter'
 import { TabView } from 'react-native-tab-view'
 import TabBar, { TabHeight } from './components/TabBar'
+import debounce from 'lodash/debounce'
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
 const placeholderForNativeHeight = Native.getStatusBarHeight() + 86 + TabHeight
@@ -52,7 +54,7 @@ interface State {
   animatedValRefCmsScrollY: Animated.AnimatedValue
 }
 
-class Page extends React.PureComponent<Props, State> {
+class Page extends React.Component<Props, State> {
   constructor(props) {
     super(props)
   }
@@ -109,6 +111,12 @@ class Page extends React.PureComponent<Props, State> {
     this.nativeSubscription = CMSServices.subscriptShopChange(
       this.onNativeShopChange
     )
+
+    // 监听购物车变化
+    Native.onCartChange(() => {
+      const { currentTabIdx } = this.state
+      this.onTabIndexChange(currentTabIdx, true)
+    })
   }
 
   // 门店变化
@@ -165,10 +173,11 @@ class Page extends React.PureComponent<Props, State> {
     }))
   }
   // 获取 tab 下的 CMS 数据
-  requestFloorData = tabId => {
-    this.setState(({ tabLoadingMap }) => ({
-      tabLoadingMap: { ...tabLoadingMap, [tabId]: true },
-    }))
+  requestFloorData = (tabId, force) => {
+    if (!force)
+      this.setState(({ tabLoadingMap }) => ({
+        tabLoadingMap: { ...tabLoadingMap, [tabId]: true },
+      }))
 
     return CMSServices.getFloorDataByTab(tabId, this.state.shop.code)
       .then(({ result }) => {
@@ -180,9 +189,10 @@ class Page extends React.PureComponent<Props, State> {
         }))
       })
       .finally(() => {
-        this.setState(({ tabLoadingMap }) => ({
-          tabLoadingMap: { ...tabLoadingMap, [tabId]: false },
-        }))
+        if (!force)
+          this.setState(({ tabLoadingMap }) => ({
+            tabLoadingMap: { ...tabLoadingMap, [tabId]: false },
+          }))
       })
   }
   // 获取 top 分类下的数据
@@ -425,18 +435,22 @@ class Page extends React.PureComponent<Props, State> {
     CMSServices.pushScrollToNative(x, y)
   }
 
-  onTabIndexChange = idx => {
+  onTabIndexChange = debounce((idx, force = false) => {
+    Log.debug('tab index change', idx)
     this.setState({ currentTabIdx: idx })
     const { tabList, tabFloorMap } = this.state
     const currentTab = tabList[idx]
-    if (currentTab && (tabFloorMap[currentTab.id] || []).length === 0) {
+    if (
+      force ||
+      (currentTab && (tabFloorMap[currentTab.id] || []).length === 0)
+    ) {
       const fn = {
         cms: this.requestFloorData,
         category: this.requestCategoryContentData,
       }[currentTab.type]
-      fn(currentTab.id)
+      fn(currentTab.id, force)
     }
-  }
+  }, 500)
 
   onRefreshScene = idx => {
     const { tabList, tabFloorMap } = this.state
