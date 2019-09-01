@@ -123,7 +123,9 @@ class Page extends React.Component<Props, State> {
   }
 
   // 门店变化
-  onNativeShopChange = ({ storeCode, storeTypeCode }) => {
+  onNativeShopChange = data => {
+    const { storeCode, storeTypeCode } = data
+    Log.debug('store changed', storeCode, storeTypeCode, this.state.shop)
     const { shop } = this.state
     if (storeCode !== shop.code || storeTypeCode !== shop.type) {
       this.setState({ shop: { code: storeCode, type: storeTypeCode } })
@@ -443,6 +445,7 @@ class Page extends React.Component<Props, State> {
     const { tabList, tabFloorMap, dataExpired } = this.state
     const currentTab = tabList[idx]
     if (!currentTab) return
+    if ((tabFloorMap[currentTab.id] || []).length === 0) CMSServices.pushScrollToNative(0, 0)
     if (
       force ||
       dataExpired ||

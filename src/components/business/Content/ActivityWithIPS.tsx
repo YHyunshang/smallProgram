@@ -50,7 +50,6 @@ export default function ActivityWithIPS({
           <Image
             style={styles.thumbnail}
             source={{ uri: thumbnail }}
-            defaultSource={placeholderProduct}
           />
           <View style={styles.nameBox}>
             <Text style={styles.name} numberOfLines={2}>
