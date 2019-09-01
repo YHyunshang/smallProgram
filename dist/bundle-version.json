@@ -1,6 +1,6 @@
 {
-  "version": "0.1.13",
-  "iosDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.1.13/ios/dist-ios.zip",
-  "androidDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.1.13/android/index.jsbundle",
+  "version": "0.1.14",
+  "iosDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.1.14/ios/dist-ios.zip",
+  "androidDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.1.14/android/index.jsbundle",
   "versionDesc": ["F - 商品详情图片"]
 }
