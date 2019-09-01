@@ -451,7 +451,7 @@ class Page extends React.Component<Props, State> {
         cms: this.requestFloorData,
         category: this.requestCategoryContentData,
       }[currentTab.type]
-      fn(currentTab.id, force)
+      fn(currentTab.id, force || dataExpired)
     }
   }
 
