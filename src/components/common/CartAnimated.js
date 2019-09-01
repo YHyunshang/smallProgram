@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-31 10:28:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-01 15:14:32
+ * @LastEditTime: 2019-09-01 17:38:10
  */
 
 import React from 'react'
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   },
   cartWrapper: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center'
   },
   minWrapper: {

@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-29 11:47:43
+ * @LastEditTime: 2019-09-01 17:45:06
  */
 
 import React from 'react'
@@ -21,7 +21,7 @@ import LinearGradient from 'react-native-linear-gradient'
 // import Tag from './Tag'
 import {transPenny} from '../../utils/FormatUtil'
 import styles from './SimilarGoods.styles'
-import { cart as cartImg } from '@const/resources'
+import {cart as cartImg} from '../../constants/resources'
 // import LinearGradient from 'react-native-linear-gradient'
 // 一些常量设置
 const cols = 2 // 列数
