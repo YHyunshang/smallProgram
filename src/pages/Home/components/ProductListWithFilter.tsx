@@ -52,12 +52,9 @@ export default class ProductListWithFilter extends React.Component<
       page,
       pageSize
     )
-    this.setState(({ productList }) => ({
-      productList: [
-        ...productList,
-        ...pageResult.result.map(this.formateProductData),
-      ],
-    }))
+    this.setState({
+      productList: pageResult.result.map(this.formateProductData),
+    })
   }
 
   formateProductData = data => {
@@ -75,6 +72,7 @@ export default class ProductListWithFilter extends React.Component<
       price: currentPrice,
       slashedPrice,
       count: data.productNum,
+      shopCode: this.props.shopCode,
     }
   }
 

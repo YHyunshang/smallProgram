@@ -18,7 +18,7 @@ export enum StorageChoices {
 export enum Sort {
   ASC, // 升序
   DESC, // 降序
-  None, // 不排序
+  // None, // 不排序
 }
 
 export function sort2String(key) {
