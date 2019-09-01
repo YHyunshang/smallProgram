@@ -17,7 +17,7 @@ export function getHotSaleProductsUnderCategory(
   tabId: string,
   storeCode: string,
   page = 1,
-  size = 50
+  size = 20
 ) {
   return Http.get(
     'productCenter',
