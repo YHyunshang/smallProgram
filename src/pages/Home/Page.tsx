@@ -442,6 +442,7 @@ class Page extends React.Component<Props, State> {
     this.setState({ currentTabIdx: idx })
     const { tabList, tabFloorMap, dataExpired } = this.state
     const currentTab = tabList[idx]
+    if (!currentTab) return
     if (
       force ||
       dataExpired ||
