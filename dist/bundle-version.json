@@ -1,6 +1,6 @@
 {
-  "version": "0.1.9",
-  "iosDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.1.9/ios/dist-ios.zip",
-  "androidDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.1.9/android/index.jsbundle",
+  "version": "0.1.11",
+  "iosDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.1.11/ios/dist-ios.zip",
+  "androidDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.1.11/android/index.jsbundle",
   "versionDesc": ["U - 图片加载"]
 }
