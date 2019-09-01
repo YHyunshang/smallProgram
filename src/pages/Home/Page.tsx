@@ -459,6 +459,7 @@ class Page extends React.Component<Props, State> {
   onRefreshScene = idx => {
     const { tabList, tabFloorMap } = this.state
     const currentTab = tabList[idx]
+    if (!currentTab) return
     const fn = {
       cms: this.requestFloorData,
       category: this.requestCategoryContentData,

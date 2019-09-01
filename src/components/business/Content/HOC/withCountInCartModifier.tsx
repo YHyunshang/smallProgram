@@ -30,6 +30,7 @@ export default function withCartCountModify(WrappedComponent) {
       nextContext: any
     ): void {
       if (nextProps.count !== this.state.count) {
+        Log.debug(`count changed from parent: current - ${this.state.count}, next - ${nextProps.count}`)
         this.setState({
           count: nextProps.count,
           modifiedCount: nextProps.count,
@@ -41,6 +42,7 @@ export default function withCartCountModify(WrappedComponent) {
       const { code, price, shopCode, afterModifyCount } = this.props
       CMSServices.updateProductCountInCart(code, count, price, '', shopCode)
         .then(() => {
+          Log.debug(`change count success: current is ${count}`)
           this.setState({ count })
           afterModifyCount && afterModifyCount(count)
         })
