@@ -7,115 +7,164 @@ const os = Platform.OS
 
 export const cartGray =
   os === 'android'
-    ? { uri: 'assets:/src_assets_imgs_cartgray.png' }
+    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/cart-gray.png' }
     : require('@img/cart-gray.png')
 
 export const cart =
   os === 'android'
-    ? { uri: 'assets:/src_assets_imgs_cart.png' }
+    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/cart.png' }
     : require('@img/cart.png')
 
 export const emptyActivity =
   os === 'android'
-    ? { uri: 'assets:/src_assets_imgs_emptyactivity.png' }
+    ? {
+        uri:
+          'https://static-yh.yonghui.cn/app/assets/xszt-RN/empty-activity.png',
+      }
     : require('@img/empty-activity.png')
 
 export const emptyBag =
   os === 'android'
-    ? { uri: 'assets:/src_assets_imgs_emptybag.png' }
+    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/empty-bag.png' }
     : require('@img/empty-bag.png')
 
 export const hotSaleBanner =
   os === 'android'
-    ? { uri: 'assets:/src_assets_imgs_hotsalebanner.png' }
+    ? {
+        uri:
+          'https://static-yh.yonghui.cn/app/assets/xszt-RN/hot-sale-banner.png',
+      }
     : require('@img/hot-sale-banner.png')
 
 export const hotSaleTabBg =
   os === 'android'
-    ? { uri: 'assets:/src_assets_imgs_hotsaletabbg.png' }
+    ? {
+        uri:
+          'https://static-yh.yonghui.cn/app/assets/xszt-RN/hot-sale-tab-bg.png',
+      }
     : require('@img/hot-sale-tab-bg.png')
 
 export const iconChecked =
   os === 'android'
-    ? { uri: 'assets:/src_assets_imgs_iconchecked.png' }
+    ? {
+        uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/icon-checked.png',
+      }
     : require('@img/icon-checked.png')
 
 export const iconSortAsc =
   os === 'android'
-    ? { uri: 'assets:/src_assets_imgs_iconsortasc.png' }
+    ? {
+        uri:
+          'https://static-yh.yonghui.cn/app/assets/xszt-RN/icon-sort-asc.png',
+      }
     : require('@img/icon-sort-asc.png')
 
 export const iconSortDesc =
   os === 'android'
-    ? { uri: 'assets:/src_assets_imgs_iconsortdesc.png' }
+    ? {
+        uri:
+          'https://static-yh.yonghui.cn/app/assets/xszt-RN/icon-sort-desc.png',
+      }
     : require('@img/icon-sort-desc.png')
 
 export const iconSort =
   os === 'android'
-    ? { uri: 'assets:/src_assets_imgs_iconsort.png' }
+    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/icon-sort.png' }
     : require('@img/icon-sort.png')
 
 export const iconUnchecked =
   os === 'android'
-    ? { uri: 'assets:/src_assets_imgs_iconunchecked.png' }
+    ? {
+        uri:
+          'https://static-yh.yonghui.cn/app/assets/xszt-RN/icon-unchecked.png',
+      }
     : require('@img/icon-unchecked.png')
 
 export const minusCircleDisabled =
   os === 'android'
-    ? { uri: 'assets:/src_assets_imgs_minuscircledisabled.png' }
+    ? {
+        uri:
+          'https://static-yh.yonghui.cn/app/assets/xszt-RN/minus-circle-disabled.png',
+      }
     : require('@img/minus-circle-disabled.png')
 
 export const minusCircle =
   os === 'android'
-    ? { uri: 'assets:/src_assets_imgs_minuscircle.png' }
+    ? {
+        uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/minus-circle.png',
+      }
     : require('@img/minus-circle.png')
 
 export const placeholderBox =
   os === 'android'
-    ? { uri: 'assets:/src_assets_imgs_placeholderbox.png' }
+    ? {
+        uri:
+          'https://static-yh.yonghui.cn/app/assets/xszt-RN/placeholder-box.png',
+      }
     : require('@img/placeholder-box.png')
 
 export const placeholderProduct =
   os === 'android'
-    ? { uri: 'assets:/src_assets_imgs_placeholderproduct.png' }
+    ? {
+        uri:
+          'https://static-yh.yonghui.cn/app/assets/xszt-RN/placeholder-product.png',
+      }
     : require('@img/placeholder-product.png')
 
 export const plusCircleDisabled =
   os === 'android'
-    ? { uri: 'assets:/src_assets_imgs_pluscircledisabled.png' }
+    ? {
+        uri:
+          'https://static-yh.yonghui.cn/app/assets/xszt-RN/plus-circle-disabled.png',
+      }
     : require('@img/plus-circle-disabled.png')
 
 export const plusCircle =
   os === 'android'
-    ? { uri: 'assets:/src_assets_imgs_pluscircle.png' }
+    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/plus-circle.png' }
     : require('@img/plus-circle.png')
 
 export const plus =
   os === 'android'
-    ? { uri: 'assets:/src_assets_imgs_plus.png' }
+    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/plus.png' }
     : require('@img/plus.png')
 
 export const productConditions =
   os === 'android'
-    ? { uri: 'assets:/src_assets_imgs_productconditions.png' }
+    ? {
+        uri:
+          'https://static-yh.yonghui.cn/app/assets/xszt-RN/product-conditions.png',
+      }
     : require('@img/product-conditions.png')
 
 export const productPlace =
   os === 'android'
-    ? { uri: 'assets:/src_assets_imgs_productplace.png' }
+    ? {
+        uri:
+          'https://static-yh.yonghui.cn/app/assets/xszt-RN/product-place.png',
+      }
     : require('@img/product-place.png')
 
 export const productSpecific =
   os === 'android'
-    ? { uri: 'assets:/src_assets_imgs_productspecific.png' }
+    ? {
+        uri:
+          'https://static-yh.yonghui.cn/app/assets/xszt-RN/product-specific.png',
+      }
     : require('@img/product-specific.png')
 
 export const wechatFriend =
   os === 'android'
-    ? { uri: 'assets:/src_assets_imgs_wechatfriend.png' }
+    ? {
+        uri:
+          'https://static-yh.yonghui.cn/app/assets/xszt-RN/wechat-friend.png',
+      }
     : require('@img/wechat-friend.png')
 
 export const wechatMoments =
   os === 'android'
-    ? { uri: 'assets:/src_assets_imgs_wechatmoments.png' }
+    ? {
+        uri:
+          'https://static-yh.yonghui.cn/app/assets/xszt-RN/wechat-moments.png',
+      }
     : require('@img/wechat-moments.png')

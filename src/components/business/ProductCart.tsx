@@ -2,6 +2,7 @@ import * as React from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import { TouchableOpacity, Image, View } from 'react-native'
 import styles from './ProductCart.styles'
+import { cart } from '@const/resources'
 
 export default function ProductCart({ count, onCountChange }) {
   return (
@@ -18,7 +19,7 @@ export default function ProductCart({ count, onCountChange }) {
             onCountChange(count + 1)
           }}
         >
-          <Image style={styles.cartImg} source={require('@img/cart.png')} />
+          <Image style={styles.cartImg} source={cart} />
         </TouchableOpacity>
       </LinearGradient>
     </View>

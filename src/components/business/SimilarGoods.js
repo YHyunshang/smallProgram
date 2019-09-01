@@ -8,18 +8,13 @@
  */
 
 import React from 'react'
-import {
-  Text,
-  View,
-  FlatList,
-  TouchableOpacity
-} from 'react-native'
+import { Text, View, FlatList, TouchableOpacity } from 'react-native'
 import FitImage from 'react-native-fit-image'
 import PreloadingImage from '../common/PreloadingImage'
 import LinearGradient from 'react-native-linear-gradient'
 // import Icon from '../Icon'
 // import Tag from './Tag'
-import {transPenny} from '../../utils/FormatUtil'
+import { transPenny } from '../../utils/FormatUtil'
 import styles from './SimilarGoods.styles'
 import {cart as cartImg} from '../../constants/resources'
 // import LinearGradient from 'react-native-linear-gradient'
@@ -29,22 +24,17 @@ const cols = 2 // 列数
 export default class SimilarGoods extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-    }
+    this.state = {}
   }
 
-  componentDidMount() {
+  componentDidMount() {}
 
-  }
-
-  componentWillUnmount() {
-
-  }
+  componentWillUnmount() {}
   /**
    * @description: 调用原生的添加购物车的方法
    */
   handleAddCart(item) {
-    const {addCart} = this.props
+    const { addCart } = this.props
     if (addCart) {
       addCart(item)
     }
@@ -53,12 +43,12 @@ export default class SimilarGoods extends React.Component {
    * @description: 点击相似商品列表跳转到商品详情页面
    */
   handleJumpGoodsDetail(item) {
-    const {jumpGoodsDetail} = this.props
+    const { jumpGoodsDetail } = this.props
     if (jumpGoodsDetail) {
       jumpGoodsDetail(item)
     }
   }
-  renderData=({item}) => (
+  renderData = ({ item }) => (
     <View style={styles.similarGoodsList}>
       <TouchableOpacity
         activeOpacity={0.95}
@@ -67,28 +57,37 @@ export default class SimilarGoods extends React.Component {
         }}
       >
         <View style={styles.similarGoodsWrapper}>
-          <PreloadingImage style={styles.similarGoodsImg} uri={item.mainUrl.url}></PreloadingImage>
+          <PreloadingImage
+            style={styles.similarGoodsImg}
+            uri={item.mainUrl.url}
+          ></PreloadingImage>
         </View>
         {/* <Tag textValue='特价' marginLeft={10}></Tag> */}
-        <Text numberOfLines={1} style={styles.goodsDesc}>{item.productName}</Text>
-        {
-          item.promotionPrice
-            ? <Text style={styles.throughLinePrice} >¥{transPenny(item.price)}</Text>
-            : null
-        }
+        <Text numberOfLines={1} style={styles.goodsDesc}>
+          {item.productName}
+        </Text>
+        {item.promotionPrice ? (
+          <Text style={styles.throughLinePrice}>¥{transPenny(item.price)}</Text>
+        ) : null}
       </TouchableOpacity>
       <View style={styles.goodsPriceFlex}>
         <View style={styles.goodsPriceWrap}>
           <Text style={styles.goodsPriceSymbol}>¥</Text>
-          <Text style={styles.goodsPrice}>{transPenny(item.promotionPrice ? item.promotionPrice : item.price)}</Text>
+          <Text style={styles.goodsPrice}>
+            {transPenny(item.promotionPrice ? item.promotionPrice : item.price)}
+          </Text>
         </View>
         <View style={styles.container}>
-          <LinearGradient style={styles.linearGradient} colors={['#FF6042', '#FF3914']}>
+          <LinearGradient
+            style={styles.linearGradient}
+            colors={['#FF6042', '#FF3914']}
+          >
             <TouchableOpacity
               activeOpacity={0.95}
               onPress={() => {
                 this.handleAddCart(item)
-              }} >
+              }}
+            >
               <FitImage style={styles.goodsCartImg} source={cartImg}></FitImage>
               {/* <Icon style={styles.rightShareIcon} name='cart' size={13} color="#FFFFFF" /> */}
             </TouchableOpacity>
@@ -99,7 +98,7 @@ export default class SimilarGoods extends React.Component {
   )
 
   render() {
-    let {similarProduct} = this.props
+    let { similarProduct } = this.props
     return (
       <View style={styles.wrapper}>
         <View style={styles.wrapperBg}>
@@ -107,11 +106,11 @@ export default class SimilarGoods extends React.Component {
         </View>
         <FlatList
           data={similarProduct}
-          numColumns ={2}
+          numColumns={2}
           numColumns={cols}
           horizontal={false}
-          renderItem={this.renderData}>
-        </FlatList>
+          renderItem={this.renderData}
+        ></FlatList>
       </View>
     )
   }

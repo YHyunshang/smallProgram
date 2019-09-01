@@ -52,6 +52,7 @@ interface State {
     [tabId: string]: boolean
   }
   animatedValRefCmsScrollY: Animated.AnimatedValue
+  dataExpired: boolean
 }
 
 class Page extends React.Component<Props, State> {
@@ -70,6 +71,7 @@ class Page extends React.Component<Props, State> {
     tabFloorMap: {},
     tabLoadingMap: {},
     animatedValRefCmsScrollY: new Animated.Value(0),
+    dataExpired: false,
   }
 
   nativeSubscription: { remove: Function }
@@ -115,6 +117,7 @@ class Page extends React.Component<Props, State> {
     // 监听购物车变化
     Native.onCartChange(() => {
       const { currentTabIdx } = this.state
+      this.setState({ dataExpired: true })
       this.onTabIndexChange(currentTabIdx, true)
     })
   }
@@ -435,13 +438,13 @@ class Page extends React.Component<Props, State> {
     CMSServices.pushScrollToNative(x, y)
   }
 
-  onTabIndexChange = debounce((idx, force = false) => {
-    Log.debug('tab index change', idx)
+  onTabIndexChange = (idx, force = false) => {
     this.setState({ currentTabIdx: idx })
-    const { tabList, tabFloorMap } = this.state
+    const { tabList, tabFloorMap, dataExpired } = this.state
     const currentTab = tabList[idx]
     if (
       force ||
+      dataExpired ||
       (currentTab && (tabFloorMap[currentTab.id] || []).length === 0)
     ) {
       const fn = {
@@ -450,7 +453,7 @@ class Page extends React.Component<Props, State> {
       }[currentTab.type]
       fn(currentTab.id, force)
     }
-  }, 500)
+  }
 
   onRefreshScene = idx => {
     const { tabList, tabFloorMap } = this.state

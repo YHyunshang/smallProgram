@@ -1,9 +1,6 @@
 {
-  "version": "0.1.4",
-  "iosDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.1.4/ios/dist-ios.zip",
-  "androidDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.1.4/android/index.jsbundle",
-  "versionDesc": [
-    "F - 商品数量同步",
-    "U - 发现页增加下拉刷新"
-  ]
+  "version": "0.1.9",
+  "iosDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.1.9/ios/dist-ios.zip",
+  "androidDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.1.9/android/index.jsbundle",
+  "versionDesc": ["U - 图片加载"]
 }

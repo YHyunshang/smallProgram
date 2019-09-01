@@ -174,7 +174,7 @@ export function formatProduct(data: { [index: string]: any }) {
     spec: data.productDesc || '',
     price: data.promotionPrice < data.price ? data.promotionPrice : data.price,
     slashedPrice: data.promotionPrice < data.price ? data.price : undefined,
-    count: data.productNumber || 0,
+    count: data.productNum || 0,
   }
 }
 

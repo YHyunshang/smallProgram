@@ -3,6 +3,7 @@ import { Product } from '../typings'
 import debounce from 'lodash/debounce'
 import { CMSServices } from '@services'
 import { Log } from '@utils'
+import { Alert } from 'react-native'
 
 interface Props extends Product {
   shopCode: string // 门店编码

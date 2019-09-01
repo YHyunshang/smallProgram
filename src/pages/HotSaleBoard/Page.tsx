@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-08-21 14:48:31
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-08-30 12:31:36
+ * @Last Modified time: 2019-09-01 20:54:00
  */
 import * as React from 'react'
 import { View, FlatList, Image } from 'react-native'
@@ -14,6 +14,7 @@ import { Native } from '@utils'
 import ProductGrid from '@components/business/Content/ProductGrid'
 import Empty from './components/Empty'
 import { hotSaleBanner } from '@const/resources'
+import FitImage from 'react-native-fit-image'
 
 interface State {
   tabList: {
@@ -138,11 +139,11 @@ export default class Page extends React.Component<Object, State> {
     const floorData = [
       {
         key: '$$img',
-        component: Image,
+        component: FitImage,
         props: {
           resizeMode: 'cover',
           source: hotSaleBanner,
-          style: { marginBottom: -35.2941, width: '100%' },
+          style: { marginBottom: -35.2941, width: '100%', height: 200 },
         },
       },
       {

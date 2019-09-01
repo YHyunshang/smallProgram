@@ -16,7 +16,7 @@ export default StyleSheet.create({
     paddingLeft: 5,
   },
   cartImg: {
-    width: 14,
-    height: 14,
+    width: 24,
+    height: 24,
   },
 })
