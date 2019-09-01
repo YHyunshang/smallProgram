@@ -19,10 +19,9 @@ import * as WeChat from 'react-native-wechat'
 import PopUp from '../common/PopUp'
 import Icon from '../../components/Icon'
 import styles from './ShareModal.styles'
+import {wechatFriend, wechatMoments} from '../../constants/resources'
 const rnAppModule = NativeModules.RnAppModule// 原生商品详情模块
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
-const shareIconWechat = require('@img/wechat-friend.png')
-const shareIconMoments = require('@img/wechat-moments.png')
 export default class ShareModal extends React.Component {
   constructor(props) {
     super(props)
@@ -130,13 +129,13 @@ export default class ShareModal extends React.Component {
           <TouchableOpacity activeOpacity={0.95} onPress={() => {
             this.shareFriend()
           }}>
-            <Image style={styles.shareImage} source={shareIconWechat} resizeMode="cover"></Image>
+            <Image style={styles.shareImage} source={wechatFriend} resizeMode="cover"></Image>
             <Text style={styles.shareText} >微信好友</Text>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.95} onPress={() => {
             this.showPosterMoal()
           }}>
-            <Image style={styles.shareImage} source={shareIconMoments} resizeMode="cover"></Image>
+            <Image style={styles.shareImage} source={wechatMoments} resizeMode="cover"></Image>
             <Text style={styles.shareText} >微信朋友圈</Text>
           </TouchableOpacity>
         </View>

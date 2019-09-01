@@ -13,6 +13,7 @@ import {
 import sumBy from 'lodash/sumBy'
 import memoizeOne from 'memoize-one'
 import isDeepEqual from 'lodash/isEqual'
+import { hotSaleTabBg } from '@const/resources'
 
 interface Props {
   data: {
@@ -129,7 +130,7 @@ export default class Tab extends React.PureComponent<Props, State> {
       <View style={styles.container}>
         <ImageBackground
           style={{ width: '100%', height: 35.2941 }}
-          source={require('@img/hot-sale-tab-bg.png')}
+          source={hotSaleTabBg}
           resizeMode="cover"
         >
           <ScrollView

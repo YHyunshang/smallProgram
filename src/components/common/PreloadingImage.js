@@ -9,7 +9,7 @@
 import React, {Component} from 'react'
 import {Image, StyleSheet, View} from 'react-native'
 import PropTypes from 'prop-types'
-const placeholderProduct = require('@img/placeholder-product.png')
+import {placeholderProduct} from '@const/resources'
 /**
  * 自定义图片
  */

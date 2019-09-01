@@ -12,6 +12,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import { Native } from '@utils'
 import withCartCountModify from './HOC/withCountInCartModifier'
 import { Product } from './typings'
+import { plus } from '@const/resources'
 
 function ProductSwiperItem({
   code,
@@ -70,7 +71,7 @@ function ProductSwiperItem({
               end={{ x: 0, y: 0 }}
               colors={['#FF3914', '#FF6042']}
             >
-              <Image style={styles.addIcon} source={require('@img/plus.png')} />
+              <Image style={styles.addIcon} source={plus} />
               <Text style={styles.cartBtnText}>购物车</Text>
             </LinearGradient>
           </View>

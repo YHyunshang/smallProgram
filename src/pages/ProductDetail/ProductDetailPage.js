@@ -21,6 +21,8 @@ import {Native} from '@utils'
 import {getGoodsDetailData, getPosterImgUrl, getSimilarProduct, addToCart, subscriptCartNumberChange} from '../../services/goodsDetail'
 import GoodsDetailSwiper from '../../components/business/GoodsDetailSwiper'
 import SimilarGoods from '../../components/business/SimilarGoods'
+// 商品产地图标 // 商品规格图标 //商品条件图标
+import {productPlace, productSpecific, productConditions} from '../../constants/resources'
 // import Tag from '../../components/business/Tag'
 // 实列化数据存储对象
 const SPStorage = new Storage({
@@ -42,12 +44,6 @@ const SPStorage = new Storage({
   sync: {}
 })
 
-// 商品产地图标
-const productPlace = require('@img/product-place.png')
-// 商品规格图标
-const productSpecific = require('@img/product-specific.png')
-// 商品条件图标
-// const productConditions = require('@img/product-conditions.png')
 const rnAppModule = NativeModules.RnAppModule// 原生模块
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
 export default class ProductDetailPage extends React.Component {

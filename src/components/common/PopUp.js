@@ -4,15 +4,13 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-09 10:09:14
+ * @LastEditTime: 2019-08-31 18:22:38
  */
 import React, {Component} from 'react'
-import {StyleSheet, View, TouchableOpacity, Animated, Easing, Dimensions, Platform, NativeModules} from 'react-native'
-const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
+import {StyleSheet, View, TouchableOpacity, Animated, Easing, Dimensions} from 'react-native'
 /**
  * 弹出层
  */
-const isIOS = Platform.OS === 'ios'// ios手机
 const {width, height} = Dimensions.get('window')
 export default class PopUp extends Component {
   constructor(props) {
@@ -39,22 +37,18 @@ export default class PopUp extends Component {
    * @description: 淡出动画效果
    */
   fadeOut() {
-    if (isIOS) { //  如果是ios手机才走动画效果，android暂不支持动画
-      Animated.timing(
-        this.state.offset,
-        {
-          easing: Easing.linear,
-          duration: 300,
-          toValue: 0
-        }
-      ).start()
-      setTimeout(
-        () => this.setState({show: false}),
-        300
-      )
-    } else {
-      this.setState({show: false})
-    }
+    Animated.timing(
+      this.state.offset,
+      {
+        easing: Easing.linear,
+        duration: 300,
+        toValue: 0
+      }
+    ).start()
+    setTimeout(
+      () => this.setState({show: false}),
+      300
+    )
   }
   /**
    * @description: 展示弹层方法
@@ -76,7 +70,6 @@ export default class PopUp extends Component {
   defaultHide() {
     this.props.hide()
     this.fadeOut()
-    goodsDetailManager.showBottomViews()// 展示底部购物车模块
   }
 
   render() {
@@ -88,17 +81,15 @@ export default class PopUp extends Component {
           </TouchableOpacity>
           <Animated.View
             style={[styles.modalBox, {
-              height, bottom: 0, backgroundColor: modalBoxBg,
+              height, top: 0, backgroundColor: modalBoxBg,
               transform: [{
                 translateY: this.state.offset.interpolate({
                   inputRange: [0, 1],
-                  outputRange: isIOS ? [height, height - modalBoxHeight] : [height - modalBoxHeight, height]
+                  outputRange: [height, height - modalBoxHeight]
                 })
               }]
             }]}>
-            <View>
-              {this.props.children}
-            </View>
+            {this.props.children}
           </Animated.View>
         </View>
       )
@@ -106,9 +97,7 @@ export default class PopUp extends Component {
     return <View />
   }
 }
-/**
- * @description: 弹出浮层组件样式
- */
+
 const styles = StyleSheet.create({
   container: {
     width,

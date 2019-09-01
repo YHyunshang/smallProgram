@@ -2,6 +2,7 @@ import * as React from 'react'
 import { View, Image, Text, TouchableOpacity } from 'react-native'
 import styles from './ProductCountOperator.styles'
 import LinearGradient from 'react-native-linear-gradient'
+import { minusCircle, plusCircle } from '@const/resources'
 
 export interface Props {
   count: number
@@ -18,10 +19,7 @@ export default function ProductCountOperator({
         activeOpacity={0.95}
         onPress={() => count - 1 >= 0 && onCountChange(count - 1)}
       >
-        <Image
-          style={styles.operatorImg}
-          source={require('@img/minus-circle.png')}
-        />
+        <Image style={styles.operatorImg} source={minusCircle} />
       </TouchableOpacity>
       <Text style={styles.countText} numberOfLines={1} ellipsizeMode="tail">
         {count}
@@ -30,10 +28,7 @@ export default function ProductCountOperator({
         activeOpacity={0.95}
         onPress={() => onCountChange(count + 1)}
       >
-        <Image
-          style={styles.operatorImg}
-          source={require('@img/plus-circle.png')}
-        />
+        <Image style={styles.operatorImg} source={plusCircle} />
       </TouchableOpacity>
     </View>
   )

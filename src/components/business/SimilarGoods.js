@@ -21,11 +21,11 @@ import LinearGradient from 'react-native-linear-gradient'
 // import Tag from './Tag'
 import {transPenny} from '../../utils/FormatUtil'
 import styles from './SimilarGoods.styles'
+import { cart as cartImg } from '@const/resources'
 // import LinearGradient from 'react-native-linear-gradient'
 // 一些常量设置
 const cols = 2 // 列数
 // 商品购物车图标
-const cartImg = require('@img/cart.png')
 export default class SimilarGoods extends React.Component {
   constructor(props) {
     super(props)

@@ -1,6 +1,9 @@
 {
-  "version": "0.1.2",
-  "iosDownloadUrl": "http://static-yh.yonghui.cn/xsztRN/0.2.0-alpha/ios/dist-ios.zip",
-  "androidDownloadUrl": "http://static-yh.yonghui.cn/xsztRN/0.2.0-alpha/android/index.jsbundle",
-  "versionDesc": ["首页联调"]
+  "version": "0.1.4",
+  "iosDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.1.4/ios/dist-ios.zip",
+  "androidDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.1.4/android/index.jsbundle",
+  "versionDesc": [
+    "F - 商品数量同步",
+    "U - 发现页增加下拉刷新"
+  ]
 }
