@@ -22,7 +22,7 @@ import {getGoodsDetailData, getPosterImgUrl, getSimilarProduct, addToCart, subsc
 import GoodsDetailSwiper from '../../components/business/GoodsDetailSwiper'
 import SimilarGoods from '../../components/business/SimilarGoods'
 // 商品产地图标 // 商品规格图标 //商品条件图标
-import {productPlace, productSpecific, productConditions} from '../../constants/resources'
+import {productPlace, productSpecific, productConditions} from '@const/resources'
 // import Tag from '../../components/business/Tag'
 // 实列化数据存储对象
 const SPStorage = new Storage({
@@ -366,7 +366,7 @@ export default class ProductDetailPage extends React.Component {
               {
                 goodsInfo.productSpecific ?
                   <View style={styles.goodsQualityItemFlex}>
-                    <Image source={productSpecific}></Image>
+                    <Image source={productSpecific} style={{width: 14, height: 14}}></Image>
                     <Text style={styles.goodsQualityValue}>{goodsInfo.productSpecific}</Text>
                   </View>
                   : null
@@ -374,7 +374,7 @@ export default class ProductDetailPage extends React.Component {
               {/* {
                 goodsInfo.shelfLife ?
                   <View style={styles.goodsQualityItemFlex}>
-                    <Image source={productConditions}></Image>
+                    <Image source={productConditions} style={{width: 14, height: 14}}></Image>
                     <Text style={styles.goodsQualityValue}>{goodsInfo.shelfLife}</Text>
                   </View>
                   : null
@@ -382,7 +382,7 @@ export default class ProductDetailPage extends React.Component {
               {
                 goodsInfo.originPlace ?
                   <View style={styles.goodsQualityItemFlex}>
-                    <Image source={productPlace}></Image>
+                    <Image source={productPlace} style={{width: 14, height: 14}}></Image>
                     <Text style={styles.goodsQualityValue}>{goodsInfo.originPlace}</Text>
                   </View>
                   : null
