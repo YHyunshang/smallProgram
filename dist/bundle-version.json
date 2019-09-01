@@ -1,6 +1,6 @@
 {
-  "version": "0.1.15",
-  "iosDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.1.15/ios/dist-ios.zip",
-  "androidDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.1.15/android/index.jsbundle",
+  "version": "0.1.16",
+  "iosDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.1.16/ios/dist-ios.zip",
+  "androidDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.1.16/android/index.jsbundle",
   "versionDesc": ["F - crush when cms is empty"]
 }
