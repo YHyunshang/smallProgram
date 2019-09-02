@@ -4,10 +4,11 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-31 18:22:38
+ * @LastEditTime: 2019-09-02 14:14:35
  */
 import React, {Component} from 'react'
-import {StyleSheet, View, TouchableOpacity, Animated, Easing, Dimensions} from 'react-native'
+import {StyleSheet, View, TouchableOpacity, Animated, Easing, Dimensions, NativeModules} from 'react-native'
+const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
 /**
  * 弹出层
  */
@@ -70,6 +71,7 @@ export default class PopUp extends Component {
   defaultHide() {
     this.props.hide()
     this.fadeOut()
+    goodsDetailManager.showBottomViews() // 展示底部购物车模块
   }
 
   render() {
