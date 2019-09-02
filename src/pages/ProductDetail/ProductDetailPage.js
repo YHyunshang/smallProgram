@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-30 19:40:39
+ * @LastEditTime: 2019-09-02 10:01:51
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules, AsyncStorage} from 'react-native'
@@ -120,6 +120,7 @@ export default class ProductDetailPage extends React.Component {
           object.productPrice = data.resChannelStoreProductVO.promotionPrice ? data.resChannelStoreProductVO.promotionPrice : data.resChannelStoreProductVO.price
           object.productUrl = data.productSliderImagesResponseVOList ? data.productSliderImagesResponseVOList[0].url : ''
           object.productCode = data.resChannelStoreProductVO.productCode
+          object.storeCode = storeCode
           this.setState(
             {
               goodsDetail: data,

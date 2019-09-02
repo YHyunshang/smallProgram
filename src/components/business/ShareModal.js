@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-26 15:57:16
+ * @LastEditTime: 2019-09-02 10:07:12
  */
 
 import React from 'react'
@@ -75,7 +75,7 @@ export default class ShareModal extends React.Component {
       miniProgramType: 0, // 分享小程序版本 正式版:0，测试版:1，体验版:
       webpageUrl: 'https://blog.csdn.net/weixin_34221036/article/details/91056421',
       userName: 'gh_913462fd944f', // 小程序原生id非appid
-      path: '/pages/home/home' // 小程序页面路径
+      path: `/pages/product-detail/product-detail?productCode=${productParams.productCode}&storeCode=${productParams.storeCode}`// 小程序商品详情页面路径
     }
     WeChat.isWXAppInstalled().then((isInstalled) => {
       if (isInstalled) {
@@ -97,7 +97,7 @@ export default class ShareModal extends React.Component {
     //       title: '刘玉文的二维码',
     //       thumbImage: 'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/home/banner_1.jpg',
     //       type: 'news',
-    //       description: '永辉到家链接',
+    //       description: '永辉买菜链接',
     //       webpageUrl: 'https://blog.csdn.net/weixin_34221036/article/details/91056421'
     //     }).catch((error) => {
     //       this.refs.toast.show(error.message, 2000)
