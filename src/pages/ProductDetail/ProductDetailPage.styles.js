@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-29 10:26:11
+ * @LastEditTime: 2019-09-02 14:02:26
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import {isIPhoneXMarginTop} from '../../utils/IsIphoneX'
@@ -150,12 +150,12 @@ export default StyleSheet.create({
     color: '#333333',
     fontWeight: 'bold',
     marginTop: 15,
+    marginBottom: 10,
     marginLeft: 15
   },
   goodsDetailImage: {
     width: '100%',
-    height: 306,
-    marginTop: 10
+    height: 306
   },
   imagesContent: {
     width: '100%',
