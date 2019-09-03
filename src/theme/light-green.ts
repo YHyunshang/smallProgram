@@ -4,8 +4,11 @@
  * @Author: 李华良 
  * @Date: 2019-09-03 14:50:25 
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-09-03 14:55:10
+ * @Last Modified time: 2019-09-03 18:31:58
  */
+import { Platform } from 'react-native';
+const isAndroid = Platform.OS === 'android'
+
 export const primary = '#82BF3C'
 export const secondary = '#97CC5B'
 
@@ -24,3 +27,6 @@ export const orange10 = '#FFE5E0'
 export const red = '#FF3914'
 export const red1 = '#FF6042'
 export const red10 = '#FFDED9'
+
+// 价格字体
+export const priceFFPrimary = isAndroid ? 'Alte_Din_1451_Mittelschrift' : 'Alte Din 1451 Mittelschrift'
