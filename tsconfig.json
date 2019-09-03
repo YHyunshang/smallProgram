@@ -9,7 +9,8 @@
       "@components": ["./src/components"],
       "@components/*": ["./src/components/*"],
       "@img": ["./src/assets/imgs"],
-      "@const/*": ["src/constants/*"]
+      "@const/*": ["./src/constants/*"],
+      "@theme": ["./src/theme"]
     }
   }
 }

@@ -20,6 +20,7 @@ module.exports = {
           '@components': './src/components',
           '@img': './src/assets/imgs',
           '@const': './src/constants',
+          '@theme': './src/theme',
         },
       },
     ],
