@@ -4,16 +4,12 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-31 10:28:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-04 16:10:40
+ * @LastEditTime: 2019-09-04 20:00:59
  */
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Map} from '../../utils/FormatUtil'
-import theme from '@theme'
-import LinearGradient from 'react-native-linear-gradient'
-import {addToCart, subscriptCartNumberChange} from '../../services/goodsDetail'
+import {minusCircle, plusCircle} from '@const/resources'
 import {StyleSheet, Text, View, TouchableOpacity, Animated, Easing} from 'react-native'
-let map = new Map()
 export default class CartAnimated extends React.Component {
   constructor(props) {
     super(props)
@@ -42,33 +38,17 @@ export default class CartAnimated extends React.Component {
     cartHeight: 24 // 购物车加减按钮的默认大小
   }
   componentDidMount() {
-    const {goodsItem} = this.props
-    if (goodsItem.productNum > 0) {
+    if (this.props.goodsItem.productNum > 0) {
       this._startAnimated()
       this.setState({isShowMin: true})
     }
-    // 相似商品列表购物车数量变化native 事件监听
-    this.nativeSubscription = subscriptCartNumberChange(
-      this.onNativeCartNumberChange
-    )
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
-      goodsItem: nextProps.goodsItem,
-      cartNumber: nextProps.goodsItem.productNum
+      goodsItem: nextProps.goodsItem
     })
   }
-  componentWillUnmount() {
-    this.nativeSubscription && this.nativeSubscription.remove()
-  }
-  /**
-   * @param {productCode}
-   * @param {productNumber}
-   * @description: 相似商品列表添加购物车返回productCode和productNumber
-   */
-  onNativeCartNumberChange = ({productCode, productNumber}) => {
-    map.put(productCode, productNumber)// 将添加到购物车的商品编码和商品数量存到map中
-  }
+
   /**
    * @description 开始动画的方法
    */
@@ -77,44 +57,40 @@ export default class CartAnimated extends React.Component {
     this.rotateAnimated.start()
   }
   /**
-   * @description: 相似商品列表添加到购物车
-   */
-  handleCart=(item, type) => {
-    let number = map.get(item.productCode)// 获取之前保存到map里面的商品数量
-    if (number) { // 如果map里面存在就从map里面取，否则直接从当前添加的商品取
-      item.productNum = Number(number)
-    }
-    addToCart(JSON.stringify(item), type)
-  }
-  /**
    * @description 加购物车的操作
    */
   handleAddCart() {
-    const {goodsItem} = this.props
-    this.state.cartNumber == 0 ? this._startAnimated() : ''
-    this.setState({isShowMin: true})
-    this.handleCart(goodsItem, '1')
-    this.setState({cartNumber: this.state.cartNumber + 1})
+    const {goodsItem, handleCart} = this.props
+    if (handleCart) {
+      handleCart(goodsItem, '1')
+      goodsItem.productNum == 0 ? this._startAnimated() : ''
+      this.setState({isShowMin: true})
+    }
   }
   /**
    * @description 减购物车的操作
    */
   handleMinCart() {
-    const {goodsItem} = this.props
-    this.handleCart(goodsItem, '0')
-    this.setState({cartNumber: this.state.cartNumber - 1})
-    if (this.state.cartNumber == 1) {
+    const {handleCart} = this.props
+    const {goodsItem} = this.state
+    if (handleCart) {
+      handleCart(goodsItem, '0')
+    }
+    if (goodsItem.productNum == 1) {
       this.state.animatedValue.setValue(0)
-      this.rotateAnimated.start()
-      setTimeout(
-        () => this.setState({isShowMin: false}),
-        100
+      this.rotateAnimated.start(
+        () => {
+          // 这里可以添加动画之后要执行的函数
+          setTimeout(() => {
+            this.setState({isShowMin: false})
+          }, 100)
+        }
       )
     }
   }
   render() {
     const {cartWidth, cartHeight} = this.props
-    const {cartNumber} = this.state
+    const {goodsItem} = this.state
     // 右边偏移量
     const marginRight = this.state.animatedValue.interpolate({
       inputRange: [0, 1],
@@ -138,9 +114,9 @@ export default class CartAnimated extends React.Component {
     // 将减号沿z轴逆时针旋转180度
     const minPositiveZ = this.state.animatedValue.interpolate({
       inputRange: [0, 1],
-      outputRange: ['-180deg', '0deg']
+      outputRange: ['0deg', '180deg']
     })
-    const rotatePlus = cartNumber == 0 ? plusPositiveZ : plusNegativeZ
+    const rotatePlus = goodsItem.productNum == 0 ? plusPositiveZ : plusNegativeZ
     return (
       <View style={styles.container}>
         <View style={styles.cartWrapper}>
@@ -152,30 +128,28 @@ export default class CartAnimated extends React.Component {
                   this.handleMinCart()
                 }} >
 
-                <Animated.View style={{marginRight, marginLeft, transform: [{rotateZ: minPositiveZ}]}}>
-                  <View style={[styles.minWrapper, {width: cartWidth, height: cartHeight}]}>
+                <Animated.Image style={{width: cartWidth, height: cartHeight, marginRight, marginLeft, transform: [{rotateZ: minPositiveZ}]}} source={minusCircle}>
+                  {/* <View style={[styles.minWrapper, {width: cartWidth, height: cartHeight}]}>
                     <Text style={styles.minText}>－</Text>
-                  </View>
-                </Animated.View>
+                  </View> */}
+                </Animated.Image>
               </TouchableOpacity>
               : null
           }
           {
-            cartNumber > 0 ?
-              <Animated.View style={{minWidth: 30, marginRight}}>
-                <Text style={styles.numberText}>{cartNumber}</Text>
+            goodsItem.productNum > 0 ?
+              <Animated.View style={{minWidth: 30}}>
+                <Text style={styles.numberText}>{goodsItem.productNum}</Text>
               </Animated.View>
               : null
           }
-          <LinearGradient style={[styles.linearGradient, {width: cartWidth, height: cartHeight}]} colors={[theme.primary, theme.secondary]}>
-            <TouchableOpacity
-              activeOpacity={0.9}
-              onPress={() => {
-                this.handleAddCart()
-              }} >
-              <Animated.Text style={[styles.plusText, {transform: [{rotateZ: rotatePlus}]}]}>+</Animated.Text>
-            </TouchableOpacity>
-          </LinearGradient>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            onPress={() => {
+              this.handleAddCart()
+            }} >
+            <Animated.Image style={[{width: cartWidth, height: cartHeight}, {transform: [{rotateZ: rotatePlus}]}]} source={plusCircle}></Animated.Image>
+          </TouchableOpacity>
         </View>
       </View>
     )

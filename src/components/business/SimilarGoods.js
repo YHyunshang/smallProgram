@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-04 15:50:41
+ * @LastEditTime: 2019-09-04 18:57:57
  */
 
 import React from 'react'
@@ -36,6 +36,15 @@ export default class SimilarGoods extends React.Component {
     this.setState({
       similarProduct: nextProps.similarProduct
     })
+  }
+  /**
+   * @description: 相似商品列表添加到购物车
+   */
+  handleCart=(item, type) => {
+    const {handleCart} = this.props
+    if (handleCart) {
+      handleCart(item, type)
+    }
   }
   /**
    * @description: 点击相似商品列表跳转到商品详情页面
@@ -76,20 +85,7 @@ export default class SimilarGoods extends React.Component {
           </Text>
         </View>
         <View style={styles.container}>
-          <CartAnimated goodsItem={item} ></CartAnimated>
-          {/* <LinearGradient
-            style={styles.linearGradient}
-            colors={['#6D993A', '#87B84F']}
-          >
-            <TouchableOpacity
-              activeOpacity={0.95}
-              onPress={() => {
-                this.handleAddCart(item)
-              }}
-            >
-              <FitImage style={styles.goodsCartImg} source={cartImg}></FitImage>
-            </TouchableOpacity>
-          </LinearGradient> */}
+          <CartAnimated goodsItem={item} handleCart={this.handleCart}></CartAnimated>
         </View>
       </View>
     </View>

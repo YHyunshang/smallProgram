@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-28 11:14:34
+ * @LastEditTime: 2019-09-04 18:58:14
  */
 
 import {
@@ -102,11 +102,6 @@ export default StyleSheet.create({
   },
   container: {
     marginRight: 10,
-    marginBottom: 10,
-    shadowColor: '#EE4239',
-    shadowOffset: {width: 0, height: 2},
-    shadowRadius: 4,
-    shadowOpacity: 0.23,
-    elevation: 2
+    marginBottom: 10
   }
 })
