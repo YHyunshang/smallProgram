@@ -5,7 +5,7 @@ import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
   container: {
-    // backgroundColor: '#D33A34',
+    backgroundColor: '#FFF',
     position: 'relative',
     flex: 1,
   },
@@ -22,5 +22,6 @@ export default StyleSheet.create({
 
   sceneBox: {
     flex: 1,
+    backgroundColor: '#FFF',
   },
 })

@@ -3,6 +3,7 @@ export interface Product {
   code: string // 商品编码
   thumbnail: string // 缩略图
   name: string // 商品名称
+  desc: string // 商品描述
   tag?: string // 标签
   spec: string // 规格
   price: number // 当前价格

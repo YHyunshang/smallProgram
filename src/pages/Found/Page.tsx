@@ -5,6 +5,7 @@ import { CMSServices } from '@services'
 import { FlatList } from 'react-native-gesture-handler'
 import ActivityWithIPS from '@components/business/Content/ActivityWithIPS'
 import { RefreshControl, View } from 'react-native'
+import theme from '@theme'
 
 interface State {
   loading: boolean
@@ -122,8 +123,8 @@ export default class Page extends React.Component<Object, State> {
           <RefreshControl
             refreshing={loading}
             onRefresh={() => this.requestPageData(shopCode)}
-            colors={['rgba(238, 66, 57, 1)', 'rgba(238, 66, 57, 0)']}
-            tintColor={'rgba(238, 66, 57, 1)'}
+            colors={[theme.primary, theme.white]}
+            tintColor={theme.primary}
           />
         }
       />

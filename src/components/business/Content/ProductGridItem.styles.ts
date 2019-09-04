@@ -2,6 +2,7 @@
  * Created by 李华良 on 2019-08-19
  */
 import { StyleSheet } from 'react-native'
+import GlobalTheme from '@theme'
 
 export default theme =>
   StyleSheet.create({
@@ -28,13 +29,13 @@ export default theme =>
     infoBox: {},
 
     name: {
+      marginBottom: 2,
+      color: GlobalTheme.black,
       fontSize:
         {
           '2x': 14,
           '3x': 13,
         }[theme] || 14,
-      fontWeight: '700',
-      marginBottom: 2,
       height:
         {
           '2x': 24,
@@ -72,6 +73,7 @@ export default theme =>
     currentPrice: {
       color: '#FA8500',
       fontWeight: '600',
+      fontFamily: GlobalTheme.priceFFPrimary,
       fontSize: 18,
     },
     slashedPrice: {

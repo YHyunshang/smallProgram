@@ -10,6 +10,7 @@ import {
 } from 'react-native'
 import { Native } from '@utils'
 import sumBy from 'lodash/sumBy'
+import theme from '@theme'
 
 export const TabHeight = 34
 const windowWidth = Dimensions.get('window').width
@@ -151,7 +152,7 @@ export default class TabBar extends React.Component<Props, State> {
               style={[
                 styles.tabText,
                 { lineHeight: TabHeight },
-                { color: index === 0 ? '#FFF' : '#4D4D4D' },
+                { color: index === 0 ? '#FFF' : '#000' },
                 { opacity: index === idx ? 0 : 1 },
               ]}
               onLayout={e => this.onTabTextLayout(route.key, e)}
@@ -162,7 +163,7 @@ export default class TabBar extends React.Component<Props, State> {
               style={[
                 styles.tabTextActive,
                 { lineHeight: TabHeight },
-                { color: index === 0 ? '#FFF' : '#FF3914' },
+                { color: index === 0 ? '#FFF' : theme.primary },
                 { opacity: index === idx ? 1 : 0 },
               ]}
             >
@@ -283,7 +284,7 @@ export default class TabBar extends React.Component<Props, State> {
               styles.indicator,
               {
                 width: indicatorWidth,
-                backgroundColor: '#FF3914',
+                backgroundColor: theme.primary,
                 opacity: indicatorWhenScrollOpacity,
                 transform: [{ translateX: indicatorTranslateX }],
               },

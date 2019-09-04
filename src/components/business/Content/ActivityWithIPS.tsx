@@ -4,7 +4,7 @@
  * @Author: 李华良
  * @Date: 2019-08-24 18:09:24
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-08-29 15:21:38
+ * @Last Modified time: 2019-09-04 14:41:47
  */
 import * as React from 'react'
 import styles from './ActivityWithIPS.styles'
@@ -47,17 +47,14 @@ export default function ActivityWithIPS({
             index === total - 1 && styles.productBoxLast,
           ]}
         >
-          <Image
-            style={styles.thumbnail}
-            source={{ uri: thumbnail }}
-          />
+          <Image style={styles.thumbnail} source={{ uri: thumbnail }} />
           <View style={styles.nameBox}>
             <Text style={styles.name} numberOfLines={2}>
               {name}
             </Text>
           </View>
           <Text style={styles.price}>
-            <Text style={styles.pricePrefix}>¥</Text>
+            <Text style={styles.pricePrefix}>¥ </Text>
             {price / 100}
           </Text>
         </View>

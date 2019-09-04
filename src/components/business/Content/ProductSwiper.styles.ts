@@ -12,10 +12,9 @@ export default StyleSheet.create({
     borderBottomWidth: 0.5,
   },
   productBox: {
-    width: 112,
-    paddingHorizontal: 10,
-    paddingTop: 9,
-    paddingBottom: 11,
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: 21,
   },
   productBoxNotLast: {
     borderColor: '#EBEBEB',

@@ -1,12 +1,12 @@
 /**
  * 主题色
  * 颜色 0 ～ 10 逐渐变浅
- * @Author: 李华良 
- * @Date: 2019-09-03 14:50:25 
+ * @Author: 李华良
+ * @Date: 2019-09-03 14:50:25
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-09-03 18:31:58
+ * @Last Modified time: 2019-09-04 14:24:02
  */
-import { Platform } from 'react-native';
+import { Platform } from 'react-native'
 const isAndroid = Platform.OS === 'android'
 
 export const primary = '#82BF3C'
@@ -28,5 +28,9 @@ export const red = '#FF3914'
 export const red1 = '#FF6042'
 export const red10 = '#FFDED9'
 
+export const darkGreen = '#5E882E'
+
 // 价格字体
-export const priceFFPrimary = isAndroid ? 'Alte_Din_1451_Mittelschrift' : 'Alte Din 1451 Mittelschrift'
+export const priceFFPrimary = isAndroid
+  ? 'Alte_Din_1451_Mittelschrift'
+  : 'Alte Din 1451 Mittelschrift'

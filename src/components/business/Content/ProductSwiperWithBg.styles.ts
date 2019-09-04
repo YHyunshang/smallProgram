@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import theme from '@theme'
 
 export default StyleSheet.create({
   container: {
@@ -18,6 +19,7 @@ export default StyleSheet.create({
     shadowRadius: 11,
   },
   productBox: {
+    width: 92,
     alignItems: 'center',
     paddingHorizontal: 7.5,
     paddingTop: 10,
@@ -31,9 +33,10 @@ export default StyleSheet.create({
   name: {
     fontSize: 13,
     fontWeight: '400',
-    color: '#4D4D4D',
-    marginBottom: 10,
-    width: 92,
+    color: theme.black,
+    height: 23,
+    lineHeight: 23,
+    marginBottom: 5,
     textAlign: 'center',
   },
   price: {

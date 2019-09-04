@@ -28,6 +28,7 @@ import ProductListWithFilter from './components/ProductListWithFilter'
 import { TabView } from 'react-native-tab-view'
 import TabBar, { TabHeight } from './components/TabBar'
 import debounce from 'lodash/debounce'
+import theme from '@theme'
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
 const placeholderForNativeHeight = Native.getStatusBarHeight() + 86 + TabHeight
@@ -322,7 +323,7 @@ class Page extends React.Component<Props, State> {
                   currentTabIdx === 0 && imgObj.name !== '查看更多' ? 10 : 0,
               },
               currentTabIdx === 0 && {
-                borderRadius: 10,
+                borderRadius: 5,
                 overflow: 'hidden',
               },
             ],
@@ -336,7 +337,7 @@ class Page extends React.Component<Props, State> {
           result.push({
             key: floor.id,
             component: Ad1v2,
-            wrapperStyle: { paddingHorizontal: currentTabIdx === 0 ? 10 : 0 },
+            wrapperStyle: { paddingHorizontal: currentTabIdx === 0 ? 15 : 0 },
             props: {
               data: (floor.templateDetailVOList || []).map(ele => ({
                 image: ele.imgUrl,
@@ -445,7 +446,8 @@ class Page extends React.Component<Props, State> {
     const { tabList, tabFloorMap, dataExpired } = this.state
     const currentTab = tabList[idx]
     if (!currentTab) return
-    if ((tabFloorMap[currentTab.id] || []).length === 0) CMSServices.pushScrollToNative(0, 0)
+    if ((tabFloorMap[currentTab.id] || []).length === 0)
+      CMSServices.pushScrollToNative(0, 0)
     if (
       force ||
       dataExpired ||
@@ -515,8 +517,8 @@ class Page extends React.Component<Props, State> {
             <RefreshControl
               refreshing={!!tabLoadingMap[route.key]}
               onRefresh={() => this.onRefreshScene(routeIndex)}
-              colors={['rgba(238, 66, 57, 1)', 'rgba(238, 66, 57, 0)']}
-              tintColor={'rgba(238, 66, 57, 1)'}
+              colors={[theme.primary, theme.white]}
+              tintColor={theme.primary}
             />
           }
           onScroll={onScroll}
@@ -545,8 +547,8 @@ class Page extends React.Component<Props, State> {
             <RefreshControl
               refreshing={currentTabLoading}
               onRefresh={() => this.onRefreshScene(routeIndex)}
-              colors={['rgba(238, 66, 57, 1)', 'rgba(238, 66, 57, 0)']}
-              tintColor={'rgba(238, 66, 57, 1)'}
+              colors={[theme.primary, theme.white]}
+              tintColor={theme.primary}
             />
           }
           onScroll={
@@ -569,8 +571,8 @@ class Page extends React.Component<Props, State> {
             <RefreshControl
               refreshing={currentTabLoading}
               onRefresh={() => this.onRefreshScene(routeIndex)}
-              colors={['rgba(238, 66, 57, 1)', 'rgba(238, 66, 57, 0)']}
-              tintColor={'rgba(238, 66, 57, 1)'}
+              colors={[theme.primary, theme.white]}
+              tintColor={theme.primary}
               progressViewOffset={placeholderForNativeHeight}
             />
           }

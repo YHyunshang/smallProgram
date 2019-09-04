@@ -2,6 +2,7 @@
  * Created by 李华良 on 2019-08-19
  */
 import { StyleSheet } from 'react-native'
+import theme from '@theme'
 
 export default StyleSheet.create({
   container: {},
@@ -14,7 +15,7 @@ export default StyleSheet.create({
   thumbnailBox: {
     flexShrink: 0,
     flexGrow: 0,
-    marginRight: 10,
+    marginRight: 15,
   },
 
   infoBox: {
@@ -23,21 +24,32 @@ export default StyleSheet.create({
   },
 
   thumbnail: {
-    width: 75,
-    height: 75,
+    width: 100,
+    height: 100,
   },
 
   name: {
     flex: 1,
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: '700',
-    color: '#4D4D4D',
+    color: theme.black,
+    height: 23,
+    lineHeight: 23,
+  },
+
+  desc: {
+    flex: 1,
+    fontSize: 13,
+    color: theme.gray1,
+    height: 19,
+    lineHeight: 19,
   },
 
   tagRow: {
-    paddingTop: 8,
-    height: 40,
+    height: 23,
     flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
   },
   tag: {
     fontSize: 10,
@@ -69,26 +81,27 @@ export default StyleSheet.create({
   currentPrice: {
     color: '#FA8500',
     fontWeight: '600',
-    fontSize: 22,
-    marginRight: 13,
+    fontSize: 25,
+    fontFamily: theme.priceFFPrimary,
+    marginRight: 5,
     textAlignVertical: 'bottom',
   },
   slashedPrice: {
     color: '#B3B3B3',
     fontWeight: '400',
     fontSize: 12,
-    lineHeight: 22,
+    lineHeight: 25,
     textDecorationLine: 'line-through',
     textAlignVertical: 'bottom',
   },
   pricePrefix: {
-    fontSize: 15,
+    fontSize: 11,
   },
 
   cartBox: {
     position: 'absolute',
     right: 0,
-    bottom: 2,
+    bottom: 3,
     zIndex: 1,
   },
 })

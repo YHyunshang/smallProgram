@@ -12,29 +12,22 @@ export default StyleSheet.create({
   leftImgBox: {
     flex: 1,
     height: 145,
-    borderRadius: 5,
+    borderTopLeftRadius: 5,
+    borderBottomLeftRadius: 5,
     overflow: 'hidden',
-    marginRight: 5,
+    marginRight: 3,
   },
   rightImgBox: {
     flex: 1,
-    borderRadius: 5,
+    borderTopRightRadius: 5,
+    borderBottomRightRadius: 5,
     overflow: 'hidden',
   },
   rightTopImgBox: {
-    height: 70,
-    marginBottom: 5,
+    height: 71,
+    marginBottom: 3,
   },
   rightBtmImgBox: {
-    height: 70,
-  },
-
-  rightTopImg: {
-    borderRadius: 5,
-    overflow: 'hidden',
-  },
-  rightBtmImg: {
-    borderRadius: 5,
-    overflow: 'hidden',
+    height: 71,
   },
 })
