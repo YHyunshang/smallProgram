@@ -4,6 +4,7 @@ import { View, Image, Text, TouchableOpacity } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import { Native } from '@utils'
 import { cartGray } from '@const/resources'
+import theme from '@theme'
 
 interface Props {
   cartCount: number
@@ -64,7 +65,7 @@ export default function Footer({ cartCount, amount }: Props) {
           style={styles.cartPageNavBox}
           start={{ x: 1, y: 0 }}
           end={{ x: 0, y: 0 }}
-          colors={['#FF3914', '#FF6042']}
+          colors={[theme.primary, theme.secondary]}
         >
           <Text style={styles.navText}>去购物车</Text>
         </LinearGradient>

@@ -1,6 +1,6 @@
 {
-  "version": "0.1.17",
-  "iosDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.1.17/ios/dist-ios.zip",
-  "androidDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.1.17/android/index.jsbundle",
-  "versionDesc": ["F - 首页 tab 切换"]
+  "version": "0.1.19",
+  "iosDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.1.19/ios/dist-ios.zip",
+  "androidDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.1.19/android/index.jsbundle",
+  "versionDesc": ["U - UI 主题色更新"]
 }

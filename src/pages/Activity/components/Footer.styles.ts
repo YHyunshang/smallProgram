@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import theme from '@theme'
 
 export default StyleSheet.create({
   container: {
@@ -33,6 +34,7 @@ export default StyleSheet.create({
     color: '#FA8500',
     fontSize: 18,
     fontWeight: '600',
+    fontFamily: theme.priceFFPrimary,
     paddingHorizontal: 10,
   },
   pricePrefix: {

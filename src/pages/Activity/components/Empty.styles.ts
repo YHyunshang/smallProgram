@@ -12,13 +12,13 @@ export default StyleSheet.create({
     marginBottom: 19,
   },
   h1: {
-    color: '#FFF',
+    color: '#4A4A4A',
     fontSize: 16,
     fontWeight: '600',
     marginBottom: 16,
   },
   h2: {
-    color: '#FFF',
+    color: '#A4A4B4',
     fontSize: 14,
   },
 })
