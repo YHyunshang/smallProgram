@@ -4,12 +4,11 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-02 10:01:51
+ * @LastEditTime: 2019-09-04 15:50:14
  */
 import React from 'react'
-import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules, AsyncStorage} from 'react-native'
+import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
 import Icon from '../../components/Icon'
-import Storage from 'react-native-storage'
 import {transPenny} from '../../utils/FormatUtil'
 import ShareModal from '../../components/business/ShareModal'
 import PosterModal from '../../components/business/PosterModal'
@@ -18,32 +17,12 @@ import Loading from '../../components/common/Loading'
 import PreloadingImage from '../../components/common/PreloadingImage'
 import styles from './ProductDetailPage.styles'
 import {Native} from '@utils'
-import {getGoodsDetailData, getPosterImgUrl, getSimilarProduct, addToCart, subscriptCartNumberChange} from '../../services/goodsDetail'
+import {getGoodsDetailData, getPosterImgUrl, getSimilarProduct} from '../../services/goodsDetail'
 import GoodsDetailSwiper from '../../components/business/GoodsDetailSwiper'
 import SimilarGoods from '../../components/business/SimilarGoods'
 // 商品产地图标 // 商品规格图标 //商品条件图标
-import {productPlace, productSpecific, productConditions} from '@const/resources'
+import {productPlace, productSpecific} from '@const/resources'
 // import Tag from '../../components/business/Tag'
-// 实列化数据存储对象
-const SPStorage = new Storage({
-  // 最大容量，默认值1000条数据循环存储
-  size: 1000,
-  // 存储引擎：RN使用AsyncStorage
-  // 如果不指定则数据只会保存在内存中，重启后即丢失
-  storageBackend: AsyncStorage,
-  // 数据过期时间，默认一整天（1000 * 3600 * 24 毫秒），设为null则永不过期
-  defaultExpires: null,
-  // 读写时在内存中缓存数据，默认开启
-  enableCache: true,
-  // 如果storage中没有相应数据，或数据已过期，
-  // 则会调用相应的sync方法，无缝返回最新数据。
-  // sync方法的具体说明会在后文提到
-  // 你可以在构造函数这里就写好sync的方法
-  // 或是在任何时候，直接对storage.sync进行赋值修改
-  // 或是写到另一个文件里，这里require引入
-  sync: {}
-})
-
 const rnAppModule = NativeModules.RnAppModule// 原生模块
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
 export default class ProductDetailPage extends React.Component {
@@ -51,6 +30,7 @@ export default class ProductDetailPage extends React.Component {
     super(props)
     this.state = {
       cartNumber: 0,
+      myName: '',
       isFirst: true, // 是否是第一次请求生成海报接口
       goodsDetail: {}, // 商品详情
       evaluation: {}, // 商品评价信息
@@ -82,30 +62,8 @@ export default class ProductDetailPage extends React.Component {
     this.setState({storeCode: productInfo.storeCode})
     this.getProductInfo(productInfo.productCode, productInfo.storeCode)
     this.getSimilarProductList(productInfo.productCode, productInfo.storeCode)
-    // 相似商品列表购物车数量变化native 事件监听
-    this.nativeSubscription = subscriptCartNumberChange(
-      this.onNativeCartNumberChange
-    )
-  }
-  /**
-   * @param {productCode}
-   * @param {productNumber}
-   * @description: 相似商品列表添加购物车返回productCode和productNumber
-   */
-  onNativeCartNumberChange = ({productCode, productNumber}) => {
-    SPStorage.save({
-      key: productCode, // 注意:请不要在key中使用_下划线符号!
-      data: {
-        productNumber
-      },
-      // 如果不指定过期时间，则会使用defaultExpires参数
-      // 如果设为null，则永不过期
-      expires: null
-    })
-    // map.put(productCode, productNumber)
   }
   componentWillUnmount() {
-    this.nativeSubscription && this.nativeSubscription.remove()
   }
   /**
    * @description: 获取原生返回的商品详情数据
@@ -139,7 +97,6 @@ export default class ProductDetailPage extends React.Component {
         rnAppModule.showToast(message, '0')
       })
   }
-
   /**
    * @description: 根据商品编码、门店编码获取相似商品列表
    */
@@ -174,39 +131,7 @@ export default class ProductDetailPage extends React.Component {
     this.posterModal.showPosterModal()
     this.sharePoster(productParams)
   }
-  /**
-   * @description: 相似商品列表添加到购物车
-   */
-  handleAddCart=(item) => {
-    SPStorage.load({
-      key: item.productCode,
-      // autoSync(默认为true)意味着在没有找到数据或数据过期时自动调用相应的sync方法
-      autoSync: true,
-      // syncInBackground(默认为true)意味着如果数据过期，
-      // 在调用sync方法的同时先返回已经过期的数据。
-      // 设置为false的话，则等待sync方法提供的最新数据(当然会需要更多时间)。
-      syncInBackground: true,
-      // 你还可以给sync方法传递额外的参数
-      syncParams: {
-        extraFetchOptions: {
-          // 各种参数
-        },
-        someFlag: true
-      }
-    }).then(ret => {
-      // 如果找到数据，则在then方法中返回
-      // 注意：这是异步返回的结果（不了解异步请自行搜索学习）
-      // 你只能在then这个方法内继续处理ret数据
-      // 而不能在then以外处理
-      // 也没有办法“变成”同步返回
-      // 你也可以使用“看似”同步的async/await语法
-      let cartNumber = ret.productNumber
-      item.productNum = Number(cartNumber)
-      addToCart(JSON.stringify(item), '1')
-    }).catch(err => {
-      addToCart(JSON.stringify(item), '1')
-    })
-  }
+
   /**
    * @description: 点击相似商品列表跳转至商品详情
    */
@@ -391,7 +316,7 @@ export default class ProductDetailPage extends React.Component {
             </View>
           </View>
           {
-            similarProduct ? <SimilarGoods similarProduct={similarProduct} addCart={this.handleAddCart} jumpGoodsDetail={this.jumpGoodsDetail} ></SimilarGoods>
+            similarProduct ? <SimilarGoods similarProduct={similarProduct} jumpGoodsDetail={this.jumpGoodsDetail} ></SimilarGoods>
               : null
           }
           <View onLayout={event => {
@@ -399,6 +324,7 @@ export default class ProductDetailPage extends React.Component {
           }}>
             <View style={styles.goodsDetail}>
               <Text style={styles.goodsDetailTitle}>商品详情</Text>
+              <Text>{this.state.myName}</Text>
             </View>
             <View style={styles.imagesContent}>
               {goodsImgList}

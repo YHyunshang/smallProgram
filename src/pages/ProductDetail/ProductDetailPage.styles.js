@@ -4,10 +4,11 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-02 14:02:26
+ * @LastEditTime: 2019-09-04 16:14:25
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import {isIPhoneXMarginTop} from '../../utils/IsIphoneX'
+import theme from '@theme'
 const {width, height} = Dimensions.get('window')
 export default StyleSheet.create({
   container: {
@@ -55,7 +56,8 @@ export default StyleSheet.create({
   goodsPrice: {
     fontSize: 24,
     color: '#FA8500',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    fontFamily: theme.priceFFPrimary
   },
   goodsPriceSymbol: {
     fontSize: 18,
@@ -63,7 +65,8 @@ export default StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 2,
     paddingTop: 5,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    fontFamily: theme.priceFFPrimary
   },
   goodsTag: {
     width: 30,

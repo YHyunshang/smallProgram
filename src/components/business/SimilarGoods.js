@@ -4,51 +4,49 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-01 17:45:06
+ * @LastEditTime: 2019-09-04 15:50:41
  */
 
 import React from 'react'
-import { Text, View, FlatList, TouchableOpacity } from 'react-native'
-import FitImage from 'react-native-fit-image'
+import {Text, View, FlatList, TouchableOpacity} from 'react-native'
 import PreloadingImage from '../common/PreloadingImage'
-import LinearGradient from 'react-native-linear-gradient'
+import CartAnimated from '../common/CartAnimated'
 // import Icon from '../Icon'
 // import Tag from './Tag'
-import { transPenny } from '../../utils/FormatUtil'
+import {transPenny} from '../../utils/FormatUtil'
 import styles from './SimilarGoods.styles'
-import {cart as cartImg} from '../../constants/resources'
 // import LinearGradient from 'react-native-linear-gradient'
-// 一些常量设置
+// import {Map} from '../../utils/FormatUtil'
+// let map = new Map()
 const cols = 2 // 列数
 // 商品购物车图标
 export default class SimilarGoods extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      similarProduct: []
+    }
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+  }
 
   componentWillUnmount() {}
-  /**
-   * @description: 调用原生的添加购物车的方法
-   */
-  handleAddCart(item) {
-    const { addCart } = this.props
-    if (addCart) {
-      addCart(item)
-    }
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      similarProduct: nextProps.similarProduct
+    })
   }
   /**
    * @description: 点击相似商品列表跳转到商品详情页面
    */
   handleJumpGoodsDetail(item) {
-    const { jumpGoodsDetail } = this.props
+    const {jumpGoodsDetail} = this.props
     if (jumpGoodsDetail) {
       jumpGoodsDetail(item)
     }
   }
-  renderData = ({ item }) => (
+  renderData = ({item}) => (
     <View style={styles.similarGoodsList}>
       <TouchableOpacity
         activeOpacity={0.95}
@@ -78,9 +76,10 @@ export default class SimilarGoods extends React.Component {
           </Text>
         </View>
         <View style={styles.container}>
-          <LinearGradient
+          <CartAnimated goodsItem={item} ></CartAnimated>
+          {/* <LinearGradient
             style={styles.linearGradient}
-            colors={['#FF6042', '#FF3914']}
+            colors={['#6D993A', '#87B84F']}
           >
             <TouchableOpacity
               activeOpacity={0.95}
@@ -89,16 +88,15 @@ export default class SimilarGoods extends React.Component {
               }}
             >
               <FitImage style={styles.goodsCartImg} source={cartImg}></FitImage>
-              {/* <Icon style={styles.rightShareIcon} name='cart' size={13} color="#FFFFFF" /> */}
             </TouchableOpacity>
-          </LinearGradient>
+          </LinearGradient> */}
         </View>
       </View>
     </View>
   )
 
   render() {
-    let { similarProduct } = this.props
+    let {similarProduct} = this.state
     return (
       <View style={styles.wrapper}>
         <View style={styles.wrapperBg}>

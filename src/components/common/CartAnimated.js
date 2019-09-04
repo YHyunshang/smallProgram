@@ -4,19 +4,23 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-31 10:28:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-01 17:38:10
+ * @LastEditTime: 2019-09-04 16:10:40
  */
-
 import React from 'react'
 import PropTypes from 'prop-types'
+import {Map} from '../../utils/FormatUtil'
+import theme from '@theme'
 import LinearGradient from 'react-native-linear-gradient'
+import {addToCart, subscriptCartNumberChange} from '../../services/goodsDetail'
 import {StyleSheet, Text, View, TouchableOpacity, Animated, Easing} from 'react-native'
+let map = new Map()
 export default class CartAnimated extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      goodsItem: {},
+      cartNumber: 0, // 添加购物车数量
       isShowMin: false, // 是否展示减号
-      cartNumber: 0,
       animatedValue: new Animated.Value(0)
     }
     // 定义Animated动画
@@ -37,7 +41,34 @@ export default class CartAnimated extends React.Component {
     cartWidth: 24,
     cartHeight: 24 // 购物车加减按钮的默认大小
   }
-
+  componentDidMount() {
+    const {goodsItem} = this.props
+    if (goodsItem.productNum > 0) {
+      this._startAnimated()
+      this.setState({isShowMin: true})
+    }
+    // 相似商品列表购物车数量变化native 事件监听
+    this.nativeSubscription = subscriptCartNumberChange(
+      this.onNativeCartNumberChange
+    )
+  }
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      goodsItem: nextProps.goodsItem,
+      cartNumber: nextProps.goodsItem.productNum
+    })
+  }
+  componentWillUnmount() {
+    this.nativeSubscription && this.nativeSubscription.remove()
+  }
+  /**
+   * @param {productCode}
+   * @param {productNumber}
+   * @description: 相似商品列表添加购物车返回productCode和productNumber
+   */
+  onNativeCartNumberChange = ({productCode, productNumber}) => {
+    map.put(productCode, productNumber)// 将添加到购物车的商品编码和商品数量存到map中
+  }
   /**
    * @description 开始动画的方法
    */
@@ -46,20 +77,31 @@ export default class CartAnimated extends React.Component {
     this.rotateAnimated.start()
   }
   /**
+   * @description: 相似商品列表添加到购物车
+   */
+  handleCart=(item, type) => {
+    let number = map.get(item.productCode)// 获取之前保存到map里面的商品数量
+    if (number) { // 如果map里面存在就从map里面取，否则直接从当前添加的商品取
+      item.productNum = Number(number)
+    }
+    addToCart(JSON.stringify(item), type)
+  }
+  /**
    * @description 加购物车的操作
    */
   handleAddCart() {
+    const {goodsItem} = this.props
     this.state.cartNumber == 0 ? this._startAnimated() : ''
-    this.setState({cartNumber: this.state.cartNumber + 1, isShowMin: true})
-    const {handleCart} = this.props
-    if (handleCart) {
-      handleCart(this.state.cartNumber)
-    }
+    this.setState({isShowMin: true})
+    this.handleCart(goodsItem, '1')
+    this.setState({cartNumber: this.state.cartNumber + 1})
   }
   /**
    * @description 减购物车的操作
    */
   handleMinCart() {
+    const {goodsItem} = this.props
+    this.handleCart(goodsItem, '0')
     this.setState({cartNumber: this.state.cartNumber - 1})
     if (this.state.cartNumber == 1) {
       this.state.animatedValue.setValue(0)
@@ -71,6 +113,8 @@ export default class CartAnimated extends React.Component {
     }
   }
   render() {
+    const {cartWidth, cartHeight} = this.props
+    const {cartNumber} = this.state
     // 右边偏移量
     const marginRight = this.state.animatedValue.interpolate({
       inputRange: [0, 1],
@@ -96,8 +140,7 @@ export default class CartAnimated extends React.Component {
       inputRange: [0, 1],
       outputRange: ['-180deg', '0deg']
     })
-    const rotatePlus = this.state.cartNumber == 0 ? plusPositiveZ : plusNegativeZ
-    const {cartWidth, cartHeight} = this.props
+    const rotatePlus = cartNumber == 0 ? plusPositiveZ : plusNegativeZ
     return (
       <View style={styles.container}>
         <View style={styles.cartWrapper}>
@@ -118,13 +161,13 @@ export default class CartAnimated extends React.Component {
               : null
           }
           {
-            this.state.cartNumber > 0 ?
+            cartNumber > 0 ?
               <Animated.View style={{minWidth: 30, marginRight}}>
-                <Text style={styles.numberText}>{this.state.cartNumber}</Text>
+                <Text style={styles.numberText}>{cartNumber}</Text>
               </Animated.View>
               : null
           }
-          <LinearGradient style={[styles.linearGradient, {width: cartWidth, height: cartHeight}]} colors={['#FE5D3F', '#FF3914']}>
+          <LinearGradient style={[styles.linearGradient, {width: cartWidth, height: cartHeight}]} colors={[theme.primary, theme.secondary]}>
             <TouchableOpacity
               activeOpacity={0.9}
               onPress={() => {
@@ -152,14 +195,14 @@ const styles = StyleSheet.create({
   },
   minWrapper: {
     borderWidth: 1,
-    borderColor: '#FF3914',
+    borderColor: '#82BF3C',
     borderRadius: 100,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
   },
   minText: {
-    color: '#FF3914',
+    color: '#82BF3C',
     fontWeight: 'bold',
     fontSize: 16
   },
@@ -176,7 +219,7 @@ const styles = StyleSheet.create({
   },
   numberText: {
     marginLeft: 10,
-    fontSize: 12,
+    fontSize: 14,
     color: '#331B00'
   }
 })

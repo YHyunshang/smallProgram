@@ -4,9 +4,9 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-19 16:40:33
+ * @LastEditTime: 2019-09-04 16:09:27
  */
-
+import theme from '@theme'
 import {
   StyleSheet,
   Dimensions
@@ -39,6 +39,6 @@ export default StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,.10)'
   },
   activeDot: {
-    backgroundColor: '#FF3914'
+    backgroundColor: theme.primary
   }
 })
