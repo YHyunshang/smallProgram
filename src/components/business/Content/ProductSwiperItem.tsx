@@ -1,5 +1,5 @@
 import * as React from 'react'
-
+import theme from '@theme'
 import styles from './ProductSwiperItem.styles'
 import {
   View,
@@ -49,7 +49,7 @@ function ProductSwiperItem({
           </View>
           <View style={styles.priceRow}>
             <Text style={styles.currentPrice}>
-              <Text style={styles.pricePrefix}>¥</Text>
+              <Text style={styles.pricePrefix}>¥ </Text>
               {price / 100}
             </Text>
             {slashedPrice && (
@@ -69,7 +69,7 @@ function ProductSwiperItem({
               style={styles.gradientBox}
               start={{ x: 1, y: 0 }}
               end={{ x: 0, y: 0 }}
-              colors={['#FF3914', '#FF6042']}
+              colors={[theme.primary, theme.secondary]}
             >
               <Image style={styles.addIcon} source={plus} />
               <Text style={styles.cartBtnText}>购物车</Text>

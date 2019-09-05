@@ -57,7 +57,7 @@ export default function ProductFilter({ filters, onFilterChange }: Props) {
   const sortImg = {
     [Sort.ASC]: iconSortAsc,
     [Sort.DESC]: iconSortDesc,
-    [Sort.None]: iconSort,
+    // [Sort.None]: iconSort,
   }[priceSorter]
   return (
     <View style={styles.container}>

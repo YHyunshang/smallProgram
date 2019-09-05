@@ -168,3 +168,10 @@ export const wechatMoments =
           'https://static-yh.yonghui.cn/app/assets/xszt-RN/wechat-moments.png',
       }
     : require('@img/wechat-moments.png')
+
+export const addToCart =
+  os === 'android'
+    ? {
+        uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/add-to-cart.png',
+      }
+    : require('@img/add-to-cart.png')

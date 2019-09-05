@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import theme from '@theme'
 
 export default StyleSheet.create({
   container: {
@@ -59,14 +60,14 @@ export default StyleSheet.create({
     position: 'absolute',
     left: 14,
     transform: [{ scale: 1.14 }],
-    color: '#FF3914',
+    color: theme.primary,
   },
   firstTabTextInactiveScroll: {
     fontSize: 14,
     fontWeight: '600',
     position: 'absolute',
     left: 14,
-    color: '#4D4D4D',
+    color: '#000',
   },
   indicator: {
     position: 'absolute',

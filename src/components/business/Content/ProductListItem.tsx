@@ -15,6 +15,7 @@ function ProductListItem({
   thumbnail,
   code,
   name,
+  desc,
   tag,
   spec,
   price,
@@ -45,13 +46,16 @@ function ProductListItem({
             <Text style={styles.name} numberOfLines={1} ellipsizeMode="tail">
               {name}
             </Text>
+            <Text style={styles.desc} numberOfLines={1} ellipsizeMode="tail">
+              {desc}
+            </Text>
             <View style={styles.tagRow}>
               {!!tag && <Text style={styles.tag}>{tag}</Text>}
               {!!spec && <Text style={styles.spec}>{spec}</Text>}
             </View>
             <View style={styles.priceRow}>
               <Text style={styles.currentPrice}>
-                <Text style={styles.pricePrefix}>¥</Text>
+                <Text style={styles.pricePrefix}>¥ </Text>
                 {price / 100}
               </Text>
               {!!slashedPrice && (

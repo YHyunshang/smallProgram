@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import theme from '@theme'
 
 export default StyleSheet.create({
   container: {
@@ -23,7 +24,7 @@ export default StyleSheet.create({
     lineHeight: 17,
   },
   filterTextActive: {
-    color: '#FF3914',
+    color: theme.primary,
     fontWeight: '600',
   },
   filterImg: {

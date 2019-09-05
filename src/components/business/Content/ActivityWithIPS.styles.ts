@@ -1,11 +1,12 @@
 import { StyleSheet } from 'react-native'
+import theme from '@theme'
 
 export default StyleSheet.create({
   container: {
     backgroundColor: '#FFF',
     borderRadius: 10,
     overflow: 'hidden',
-    shadowColor: 'rgba(0,0,0,0.06)',
+    shadowColor: 'rgba(0,0,0,0.6)',
     shadowRadius: 11,
     shadowOpacity: 1,
   },
@@ -53,6 +54,7 @@ export default StyleSheet.create({
     fontSize: 18,
     color: '#FA8500',
     fontWeight: '600',
+    fontFamily: theme.priceFFPrimary,
   },
   pricePrefix: {
     fontSize: 12,

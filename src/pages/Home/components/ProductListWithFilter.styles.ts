@@ -10,9 +10,9 @@ export default StyleSheet.create({
   divider: {
     position: 'absolute',
     bottom: 0,
-    left: 105,
+    left: 15,
     right: 15,
-    height: 1,
+    height: 0.5,
     backgroundColor: '#EEE',
   },
 })
