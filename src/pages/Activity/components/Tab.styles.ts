@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import theme from '@theme'
 
 export default StyleSheet.create({
   container: {
@@ -23,6 +24,6 @@ export default StyleSheet.create({
     fontWeight: '400',
   },
   tabLabelActive: {
-    color: '#FF3914',
+    color: theme.primary,
   },
 })
