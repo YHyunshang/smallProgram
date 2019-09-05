@@ -178,6 +178,7 @@ export function formatProduct(data: { [index: string]: any }) {
     price: data.promotionPrice < data.price ? data.promotionPrice : data.price,
     slashedPrice: data.promotionPrice < data.price ? data.price : undefined,
     count: data.productNum || 0,
+    inventoryLabel: data.inventoryLabel,
   }
 }
 

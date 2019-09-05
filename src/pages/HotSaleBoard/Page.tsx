@@ -115,11 +115,14 @@ export default class Page extends React.Component<Object, State> {
       code: data.productCode,
       thumbnail: data.mainUrl.url,
       name: data.productName,
-      tag: '',
+      desc: data.productBrief,
+      priceTags: [],
+      productTags: [],
       spec: data.productSpecific,
       price: currentPrice,
       slashedPrice,
       count: data.productNum,
+      inventoryLabel: data.inventoryLabel,
     }
   }
 

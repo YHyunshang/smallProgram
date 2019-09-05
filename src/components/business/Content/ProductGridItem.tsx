@@ -29,6 +29,7 @@ function ProductGridItem({
   slashedPrice,
   theme,
   count,
+  inventoryLabel,
   shopCode,
   onModifyCount = (count: number) => null,
 }) {
@@ -64,6 +65,14 @@ function ProductGridItem({
             <View style={styles.tagRow}>
               {!!tag && <Text style={styles.tag}>{tag}</Text>}
             </View>
+
+            {inventoryLabel && (
+              <View style={styles.inventoryBox}>
+                <View style={styles.inventoryLabelBg}>
+                  <Text style={styles.inventoryLabel}>{inventoryLabel}</Text>
+                </View>
+              </View>
+            )}
           </View>
           <View style={styles.infoBox}>
             <Text style={styles.name} numberOfLines={1} ellipsizeMode="tail">
@@ -82,7 +91,11 @@ function ProductGridItem({
         </View>
       </TouchableWithoutFeedback>
       <View style={styles.cartBox}>
-        <ProductCart count={count} onCountChange={onModifyCount} />
+        <ProductCart
+          count={count}
+          onCountChange={onModifyCount}
+          disabled={!!inventoryLabel}
+        />
       </View>
     </View>
   )

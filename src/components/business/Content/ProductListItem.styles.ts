@@ -26,6 +26,29 @@ export default StyleSheet.create({
     flexDirection: 'row',
   },
 
+  inventoryBox: {
+    position: 'absolute',
+    top: 39,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  inventoryLabelBg: {
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    borderRadius: 11,
+    overflow: 'hidden',
+  },
+
+  inventoryLabel: {
+    fontSize: 11,
+    lineHeight: 22,
+    paddingHorizontal: 10,
+    color: '#FFF',
+  },
+
   infoBox: {
     flex: 1,
     minWidth: 0,

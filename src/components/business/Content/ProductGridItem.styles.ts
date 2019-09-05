@@ -69,6 +69,32 @@ export default theme =>
       marginRight: 5,
     },
 
+    inventoryBox: {
+      position: 'absolute',
+      top: {
+        '2x': 66.5,
+        '3x': 41.5,
+      }[theme],
+      left: 0,
+      right: 0,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+
+    inventoryLabelBg: {
+      backgroundColor: 'rgba(0,0,0,0.4)',
+      borderRadius: 11,
+      overflow: 'hidden',
+    },
+
+    inventoryLabel: {
+      fontSize: 11,
+      lineHeight: 22,
+      paddingHorizontal: 10,
+      color: '#FFF',
+    },
+
     priceRow: {},
     currentPrice: {
       color: '#FA8500',
