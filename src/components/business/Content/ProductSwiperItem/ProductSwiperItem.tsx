@@ -1,19 +1,11 @@
 import * as React from 'react'
-import theme from '@theme'
 import styles from './ProductSwiperItem.styles'
-import {
-  View,
-  TouchableOpacity,
-  Image,
-  Text,
-  TouchableWithoutFeedback,
-} from 'react-native'
-import LinearGradient from 'react-native-linear-gradient'
+import { View, Image, Text, TouchableWithoutFeedback } from 'react-native'
 import { Native } from '@utils'
-import withCartCountModify from './HOC/withCountInCartModifier'
-import { Product } from './typings'
-import { plus } from '@const/resources'
-import Tag from './Tag'
+import withCartCountModify from '../HOC/withCountInCartModifier'
+import { Product } from '../typings'
+import Tag from '../Tag'
+import CountOperator from './CountOperator'
 
 function ProductSwiperItem({
   code,
@@ -81,23 +73,12 @@ function ProductSwiperItem({
       </TouchableWithoutFeedback>
 
       <View style={styles.cartBox}>
-        <TouchableOpacity
-          activeOpacity={0.75}
-          onPress={() => onModifyCount(count + 1)}
+        <CountOperator
+          size={20}
+          count={count}
+          onChange={onModifyCount}
           disabled={!!inventoryLabel}
-        >
-          <View style={styles.cartBtnBox}>
-            <LinearGradient
-              style={styles.gradientBox}
-              start={{ x: 1, y: 0 }}
-              end={{ x: 0, y: 0 }}
-              colors={[theme.primary, theme.secondary]}
-            >
-              <Image style={styles.addIcon} source={plus} />
-              <Text style={styles.cartBtnText}>购物车</Text>
-            </LinearGradient>
-          </View>
-        </TouchableOpacity>
+        />
       </View>
     </View>
   )

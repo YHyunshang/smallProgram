@@ -92,25 +92,4 @@ export default StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-  cartBtnBox: {},
-  gradientBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 6,
-    borderRadius: 10,
-    height: 20,
-  },
-  addIcon: {
-    width: 8,
-    height: 8,
-    marginRight: 3,
-  },
-  cartBtnText: {
-    color: '#FFF',
-    fontSize: 12,
-    fontWeight: '400',
-    // 安卓垂直居中
-    textAlignVertical: 'center',
-    includeFontPadding: false,
-  },
 })

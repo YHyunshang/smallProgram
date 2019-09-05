@@ -4,12 +4,11 @@
 import * as React from 'react'
 import styles from './ProductSwiper.styles'
 import { ScrollView, View } from 'react-native'
-import ProductSwiperItem, {
-  Props as ProductSwiperItemProps,
-} from './ProductSwiperItem'
+import ProductSwiperItem from './ProductSwiperItem/ProductSwiperItem'
+import { Product } from './typings'
 
 interface Props {
-  products: ProductSwiperItemProps[]
+  products: Product[]
   afterModifyCount: Function
 }
 

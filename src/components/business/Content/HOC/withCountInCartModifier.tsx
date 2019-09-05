@@ -30,7 +30,9 @@ export default function withCartCountModify(WrappedComponent) {
       nextContext: any
     ): void {
       if (nextProps.count !== this.state.count) {
-        Log.debug(`count changed from parent: current - ${this.state.count}, next - ${nextProps.count}`)
+        Log.debug(
+          `count changed from parent: current - ${this.state.count}, next - ${nextProps.count}`
+        )
         this.setState({
           count: nextProps.count,
           modifiedCount: nextProps.count,

@@ -100,9 +100,10 @@ function ProductListItem({
       </TouchableWithoutFeedback>
 
       <View style={styles.cartBox}>
-        <ProductCart
+        <ProductCountOperator
+          size={24}
           count={count}
-          onCountChange={onModifyCount}
+          onChange={onModifyCount}
           disabled={!!inventoryLabel}
         />
       </View>
