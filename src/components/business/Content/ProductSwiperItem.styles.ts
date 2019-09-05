@@ -27,6 +27,29 @@ export default StyleSheet.create({
     color: theme.red,
   },
 
+  inventoryBox: {
+    position: 'absolute',
+    top: 37.5,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  inventoryLabelBg: {
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    borderRadius: 11,
+    overflow: 'hidden',
+  },
+
+  inventoryLabel: {
+    fontSize: 11,
+    lineHeight: 22,
+    paddingHorizontal: 10,
+    color: '#FFF',
+  },
+
   name: {
     fontSize: 13,
     fontWeight: '400',
@@ -69,13 +92,7 @@ export default StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-  cartBtnBox: {
-    // shadowColor: '#EE4239',
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowRadius: 4,
-    // shadowOpacity: 0.23,
-    // elevation: 4,
-  },
+  cartBtnBox: {},
   gradientBox: {
     flexDirection: 'row',
     alignItems: 'center',

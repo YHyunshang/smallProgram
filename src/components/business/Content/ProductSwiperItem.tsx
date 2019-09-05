@@ -24,6 +24,7 @@ function ProductSwiperItem({
   price,
   slashedPrice,
   count,
+  inventoryLabel,
   shopCode,
   onModifyCount,
 }: Product) {
@@ -45,13 +46,22 @@ function ProductSwiperItem({
               source={{ uri: thumbnail }}
               resizeMode="contain"
             />
-            <View style={styles.tagRow}>
-              {tag && (
+
+            {tag && (
+              <View style={styles.tagRow}>
                 <Tag color="#FFE5E0">
                   <Text style={styles.tag}>{tag}</Text>
                 </Tag>
-              )}
-            </View>
+              </View>
+            )}
+
+            {inventoryLabel && (
+              <View style={styles.inventoryBox}>
+                <View style={styles.inventoryLabelBg}>
+                  <Text style={styles.inventoryLabel}>{inventoryLabel}</Text>
+                </View>
+              </View>
+            )}
           </View>
           <View>
             <Text style={styles.name} numberOfLines={1} ellipsizeMode="tail">
@@ -72,8 +82,9 @@ function ProductSwiperItem({
 
       <View style={styles.cartBox}>
         <TouchableOpacity
-          activeOpacity={0.95}
+          activeOpacity={0.75}
           onPress={() => onModifyCount(count + 1)}
+          disabled={!!inventoryLabel}
         >
           <View style={styles.cartBtnBox}>
             <LinearGradient

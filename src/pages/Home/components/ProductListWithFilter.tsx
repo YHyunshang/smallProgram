@@ -67,12 +67,14 @@ export default class ProductListWithFilter extends React.Component<
       code: data.productCode,
       thumbnail: data.mainUrl.url,
       name: data.productName,
-      tag: '',
+      priceTags: [],
+      productTags: [],
       spec: data.productSpecific,
       price: currentPrice,
       slashedPrice,
       count: data.productNum,
       shopCode: this.props.shopCode,
+      inventoryLabel: data.inventoryLabel,
     }
   }
 

@@ -30,6 +30,7 @@ function ProductListItem({
   price,
   slashedPrice,
   count,
+  inventoryLabel,
   onModifyCount,
   shopCode,
 }: Product) {
@@ -57,6 +58,14 @@ function ProductListItem({
                 </Tag>
               ))}
             </View>
+
+            {inventoryLabel && (
+              <View style={styles.inventoryBox}>
+                <View style={styles.inventoryLabelBg}>
+                  <Text style={styles.inventoryLabel}>{inventoryLabel}</Text>
+                </View>
+              </View>
+            )}
           </View>
           <View style={styles.infoBox}>
             <Text style={styles.name} numberOfLines={1} ellipsizeMode="tail">
@@ -68,7 +77,7 @@ function ProductListItem({
             <View style={styles.tagRow}>
               {priceTags.map((tag, idx) =>
                 /满.+减/.test(tag) ? (
-                  <PromotionTag title="满减" content={tag} />
+                  <PromotionTag title="满减" content={tag} key={idx} />
                 ) : (
                   <Text style={styles.tag} key={idx}>
                     {tag}
@@ -91,7 +100,11 @@ function ProductListItem({
       </TouchableWithoutFeedback>
 
       <View style={styles.cartBox}>
-        <ProductCart count={count} onCountChange={onModifyCount} />
+        <ProductCart
+          count={count}
+          onCountChange={onModifyCount}
+          disabled={!!inventoryLabel}
+        />
       </View>
     </View>
   )

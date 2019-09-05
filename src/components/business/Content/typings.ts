@@ -10,6 +10,7 @@ export interface Product {
   price: number // 当前价格
   slashedPrice?: number // 划线价
   count: number // 商品在购物车中的数量
+  inventoryLabel: string // 商品缺货提示
   shopCode?: string // 商品所在门店编码
   onModifyCount?: (count: number) => any // 修改数量
 }
