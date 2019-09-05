@@ -1,27 +1,26 @@
 /*
- * @Description: 购物车加减动画组件
+ * @Description: 首页购物车加减动画组件
  * @Company: yh
  * @Author: yuwen.liu
  * @Date: 2019-07-31 10:28:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-05 13:55:13
+ * @LastEditTime: 2019-09-05 14:29:37
  */
 import React from 'react'
 import PropTypes from 'prop-types'
-import {minusCircle, plusCircle} from '@const/resources'
-import {addToCart, subscriptCartNumberChange} from '../../services/goodsDetail'
+import {minusCircle, plusCircle, plusCircleDisabled} from '@const/resources'
 import {StyleSheet, Text, View, TouchableOpacity, Animated, Easing} from 'react-native'
-export default class CartAnimated extends React.Component {
+export default class HomeCartAnimated extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      goodsItem: {},
+      maxStock: 10, // 最大库存数量
       cartNumber: 0, // 添加购物车数量
       isShowMin: false, // 是否展示减号
-      animatedValue: new Animated.Value(0),
+      animatedValue: new Animated.Value(0)
     }
     // 定义X轴平移动画
-    this.translateAnimated = Animated.timing(
+    this.translateXAnimated = Animated.timing(
       this.state.animatedValue,
       {
         toValue: 1,
@@ -48,48 +47,21 @@ export default class CartAnimated extends React.Component {
     cartHeight: 24 // 购物车加减按钮的默认大小
   }
   componentDidMount() {
-    if (this.props.goodsItem.productNum > 0) {
+    if (this.state.cartNumber > 0) {
       this._startAnimated()
       this.setState({isShowMin: true})
     }
-    // 相似商品列表购物车数量变化native 事件监听
-    this.nativeSubscription = subscriptCartNumberChange(
-      this.onNativeCartNumberChange
-    )
   }
   componentWillUnmount() {
-    this.nativeSubscription && this.nativeSubscription.remove()
-  }
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      cartNumber: nextProps.goodsItem.productNum,
-      goodsItem: nextProps.goodsItem
-    })
-  }
-  /**
-   * @param {productCode}
-   * @param {productNumber}
-   * @description: 相似商品列表添加购物车返回productCode和productNumber
-   */
-  onNativeCartNumberChange = ({productCode, productNumber}) => {
-    const {refreshGoodsList} = this.props
-    // this.setState({cartNumber: productNumber})
-    refreshGoodsList(productCode, productNumber)
-  }
-  /**
-   * @description: 相似商品列表添加到购物车
-   */
-  handleCart=(item, type) => {
-    addToCart(JSON.stringify(item), type)
   }
   /**
    * @description 开始动画的方法
    */
   _startAnimated() {
     this.state.animatedValue.setValue(0)
-    //组合动画，将translateAnimated和translateZAnimated动画组合
+    // 组合动画，将translateXAnimated和translateZAnimated动画组合
     Animated.parallel([
-      this.translateAnimated,
+      this.translateXAnimated,
       this.translateZAnimated
     ]).start()
   }
@@ -97,31 +69,25 @@ export default class CartAnimated extends React.Component {
    * @description 加购物车的操作
    */
   handleAddCart() {
-    const {goodsItem} = this.props
-    const {cartNumber} = this.state
+    let {cartNumber, maxStock} = this.state
     cartNumber == 0 ? this._startAnimated() : ''
-    if (cartNumber == 0) {
-      this.setState({cartNumber: 1})
-    }
-    //this.setState({isShowMin: true})
-    this.setState({isShowMin: true,cartNumber:this.state.cartNumber+1})
-    //this.handleCart(goodsItem, '1')
+    cartNumber = cartNumber >= maxStock ? cartNumber : cartNumber + 1
+    this.setState({isShowMin: true, cartNumber})
   }
   /**
    * @description 减购物车的操作
    */
-   handleMinCart() {
-    const {goodsItem, cartNumber} = this.state
-    this.setState({cartNumber:this.state.cartNumber-1})
-    //this.handleCart(goodsItem, '0')
+  handleMinCart() {
+    const {cartNumber} = this.state
+    this.setState({cartNumber: cartNumber - 1})
+    // this.handleCart(goodsItem, '0')
     if (cartNumber == 1) {
-      this.setState({cartNumber: 0})
       this.state.animatedValue.setValue(0)
-      //组合动画，将translateAnimated和translateZAnimated动画组合
+      // 组合动画，将translateXAnimated和translateZAnimated动画组合
       Animated.parallel([
-      this.translateAnimated,
-      this.translateZAnimated
-    ]).start(
+        this.translateXAnimated,
+        this.translateZAnimated
+      ]).start(
         () => {
           // 这里可以添加动画之后要执行的函数
           this.setState({isShowMin: false})
@@ -131,11 +97,11 @@ export default class CartAnimated extends React.Component {
   }
   render() {
     const {cartWidth, cartHeight} = this.props
-    const {cartNumber} = this.state
+    const {cartNumber, maxStock} = this.state
     // X轴偏移量
-    const translateX=this.state.animatedValue.interpolate({
+    const translateX = this.state.animatedValue.interpolate({
       inputRange: [0, 1],
-      outputRange: [15, 0] //线性插值，0对应20,1对应0
+      outputRange: [15, 0] // 线性插值，0对应20,1对应0
     })
     // 将加号沿z轴顺时针旋转90度
     const plusPositiveZ = this.state.animatedValue.interpolate({
@@ -164,17 +130,14 @@ export default class CartAnimated extends React.Component {
                   this.handleMinCart()
                 }} >
 
-                <Animated.Image style={{width: cartWidth, height: cartHeight, transform: [{translateX},{rotateZ: minPositiveZ}]}} source={minusCircle}>
-                  {/* <View style={[styles.minWrapper, {width: cartWidth, height: cartHeight}]}>
-                    <Text style={styles.minText}>－</Text>
-                  </View> */}
+                <Animated.Image style={{width: cartWidth, height: cartHeight, transform: [{translateX}, {rotateZ: minPositiveZ}]}} source={minusCircle}>
                 </Animated.Image>
               </TouchableOpacity>
               : null
           }
           {
             cartNumber > 0 ?
-              <Animated.View style={[styles.cartWrapper, {minWidth: 30,transform: [{translateX}]}]}>
+              <Animated.View style={[styles.cartWrapper, {minWidth: 30, transform: [{translateX}]}]}>
                 <Text style={styles.numberText}>{cartNumber}</Text>
               </Animated.View>
               : null
@@ -184,7 +147,7 @@ export default class CartAnimated extends React.Component {
             onPress={() => {
               this.handleAddCart()
             }} >
-            <Animated.Image style={[{width: cartWidth, height: cartHeight}, {transform: [{rotateZ: rotatePlus}]}]} source={plusCircle}></Animated.Image>
+            <Animated.Image style={[{width: cartWidth, height: cartHeight}, {transform: [{rotateZ: rotatePlus}]}]} source={cartNumber >= maxStock ? plusCircleDisabled : plusCircle}></Animated.Image>
           </TouchableOpacity>
         </View>
       </View>
@@ -192,7 +155,7 @@ export default class CartAnimated extends React.Component {
   }
 }
 /**
- * @description: CartAnimated组件样式
+ * @description: HomeCartAnimated组件样式
  */
 const styles = StyleSheet.create({
   container: {

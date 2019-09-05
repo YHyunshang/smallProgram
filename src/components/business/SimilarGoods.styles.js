@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-04 18:58:14
+ * @LastEditTime: 2019-09-05 13:45:32
  */
 
 import {
@@ -69,7 +69,7 @@ export default StyleSheet.create({
   goodsPriceFlex: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'flex-start'
   },
   goodsPriceWrap: {
     flexDirection: 'row',
@@ -101,7 +101,8 @@ export default StyleSheet.create({
     paddingLeft: 5
   },
   container: {
-    marginRight: 10,
-    marginBottom: 10
+    position: 'absolute',
+    right: 10,
+    bottom: 10
   }
 })
