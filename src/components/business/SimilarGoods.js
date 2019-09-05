@@ -4,13 +4,13 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-05 13:58:32
+ * @LastEditTime: 2019-09-05 18:17:58
  */
 
 import React from 'react'
 import {Text, View, FlatList, TouchableOpacity} from 'react-native'
 import PreloadingImage from '../common/PreloadingImage'
-import HomeCartAnimated from '../business/Animated/HomeCartAnimated'
+import DetailCartAnimated from '../business/Animated/DetailCartAnimated'
 // import Icon from '../Icon'
 // import Tag from './Tag'
 import {transPenny} from '../../utils/FormatUtil'
@@ -91,7 +91,7 @@ export default class SimilarGoods extends React.Component {
           </Text>
         </View>
         <View style={styles.container}>
-          <HomeCartAnimated goodsItem={item} refreshGoodsList={this.refreshGoodsList}></HomeCartAnimated>
+          <DetailCartAnimated goodsItem={item} refreshGoodsList={this.refreshGoodsList}></DetailCartAnimated>
         </View>
       </View>
     </View>
