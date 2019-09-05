@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-31 10:28:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-05 14:29:37
+ * @LastEditTime: 2019-09-05 14:33:36
  */
 import React from 'react'
 import PropTypes from 'prop-types'
@@ -101,7 +101,7 @@ export default class HomeCartAnimated extends React.Component {
     // X轴偏移量
     const translateX = this.state.animatedValue.interpolate({
       inputRange: [0, 1],
-      outputRange: [15, 0] // 线性插值，0对应20,1对应0
+      outputRange: [15, 0] // 线性插值，0对应15,1对应0
     })
     // 将加号沿z轴顺时针旋转90度
     const plusPositiveZ = this.state.animatedValue.interpolate({
