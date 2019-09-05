@@ -13,11 +13,14 @@ import { Native } from '@utils'
 import withCartCountModify from './HOC/withCountInCartModifier'
 import { Product } from './typings'
 import { plus } from '@const/resources'
+import Tag from './Tag'
 
 function ProductSwiperItem({
   code,
   thumbnail,
   name,
+  productTags = [],
+  priceTags = [],
   price,
   slashedPrice,
   count,
@@ -31,6 +34,7 @@ function ProductSwiperItem({
       params: { productCode: code, storeCode: shopCode },
     })
   }
+  const tag = priceTags.find(ele => ele.match(/满.+减/))
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={navigateToProductDetail}>
@@ -41,6 +45,13 @@ function ProductSwiperItem({
               source={{ uri: thumbnail }}
               resizeMode="contain"
             />
+            <View style={styles.tagRow}>
+              {tag && (
+                <Tag color="#FFE5E0">
+                  <Text style={styles.tag}>{tag}</Text>
+                </Tag>
+              )}
+            </View>
           </View>
           <View>
             <Text style={styles.name} numberOfLines={1} ellipsizeMode="tail">
