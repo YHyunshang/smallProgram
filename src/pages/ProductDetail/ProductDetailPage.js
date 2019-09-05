@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-04 19:08:48
+ * @LastEditTime: 2019-09-04 20:17:50
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -20,7 +20,6 @@ import {Native} from '@utils'
 import {getGoodsDetailData, getPosterImgUrl, getSimilarProduct} from '../../services/goodsDetail'
 import GoodsDetailSwiper from '../../components/business/GoodsDetailSwiper'
 import SimilarGoods from '../../components/business/SimilarGoods'
-import {addToCart, subscriptCartNumberChange} from '../../services/goodsDetail'
 import {Map} from '../../utils/FormatUtil'
 // 商品产地图标 // 商品规格图标 //商品条件图标
 import {productPlace, productSpecific} from '@const/resources'
@@ -65,42 +64,6 @@ export default class ProductDetailPage extends React.Component {
     this.setState({storeCode: productInfo.storeCode})
     this.getProductInfo(productInfo.productCode, productInfo.storeCode)
     this.getSimilarProductList(productInfo.productCode, productInfo.storeCode)
-    // 相似商品列表购物车数量变化native 事件监听
-    this.nativeSubscription = subscriptCartNumberChange(
-      this.onNativeCartNumberChange
-    )
-  }
-  componentWillUnmount() {
-    this.nativeSubscription && this.nativeSubscription.remove()
-  }
-  /**
-   * @param {productCode}
-   * @param {productNumber}
-   * @description: 相似商品列表添加购物车返回productCode和productNumber
-   */
-  onNativeCartNumberChange = ({productCode, productNumber}) => {
-    let newArray = new Array()
-    // let productInfo = goodsDetailManager.productInfo
-    // productInfo = productInfo ? JSON.parse(productInfo) : {}
-    // this.getSimilarProductList(productInfo.productCode, productInfo.storeCode)
-    map.put(productCode, productNumber)// 将添加到购物车的商品编码和商品数量存到map中
-    this.state.similarProduct.map((item) => {
-      if (item.productCode == productCode) {
-        item.productNum = productNumber
-      }
-      newArray.push(item)
-    })
-    this.setState(
-      {
-        similarProduct: newArray
-      }
-    )
-  }
-  /**
-   * @description: 相似商品列表添加到购物车
-   */
-  handleCart=(item, type) => {
-    addToCart(JSON.stringify(item), type)
   }
   /**
    * @description: 获取原生返回的商品详情数据
@@ -353,7 +316,7 @@ export default class ProductDetailPage extends React.Component {
             </View>
           </View>
           {
-            similarProduct ? <SimilarGoods similarProduct={similarProduct} jumpGoodsDetail={this.jumpGoodsDetail} handleCart={this.handleCart}> ></SimilarGoods>
+            similarProduct ? <SimilarGoods similarProduct={similarProduct} jumpGoodsDetail={this.jumpGoodsDetail}> ></SimilarGoods>
               : null
           }
           <View onLayout={event => {

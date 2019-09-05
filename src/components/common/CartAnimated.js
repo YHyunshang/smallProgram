@@ -4,11 +4,12 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-31 10:28:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-04 20:00:59
+ * @LastEditTime: 2019-09-05 09:34:30
  */
 import React from 'react'
 import PropTypes from 'prop-types'
 import {minusCircle, plusCircle} from '@const/resources'
+import {addToCart, subscriptCartNumberChange} from '../../services/goodsDetail'
 import {StyleSheet, Text, View, TouchableOpacity, Animated, Easing} from 'react-native'
 export default class CartAnimated extends React.Component {
   constructor(props) {
@@ -34,21 +35,44 @@ export default class CartAnimated extends React.Component {
     cartHeight: PropTypes.number
   }
   static defaultProps = {
-    cartWidth: 24,
-    cartHeight: 24 // 购物车加减按钮的默认大小
+    cartWidth: 20,
+    cartHeight: 20 // 购物车加减按钮的默认大小
   }
   componentDidMount() {
     if (this.props.goodsItem.productNum > 0) {
       this._startAnimated()
       this.setState({isShowMin: true})
     }
+    // 相似商品列表购物车数量变化native 事件监听
+    this.nativeSubscription = subscriptCartNumberChange(
+      this.onNativeCartNumberChange
+    )
+  }
+  componentWillUnmount() {
+    this.nativeSubscription && this.nativeSubscription.remove()
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
+      cartNumber: nextProps.goodsItem.productNum,
       goodsItem: nextProps.goodsItem
     })
   }
-
+  /**
+   * @param {productCode}
+   * @param {productNumber}
+   * @description: 相似商品列表添加购物车返回productCode和productNumber
+   */
+  onNativeCartNumberChange = ({productCode, productNumber}) => {
+    const {refreshGoodsList} = this.props
+    // this.setState({cartNumber: productNumber})
+    refreshGoodsList(productCode, productNumber)
+  }
+  /**
+   * @description: 相似商品列表添加到购物车
+   */
+  handleCart=(item, type) => {
+    addToCart(JSON.stringify(item), type)
+  }
   /**
    * @description 开始动画的方法
    */
@@ -60,23 +84,23 @@ export default class CartAnimated extends React.Component {
    * @description 加购物车的操作
    */
   handleAddCart() {
-    const {goodsItem, handleCart} = this.props
-    if (handleCart) {
-      handleCart(goodsItem, '1')
-      goodsItem.productNum == 0 ? this._startAnimated() : ''
-      this.setState({isShowMin: true})
+    const {goodsItem} = this.props
+    const {cartNumber} = this.state
+    cartNumber == 0 ? this._startAnimated() : ''
+    if (cartNumber == 0) {
+      this.setState({cartNumber: 1})
     }
+    this.setState({isShowMin: true})
+    this.handleCart(goodsItem, '1')
   }
   /**
    * @description 减购物车的操作
    */
   handleMinCart() {
-    const {handleCart} = this.props
-    const {goodsItem} = this.state
-    if (handleCart) {
-      handleCart(goodsItem, '0')
-    }
-    if (goodsItem.productNum == 1) {
+    const {goodsItem, cartNumber} = this.state
+    this.handleCart(goodsItem, '0')
+    if (cartNumber == 1) {
+      this.setState({cartNumber: 0})
       this.state.animatedValue.setValue(0)
       this.rotateAnimated.start(
         () => {
@@ -90,7 +114,7 @@ export default class CartAnimated extends React.Component {
   }
   render() {
     const {cartWidth, cartHeight} = this.props
-    const {goodsItem} = this.state
+    const {cartNumber} = this.state
     // 右边偏移量
     const marginRight = this.state.animatedValue.interpolate({
       inputRange: [0, 1],
@@ -116,7 +140,7 @@ export default class CartAnimated extends React.Component {
       inputRange: [0, 1],
       outputRange: ['0deg', '180deg']
     })
-    const rotatePlus = goodsItem.productNum == 0 ? plusPositiveZ : plusNegativeZ
+    const rotatePlus = cartNumber == 0 ? plusPositiveZ : plusNegativeZ
     return (
       <View style={styles.container}>
         <View style={styles.cartWrapper}>
@@ -137,9 +161,9 @@ export default class CartAnimated extends React.Component {
               : null
           }
           {
-            goodsItem.productNum > 0 ?
-              <Animated.View style={{minWidth: 30}}>
-                <Text style={styles.numberText}>{goodsItem.productNum}</Text>
+            cartNumber > 0 ?
+              <Animated.View style={{minWidth: 30, marginRight}}>
+                <Text style={styles.numberText}>{cartNumber}</Text>
               </Animated.View>
               : null
           }
