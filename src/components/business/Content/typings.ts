@@ -4,7 +4,8 @@ export interface Product {
   thumbnail: string // 缩略图
   name: string // 商品名称
   desc: string // 商品描述
-  tag?: string // 标签
+  productTags?: string[] // 商品标签列表
+  priceTags?: string[] // 价格标签列表
   spec: string // 规格
   price: number // 当前价格
   slashedPrice?: number // 划线价

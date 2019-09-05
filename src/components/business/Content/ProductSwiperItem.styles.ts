@@ -8,12 +8,25 @@ export default StyleSheet.create({
     width: 97,
   },
   thumbnailBox: {
+    position: 'relative',
     marginBottom: 5,
   },
   thumbnail: {
     width: 97,
     height: 97,
   },
+
+  tagRow: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
+
+  tag: {
+    paddingHorizontal: 3,
+    color: theme.red,
+  },
+
   name: {
     fontSize: 13,
     fontWeight: '400',

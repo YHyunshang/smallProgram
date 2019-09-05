@@ -165,13 +165,15 @@ export function formatLink({
  * @param data CMS 商品数据
  */
 export function formatProduct(data: { [index: string]: any }) {
+  const [priceTags, productTags] = groupTags(data.labelList || [])
   return {
     cartId: data.cartId,
     code: data.code,
     thumbnail: data.imgUrl,
     name: data.name,
     desc: data.productDesc,
-    tag: (data.labelList || [])[0] || '',
+    priceTags,
+    productTags,
     spec: data.productSpecific || '',
     price: data.promotionPrice < data.price ? data.promotionPrice : data.price,
     slashedPrice: data.promotionPrice < data.price ? data.price : undefined,
@@ -189,5 +191,21 @@ export function getCartInfo(shopCode: string) {
     '/app/cart/selectNumTotalNumAmount',
     {},
     { shopCode }
+  )
+}
+
+/**
+ * 将标签列表按照 价格标签 / 商品标签 分组
+ * @param tags 标签列表
+ * @returns [ 价格标签列表，商品标签列表 ]
+ */
+export function groupTags(tags: string[]): [string[], string[]] {
+  return tags.reduce(
+    ([priceTagLst, productTagLst], cur) => {
+      return cur.match(/^\d+(\.\d+)?折/) || cur.match(/^满.+减.+/)
+        ? [[...priceTagLst, cur], productTagLst]
+        : [priceTagLst, [productTagLst]]
+    },
+    [[], []]
   )
 }

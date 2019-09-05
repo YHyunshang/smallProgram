@@ -16,6 +16,14 @@ export default StyleSheet.create({
     flexShrink: 0,
     flexGrow: 0,
     marginRight: 15,
+    position: 'relative',
+  },
+
+  productTagRow: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    flexDirection: 'row',
   },
 
   infoBox: {
@@ -65,8 +73,8 @@ export default StyleSheet.create({
   spec: {
     fontSize: 10,
     fontWeight: '400',
-    height: 16,
-    lineHeight: 16,
+    height: 17,
+    lineHeight: 17,
     paddingHorizontal: 3,
     color: '#6D7278',
     backgroundColor: 'rgba(245,245,245,1)',

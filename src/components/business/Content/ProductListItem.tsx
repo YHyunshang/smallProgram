@@ -3,20 +3,29 @@
  * Created by 李华良 on 2019-08-19
  */
 import * as React from 'react'
-import { View, Text, Image, TouchableWithoutFeedback } from 'react-native'
+import {
+  View,
+  Text,
+  Image,
+  TouchableWithoutFeedback,
+  StyleSheet,
+} from 'react-native'
 import styles from './ProductListItem.styles'
 import ProductCountOperator from '../ProductCountOperator'
 import { Native } from '@utils'
 import ProductCart from '../ProductCart'
 import withCartCountModify from './HOC/withCountInCartModifier'
 import { Product } from './typings'
+import Tag from './Tag'
+import PromotionTag from './PromotionTag'
 
 function ProductListItem({
   thumbnail,
   code,
   name,
   desc,
-  tag,
+  productTags = [],
+  priceTags = [],
   spec,
   price,
   slashedPrice,
@@ -41,6 +50,13 @@ function ProductListItem({
               source={{ uri: thumbnail }}
               resizeMode="contain"
             />
+            <View style={styles.productTagRow}>
+              {productTags.slice(0, 2).map((tag, idx) => (
+                <Tag color={['#EF2F41', '#208DDC'][idx]} key={idx}>
+                  {tag}
+                </Tag>
+              ))}
+            </View>
           </View>
           <View style={styles.infoBox}>
             <Text style={styles.name} numberOfLines={1} ellipsizeMode="tail">
@@ -50,7 +66,15 @@ function ProductListItem({
               {desc}
             </Text>
             <View style={styles.tagRow}>
-              {!!tag && <Text style={styles.tag}>{tag}</Text>}
+              {priceTags.map((tag, idx) =>
+                /满.+减/.test(tag) ? (
+                  <PromotionTag title="满减" content={tag} />
+                ) : (
+                  <Text style={styles.tag} key={idx}>
+                    {tag}
+                  </Text>
+                )
+              )}
               {!!spec && <Text style={styles.spec}>{spec}</Text>}
             </View>
             <View style={styles.priceRow}>

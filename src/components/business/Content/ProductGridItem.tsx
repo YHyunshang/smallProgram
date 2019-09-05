@@ -23,7 +23,8 @@ function ProductGridItem({
   thumbnail,
   name,
   code,
-  tag,
+  productTags = [],
+  priceTags = [],
   price,
   slashedPrice,
   theme,
@@ -40,6 +41,7 @@ function ProductGridItem({
     })
   }
   const [thumbnailWidth, setThumbnailWidth] = React.useState()
+  const tag = [...priceTags, ...productTags][0]
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={navigateToProductDetail}>
