@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-31 10:28:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-05 19:22:50
+ * @LastEditTime: 2019-09-05 19:33:41
  */
 import React from 'react'
 import PropTypes from 'prop-types'
@@ -73,7 +73,6 @@ export default class DetailCartAnimated extends React.Component {
    */
   onNativeCartNumberChange = ({productCode, productNumber}) => {
     const {refreshGoodsList} = this.props
-    // this.setState({cartNumber: productNumber})
     refreshGoodsList(productCode, productNumber)
   }
   /**

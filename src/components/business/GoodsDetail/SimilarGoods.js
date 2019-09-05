@@ -4,20 +4,17 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-05 18:17:58
+ * @LastEditTime: 2019-09-05 19:44:45
  */
 
 import React from 'react'
 import {Text, View, FlatList, TouchableOpacity} from 'react-native'
-import PreloadingImage from '../common/PreloadingImage'
-import DetailCartAnimated from '../business/Animated/DetailCartAnimated'
+import PreloadingImage from '../../common/PreloadingImage'
+import DetailCartAnimated from '../../business/Animated/DetailCartAnimated'
 // import Icon from '../Icon'
 // import Tag from './Tag'
-import {transPenny} from '../../utils/FormatUtil'
+import {transPenny} from '../../../utils/FormatUtil'
 import styles from './SimilarGoods.styles'
-// import LinearGradient from 'react-native-linear-gradient'
-// import {Map} from '../../utils/FormatUtil'
-// let map = new Map()
 const cols = 2 // 列数
 // 商品购物车图标
 export default class SimilarGoods extends React.Component {

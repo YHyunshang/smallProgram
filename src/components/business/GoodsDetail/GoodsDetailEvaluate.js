@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-23 16:43:15
+ * @LastEditTime: 2019-09-05 19:43:29
  */
 import React from 'react'
 import {
@@ -13,9 +13,9 @@ import {
   Image,
   TouchableOpacity
 } from 'react-native'
-import Icon from '../../components/Icon'
+import Icon from '../../../components/Icon'
 import styles from './GoodsDetailEvaluate.styles'
-import {formatYMDEn} from '../../utils/FormatUtil'
+import {formatYMDEn} from '../../../utils/FormatUtil'
 export default class GoodsDetailEvaluate extends React.Component {
   constructor(props) {
     super(props)

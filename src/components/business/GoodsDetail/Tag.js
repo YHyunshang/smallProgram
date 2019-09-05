@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-20 16:45:32
+ * @LastEditTime: 2019-09-05 19:45:49
  */
 
 import React from 'react'
@@ -13,7 +13,7 @@ import {
   View
 } from 'react-native'
 import styles from './Tag.styles'
-export default class GoodsFootCart extends React.Component {
+export default class Tag extends React.Component {
   constructor(props) {
     super(props)
   }

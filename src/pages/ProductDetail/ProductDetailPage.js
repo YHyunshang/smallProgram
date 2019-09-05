@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-04 20:17:50
+ * @LastEditTime: 2019-09-05 19:46:33
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -18,13 +18,11 @@ import PreloadingImage from '../../components/common/PreloadingImage'
 import styles from './ProductDetailPage.styles'
 import {Native} from '@utils'
 import {getGoodsDetailData, getPosterImgUrl, getSimilarProduct} from '../../services/goodsDetail'
-import GoodsDetailSwiper from '../../components/business/GoodsDetailSwiper'
-import SimilarGoods from '../../components/business/SimilarGoods'
-import {Map} from '../../utils/FormatUtil'
+import GoodsDetailSwiper from '../../components/business/GoodsDetail/GoodsDetailSwiper'
+import SimilarGoods from '../../components/business/GoodsDetail/SimilarGoods'
 // 商品产地图标 // 商品规格图标 //商品条件图标
 import {productPlace, productSpecific} from '@const/resources'
-// import Tag from '../../components/business/Tag'
-let map = new Map()
+// import Tag from '../../components/business/GoodsDetail/Tag'
 const rnAppModule = NativeModules.RnAppModule// 原生模块
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
 export default class ProductDetailPage extends React.Component {
