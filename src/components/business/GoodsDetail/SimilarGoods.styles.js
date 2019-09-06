@@ -4,13 +4,14 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-05 13:45:32
+ * @LastEditTime: 2019-09-06 20:42:37
  */
 
 import {
   StyleSheet,
   Dimensions
 } from 'react-native'
+import theme from '@theme'
 const screenWidth = Dimensions.get('window').width
 // 一些常量设置
 const cols = 2 // 列数
@@ -87,6 +88,7 @@ export default StyleSheet.create({
   goodsPrice: {
     fontSize: 18,
     color: '#FA8500',
+    fontFamily: theme.priceFFPrimary,
     fontWeight: 'bold'
   },
   goodsCartImg: {
