@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-31 10:28:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-06 13:44:23
+ * @LastEditTime: 2019-09-06 16:44:51
  */
 import React from 'react'
 import PropTypes from 'prop-types'
@@ -81,7 +81,8 @@ export default class DetailCartAnimated extends React.Component {
   handleAddCart() {
     const {goodsItem} = this.props
     const {cartNumber} = this.state
-    if (cartNumber == 0) {
+    this.handleCart(goodsItem, '1')
+    if (cartNumber == 0 && goodsItem.stockQuantity != 0) {
       Animated.timing(
         this.state.animatedValue,
         {
@@ -93,7 +94,6 @@ export default class DetailCartAnimated extends React.Component {
       ).start()
       this.setState({cartNumber: 1})
     }
-    this.handleCart(goodsItem, '1')
   }
   /**
    * @description 减购物车的操作
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     minWidth: 25,
     textAlign: 'center',
-    paddingHorizontal: 3,
+    paddingHorizontal: 2,
     color: '#331B00'
   }
 })
