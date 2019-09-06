@@ -30,7 +30,6 @@ export default function withCartCountModify(WrappedComponent) {
       nextProps: Readonly<Props>,
       nextContext: any
     ): void {
-      console.log(this.props.disableSync)
       if (nextProps.count !== this.state.count && !this.props.disableSync) {
         Log.debug(
           `count changed from parent: current - ${this.state.count}, next - ${nextProps.count}`
