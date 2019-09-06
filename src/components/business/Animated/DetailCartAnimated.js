@@ -4,40 +4,21 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-31 10:28:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-05 19:33:41
+ * @LastEditTime: 2019-09-06 13:44:23
  */
 import React from 'react'
 import PropTypes from 'prop-types'
 import {minusCircle, plusCircle, plusCircleDisabled} from '@const/resources'
 import {addToCart, subscriptCartNumberChange} from '../../../services/goodsDetail'
-import {StyleSheet, Text, View, TouchableOpacity, Animated, Easing} from 'react-native'
+import {StyleSheet, View, TouchableOpacity, Animated, Easing} from 'react-native'
 export default class DetailCartAnimated extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       goodsItem: {},
       cartNumber: 0, // 添加购物车数量
-      isShowMin: false, // 是否展示减号
-      animatedValue: new Animated.Value(0)
+      animatedValue: new Animated.Value(props.goodsItem.productNum <= 0 ? 0 : 1)
     }
-    // 定义X轴平移动画
-    this.translateAnimated = Animated.timing(
-      this.state.animatedValue,
-      {
-        toValue: 1,
-        duration: 200,
-        easing: Easing.linear
-      }
-    )
-    // 定义Z轴旋转动画
-    this.translateZAnimated = Animated.timing(
-      this.state.animatedValue,
-      {
-        toValue: 1,
-        duration: 200,
-        easing: Easing.linear
-      }
-    )
   }
   static propTypes = {
     cartWidth: PropTypes.number,
@@ -50,7 +31,6 @@ export default class DetailCartAnimated extends React.Component {
   componentDidMount() {
     if (this.props.goodsItem.productNum > 0) {
       this._startAnimated()
-      this.setState({isShowMin: true})
     }
     // 相似商品列表购物车数量变化native 事件监听
     this.nativeSubscription = subscriptCartNumberChange(
@@ -85,12 +65,15 @@ export default class DetailCartAnimated extends React.Component {
    * @description 开始动画的方法
    */
   _startAnimated() {
-    this.state.animatedValue.setValue(0)
-    // 组合动画，将translateAnimated和translateZAnimated动画组合
-    Animated.parallel([
-      this.translateAnimated,
-      this.translateZAnimated
-    ]).start()
+    Animated.timing(
+      this.state.animatedValue,
+      {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: true,
+        easing: Easing.linear
+      }
+    ).start()
   }
   /**
    * @description 加购物车的操作
@@ -98,11 +81,18 @@ export default class DetailCartAnimated extends React.Component {
   handleAddCart() {
     const {goodsItem} = this.props
     const {cartNumber} = this.state
-    cartNumber == 0 ? this._startAnimated() : ''
     if (cartNumber == 0) {
+      Animated.timing(
+        this.state.animatedValue,
+        {
+          toValue: 1,
+          duration: 200,
+          useNativeDriver: true,
+          easing: Easing.linear
+        }
+      ).start()
       this.setState({cartNumber: 1})
     }
-    this.setState({isShowMin: true})
     this.handleCart(goodsItem, '1')
   }
   /**
@@ -112,73 +102,68 @@ export default class DetailCartAnimated extends React.Component {
     const {goodsItem, cartNumber} = this.state
     this.handleCart(goodsItem, '0')
     if (cartNumber == 1) {
-      this.setState({cartNumber: 0})
-      this.state.animatedValue.setValue(0)
-      // 组合动画，将translateAnimated和translateZAnimated动画组合
-      Animated.parallel([
-        this.translateAnimated,
-        this.translateZAnimated
-      ]).start(
-        () => {
-          // 这里可以添加动画之后要执行的函数
-          this.setState({isShowMin: false})
+      Animated.timing(
+        this.state.animatedValue,
+        {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: true,
+          easing: Easing.linear
         }
-      )
+      ).start()
+      this.setState({cartNumber: 0})
     }
   }
   render() {
     const {cartWidth, cartHeight} = this.props
     const {goodsItem, cartNumber} = this.state
-    // X轴偏移量
+    // 将减号在X轴向左偏移
     const translateX = this.state.animatedValue.interpolate({
       inputRange: [0, 1],
-      outputRange: [15, 0] // 线性插值，0对应15,1对应0
+      outputRange: [50, 0] // 线性插值，0对应50,1对应0
     })
-    // 将加号沿z轴顺时针旋转90度
-    const plusPositiveZ = this.state.animatedValue.interpolate({
+    // 将数量文本在x轴向左偏移
+    const cartNumberTranslateX = this.state.animatedValue.interpolate({
       inputRange: [0, 1],
-      outputRange: ['0deg', '90deg']
+      outputRange: [25, 0]
     })
     // 将加号沿z轴逆时针旋转90度
-    const plusNegativeZ = this.state.animatedValue.interpolate({
+    const rotatePlus = this.state.animatedValue.interpolate({
       inputRange: [0, 1],
       outputRange: ['0deg', '-90deg']
     })
-    // 将减号沿z轴顺时针旋转180度
+    // 将减号沿z轴逆时针旋转180度
     const minPositiveZ = this.state.animatedValue.interpolate({
       inputRange: [0, 1],
-      outputRange: ['180deg', '0deg']
+      outputRange: ['0deg', '-180deg']
     })
-    const rotatePlus = cartNumber == 0 ? plusPositiveZ : plusNegativeZ
     return (
       <View style={styles.container}>
         <View style={styles.cartWrapper}>
-          {
-            this.state.isShowMin ?
-              <TouchableOpacity
-                activeOpacity={0.9}
-                onPress={() => {
-                  this.handleMinCart()
-                }} >
 
-                <Animated.Image style={{width: cartWidth, height: cartHeight, transform: [{translateX}, {rotateZ: minPositiveZ}]}} source={minusCircle}>
-                </Animated.Image>
-              </TouchableOpacity>
-              : null
-          }
-          {
-            cartNumber > 0 ?
-              <Animated.View style={[styles.cartWrapper, {minWidth: 30, transform: [{translateX}]}]}>
-                <Text style={styles.numberText}>{cartNumber}</Text>
-              </Animated.View>
-              : null
-          }
+          <TouchableOpacity
+            activeOpacity={0.9}
+            onPress={() => {
+              this.handleMinCart()
+            }} >
+            <Animated.View style={{transform: [{translateX}]}}>
+              <Animated.Image style={{width: cartWidth, height: cartHeight, transform: [{rotate: minPositiveZ}]}} source={minusCircle}>
+              </Animated.Image>
+            </Animated.View>
+          </TouchableOpacity>
+
+          <Animated.Text
+            style={[styles.numberText, {transform: [{translateX: cartNumberTranslateX}]}]}
+            numberOfLines={1}
+          >
+            {cartNumber > 0 ? cartNumber : ''}
+          </Animated.Text>
           <TouchableOpacity
             activeOpacity={0.9}
             onPress={() => {
               this.handleAddCart()
             }} >
-            <Animated.Image style={[{width: cartWidth, height: cartHeight}, {transform: [{rotateZ: rotatePlus}]}]} source={ cartNumber >= goodsItem.stockQuantity ? plusCircleDisabled : plusCircle}></Animated.Image>
+            <Animated.Image style={[{width: cartWidth, height: cartHeight}, {transform: [{rotate: rotatePlus}]}]} source={ cartNumber >= goodsItem.stockQuantity ? plusCircleDisabled : plusCircle}></Animated.Image>
           </TouchableOpacity>
         </View>
       </View>
@@ -224,6 +209,9 @@ const styles = StyleSheet.create({
   },
   numberText: {
     fontSize: 14,
+    minWidth: 25,
+    textAlign: 'center',
+    paddingHorizontal: 3,
     color: '#331B00'
   }
 })
