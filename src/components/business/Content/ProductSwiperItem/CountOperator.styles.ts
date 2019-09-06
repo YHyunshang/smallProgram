@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-09-05 18:26:59
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-09-05 21:31:29
+ * @Last Modified time: 2019-09-06 10:07:29
  */
 import { StyleSheet } from 'react-native'
 
@@ -11,7 +11,7 @@ export default StyleSheet.create({
 
   cartBtnBox: {
     position: 'absolute',
-    zIndex: 1,
+    zIndex: 10,
     right: 0,
   },
   gradientBox: {
@@ -38,6 +38,7 @@ export default StyleSheet.create({
   },
 
   countOperatorBox: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
   },
