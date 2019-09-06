@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-05 19:46:33
+ * @LastEditTime: 2019-09-06 21:10:07
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -30,7 +30,6 @@ export default class ProductDetailPage extends React.Component {
     super(props)
     this.state = {
       cartNumber: 0,
-      myName: '',
       isFirst: true, // 是否是第一次请求生成海报接口
       goodsDetail: {}, // 商品详情
       evaluation: {}, // 商品评价信息
@@ -322,7 +321,6 @@ export default class ProductDetailPage extends React.Component {
           }}>
             <View style={styles.goodsDetail}>
               <Text style={styles.goodsDetailTitle}>商品详情</Text>
-              <Text>{this.state.myName}</Text>
             </View>
             <View style={styles.imagesContent}>
               {goodsImgList}
