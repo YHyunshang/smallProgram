@@ -443,11 +443,18 @@ class Page extends React.Component<Props, State> {
 
   onTabIndexChange = (idx, force = false) => {
     this.setState({ currentTabIdx: idx })
-    const { tabList, tabFloorMap, dataExpired } = this.state
+    const {
+      tabList,
+      tabFloorMap,
+      dataExpired,
+      animatedValRefCmsScrollY,
+    } = this.state
     const currentTab = tabList[idx]
     if (!currentTab) return
-    if ((tabFloorMap[currentTab.id] || []).length === 0)
+    if ((tabFloorMap[currentTab.id] || []).length === 0) {
+      animatedValRefCmsScrollY.setValue(0)
       CMSServices.pushScrollToNative(0, 0)
+    }
     if (
       force ||
       dataExpired ||
