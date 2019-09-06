@@ -8,6 +8,7 @@ import useTheme from './ProductGrid.styles'
 import ProductGridItem, {
   Props as ProductGridItemProps,
 } from './ProductGridItem'
+import { Native } from '@utils'
 
 interface Props {
   products: ProductGridItemProps[]
@@ -25,6 +26,11 @@ export default function ProductGrid({
   const styles = useTheme(theme || '2x')
   const rowTotal = gridProducts.length
 
+  const afterCountChange = count => {
+    Native.showToast('添加成功', '1')
+    afterModifyCount(count)
+  }
+
   const colRender = columns =>
     columns.map((product, colIdx) => (
       <View
@@ -38,7 +44,7 @@ export default function ProductGrid({
           <ProductGridItem
             {...product}
             theme={theme}
-            afterModifyCount={afterModifyCount}
+            afterModifyCount={afterCountChange}
           />
         </View>
       </View>

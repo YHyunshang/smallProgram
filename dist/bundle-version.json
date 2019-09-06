@@ -1,6 +1,8 @@
 {
-  "version": "0.1.24",
-  "iosDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.1.24/ios/dist-ios.zip",
-  "androidDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.1.24/android/index.jsbundle",
+  "version": "0.1.25",
+  "iosDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.1.25/ios/dist-ios.zip",
+  "androidDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.1.25/android/index.jsbundle",
+  "iosNativeVersion": "0.1.4",
+  "androidNativeVersion": "0.1.4",
   "versionDesc": ["U - 分类入口"]
 }
