@@ -141,7 +141,7 @@ export default class TabBar extends React.Component<Props, State> {
       return (
         <TouchableOpacity
           activeOpacity={0.95}
-          onPress={() => jumpTo(route.key)}
+          onPressIn={() => jumpTo(route.key)}
           key={route.key}
         >
           <View

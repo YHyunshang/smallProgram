@@ -15,7 +15,7 @@ export default StyleSheet.create({
   fakeBorder: {
     position: 'absolute',
     bottom: 0,
-    left: 105,
+    left: 20,
     right: 20,
     height: 0.5,
     backgroundColor: '#EEE',
