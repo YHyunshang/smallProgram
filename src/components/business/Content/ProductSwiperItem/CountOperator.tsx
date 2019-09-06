@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-09-05 18:26:23
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-09-06 17:36:53
+ * @Last Modified time: 2019-09-06 17:53:32
  */
 import * as React from 'react'
 import styles from './CountOperator.styles'
@@ -42,7 +42,6 @@ export default class CountOperator extends React.Component<Props, State> {
   }
 
   componentWillReceiveProps(props) {
-    console.log(props.count)
     if (props.count <= 0 && this.props.count === 1) {
       Animated.timing(this.state.animatedVal, {
         toValue: 0,

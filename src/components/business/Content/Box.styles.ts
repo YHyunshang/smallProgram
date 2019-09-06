@@ -8,16 +8,21 @@ export default StyleSheet.create({
   row: {
     flexDirection: 'row',
   },
-  rowNotLast: {
-    paddingBottom: 20,
+  rowNotFirst: {
+    paddingTop: 20,
   },
   column: {},
 
-  toggleTrigger: {
+  toggleBox: {
     backgroundColor: '#FFF',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 4,
+  },
+  toggleBtn: {
+    width: 60,
+    height: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   toggleImg: {
     width: 30,

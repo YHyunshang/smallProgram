@@ -2,13 +2,18 @@
  * Created by 李华良 on 2019-08-22
  */
 import * as React from 'react'
-import { View, Dimensions, Text, LayoutAnimation, Image } from 'react-native'
+import {
+  View,
+  Dimensions,
+  LayoutAnimation,
+  Image,
+  TouchableOpacity,
+} from 'react-native'
 import chunk from 'lodash/chunk'
 import styles from './Box.styles'
 import BoxItem, {
   Props as BoxItemProps,
 } from '@components/business/Content/BoxItem'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import { iconExpand } from '@const/resources'
 
 const windowWith = Dimensions.get('window').width
@@ -35,10 +40,7 @@ export default function Box({ data, columnNumber, maxRow = 2 }: Props) {
   return (
     <View style={styles.container}>
       {gridData.slice(0, maxRow).map((row, idx) => (
-        <View
-          style={[styles.row, idx < rowTotal - 1 && styles.rowNotLast]}
-          key={idx}
-        >
+        <View style={[styles.row, idx !== 0 && styles.rowNotFirst]} key={idx}>
           {row.map(({ key, ...boxItemProps }) => (
             <View style={[styles.column, { width: colWidth }]} key={key}>
               <BoxItem {...boxItemProps} />
@@ -48,10 +50,7 @@ export default function Box({ data, columnNumber, maxRow = 2 }: Props) {
       ))}
       <View style={[!showAll && { height: 0, overflow: 'hidden' }]}>
         {gridData.slice(maxRow).map((row, idx) => (
-          <View
-            style={[styles.row, idx < rowTotal - 1 && styles.rowNotLast]}
-            key={idx}
-          >
+          <View style={[styles.row, styles.rowNotFirst]} key={idx}>
             {row.map(({ key, ...boxItemProps }) => (
               <View style={[styles.column, { width: colWidth }]} key={key}>
                 <BoxItem {...boxItemProps} />
@@ -61,8 +60,11 @@ export default function Box({ data, columnNumber, maxRow = 2 }: Props) {
         ))}
       </View>
       {rowTotal > maxRow && (
-        <TouchableOpacity onPress={() => setShowAll(!showAll)}>
-          <View style={styles.toggleTrigger}>
+        <View style={styles.toggleBox}>
+          <TouchableOpacity
+            style={styles.toggleBtn}
+            onPress={() => setShowAll(!showAll)}
+          >
             <Image
               style={[
                 styles.toggleImg,
@@ -70,8 +72,8 @@ export default function Box({ data, columnNumber, maxRow = 2 }: Props) {
               ]}
               source={iconExpand}
             />
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        </View>
       )}
     </View>
   )
