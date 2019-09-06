@@ -2,12 +2,14 @@
  * Created by 李华良 on 2019-08-22
  */
 import * as React from 'react'
-import { View, Dimensions } from 'react-native'
+import { View, Dimensions, Text, LayoutAnimation, Image } from 'react-native'
 import chunk from 'lodash/chunk'
 import styles from './Box.styles'
 import BoxItem, {
   Props as BoxItemProps,
 } from '@components/business/Content/BoxItem'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { iconExpand } from '@const/resources'
 
 const windowWith = Dimensions.get('window').width
 
@@ -17,16 +19,22 @@ interface Column extends BoxItemProps {
 
 interface Props {
   data: Column[][]
+  maxRow: number
   columnNumber: number
 }
 
-export default function Box({ data, columnNumber }: Props) {
+export default function Box({ data, columnNumber, maxRow = 2 }: Props) {
   const gridData = chunk(data, columnNumber)
   const rowTotal = gridData.length
   const colWidth = windowWith / columnNumber
+
+  const [showAll, setShowAll] = React.useState(false)
+
+  LayoutAnimation.easeInEaseOut()
+
   return (
     <View style={styles.container}>
-      {gridData.map((row, idx) => (
+      {gridData.slice(0, maxRow).map((row, idx) => (
         <View
           style={[styles.row, idx < rowTotal - 1 && styles.rowNotLast]}
           key={idx}
@@ -38,6 +46,33 @@ export default function Box({ data, columnNumber }: Props) {
           ))}
         </View>
       ))}
+      <View style={[!showAll && { height: 0, overflow: 'hidden' }]}>
+        {gridData.slice(maxRow).map((row, idx) => (
+          <View
+            style={[styles.row, idx < rowTotal - 1 && styles.rowNotLast]}
+            key={idx}
+          >
+            {row.map(({ key, ...boxItemProps }) => (
+              <View style={[styles.column, { width: colWidth }]} key={key}>
+                <BoxItem {...boxItemProps} />
+              </View>
+            ))}
+          </View>
+        ))}
+      </View>
+      {rowTotal > maxRow && (
+        <TouchableOpacity onPress={() => setShowAll(!showAll)}>
+          <View style={styles.toggleTrigger}>
+            <Image
+              style={[
+                styles.toggleImg,
+                { transform: [{ rotate: showAll ? '180deg' : '0deg' }] },
+              ]}
+              source={iconExpand}
+            />
+          </View>
+        </TouchableOpacity>
+      )}
     </View>
   )
 }

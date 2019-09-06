@@ -406,13 +406,20 @@ class Page extends React.Component<Props, State> {
             break
           }
         }
+        const columnNumber = { 1: 4, 2: 5 }[floor.subType]
         result.push({
           key: floor.id,
           component: Box,
-          wrapperStyle: { paddingVertical: 25, backgroundColor: '#FFF' },
+          wrapperStyle: {
+            paddingTop: 25,
+            paddingBottom:
+              Math.ceil(boxData.length / columnNumber) > 2 ? 0 : 25,
+            backgroundColor: '#FFF',
+          },
           props: {
-            columnNumber: { 1: 4, 2: 5 }[floor.subType],
+            columnNumber,
             data: boxData,
+            maxRow: 2,
           },
         })
       } else if (floor.type === 5) {

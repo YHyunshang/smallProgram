@@ -175,3 +175,8 @@ export const addToCart =
         uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/add-to-cart.png',
       }
     : require('@img/add-to-cart.png')
+
+export const iconExpand =
+  os === 'android'
+    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/icon-expand.png' }
+    : require('@img/icon-expand.png')
