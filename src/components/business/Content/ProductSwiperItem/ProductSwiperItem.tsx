@@ -74,7 +74,6 @@ function ProductSwiperItem({
 
       <View style={styles.cartBox}>
         <CountOperator
-          size={20}
           count={count}
           onChange={onModifyCount}
           disabled={!!inventoryLabel}

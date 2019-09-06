@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-09-05 18:26:59
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-09-06 10:07:29
+ * @Last Modified time: 2019-09-06 17:22:49
  */
 import { StyleSheet } from 'react-native'
 
@@ -11,8 +11,12 @@ export default StyleSheet.create({
 
   cartBtnBox: {
     position: 'absolute',
-    zIndex: 10,
+    flex: 1,
     right: 0,
+  },
+  cartBtn: {
+    width: 65,
+    height: 20,
   },
   gradientBox: {
     flexDirection: 'row',

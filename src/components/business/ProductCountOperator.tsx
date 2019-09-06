@@ -37,7 +37,7 @@ export default class ProductCountOperator extends React.Component<
     if (props.count === 0 && this.props.count === 1) {
       Animated.timing(this.state.animatedVal, {
         toValue: 0,
-        duration: 300,
+        duration: 200,
         easing: Easing.linear,
         useNativeDriver: true,
       }).start()
@@ -52,14 +52,14 @@ export default class ProductCountOperator extends React.Component<
     if (count === 0 && nextCount === 1) {
       Animated.timing(animatedVal, {
         toValue: 1,
-        duration: 300,
+        duration: 200,
         easing: Easing.linear,
         useNativeDriver: true,
       }).start()
     } else if (count === 1 && nextCount === 0) {
       Animated.timing(animatedVal, {
         toValue: 0,
-        duration: 300,
+        duration: 200,
         easing: Easing.linear,
         useNativeDriver: true,
       }).start()

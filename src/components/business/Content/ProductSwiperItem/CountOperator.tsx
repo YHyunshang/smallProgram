@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-09-05 18:26:23
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-09-06 10:40:36
+ * @Last Modified time: 2019-09-06 17:36:53
  */
 import * as React from 'react'
 import styles from './CountOperator.styles'
@@ -20,7 +20,7 @@ import theme from '@theme'
 
 interface Props {
   count: number
-  max: number
+  max?: number
   onChange: (count: number) => void
   disabled: boolean
 }
@@ -37,10 +37,22 @@ export default class CountOperator extends React.Component<Props, State> {
     }
   }
 
+  static defaultProps = {
+    max: Infinity,
+  }
+
   componentWillReceiveProps(props) {
-    if (props.count === 0 && this.props.count === 1) {
+    console.log(props.count)
+    if (props.count <= 0 && this.props.count === 1) {
       Animated.timing(this.state.animatedVal, {
         toValue: 0,
+        duration: 300,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }).start()
+    } else if (props.count > 0 && this.props.count <= 0) {
+      Animated.timing(this.state.animatedVal, {
+        toValue: 1,
         duration: 300,
         easing: Easing.linear,
         useNativeDriver: true,
@@ -56,14 +68,14 @@ export default class CountOperator extends React.Component<Props, State> {
     if (count === 0 && nextCount === 1) {
       Animated.timing(animatedVal, {
         toValue: 1,
-        duration: 300,
+        duration: 200,
         easing: Easing.linear,
         useNativeDriver: true,
       }).start()
     } else if (count === 1 && nextCount === 0) {
       Animated.timing(animatedVal, {
         toValue: 0,
-        duration: 300,
+        duration: 200,
         easing: Easing.linear,
         useNativeDriver: true,
       }).start()
@@ -75,6 +87,14 @@ export default class CountOperator extends React.Component<Props, State> {
     const { count, max, disabled } = this.props
 
     const cartBtnScaleX = animatedVal.interpolate({
+      inputRange: [0, 1],
+      outputRange: [1, 0],
+    })
+    const cartBtnTranslateX = animatedVal.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, 65],
+    })
+    const cartBtnOpacity = animatedVal.interpolate({
       inputRange: [0, 1],
       outputRange: [1, 0],
     })
@@ -102,27 +122,31 @@ export default class CountOperator extends React.Component<Props, State> {
           style={[
             styles.cartBtnBox,
             {
+              opacity: cartBtnOpacity,
               transform: [{ scaleX: cartBtnScaleX }],
             },
           ]}
         >
-          <TouchableOpacity
-            activeOpacity={0.75}
-            onPressIn={() => this.onModifyCount(count + 1)}
-            disabled={disabled}
-          >
-            <View style={styles.cartBtnBox}>
-              <LinearGradient
-                style={styles.gradientBox}
-                start={{ x: 1, y: 0 }}
-                end={{ x: 0, y: 0 }}
-                colors={[theme.primary, theme.secondary]}
-              >
-                <Image style={styles.addIcon} source={plus} />
-                <Text style={styles.cartBtnText}>购物车</Text>
-              </LinearGradient>
-            </View>
-          </TouchableOpacity>
+          <View>
+            <TouchableOpacity
+              style={styles.cartBtn}
+              activeOpacity={0.75}
+              onPressIn={() => this.onModifyCount(count + 1)}
+              disabled={disabled}
+            >
+              <View style={styles.cartBtnBox}>
+                <LinearGradient
+                  style={styles.gradientBox}
+                  start={{ x: 1, y: 0 }}
+                  end={{ x: 0, y: 0 }}
+                  colors={[theme.primary, theme.secondary]}
+                >
+                  <Image style={styles.addIcon} source={plus} />
+                  <Text style={styles.cartBtnText}>购物车</Text>
+                </LinearGradient>
+              </View>
+            </TouchableOpacity>
+          </View>
         </Animated.View>
       </View>
     )
