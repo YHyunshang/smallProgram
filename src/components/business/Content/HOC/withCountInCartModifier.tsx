@@ -8,6 +8,7 @@ import { Alert } from 'react-native'
 interface Props extends Product {
   shopCode: string // 门店编码
   afterModifyCount?: Function
+  disableSync?: boolean // 是否同步上层 count
 }
 
 interface State {
@@ -29,7 +30,8 @@ export default function withCartCountModify(WrappedComponent) {
       nextProps: Readonly<Props>,
       nextContext: any
     ): void {
-      if (nextProps.count !== this.state.count) {
+      console.log(this.props.disableSync)
+      if (nextProps.count !== this.state.count && !this.props.disableSync) {
         Log.debug(
           `count changed from parent: current - ${this.state.count}, next - ${nextProps.count}`
         )
