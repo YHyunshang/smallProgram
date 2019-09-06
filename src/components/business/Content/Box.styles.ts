@@ -12,4 +12,15 @@ export default StyleSheet.create({
     paddingBottom: 20,
   },
   column: {},
+
+  toggleTrigger: {
+    backgroundColor: '#FFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 4,
+  },
+  toggleImg: {
+    width: 30,
+    height: 7,
+  },
 })

@@ -69,15 +69,6 @@ export function queryProductList(
   page,
   size
 ) {
-  console.log('---->>>', {
-    storeCode,
-    categoryCode,
-    inventoryType,
-    orderBy,
-    orderType,
-    page,
-    size,
-  })
   return Http.post(
     'productCenter',
     '/app/product/queryStoreProductList',

@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-08-21 14:48:31
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-09-01 20:54:00
+ * @Last Modified time: 2019-09-06 09:43:15
  */
 import * as React from 'react'
 import { View, FlatList, Image } from 'react-native'
@@ -115,7 +115,7 @@ export default class Page extends React.Component<Object, State> {
       code: data.productCode,
       thumbnail: data.mainUrl.url,
       name: data.productName,
-      desc: data.productBrief,
+      desc: data.subTitle,
       priceTags: [],
       productTags: [],
       spec: data.productSpecific,

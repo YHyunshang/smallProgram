@@ -19,7 +19,6 @@ export default StyleSheet.create({
     shadowRadius: 11,
   },
   productBox: {
-    width: 92,
     alignItems: 'center',
     paddingHorizontal: 7.5,
     paddingTop: 10,
@@ -34,6 +33,7 @@ export default StyleSheet.create({
     fontSize: 13,
     fontWeight: '400',
     color: theme.black,
+    maxWidth: 92,
     height: 23,
     lineHeight: 23,
     marginBottom: 5,

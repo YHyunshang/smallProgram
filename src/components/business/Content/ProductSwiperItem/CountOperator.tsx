@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-09-05 18:26:23
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-09-05 21:32:37
+ * @Last Modified time: 2019-09-06 10:40:36
  */
 import * as React from 'react'
 import styles from './CountOperator.styles'
@@ -80,35 +80,6 @@ export default class CountOperator extends React.Component<Props, State> {
     })
     return (
       <View style={styles.container}>
-        <Animated.View
-          style={[
-            styles.cartBtnBox,
-            {
-              transform: [{ scaleX: cartBtnScaleX }],
-            },
-          ]}
-        >
-          <View>
-            <TouchableOpacity
-              activeOpacity={0.75}
-              onPress={() => this.onModifyCount(count + 1)}
-              disabled={disabled}
-            >
-              <View style={styles.cartBtnBox}>
-                <LinearGradient
-                  style={styles.gradientBox}
-                  start={{ x: 1, y: 0 }}
-                  end={{ x: 0, y: 0 }}
-                  colors={[theme.primary, theme.secondary]}
-                >
-                  <Image style={styles.addIcon} source={plus} />
-                  <Text style={styles.cartBtnText}>购物车</Text>
-                </LinearGradient>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </Animated.View>
-
         <View
           style={[styles.countOperatorBox, { opacity: count <= 0 ? 0 : 1 }]}
         >
@@ -126,6 +97,33 @@ export default class CountOperator extends React.Component<Props, State> {
             <Image style={styles.operImg} source={addToCart} />
           </TouchableOpacity>
         </View>
+
+        <Animated.View
+          style={[
+            styles.cartBtnBox,
+            {
+              transform: [{ scaleX: cartBtnScaleX }],
+            },
+          ]}
+        >
+          <TouchableOpacity
+            activeOpacity={0.75}
+            onPressIn={() => this.onModifyCount(count + 1)}
+            disabled={disabled}
+          >
+            <View style={styles.cartBtnBox}>
+              <LinearGradient
+                style={styles.gradientBox}
+                start={{ x: 1, y: 0 }}
+                end={{ x: 0, y: 0 }}
+                colors={[theme.primary, theme.secondary]}
+              >
+                <Image style={styles.addIcon} source={plus} />
+                <Text style={styles.cartBtnText}>购物车</Text>
+              </LinearGradient>
+            </View>
+          </TouchableOpacity>
+        </Animated.View>
       </View>
     )
   }
