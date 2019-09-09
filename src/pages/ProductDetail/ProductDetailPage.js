@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-06 21:10:07
+ * @LastEditTime: 2019-09-09 10:52:51
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -22,7 +22,7 @@ import GoodsDetailSwiper from '../../components/business/GoodsDetail/GoodsDetail
 import SimilarGoods from '../../components/business/GoodsDetail/SimilarGoods'
 // 商品产地图标 // 商品规格图标 //商品条件图标
 import {productPlace, productSpecific} from '@const/resources'
-// import Tag from '../../components/business/GoodsDetail/Tag'
+import Tag from '../../components/business/GoodsDetail/Tag'
 const rnAppModule = NativeModules.RnAppModule// 原生模块
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
 export default class ProductDetailPage extends React.Component {
@@ -276,7 +276,8 @@ export default class ProductDetailPage extends React.Component {
                   : null
               }
             </View>
-            {/* <Tag textValue='特价' marginLeft={15}></Tag> */}
+            <Tag textValue='限时抢购' marginLeft={15} width={50} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
+            {/* <Tag textValue='特价' marginLeft={15} width={30} backgroundColor="#FFDED9" color='#FF3914'></Tag> */}
             <View style={styles.goodsWrapper}>
               <Text numberOfLines={1} style={styles.goodsName}>{goodsInfo.productName}</Text>
               {

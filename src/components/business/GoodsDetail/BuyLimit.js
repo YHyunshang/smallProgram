@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-09 10:38:18
+ * @LastEditTime: 2019-09-09 11:00:54
  */
 
 import React from 'react'
@@ -12,8 +12,8 @@ import {
   Text,
   View
 } from 'react-native'
-import styles from './Tag.styles'
-export default class Tag extends React.Component {
+import styles from './BuyLimit.styles '
+export default class BuyLimit extends React.Component {
   constructor(props) {
     super(props)
   }
