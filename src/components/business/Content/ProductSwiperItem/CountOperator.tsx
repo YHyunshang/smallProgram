@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-09-05 18:26:23
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-09-06 17:53:32
+ * @Last Modified time: 2019-09-10 18:48:26
  */
 import * as React from 'react'
 import styles from './CountOperator.styles'
@@ -56,29 +56,15 @@ export default class CountOperator extends React.Component<Props, State> {
         easing: Easing.linear,
         useNativeDriver: true,
       }).start()
+    } else {
+      this.state.animatedVal.setValue(props.count <= 0 ? 0 : 1)
     }
   }
 
   onModifyCount = c => {
-    const { max, count, onChange } = this.props
-    const { animatedVal } = this.state
+    const { max, onChange } = this.props
     const nextCount = c <= 0 ? 0 : c >= max ? max : c
     onChange(nextCount)
-    if (count === 0 && nextCount === 1) {
-      Animated.timing(animatedVal, {
-        toValue: 1,
-        duration: 200,
-        easing: Easing.linear,
-        useNativeDriver: true,
-      }).start()
-    } else if (count === 1 && nextCount === 0) {
-      Animated.timing(animatedVal, {
-        toValue: 0,
-        duration: 200,
-        easing: Easing.linear,
-        useNativeDriver: true,
-      }).start()
-    }
   }
 
   render() {
