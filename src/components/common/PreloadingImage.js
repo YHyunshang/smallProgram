@@ -41,7 +41,8 @@ export default class PreloadingImage extends Component {
         <View style={[styles.imgDefault, style]}>
           <Image
             source={source}
-            style={[styles.imgDefault, {overflow: 'hidden', position: 'absolute'}, style]}
+            resizeMode="contain"
+            style={[{overflow: 'hidden', position: 'absolute'}, style]}
             onError={(error) => {
               this.setState({
                 type: 1
