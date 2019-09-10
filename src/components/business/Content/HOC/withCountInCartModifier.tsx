@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Product } from '../typings'
 import debounce from 'lodash/debounce'
 import { CMSServices } from '@services'
-import { Log } from '@utils'
+import { Log, Native } from '@utils'
 import { Alert } from 'react-native'
 
 interface Props extends Product {
@@ -55,9 +55,24 @@ export default function withCartCountModify(WrappedComponent) {
         })
     }, 500)
 
+    showRemarksBeforeAddToCart = () => {
+      Native.showRemarkPickerBeforeAddToCart(this.props).then(
+        count => this.setState({ count, modifiedCount: count }),
+        () => this.setState({ count: 0, modifiedCount: 0 })
+      )
+    }
+
     onModifyCount = count => {
-      this.setState({ modifiedCount: count })
-      this.requestUpdateCount(count)
+      if (
+        count === 1 &&
+        this.state.count === 0 &&
+        this.props.remarks.length > 0
+      ) {
+        this.showRemarksBeforeAddToCart()
+      } else {
+        this.setState({ modifiedCount: count })
+        this.requestUpdateCount(count)
+      }
     }
 
     render() {
