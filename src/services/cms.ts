@@ -167,13 +167,13 @@ export function formatLink({
 export function formatProduct(data: { [index: string]: any }) {
   const [priceTags, productTags] = groupTags(data.labelList || [])
 
-  const remarkOptions =
-    data.resProductNoteNewVO || { noteContentName: [] }.noteContentName
+  const remarkOptions = (data.resProdcutNoteNewVO || { noteContentName: [] })
+    .noteContentName
   const defaultRemark = remarkOptions.find(r => r.isDefault)
   const remarks = defaultRemark
     ? [
         defaultRemark.name,
-        remarkOptions.filter(r => !r.isDefault).map(ele => ele.name),
+        ...remarkOptions.filter(r => !r.isDefault).map(ele => ele.name),
       ]
     : remarkOptions.map(ele => ele.name)
 
