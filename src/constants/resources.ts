@@ -1,3 +1,10 @@
+/*
+ * @Descripttion: 
+ * @Author: yuwen.liu
+ * @Date: 2019-09-06 13:54:53
+ * @LastEditors: yuwen.liu
+ * @LastEditTime: 2019-09-12 14:24:30
+ */
 /**
  * Created by 李华良 on 2019-08-30
  */
@@ -180,3 +187,7 @@ export const iconExpand =
   os === 'android'
     ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/icon-expand.png' }
     : require('@img/icon-expand.png')
+    export const buyLimit =
+  os === 'android'
+    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/buy-limit.png' }
+    : require('@img/buy-limit.png')

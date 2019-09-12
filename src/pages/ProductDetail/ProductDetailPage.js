@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-09 10:52:51
+ * @LastEditTime: 2019-09-12 14:39:32
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -23,6 +23,7 @@ import SimilarGoods from '../../components/business/GoodsDetail/SimilarGoods'
 // 商品产地图标 // 商品规格图标 //商品条件图标
 import {productPlace, productSpecific} from '@const/resources'
 import Tag from '../../components/business/GoodsDetail/Tag'
+import BuyLimit from '../../components/business/GoodsDetail/BuyLimit'
 const rnAppModule = NativeModules.RnAppModule// 原生模块
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
 export default class ProductDetailPage extends React.Component {
@@ -266,6 +267,7 @@ export default class ProductDetailPage extends React.Component {
               }
             </View>
           </View>
+          <BuyLimit></BuyLimit>
           <View>
             <View style={styles.goodsPromotionPriceRowFlex}>
               <Text style={styles.goodsPriceSymbol}>¥</Text>
