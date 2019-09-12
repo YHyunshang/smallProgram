@@ -62,6 +62,7 @@ export default class ProductListWithFilter extends React.Component<
       Math.min(data.price || 0, data.promotionPrice || Infinity)
     )
     const slashedPrice = currentPrice < (data.price || 0) ? data.price : 0
+    const remarks = data.noteContentList || []
 
     return {
       code: data.productCode,
@@ -76,6 +77,7 @@ export default class ProductListWithFilter extends React.Component<
       count: data.productNum,
       shopCode: this.props.shopCode,
       inventoryLabel: data.inventoryLabel,
+      remarks,
     }
   }
 
