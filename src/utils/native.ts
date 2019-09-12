@@ -143,11 +143,16 @@ export function onCartChange(handler: (...args: any) => any) {
 export function showRemarkPickerBeforeAddToCart(
   product: Product
 ): Promise<number> {
+  console.log(product)
+  const price =
+    product.price < product.slashedPrice ? product.slashedPrice : product.price
+  const promotionPrice =
+    product.price < product.slashedPrice ? product.price : 0
   NativeModules.RnAppModule.addToCartWithRemark(
     JSON.stringify({
       productName: product.name,
-      price: product.slashedPrice,
-      promotionPrice: product.price,
+      price,
+      promotionPrice,
       noteContentList: product.remarks,
       imageUrl: product.thumbnail,
       productNum: 0,
