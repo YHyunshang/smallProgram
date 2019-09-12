@@ -41,7 +41,6 @@ function ProductListItem({
       params: { productCode: code, storeCode: shopCode },
     })
   }
-  console.log(arguments)
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={navigateToProductDetail}>
