@@ -41,6 +41,7 @@ function ProductListItem({
       params: { productCode: code, storeCode: shopCode },
     })
   }
+  console.log(arguments)
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={navigateToProductDetail}>
@@ -59,7 +60,7 @@ function ProductListItem({
               ))}
             </View>
 
-            {inventoryLabel && (
+            {!!inventoryLabel && (
               <View style={styles.inventoryBox}>
                 <View style={styles.inventoryLabelBg}>
                   <Text style={styles.inventoryLabel}>{inventoryLabel}</Text>
