@@ -59,7 +59,7 @@ function ProductListItem({
               ))}
             </View>
 
-            {inventoryLabel && (
+            {!!inventoryLabel && (
               <View style={styles.inventoryBox}>
                 <View style={styles.inventoryLabelBg}>
                   <Text style={styles.inventoryLabel}>{inventoryLabel}</Text>

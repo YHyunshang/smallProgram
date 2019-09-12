@@ -9,6 +9,7 @@ import {
   DeviceEventEmitter,
 } from 'react-native'
 import * as Log from './log'
+import { Product } from '@components/business/Content/typings'
 
 export enum NavPageType {
   NATIVE = '0',
@@ -133,4 +134,37 @@ export const getStatusBarHeight = () =>
  */
 export function onCartChange(handler: (...args: any) => any) {
   return DeviceEventEmitter.addListener('notifyRefreshCartNum', handler)
+}
+
+/**
+ * 展示商品备注，用户选择后添加到购物车
+ * @param products 商品对象
+ */
+export function showRemarkPickerBeforeAddToCart(
+  product: Product
+): Promise<number> {
+  NativeModules.RnAppModule.addToCartWithRemark(
+    JSON.stringify({
+      productName: product.name,
+      price: product.slashedPrice,
+      promotionPrice: product.price,
+      noteContentList: product.remarks,
+      imageUrl: product.thumbnail,
+      productNum: 0,
+      productCode: product.code,
+      productSpecific: product.spec,
+      stockQuantity: 9999,
+    })
+  )
+  return new Promise((resolve, reject) => {
+    DeviceEventEmitter.addListener(
+      'setItemNumberByProductcode',
+      ({ productCode, productNumber }) => {
+        Log.debug('[show remark result]', productCode, productNumber)
+        return productNumber === 1
+          ? resolve(productNumber)
+          : reject(new Error('add to cart failed'))
+      }
+    )
+  })
 }

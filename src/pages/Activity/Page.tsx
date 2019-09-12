@@ -185,6 +185,7 @@ export default class Page extends React.Component<Props, State> {
             props: {
               products: floor.templateDetailVOList.map(ele => ({
                 ...CMSServices.formatProduct(ele),
+                disableSync: true,
                 shopCode,
               })),
               columnNumber:

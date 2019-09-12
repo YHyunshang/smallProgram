@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-08-21 14:48:31
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-09-06 09:43:15
+ * @Last Modified time: 2019-09-10 18:43:08
  */
 import * as React from 'react'
 import { View, FlatList, Image } from 'react-native'
@@ -111,6 +111,8 @@ export default class Page extends React.Component<Object, State> {
     )
     const slashedPrice = currentPrice < (data.price || 0) ? data.price : 0
 
+    const remarks = data.noteContentList || []
+
     return {
       code: data.productCode,
       thumbnail: data.mainUrl.url,
@@ -122,7 +124,8 @@ export default class Page extends React.Component<Object, State> {
       price: currentPrice,
       slashedPrice,
       count: data.productNum,
-      inventoryLabel: data.inventoryLabel,
+      inventoryLabel: remarks[0] || '',
+      remarks,
     }
   }
 

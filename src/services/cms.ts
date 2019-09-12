@@ -166,6 +166,17 @@ export function formatLink({
  */
 export function formatProduct(data: { [index: string]: any }) {
   const [priceTags, productTags] = groupTags(data.labelList || [])
+
+  const remarkOptions =
+    data.resProductNoteNewVO || { noteContentName: [] }.noteContentName
+  const defaultRemark = remarkOptions.find(r => r.isDefault)
+  const remarks = defaultRemark
+    ? [
+        defaultRemark.name,
+        remarkOptions.filter(r => !r.isDefault).map(ele => ele.name),
+      ]
+    : remarkOptions.map(ele => ele.name)
+
   return {
     cartId: data.cartId,
     code: data.code,
@@ -179,6 +190,8 @@ export function formatProduct(data: { [index: string]: any }) {
     slashedPrice: data.promotionPrice < data.price ? data.price : undefined,
     count: data.productNum || 0,
     inventoryLabel: data.inventoryLabel,
+    remark: data.remark,
+    remarks,
   }
 }
 

@@ -9,6 +9,7 @@ import {
   Easing,
 } from 'react-native'
 import { addToCart, minusCircle } from '@const/resources'
+import { Log } from '@utils'
 
 interface Props {
   size?: number
@@ -41,29 +42,22 @@ export default class ProductCountOperator extends React.Component<
         easing: Easing.linear,
         useNativeDriver: true,
       }).start()
-    }
-  }
-
-  onModifyCurrentCount = (c: number) => {
-    const { max, onChange, count } = this.props
-    const { animatedVal } = this.state
-    const nextCount = c <= 0 ? 0 : c >= max ? max : c
-    onChange(nextCount)
-    if (count === 0 && nextCount === 1) {
-      Animated.timing(animatedVal, {
+    } else if (props.count === 1 && this.props.count === 0) {
+      Animated.timing(this.state.animatedVal, {
         toValue: 1,
         duration: 200,
         easing: Easing.linear,
         useNativeDriver: true,
       }).start()
-    } else if (count === 1 && nextCount === 0) {
-      Animated.timing(animatedVal, {
-        toValue: 0,
-        duration: 200,
-        easing: Easing.linear,
-        useNativeDriver: true,
-      }).start()
+    } else {
+      this.state.animatedVal.setValue(props.count <= 0 ? 0 : 1)
     }
+  }
+
+  onModifyCurrentCount = (c: number) => {
+    const { max, onChange } = this.props
+    const nextCount = c <= 0 ? 0 : c >= max ? max : c
+    onChange(nextCount)
   }
 
   render() {

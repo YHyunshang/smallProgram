@@ -158,7 +158,7 @@ export default StyleSheet.create({
   },
   goodsDetailImage: {
     width: '100%',
-    height: 306
+    height: 240
   },
   imagesContent: {
     width: '100%',
