@@ -1,8 +1,8 @@
 {
-  "version": "0.2.4",
-  "iosDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.2.4/ios/dist-ios.zip",
-  "androidDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.2.4/android/index.jsbundle",
+  "version": "0.2.5",
+  "iosDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.2.5/ios/dist-ios.zip",
+  "androidDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.2.5/android/index.jsbundle",
   "iosNativeVersion": "1.0.3",
   "androidNativeVersion": "1.0.2",
-  "versionDesc": ["U - 分类入口"]
+  "versionDesc": ["F - 商品备注"]
 }
