@@ -19,20 +19,23 @@ export const emptyActivity =
   os === 'android'
     ? {
         uri:
-          'https://static-yh.yonghui.cn/app/assets/xszt-RN/empty-activity.png',
+          'https://static-yh.yonghui.cn/app/assets/xszt-RN/empty-activity.green.png',
       }
     : require('@img/empty-activity.png')
 
 export const emptyBag =
   os === 'android'
-    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/empty-bag.png' }
+    ? {
+        uri:
+          'https://static-yh.yonghui.cn/app/assets/xszt-RN/empty-bag.green.png',
+      }
     : require('@img/empty-bag.png')
 
 export const hotSaleBanner =
   os === 'android'
     ? {
         uri:
-          'https://static-yh.yonghui.cn/app/assets/xszt-RN/hot-sale-banner.png',
+          'https://static-yh.yonghui.cn/app/assets/xszt-RN/hot-sale-banner.green.png',
       }
     : require('@img/hot-sale-banner.png')
 
@@ -40,14 +43,15 @@ export const hotSaleTabBg =
   os === 'android'
     ? {
         uri:
-          'https://static-yh.yonghui.cn/app/assets/xszt-RN/hot-sale-tab-bg.png',
+          'https://static-yh.yonghui.cn/app/assets/xszt-RN/hot-sale-tab-bg.green.png',
       }
     : require('@img/hot-sale-tab-bg.png')
 
 export const iconChecked =
   os === 'android'
     ? {
-        uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/icon-checked.png',
+        uri:
+          'https://static-yh.yonghui.cn/app/assets/xszt-RN/icon-checked.green.png',
       }
     : require('@img/icon-checked.png')
 
@@ -55,7 +59,7 @@ export const iconSortAsc =
   os === 'android'
     ? {
         uri:
-          'https://static-yh.yonghui.cn/app/assets/xszt-RN/icon-sort-asc.png',
+          'https://static-yh.yonghui.cn/app/assets/xszt-RN/icon-sort-asc.green.png',
       }
     : require('@img/icon-sort-asc.png')
 
@@ -63,7 +67,7 @@ export const iconSortDesc =
   os === 'android'
     ? {
         uri:
-          'https://static-yh.yonghui.cn/app/assets/xszt-RN/icon-sort-desc.png',
+          'https://static-yh.yonghui.cn/app/assets/xszt-RN/icon-sort-desc.green.png',
       }
     : require('@img/icon-sort-desc.png')
 
@@ -91,7 +95,8 @@ export const minusCircleDisabled =
 export const minusCircle =
   os === 'android'
     ? {
-        uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/minus-circle.png',
+        uri:
+          'https://static-yh.yonghui.cn/app/assets/xszt-RN/minus-circle.green.png',
       }
     : require('@img/minus-circle.png')
 
@@ -121,7 +126,10 @@ export const plusCircleDisabled =
 
 export const plusCircle =
   os === 'android'
-    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/plus-circle.png' }
+    ? {
+        uri:
+          'https://static-yh.yonghui.cn/app/assets/xszt-RN/plus-circle.green.png',
+      }
     : require('@img/plus-circle.png')
 
 export const plus =
@@ -172,7 +180,8 @@ export const wechatMoments =
 export const addToCart =
   os === 'android'
     ? {
-        uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/add-to-cart.png',
+        uri:
+          'https://static-yh.yonghui.cn/app/assets/xszt-RN/add-to-cart.green.png',
       }
     : require('@img/add-to-cart.png')
 
