@@ -104,8 +104,10 @@ class Page extends React.Component<Props, State> {
         Native.getConstant('storeCode'),
         Native.getConstant('storeTypeCode'),
       ])
-      this.setState({ shop: { code: shopCode, type: shopType } })
-      this.requestTabData(shopCode, shopType)
+      if(shopCode && shopType){
+        this.setState({ shop: { code: shopCode, type: shopType } })
+        this.requestTabData(shopCode, shopType)
+      }
     } else {
       this.requestTabData(shop.code, shop.type)
     }
