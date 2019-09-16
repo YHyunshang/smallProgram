@@ -55,9 +55,15 @@ export default function withCartCountModify(WrappedComponent) {
     }, 500)
 
     showRemarksBeforeAddToCart = () => {
-      const {afterModifyCount } = this.props
+      const { afterModifyCount } = this.props
       Native.showRemarkPickerBeforeAddToCart(this.props).then(
-        count => this.setState({ count, modifiedCount: count }, () => afterModifyCount && afterModifyCount(count)),
+        count => {
+          console.log('----->>>>', count)
+          this.setState(
+            { count, modifiedCount: count },
+            () => afterModifyCount && afterModifyCount(count)
+          )
+        },
         () => this.setState({ count: 0, modifiedCount: 0 })
       )
     }

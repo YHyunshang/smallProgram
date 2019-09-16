@@ -132,9 +132,11 @@ export default class Page extends React.Component<Object, State> {
   onTabChange = key => {
     this.setState({ currentTabId: key })
     const { tabContentMap } = this.state
-    if (tabContentMap[key] && tabContentMap[key].length > 0)
-      this.flatListRef.current.scrollToIndex({ index: 1 })
-    this.requestProductListUnderTab(key)
+    if (tabContentMap[key] && tabContentMap[key].length > 0) {
+      // this.flatListRef.current.scrollToIndex({ index: 1 })
+    } else {
+      this.requestProductListUnderTab(key)
+    }
   }
 
   renderFlatItem = ({ item: { component: Comp, props } }) => <Comp {...props} />
@@ -188,6 +190,7 @@ export default class Page extends React.Component<Object, State> {
         data={floorData}
         renderItem={this.renderFlatItem}
         stickyHeaderIndices={[1]}
+        overScrollMode="always"
         ListFooterComponent={<View style={styles.footer} />}
       />
     )

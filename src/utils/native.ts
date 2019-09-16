@@ -166,7 +166,7 @@ export function showRemarkPickerBeforeAddToCart(
       'setItemNumberByProductcode',
       ({ productCode, productNumber }) => {
         Log.debug('[show remark result]', productCode, productNumber)
-        return productNumber === 1
+        return productNumber == 1
           ? resolve(productNumber)
           : reject(new Error('add to cart failed'))
       }

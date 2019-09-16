@@ -22,6 +22,7 @@ interface Props {
 }
 
 interface State {
+  loading: boolean
   shopCode: string
   currentTabKey: string
   tabList: {
@@ -42,6 +43,7 @@ export default class Page extends React.Component<Props, State> {
     super(props)
 
     this.state = {
+      loading: false,
       shopCode: props.shopCode,
       currentTabKey: '',
       tabList: [],
@@ -59,6 +61,7 @@ export default class Page extends React.Component<Props, State> {
   }
 
   requestCartInfo = async () => {
+    console.log('----->>>')
     const { shopCode } = this.state
     const { result } = await CMSServices.getCartInfo(shopCode)
     this.setState({
@@ -72,7 +75,15 @@ export default class Page extends React.Component<Props, State> {
   requestTabList = async () => {
     const { activityCode: code } = this.props
     const { shopCode } = this.state
-    const { result } = await CMSServices.getActivity(code, shopCode)
+    this.setState({ loading: true })
+    let res
+    try {
+      res = await CMSServices.getActivity(code, shopCode)
+    } finally {
+      this.setState({ loading: false })
+    }
+
+    const { result } = res
     let nextState = {
       currentTabKey: '',
       tabList: result.map(ele => ({ key: ele.id, label: ele.showName })),
@@ -91,7 +102,16 @@ export default class Page extends React.Component<Props, State> {
 
   requestTabContent = async tabKey => {
     const { shopCode } = this.state
-    const { result } = await CMSServices.getFloorDataByTab(tabKey, shopCode)
+    this.setState({ loading: true })
+    let res
+    try {
+      res = await CMSServices.getFloorDataByTab(tabKey, shopCode)
+    } finally {
+      this.setState({ loading: false })
+    }
+
+    const { result } = res
+
     this.setState(({ tabContentMap: preTabContentMap }) => ({
       tabContentMap: {
         ...preTabContentMap,
@@ -256,6 +276,7 @@ export default class Page extends React.Component<Props, State> {
   render() {
     const {
       cart: { amount, count },
+      loading,
     } = this.state
     const flatData = this.flatDataFormatter()
     const stickyHeaderIndices = flatData.findIndex(ele => ele.component === Tab)
@@ -274,7 +295,7 @@ export default class Page extends React.Component<Props, State> {
           removeClippedSubviews={false}
           refreshing={false}
           onRefresh={this.componentDidMount.bind(this)}
-          ListEmptyComponent={Empty}
+          ListEmptyComponent={loading ? null : Empty}
         />
         <View style={styles.footerBox}>
           <Footer amount={amount} cartCount={count} />
