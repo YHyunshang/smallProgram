@@ -1,3 +1,9 @@
+/*
+ * @Author: 李华良
+ * @Date: 2019-09-17 01:20:36
+ * @Last Modified by:   李华良
+ * @Last Modified time: 2019-09-17 01:20:36
+ */
 import * as React from 'react'
 import { Product } from '../typings'
 import debounce from 'lodash/debounce'
@@ -58,7 +64,6 @@ export default function withCartCountModify(WrappedComponent) {
       const { afterModifyCount } = this.props
       Native.showRemarkPickerBeforeAddToCart(this.props).then(
         count => {
-          console.log('----->>>>', count)
           this.setState(
             { count, modifiedCount: count },
             () => afterModifyCount && afterModifyCount(count)

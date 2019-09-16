@@ -61,7 +61,6 @@ export default class Page extends React.Component<Props, State> {
   }
 
   requestCartInfo = async () => {
-    console.log('----->>>')
     const { shopCode } = this.state
     const { result } = await CMSServices.getCartInfo(shopCode)
     this.setState({
