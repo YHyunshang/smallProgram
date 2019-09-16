@@ -211,11 +211,11 @@ class Page extends React.Component<Props, State> {
     const { shop } = this.state
     return ProductServices.getCategory(shop.code, shop.type, categoryCode)
       .then(({ result }) => {
-        //首页二级分类个数大于等于5个小于10个，分类展示5个
+        //首页二级分类数量大于等于5个小于10个，分类展示5个
         if(result && result.length >=5 && result.length <10){
           result=result.slice(0,5)
         }
-        //首页二级分类个数大于等于10个，分类展示10个
+        //首页二级分类数量大于等于10个，分类展示10个
         else if(result && result.length >=10){
           result=result.slice(0,10)
         }
