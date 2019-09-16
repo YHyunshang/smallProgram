@@ -209,6 +209,14 @@ class Page extends React.Component<Props, State> {
     const { shop } = this.state
     return ProductServices.getCategory(shop.code, shop.type, categoryCode)
       .then(({ result }) => {
+        //二级分类个数大于等于5个小于10个，首页展示5个
+        if(result && result.length >=5 && result.length <10){
+          result=result.slice(0,5)
+        }
+        //二级分类个数大于等于10个，首页展示10个
+        else if(result && result.length >=10){
+          result=result.slice(0,10)
+        }
         const categories = result.map(ele => ({
           key: ele.categoryCode,
           image: ele.categoryImage,
