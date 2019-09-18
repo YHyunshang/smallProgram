@@ -4,19 +4,23 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-04 16:14:25
+ * @LastEditTime: 2019-09-18 16:03:31
  */
 import {StyleSheet, Dimensions} from 'react-native'
-import {isIPhoneXMarginTop} from '../../utils/IsIphoneX'
+import {isIPhoneXMarginTop, isIPhoneXHeight} from '../../utils/IsIphoneX'
 import theme from '@theme'
 const {width, height} = Dimensions.get('window')
 export default StyleSheet.create({
   container: {
-    height: height - 50,
+    flex: 1,
+    height,
     zIndex: 100,
     flexDirection: 'column',
     position: 'relative',
     backgroundColor: '#ffffff'
+  },
+  subContainer: {
+    height: Number(height - isIPhoneXHeight())
   },
   goodsWrapper: {
     flex: 1,
