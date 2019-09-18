@@ -9,7 +9,7 @@ import {
   Easing,
 } from 'react-native'
 import { addToCart, minusCircle } from '@const/resources'
-import { Log } from '@utils'
+import { Log, Native } from '@utils'
 
 interface Props {
   size?: number
@@ -55,7 +55,11 @@ export default class ProductCountOperator extends React.Component<
   }
 
   onModifyCurrentCount = (c: number) => {
-    const { max, onChange } = this.props
+    const { max, onChange, disabled } = this.props
+    if (disabled) {
+      Native.showToast('不能添加更多了')
+      return
+    }
     const nextCount = c <= 0 ? 0 : c >= max ? max : c
     onChange(nextCount)
   }
@@ -126,7 +130,6 @@ export default class ProductCountOperator extends React.Component<
         <TouchableOpacity
           activeOpacity={0.75}
           onPress={() => this.onModifyCurrentCount(count + 1)}
-          disabled={disabled || count >= max}
         >
           <Animated.Image
             style={[

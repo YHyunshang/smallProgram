@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-09-05 18:26:23
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-09-16 07:36:24
+ * @Last Modified time: 2019-09-18 22:37:24
  */
 import * as React from 'react'
 import styles from './CountOperator.styles'
@@ -17,6 +17,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient'
 import { plus, minusCircle, addToCart } from '@const/resources'
 import theme from '@theme'
+import { Native } from '@utils'
 
 interface Props {
   count: number
@@ -62,7 +63,11 @@ export default class CountOperator extends React.Component<Props, State> {
   }
 
   onModifyCount = c => {
-    const { max, onChange } = this.props
+    const { max, onChange, disabled } = this.props
+    if (disabled) {
+      Native.showToast('不能添加更多了')
+      return
+    }
     const nextCount = c <= 0 ? 0 : c >= max ? max : c
     onChange(nextCount)
   }
@@ -117,7 +122,6 @@ export default class CountOperator extends React.Component<Props, State> {
             style={styles.cartBtn}
             activeOpacity={0.75}
             onPressIn={() => this.onModifyCount(count + 1)}
-            disabled={disabled}
           >
             <View style={styles.cartBtnBox}>
               <LinearGradient
