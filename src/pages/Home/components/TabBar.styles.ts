@@ -52,7 +52,7 @@ export default StyleSheet.create({
     fontWeight: '600',
     position: 'absolute',
     left: 14,
-    transform: [{ scale: 1.14 }],
+    // transform: [{ scale: 1.14 }],
   },
   firstTabTextActiveScroll: {
     fontSize: 14,
