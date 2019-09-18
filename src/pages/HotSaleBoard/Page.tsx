@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-08-21 14:48:31
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-09-12 15:04:46
+ * @Last Modified time: 2019-09-18 22:26:23
  */
 import * as React from 'react'
 import { View, FlatList, Image, Dimensions } from 'react-native'
@@ -132,10 +132,8 @@ export default class Page extends React.Component<Object, State> {
   onTabChange = key => {
     this.setState({ currentTabId: key })
     const { tabContentMap } = this.state
-    if (!(tabContentMap[key] && tabContentMap[key].length > 0)) {
-      this.flatListRef.current.scrollToOffset({ offset: 200 - 35.2941 })
-      this.requestProductListUnderTab(key)
-    }
+    this.flatListRef.current.scrollToOffset({ offset: 200 - 35.2941 })
+    this.requestProductListUnderTab(key)
   }
 
   renderFlatItem = ({ item: { component: Comp, props } }) => <Comp {...props} />
