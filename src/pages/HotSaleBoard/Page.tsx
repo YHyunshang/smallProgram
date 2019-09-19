@@ -5,7 +5,7 @@
  * @Last Modified time: 2019-09-12 15:04:46
  */
 import * as React from 'react'
-import { View, FlatList, Image } from 'react-native'
+import { View, FlatList, Image, Dimensions } from 'react-native'
 import styles from './Page.styles'
 import { ProductServices } from '@services'
 import ProductList from './components/ProductList'
@@ -132,9 +132,8 @@ export default class Page extends React.Component<Object, State> {
   onTabChange = key => {
     this.setState({ currentTabId: key })
     const { tabContentMap } = this.state
-    if (tabContentMap[key] && tabContentMap[key].length > 0) {
-      // this.flatListRef.current.scrollToIndex({ index: 1 })
-    } else {
+    if (!(tabContentMap[key] && tabContentMap[key].length > 0)) {
+      this.flatListRef.current.scrollToOffset({ offset: 200 - 35.2941 })
       this.requestProductListUnderTab(key)
     }
   }
@@ -192,6 +191,9 @@ export default class Page extends React.Component<Object, State> {
         stickyHeaderIndices={[1]}
         overScrollMode="always"
         ListFooterComponent={<View style={styles.footer} />}
+        contentContainerStyle={{
+          minHeight: 200 + Dimensions.get('window').height,
+        }}
       />
     )
   }
