@@ -110,6 +110,9 @@ export function updateProductCountInCart(
         shopCode,
       }),
       (errMsg, responseData) => {
+        if (errMsg === '未登录')
+          return reject('update cart failed: anonymous user')
+
         if (errMsg) {
           Native.showToast('添加到购物车失败')
           return reject('update cart failed')
