@@ -7,6 +7,7 @@ import {
   Dimensions,
   StatusBar,
   DeviceEventEmitter,
+  NativeEventEmitter,
 } from 'react-native'
 import * as Log from './log'
 import { Product } from '@components/business/Content/typings'
@@ -162,7 +163,10 @@ export function showRemarkPickerBeforeAddToCart(
     })
   )
   return new Promise((resolve, reject) => {
-    DeviceEventEmitter.addListener(
+    const eventEmitter = new NativeEventEmitter(
+      NativeModules.SendRNEventManager
+    )
+    eventEmitter.addListener(
       'setItemNumberByProductcode',
       ({ productCode, productNumber }) => {
         Log.debug('[show remark result]', productCode, productNumber)
