@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-23 14:53:27
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-18 16:08:21
+ * @LastEditTime: 2019-09-19 10:30:36
  */
 
 import {Dimensions, Platform} from 'react-native'
@@ -41,4 +41,4 @@ export const isIPhoneXFooter = (number) => {
  * @param {number}
  * @return:number
  */
-export const isIPhoneXHeight = () => (isIPhoneX ? 84 : 50)
+export const isIPhoneXHeight = () => (isIPhoneX ? 84 : isIPhone ? 50 : 74)
