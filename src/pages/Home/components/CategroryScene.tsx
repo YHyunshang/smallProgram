@@ -2,21 +2,30 @@ import * as React from 'react'
 import ProductFilter from './ProductFilter'
 import { Product } from '@components/business/Content/typings'
 import Box, { Column as BoxColumn } from '@components/business/Content/Box'
-import { View, FlatList, Animated, ScrollView } from 'react-native'
+import {
+  View,
+  FlatList,
+  Animated,
+  ScrollView,
+  RefreshControl,
+} from 'react-native'
 import ProductListItem from '@components/business/Content/ProductListItem'
 import { Native } from '@utils'
 import { TabHeight } from './TabBar'
+import theme from '@theme'
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
 const PlaceholderForNativeHeight = Native.getStatusBarHeight() + 86 + TabHeight
 
 interface Props {
+  loading: boolean
   categories: BoxColumn[]
   productFilter: {}
   products: Product[]
   offsetY: Animated.Value
   onScroll: (e: Event) => any
   onProductFilterChange: (...any) => any
+  onRefresh: () => any
 }
 
 export default class CategoryScene extends React.PureComponent<Props> {
@@ -24,7 +33,7 @@ export default class CategoryScene extends React.PureComponent<Props> {
     <View
       style={{ backgroundColor: '#fff', padding: 15, position: 'relative' }}
     >
-      <ProductListItem {...item} />
+      <ProductListItem {...item} disableSync />
     </View>
   )
 
@@ -36,12 +45,14 @@ export default class CategoryScene extends React.PureComponent<Props> {
 
   render() {
     const {
+      loading,
       categories,
       productFilter,
       products,
       offsetY,
       onScroll,
       onProductFilterChange,
+      onRefresh,
     } = this.props
 
     const onContentScroll = Animated.event(
@@ -128,11 +139,18 @@ export default class CategoryScene extends React.PureComponent<Props> {
               }}
             />
           }
+          refreshControl={
+            <RefreshControl
+              refreshing={!!loading}
+              onRefresh={onRefresh}
+              colors={[theme.primary, theme.white]}
+              tintColor={theme.primary}
+            />
+          }
           ItemSeparatorComponent={this.renderSeparator}
           data={products}
           keyExtractor={item => item.code}
           renderItem={this.renderFloor}
-          removeClippedSubviews
           windowSize={3}
           initialNumToRender={5}
           maxToRenderPerBatch={5}

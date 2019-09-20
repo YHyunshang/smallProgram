@@ -1,8 +1,8 @@
 /*
  * @Author: 李华良
  * @Date: 2019-09-17 01:20:36
- * @Last Modified by:   李华良
- * @Last Modified time: 2019-09-17 01:20:36
+ * @Last Modified by: 李华良
+ * @Last Modified time: 2019-09-20 18:19:13
  */
 import * as React from 'react'
 import { Product } from '../typings'
@@ -35,10 +35,10 @@ export default function withCartCountModify(WrappedComponent) {
       nextProps: Readonly<Props>,
       nextContext: any
     ): void {
+      Log.debug(
+        `count changed from parent: current - ${this.state.count}, next - ${nextProps.count}, disableSync - ${this.props.disableSync}`
+      )
       if (nextProps.count !== this.state.count && !this.props.disableSync) {
-        Log.debug(
-          `count changed from parent: current - ${this.state.count}, next - ${nextProps.count}`
-        )
         this.setState({
           count: nextProps.count,
           modifiedCount: nextProps.count,

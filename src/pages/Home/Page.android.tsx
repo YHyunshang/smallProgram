@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-09-19 09:35:28
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-09-20 15:56:01
+ * @Last Modified time: 2019-09-20 18:15:39
  */
 import * as React from 'react'
 import { View, Animated } from 'react-native'
@@ -113,9 +113,7 @@ export default class Page extends React.Component<Props, State> {
     // 注册购物车变化回调
     this.removeCartChangeListener = Native.onNativeEvent(
       'notifyRefreshCartNum',
-      () => {
-        this
-      }
+      this.onCartChange
     )
   }
 
@@ -541,8 +539,17 @@ export default class Page extends React.Component<Props, State> {
     this.setState({ products })
   }
 
+  onRefresh = () => {
+    const { currentTabIdx, tabList, shop } = this.state
+    const currentTab = tabList[currentTabIdx]
+    if (!currentTab) return
+    if (currentTabIdx === 0) this.requestTabData(shop.code, shop.type)
+    else this.onTabKeyChange(currentTab.id)
+  }
+
   render() {
     const {
+      loading,
       currentTabIdx,
       tabList,
       animatedValRefCmsScrollY,
@@ -568,19 +575,23 @@ export default class Page extends React.Component<Props, State> {
 
         {currentTab.type === 'cms' ? (
           <CMSScene
+            loading={loading}
             data={currentCMSContentData}
             offsetY={animatedValRefCmsScrollY}
             contentOffset={currentTabIdx === 0 ? 0 : PlaceholderForNativeHeight}
             onScroll={this.onPageScroll}
+            onRefresh={this.onRefresh}
           />
         ) : currentTab.type === 'category' ? (
           <CategoryScene
+            loading={loading}
             categories={categories}
             productFilter={productFilter}
             products={products}
             offsetY={animatedValRefCmsScrollY}
             onScroll={this.onPageScroll}
             onProductFilterChange={this.onProductFilterChange}
+            onRefresh={this.onRefresh}
           />
         ) : null}
       </View>
