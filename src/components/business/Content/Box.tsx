@@ -18,13 +18,13 @@ import { iconExpand } from '@const/resources'
 
 const windowWith = Dimensions.get('window').width
 
-interface Column extends BoxItemProps {
+export interface Column extends BoxItemProps {
   key: string | number
 }
 
 interface Props {
-  data: Column[][]
-  maxRow: number
+  data: Column[]
+  maxRow?: number
   columnNumber: number
 }
 

@@ -6,16 +6,17 @@ import * as React from 'react'
 import { View } from 'react-native'
 import FitImage from 'react-native-fit-image'
 import styles from './Divider.styles'
+import { Img } from '@utils'
 
 interface Props {
   image: string
 }
 
-export default function Divider(props: Props) {
-  const { image } = props
+export default function Divider({ image }: Props) {
+  const fitImg = Img.loadRatioImage(image, Img.FullWidth)
   return (
     <View style={styles.container}>
-      <FitImage source={{ uri: image }} indicator={false} />
+      <FitImage source={{ uri: fitImg }} indicator={false} />
     </View>
   )
 }

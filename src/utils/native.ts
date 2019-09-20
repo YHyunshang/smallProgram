@@ -177,3 +177,36 @@ export function showRemarkPickerBeforeAddToCart(
     )
   })
 }
+
+/**
+ * 监听 native 事件
+ */
+export const onNativeEvent = (function() {
+  const emitter = new NativeEventEmitter(NativeModules.SendRNEventManager)
+  let cbMapper: { [eventName: string]: Function[] } = {}
+  let listenerMapper: { [eventName: string]: { remove: Function } } = {}
+
+  return (event: string, handler: Function) => {
+    if (!cbMapper[event] || cbMapper[event].length === 0) {
+      cbMapper[event] = [handler]
+      listenerMapper[event] = emitter.addListener(event, function(
+        ...args: any[]
+      ) {
+        Log.debug(`EVENT::${event}, payload:`, ...args)
+        cbMapper[event].forEach(cb => cb(...args))
+      })
+    } else {
+      cbMapper[event].push(handler)
+    }
+
+    return () => {
+      cbMapper[event] = cbMapper[event].filter(cb => cb !== handler)
+
+      if (cbMapper[event].length === 0) {
+        listenerMapper[event].remove()
+        delete cbMapper[event]
+        delete listenerMapper[event]
+      }
+    }
+  }
+})()

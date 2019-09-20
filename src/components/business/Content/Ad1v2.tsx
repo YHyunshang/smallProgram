@@ -11,7 +11,7 @@ import {
 } from 'react-native'
 import FitImage from 'react-native-fit-image'
 import styles from './Ad1v2.styles'
-import { Native } from '@utils'
+import { Native, Img } from '@utils'
 
 interface Props {
   data: {
@@ -20,14 +20,19 @@ interface Props {
   }[]
 }
 
-function Img({ style, image, link }: { style?: any; image: string; link: {} }) {
+function SideImg({
+  style,
+  image,
+  link,
+}: {
+  style?: any
+  image: string
+  link: {}
+}) {
+  const fitImg = Img.loadRatioImage(image, Img.FullWidth / 2)
   return (
     <TouchableWithoutFeedback onPress={() => Native.navigateTo(link)}>
-      <Image
-        source={{ uri: image }}
-        style={[style, { width: '100%', height: '100%' }]}
-        resizeMode="cover"
-      />
+      <Image source={{ uri: fitImg }} style={[style]} resizeMode="stretch" />
     </TouchableWithoutFeedback>
   )
 }
@@ -38,14 +43,14 @@ export default function Ad1v2({ data }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.leftImgBox}>
-        <Img {...left} />
+        <SideImg style={styles.leftImg} {...left} />
       </View>
       <View style={styles.rightImgBox}>
         <View style={styles.rightTopImgBox}>
-          <Img style={styles.rightTopImg} {...rightTop} />
+          <SideImg style={styles.rightTopImg} {...rightTop} />
         </View>
         <View style={styles.rightBtmImgBox}>
-          <Img style={styles.rightBtmImg} {...rightBtm} />
+          <SideImg style={styles.rightBtmImg} {...rightBtm} />
         </View>
       </View>
     </View>

@@ -6,7 +6,7 @@ import * as React from 'react'
 import { View, Image, TouchableWithoutFeedback } from 'react-native'
 import Swiper from 'react-native-swiper'
 import Styles from './Carousel.styles'
-import { Native } from '@utils'
+import { Native, Img } from '@utils'
 
 interface Props {
   imageHeight: number
@@ -29,19 +29,22 @@ export default function Carousel({ imageHeight = 290, data }: Props) {
         activeDotStyle={Styles.activeDot}
         autoplayTimeout={4}
       >
-        {data.map(({ image, link, key }) => (
-          <TouchableWithoutFeedback
-            key={key}
-            onPress={() => link.type && Native.navigateTo(link)}
-          >
-            <View style={Styles.slider}>
-              <Image
-                style={[Styles.image, { height: imageHeight }]}
-                source={{ uri: image }}
-              />
-            </View>
-          </TouchableWithoutFeedback>
-        ))}
+        {data.map(({ image, link, key }) => {
+          const fitImg = Img.loadRatioImage(image, Img.FullWidth)
+          return (
+            <TouchableWithoutFeedback
+              key={key}
+              onPress={() => link.type && Native.navigateTo(link)}
+            >
+              <View style={Styles.slider}>
+                <Image
+                  style={[Styles.image, { height: imageHeight }]}
+                  source={{ uri: fitImg }}
+                />
+              </View>
+            </TouchableWithoutFeedback>
+          )
+        })}
       </Swiper>
     </View>
   )

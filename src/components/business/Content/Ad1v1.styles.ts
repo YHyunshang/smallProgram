@@ -1,21 +1,37 @@
 /**
  * Created by 李华良 on 2019-08-21
  */
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Dimensions } from 'react-native'
+
+const imgWidth = (Dimensions.get('window').width - 30 - 3) / 2
+const imgHeight = (imgWidth * 155) / 171
 
 export default StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   imgBoxL: {
-    flex: 1,
-    marginRight: 2.5,
-    height: 145,
+    alignItems: 'flex-end',
+    marginRight: 1.5,
+    borderTopLeftRadius: 5,
+    borderBottomLeftRadius: 5,
+    overflow: 'hidden',
   },
   imgBoxR: {
-    flex: 1,
-    marginLeft: 2.5,
-    height: 145,
+    alignItems: 'flex-start',
+    marginLeft: 1.5,
+    borderTopRightRadius: 5,
+    borderBottomRightRadius: 5,
+    overflow: 'hidden',
+  },
+  imgL: {
+    width: imgWidth,
+    height: imgHeight,
+  },
+  imgR: {
+    width: imgWidth,
+    height: imgHeight,
   },
 })
