@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-18 16:03:31
+ * @LastEditTime: 2019-09-21 15:59:37
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import {isIPhoneXMarginTop, isIPhoneXHeight} from '../../utils/IsIphoneX'
@@ -162,7 +162,7 @@ export default StyleSheet.create({
   },
   goodsDetailImage: {
     width: '100%',
-    height: 240
+    height: 375
   },
   imagesContent: {
     width: '100%',

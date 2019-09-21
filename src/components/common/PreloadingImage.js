@@ -4,12 +4,13 @@
  * @Author: yuwen.liu
  * @Date: 2019-08-29 11:25:46
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-29 11:49:11
+ * @LastEditTime: 2019-09-21 16:18:53
  */
 import React, {Component} from 'react'
-import {Image, StyleSheet, View} from 'react-native'
+import {StyleSheet, View} from 'react-native'
 import PropTypes from 'prop-types'
 import {placeholderProduct} from '@const/resources'
+import FitImage from 'react-native-fit-image'
 /**
  * 自定义图片
  */
@@ -38,11 +39,11 @@ export default class PreloadingImage extends Component {
         source = errImage
       }
       return (
-        <View style={[styles.imgDefault, style]}>
-          <Image
+        <View style={[styles.container]}>
+          <FitImage
             source={source}
-            resizeMode="contain"
-            style={[{overflow: 'hidden', position: 'absolute'}, style]}
+            resizeMode="cover"
+            // style={[{overflow: 'hidden', position: 'absolute'}]}
             onError={(error) => {
               this.setState({
                 type: 1
@@ -54,12 +55,15 @@ export default class PreloadingImage extends Component {
               })
             }}
           />
-          {this.state.isLoadComplete ? null : <Image style={[styles.imgDefault, style]} source={defaultImage} resizeMode="contain"/> }
+          {this.state.isLoadComplete ? null : <FitImage style={[styles.imgDefault, style]} source={defaultImage} resizeMode="contain"/> }
         </View>
       )
     }
 }
 const styles = StyleSheet.create({
+  container: {
+    width: '100%'
+  },
   imgDefault: {
     width: 150,
     height: 150
