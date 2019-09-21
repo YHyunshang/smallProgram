@@ -219,9 +219,11 @@ export function getCartInfo(shopCode: string) {
 export function groupTags(tags: string[]): [string[], string[]] {
   return tags.reduce(
     ([priceTagLst, productTagLst], cur) => {
-      return cur.match(/^\d+(\.\d+)?折/) || cur.match(/^满.+减.+/)
+      return /\d+(\.\d+)?折/.test(cur) ||
+        /满\d/.test(cur) ||
+        /第\d+件/.test(cur)
         ? [[...priceTagLst, cur], productTagLst]
-        : [priceTagLst, [productTagLst]]
+        : [priceTagLst, [...productTagLst, cur]]
     },
     [[], []]
   )
