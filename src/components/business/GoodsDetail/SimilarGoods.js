@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-05 19:44:45
+ * @LastEditTime: 2019-09-22 16:23:44
  */
 
 import React from 'react'
@@ -69,7 +69,8 @@ export default class SimilarGoods extends React.Component {
         <View style={styles.similarGoodsWrapper}>
           <PreloadingImage
             style={styles.similarGoodsImg}
-            uri={item.mainUrl.url}
+            sourceType={1}
+            uri={`${item.mainUrl.url}?width=150`}
           ></PreloadingImage>
         </View>
         {/* <Tag textValue='特价' marginLeft={10}></Tag> */}

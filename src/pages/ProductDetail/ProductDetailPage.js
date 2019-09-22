@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-21 15:56:44
+ * @LastEditTime: 2019-09-22 16:24:48
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -219,11 +219,11 @@ export default class ProductDetailPage extends React.Component {
     // favorableRate = favorableRate && parseFloat(favorableRate.toFixed(2))
     // 商品详情图文列表
     const goodsImgList = productImgList ? productImgList.map(({url}, index) => (
-      <PreloadingImage style={styles.goodsDetailImage} uri={url}></PreloadingImage>
+      <PreloadingImage style={styles.goodsDetailImage} sourceType={0} uri={`${url}?width=345`}></PreloadingImage>
     )) : null
     // 商家文描图文列表
     const shopImgList = shopUrl ? shopUrl.map((item, index) => (
-      <PreloadingImage style={styles.goodsDetailImage} uri={item} ></PreloadingImage>
+      <PreloadingImage style={styles.goodsDetailImage} sourceType={0} uri={`${item}?width=345`} ></PreloadingImage>
     )) : null
     return (
       <View style={styles.container}>
