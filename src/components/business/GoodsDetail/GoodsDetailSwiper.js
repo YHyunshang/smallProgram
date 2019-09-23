@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-22 15:59:11
+ * @LastEditTime: 2019-09-23 15:18:34
  */
 
 import React from 'react'
@@ -12,6 +12,7 @@ import {
   Image,
   View
 } from 'react-native'
+import {Img} from '@utils'
 import Swiper from 'react-native-swiper'
 import styles from './GoodsDetailSwiper.styles'
 export default class GoodsDetailSwiper extends React.Component {
@@ -33,7 +34,7 @@ export default class GoodsDetailSwiper extends React.Component {
     const activeDot = <View style={{...styles.dot, ...styles.activeDot}} />
     const swiperList = imgData.map(({url}, index) => (
       <View style={styles.imgView}>
-        <Image style={styles.image} source={{uri: `${url}?width=320`}} resizeMode="cover"/>
+        <Image style={styles.image} source={{uri: Img.loadRatioImage(url, Img.FullWidth)}} resizeMode="cover"/>
       </View>
     ))
     return (

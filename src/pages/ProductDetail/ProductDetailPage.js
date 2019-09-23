@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-23 14:21:10
+ * @LastEditTime: 2019-09-23 15:25:27
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -16,7 +16,7 @@ import TabBar from '../../components/common/TabBar'
 import Loading from '../../components/common/Loading'
 import PreloadingImage from '../../components/common/PreloadingImage'
 import styles from './ProductDetailPage.styles'
-import {Native} from '@utils'
+import {Native, Img} from '@utils'
 import {getGoodsDetailData, getPosterImgUrl, getSimilarProduct} from '../../services/goodsDetail'
 import GoodsDetailSwiper from '../../components/business/GoodsDetail/GoodsDetailSwiper'
 import SimilarGoods from '../../components/business/GoodsDetail/SimilarGoods'
@@ -219,11 +219,11 @@ export default class ProductDetailPage extends React.Component {
     // favorableRate = favorableRate && parseFloat(favorableRate.toFixed(2))
     // 商品详情图文列表
     const goodsImgList = productImgList ? productImgList.map(({url}, index) => (
-      <PreloadingImage style={styles.goodsDetailImage} sourceType={0} uri={`${url}?width=375`}></PreloadingImage>
+      <PreloadingImage style={styles.goodsDetailImage} sourceType={0} uri={Img.loadRatioImage(url, Img.FullWidth)}></PreloadingImage>
     )) : null
     // 商家文描图文列表
     const shopImgList = shopUrl ? shopUrl.map((item, index) => (
-      <PreloadingImage style={styles.goodsDetailImage} sourceType={0} uri={`${item}?width=375`} ></PreloadingImage>
+      <PreloadingImage style={styles.goodsDetailImage} sourceType={0} uri={Img.loadRatioImage(item, Img.FullWidth)} ></PreloadingImage>
     )) : null
     return (
       <View style={styles.container}>

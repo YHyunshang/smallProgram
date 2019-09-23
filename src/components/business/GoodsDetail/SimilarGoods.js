@@ -4,10 +4,11 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-22 16:23:44
+ * @LastEditTime: 2019-09-23 15:14:03
  */
 
 import React from 'react'
+import {Img} from '@utils'
 import {Text, View, FlatList, TouchableOpacity} from 'react-native'
 import PreloadingImage from '../../common/PreloadingImage'
 import DetailCartAnimated from '../../business/Animated/DetailCartAnimated'
@@ -70,7 +71,7 @@ export default class SimilarGoods extends React.Component {
           <PreloadingImage
             style={styles.similarGoodsImg}
             sourceType={1}
-            uri={`${item.mainUrl.url}?width=150`}
+            uri={Img.loadRatioImage(item.mainUrl.url, 150)}
           ></PreloadingImage>
         </View>
         {/* <Tag textValue='特价' marginLeft={10}></Tag> */}
