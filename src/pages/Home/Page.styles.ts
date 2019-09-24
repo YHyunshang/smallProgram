@@ -10,6 +10,16 @@ export default StyleSheet.create({
     flex: 1,
   },
 
+  loadingContainer: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
   tabBar: {
     width: '100%',
     backgroundColor: 'transparent',

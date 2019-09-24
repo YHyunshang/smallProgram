@@ -13,9 +13,10 @@ import * as Log from './log'
  * @param height pt 高度
  */
 export function loadRatioImage(src: string, width?: number, height?: number) {
-  if (!/^https?:\/\/hotfile-cdn\.yonghui\.cn/) {
+  if (!/^https?:\/\/hotfile(-cdn)?\.yonghui\.cn/.test(src)) {
     Log.warn(
-      'only support images on hotfile cdn: http(s)://hotfile-cdn.yonghui.cn'
+      'only support images on hotfile cdn: http(s)://hotfile(-cdn).yonghui.cn',
+      src
     )
     return src
   }

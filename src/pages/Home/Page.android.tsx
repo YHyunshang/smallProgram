@@ -2,10 +2,10 @@
  * @Author: 李华良
  * @Date: 2019-09-19 09:35:28
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-09-20 18:15:39
+ * @Last Modified time: 2019-09-24 16:11:00
  */
 import * as React from 'react'
-import { View, Animated } from 'react-native'
+import { View, Animated, ActivityIndicator, Dimensions } from 'react-native'
 import { Native, Log } from '@utils'
 import { CMSServices, ProductServices } from '@services'
 import styles from './Page.styles'
@@ -24,10 +24,24 @@ import TabBar, { TabHeight } from './components/TabBar'
 import CMSScene from './components/CMSScene'
 import CategoryScene from './components/CategroryScene'
 import { StorageChoices, Sort, sort2String } from './components/ProductFilter'
+import { Product } from '@components/business/Content/typings'
+import theme from '@theme'
 
 const PlaceholderForNativeHeight = Native.getStatusBarHeight() + 86 + TabHeight
+const WindowWidth = Dimensions.get('window').width
 
 interface Props {}
+
+enum TabType {
+  CMS = 'cms',
+  CATEGORY = 'category',
+}
+
+interface Tab {
+  key: string // unique tab key
+  title: string // tab's display name
+  type: TabType // tab type: cms or category
+}
 
 interface State {
   shop: {
@@ -35,25 +49,20 @@ interface State {
     type: string
   }
 
-  loading: boolean
-  animatedValRefCmsScrollY: Animated.AnimatedValue
+  animatedValRefCmsScrollY: Animated.AnimatedValue // 动画相关，页面的 Y 向滚动距离
 
-  tabList: {}[]
+  loading: boolean
+  tabList: Tab[]
   currentTabIdx: number
 
-  currentCMSContentData: {}[] // cms 内容数据
-
-  // 分类 tab 下的数据
-  categories: {}[] // 二级分类
-  productFilter: {
-    // 商品过滤器
-    inventoryFilter: StorageChoices
-    orderField: string
-    orderType: Sort
-    page: number
-    pageSize: number
+  tabContentLoadingMap: {
+    [tabKey: string]: boolean
   }
-  products: {}[] // 分类 tab 下的商品列表
+  tabContentMap: {
+    [tabKey: string]: (
+      | []
+      | { categories: []; productFilter: {}; products: Product[] })[]
+  }
 }
 
 export default class Page extends React.Component<Props, State> {
@@ -65,18 +74,8 @@ export default class Page extends React.Component<Props, State> {
 
     tabList: [],
     currentTabIdx: 0,
-
-    currentCMSContentData: [],
-
-    categories: [],
-    productFilter: {
-      inventoryFilter: StorageChoices.InStore,
-      orderField: 'price',
-      orderType: Sort.ASC,
-      page: 1,
-      pageSize: 30,
-    },
-    products: [],
+    tabContentLoadingMap: {},
+    tabContentMap: {},
   }
 
   removeShopChangeListener: Function
@@ -126,11 +125,9 @@ export default class Page extends React.Component<Props, State> {
   }
 
   onCartChange = () => {
-    const { currentTabIdx, tabList } = this.state
-    const currentTab = tabList[currentTabIdx]
-    if (!currentTab) return
+    const { currentTabIdx } = this.state
 
-    this.onTabKeyChange(currentTab.id)
+    this.onTabIndexChange(currentTabIdx)
   }
 
   requestTabData = async (shopCode: string, shopTypeCode: string) => {
@@ -150,13 +147,13 @@ export default class Page extends React.Component<Props, State> {
     const [cmsTabs, categories] = data
     const tabList = [
       ...cmsTabs.map(ele => ({
-        id: ele.id,
-        showName: ele.showName,
+        key: ele.id,
+        title: ele.showName,
         type: 'cms',
       })),
       ...categories.map(ele => ({
-        id: ele.categoryCode,
-        showName: ele.categoryName,
+        key: ele.categoryCode,
+        title: ele.categoryName,
         type: 'category',
       })),
     ]
@@ -164,10 +161,14 @@ export default class Page extends React.Component<Props, State> {
     this.setState({
       currentTabIdx: 0,
       tabList,
-      currentCMSContentData:
+      tabContentMap:
         cmsTabs.length > 0
-          ? this.formatFloorData(cmsTabs[0].templateVOList || [])
-          : [],
+          ? {
+              [cmsTabs[0].id]: this.formatFloorData(
+                cmsTabs[0].templateVOList || []
+              ),
+            }
+          : {},
     })
   }
 
@@ -446,66 +447,87 @@ export default class Page extends React.Component<Props, State> {
     }
   }
 
-  // Tab key 变化（ TabView jumpTo 方法的简单重写）
-  onTabKeyChange = async key => {
+  // 当前激活的 tab index 变化
+  onTabIndexChange = async (index: number, isRefresh?: boolean) => {
     const {
       tabList,
       shop,
-      currentTabIdx,
       animatedValRefCmsScrollY,
+      tabContentMap,
     } = this.state
-    const idx = tabList.findIndex(ele => ele.id === key)
-    if (idx < 0) return
 
-    if (idx !== currentTabIdx) {
-      animatedValRefCmsScrollY.setValue(0)
-      this.onPageScroll({
-        nativeEvent: {
-          contentOffset: { x: 0, y: 0 },
-        },
-      })
-    }
+    const currentTab = tabList[index]
+    if (!currentTab) return
 
-    this.setState({ currentTabIdx: idx })
-    const currentTab = tabList[idx]
+    this.setState({ currentTabIdx: index })
 
-    const productFilter = {
-      inventoryFilter: StorageChoices.InStore,
-      orderField: 'price',
-      orderType: Sort.ASC,
-      page: 1,
-      pageSize: 30,
-    }
+    const currentTabKey = currentTab.key
+    const preContentData = tabContentMap[currentTabKey]
+    // 非下拉刷新，且当前 tab 下已有数据，直接渲染数据
+    if (
+      !isRefresh &&
+      ((currentTab.type === TabType.CMS && (preContentData || []).length > 0) ||
+        (currentTab.type === TabType.CATEGORY && preContentData))
+    )
+      return
 
-    // reset content data
-    this.setState({
-      currentCMSContentData: [],
-      categories: [],
-      productFilter,
-      products: [],
-    })
+    // animatedValRefCmsScrollY.setValue(0)
+    // this.syncScrollToNative({
+    //   nativeEvent: {
+    //     contentOffset: { x: 0, y: 0 },
+    //   },
+    // })
 
-    this.setState({ loading: true })
+    this.setState(({ tabContentLoadingMap }) => ({
+      tabContentLoadingMap: { ...tabContentLoadingMap, [currentTabKey]: true },
+    }))
     let p = Promise.resolve()
-    if (currentTab.type === 'cms') {
-      p = this.requestCMSContentData(currentTab.id, shop.code).then(data =>
-        this.setState({ currentCMSContentData: data })
+    if (currentTab.type === TabType.CMS) {
+      p = this.requestCMSContentData(currentTabKey, shop.code).then(data =>
+        this.setState(({ tabContentMap }) => ({
+          tabContentMap: {
+            ...tabContentMap,
+            [currentTabKey]: data,
+          },
+        }))
       )
-    } else if (currentTab.type === 'category') {
+    } else if (currentTab.type === TabType.CATEGORY) {
+      const productFilter = {
+        inventoryFilter: StorageChoices.InStore,
+        orderField: 'price',
+        orderType: Sort.ASC,
+        page: 1,
+        pageSize: 30,
+      }
       p = this.requestCategoryContentData(
         currentTab.id,
         shop.code,
         shop.type,
         productFilter
       ).then(([categories, products]) =>
-        this.setState({ categories, products })
+        this.setState(({ tabContentMap }) => ({
+          tabContentMap: {
+            ...tabContentMap,
+            [currentTabKey]: {
+              categories,
+              productFilter,
+              products,
+            },
+          },
+        }))
       )
     }
-    p.finally(() => this.setState({ loading: false }))
+    p.finally(() =>
+      this.setState(({ tabContentLoadingMap }) => ({
+        tabContentLoadingMap: {
+          ...tabContentLoadingMap,
+          [currentTabKey]: false,
+        },
+      }))
+    )
   }
 
-  // 页面滚动
-  onPageScroll = e => {
+  syncScrollToNative = e => {
     const {
       nativeEvent: {
         contentOffset: { x, y },
@@ -514,8 +536,27 @@ export default class Page extends React.Component<Props, State> {
     CMSServices.pushScrollToNative(x, y)
   }
 
+  // 页面滚动
+  onPageScroll = Animated.event(
+    [
+      {
+        nativeEvent: {
+          contentOffset: { y: this.state.animatedValRefCmsScrollY },
+        },
+      },
+    ],
+    {
+      listener: this.syncScrollToNative,
+      useNativeDriver: true,
+    }
+  )
+
   // 分类页商品 filter 变化
   onProductFilterChange = async data => {
+    const { currentTabIdx, tabList, shop } = this.state
+    const currentTab = tabList[currentTabIdx]
+    if (!currentTabIdx || currentTab.type !== TabType.CATEGORY) return
+
     const nextProductFilter = {
       inventoryFilter: data.storage,
       orderField: 'price',
@@ -523,77 +564,112 @@ export default class Page extends React.Component<Props, State> {
       page: 1,
       pageSize: 30,
     }
-    this.setState({
-      productFilter: nextProductFilter,
-    })
-
-    const { shop, currentTabIdx, tabList } = this.state
-    const currentTab = tabList[currentTabIdx]
-    if (!currentTabIdx) return
+    const currentTabKey = currentTab.key
+    this.setState(({ tabContentMap }) => ({
+      ...tabContentMap,
+      [currentTabKey]: {
+        ...tabContentMap[currentTabKey],
+        productFilter: nextProductFilter,
+      },
+    }))
 
     const products = await this.requestProductList(
-      currentTab.id,
+      currentTabKey,
       shop.code,
       nextProductFilter
     )
-    this.setState({ products })
+    this.setState(({ tabContentMap }) => ({
+      ...tabContentMap,
+      [currentTabKey]: {
+        ...tabContentMap[currentTabKey],
+        products,
+      },
+    }))
   }
 
   onRefresh = () => {
-    const { currentTabIdx, tabList, shop } = this.state
-    const currentTab = tabList[currentTabIdx]
-    if (!currentTab) return
+    const { currentTabIdx, shop } = this.state
+    console.log('onRefresh')
     if (currentTabIdx === 0) this.requestTabData(shop.code, shop.type)
-    else this.onTabKeyChange(currentTab.id)
+    else this.onTabIndexChange(currentTabIdx, true)
+  }
+
+  renderTabBar = props => {
+    const { animatedValRefCmsScrollY } = this.state
+    return <TabBar {...props} animatedVal={animatedValRefCmsScrollY} />
+  }
+
+  renderScene = ({ route: { key, title, type } }) => {
+    const {
+      tabContentMap,
+      tabContentLoadingMap,
+      animatedValRefCmsScrollY,
+      currentTabIdx: currentActiveTabIdx,
+      tabList,
+    } = this.state
+
+    const currentRouteIdx = tabList.findIndex(ele => ele.key === key)
+    if (Math.abs(currentActiveTabIdx - currentRouteIdx) > 2) {
+      return <View />
+    }
+
+    const content = tabContentMap[key]
+    const contentLoading = !!tabContentLoadingMap[key]
+
+    switch (type) {
+      case TabType.CMS:
+        return (
+          <CMSScene
+            loading={contentLoading}
+            data={content || []}
+            contentOffset={
+              currentActiveTabIdx === 0 ? 0 : PlaceholderForNativeHeight
+            }
+            onScroll={this.onPageScroll}
+            onRefresh={this.onRefresh}
+          />
+        )
+      case TabType.CATEGORY:
+        return (
+          <CategoryScene
+            loading={contentLoading}
+            categories={(content || {}).categories || []}
+            productFilter={(content || {}).productFilter || {}}
+            products={(content || {}).products}
+            animatedVal={animatedValRefCmsScrollY}
+            onProductFilterChange={this.onProductFilterChange}
+            onRefresh={this.onRefresh}
+            onScroll={this.onPageScroll}
+          />
+        )
+      default:
+        return null
+    }
   }
 
   render() {
-    const {
-      loading,
-      currentTabIdx,
-      tabList,
-      animatedValRefCmsScrollY,
-      currentCMSContentData,
-      categories,
-      productFilter,
-      products,
-    } = this.state
+    const { loading, currentTabIdx, tabList } = this.state
     const navigationState = {
       index: currentTabIdx,
-      routes: tabList.map(tab => ({ key: tab.id, title: tab.showName })),
+      routes: tabList,
     }
-
-    const currentTab = tabList[currentTabIdx] || {}
 
     return (
       <View style={styles.container}>
-        <TabBar
-          jumpTo={this.onTabKeyChange}
-          navigationState={navigationState}
-          animatedVal={animatedValRefCmsScrollY}
-        />
+        {loading && tabList.length === 0 && (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={theme.primary} />
+          </View>
+        )}
 
-        {currentTab.type === 'cms' ? (
-          <CMSScene
-            loading={loading}
-            data={currentCMSContentData}
-            offsetY={animatedValRefCmsScrollY}
-            contentOffset={currentTabIdx === 0 ? 0 : PlaceholderForNativeHeight}
-            onScroll={this.onPageScroll}
-            onRefresh={this.onRefresh}
-          />
-        ) : currentTab.type === 'category' ? (
-          <CategoryScene
-            loading={loading}
-            categories={categories}
-            productFilter={productFilter}
-            products={products}
-            offsetY={animatedValRefCmsScrollY}
-            onScroll={this.onPageScroll}
-            onProductFilterChange={this.onProductFilterChange}
-            onRefresh={this.onRefresh}
-          />
-        ) : null}
+        <TabView
+          navigationState={navigationState}
+          renderTabBar={this.renderTabBar}
+          renderScene={this.renderScene}
+          onIndexChange={this.onTabIndexChange}
+          initialLayout={{ height: 0, width: WindowWidth }}
+          sceneContainerStyle={{ backgroundColor: '#FAFAFA' }}
+        />
       </View>
     )
   }
