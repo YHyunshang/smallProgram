@@ -4,10 +4,10 @@
  * @Author: yuwen.liu
  * @Date: 2019-08-29 11:25:46
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-22 16:22:41
+ * @LastEditTime: 2019-09-24 17:43:37
  */
 import React, {Component} from 'react'
-import {StyleSheet, View} from 'react-native'
+import {StyleSheet, View, Image} from 'react-native'
 import PropTypes from 'prop-types'
 import {placeholderProduct} from '@const/resources'
 import FitImage from 'react-native-fit-image'
@@ -42,11 +42,13 @@ export default class PreloadingImage extends Component {
         source = errImage
       }
       return (
-        <View style={[styles.container]}>
+        <View style={[sourceType ? styles.imgDefault : styles.container]}>
           <FitImage
+            // indicator={ sourceType ? true : false}
+            indicator={false}
             source={source}
             resizeMode="cover"
-            style={[sourceType ? style : '']}
+            style={[sourceType ? styles.imgPosition : '', sourceType ? style : '']}
             onError={(error) => {
               this.setState({
                 type: 1
@@ -58,7 +60,7 @@ export default class PreloadingImage extends Component {
               })
             }}
           />
-          {this.state.isLoadComplete ? null : <FitImage style={[styles.imgDefault, style]} source={defaultImage} resizeMode="contain"/> }
+          {this.state.isLoadComplete ? null : <Image style={[styles.imgDefault, style]} source={defaultImage} resizeMode="contain"/> }
         </View>
       )
     }
@@ -70,5 +72,9 @@ const styles = StyleSheet.create({
   imgDefault: {
     width: 150,
     height: 150
+  },
+  imgPosition: {
+    overflow: 'hidden',
+    position: 'absolute'
   }
 })

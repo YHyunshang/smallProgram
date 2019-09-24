@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-23 15:25:27
+ * @LastEditTime: 2019-09-24 16:28:29
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -17,6 +17,7 @@ import Loading from '../../components/common/Loading'
 import PreloadingImage from '../../components/common/PreloadingImage'
 import styles from './ProductDetailPage.styles'
 import {Native, Img} from '@utils'
+import FitImage from 'react-native-fit-image'
 import {getGoodsDetailData, getPosterImgUrl, getSimilarProduct} from '../../services/goodsDetail'
 import GoodsDetailSwiper from '../../components/business/GoodsDetail/GoodsDetailSwiper'
 import SimilarGoods from '../../components/business/GoodsDetail/SimilarGoods'
