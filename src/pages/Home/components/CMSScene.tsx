@@ -31,11 +31,11 @@ function CMSScene({
   return (
     <AnimatedFlatList
       style={{ flex: 1 }}
+      contentContainerStyle={{ paddingTop: contentOffset }}
       data={data}
       renderItem={renderCMSFloor}
       keyExtractor={item => `${item.key}`}
       onScroll={onScroll}
-      ListHeaderComponent={<View style={{ height: contentOffset }} />}
       windowSize={3}
       initialNumToRender={5}
       maxToRenderPerBatch={5}

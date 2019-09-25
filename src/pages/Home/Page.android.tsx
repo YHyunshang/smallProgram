@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-09-19 09:35:28
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-09-24 16:11:00
+ * @Last Modified time: 2019-09-25 19:26:08
  */
 import * as React from 'react'
 import { View, Animated, ActivityIndicator, Dimensions } from 'react-native'
@@ -41,6 +41,15 @@ interface Tab {
   key: string // unique tab key
   title: string // tab's display name
   type: TabType // tab type: cms or category
+}
+
+// 商品过滤器
+interface ProductFilter {
+  inventory: StorageChoices
+  sortField: string
+  sortType: Sort
+  page: number
+  pageSize: number
 }
 
 interface State {
@@ -83,6 +92,7 @@ export default class Page extends React.Component<Props, State> {
 
   componentDidMount() {
     Native.setHomeFirstTabActiveStatus(true)
+    this.syncScrollToNative({ nativeEvent: { contentOffset: { x: 0, y: 0 } } })
     this.init()
   }
 
@@ -181,7 +191,7 @@ export default class Page extends React.Component<Props, State> {
     categoryCode: string,
     shopCode: string,
     shopTypCode: string,
-    filter: State['productFilter']
+    filter: ProductFilter
   ) => {
     const [subCategories, products] = await Promise.all([
       ProductServices.getCategory(shopCode, shopTypCode, categoryCode).then(
@@ -211,13 +221,19 @@ export default class Page extends React.Component<Props, State> {
     return [categories, products]
   }
 
-  requestProductList = (categoryCode, shopCode, filter) => {
+  requestProductList = (
+    categoryCode: string,
+    shopCode: string,
+    filter: ProductFilter
+  ) => {
     return ProductServices.queryProductList(
       shopCode,
       categoryCode,
-      filter.inventoryFilter === StorageChoices.InStore ? '1' : '0',
-      filter.orderField,
-      sort2String(filter.orderType),
+      { [StorageChoices.InStore]: '1', [StorageChoices.All]: '0' }[
+        filter.inventory
+      ] || '',
+      filter.sortField,
+      { [Sort.ASC]: 'ASC', [Sort.DESC]: 'DESC' }[filter.sortType] || '',
       filter.page,
       filter.pageSize
     )
@@ -459,7 +475,14 @@ export default class Page extends React.Component<Props, State> {
     const currentTab = tabList[index]
     if (!currentTab) return
 
-    this.setState({ currentTabIdx: index })
+    this.setState({ currentTabIdx: index }, () => {
+      animatedValRefCmsScrollY.setValue(0)
+      this.syncScrollToNative({
+        nativeEvent: {
+          contentOffset: { x: 0, y: 0 },
+        },
+      })
+    })
 
     const currentTabKey = currentTab.key
     const preContentData = tabContentMap[currentTabKey]
@@ -470,13 +493,6 @@ export default class Page extends React.Component<Props, State> {
         (currentTab.type === TabType.CATEGORY && preContentData))
     )
       return
-
-    // animatedValRefCmsScrollY.setValue(0)
-    // this.syncScrollToNative({
-    //   nativeEvent: {
-    //     contentOffset: { x: 0, y: 0 },
-    //   },
-    // })
 
     this.setState(({ tabContentLoadingMap }) => ({
       tabContentLoadingMap: { ...tabContentLoadingMap, [currentTabKey]: true },
@@ -493,12 +509,20 @@ export default class Page extends React.Component<Props, State> {
       )
     } else if (currentTab.type === TabType.CATEGORY) {
       const productFilter = {
-        inventoryFilter: StorageChoices.InStore,
-        orderField: 'price',
-        orderType: Sort.ASC,
+        inventory: StorageChoices.InStore,
+        sortField: 'price',
+        sortType: Sort.ASC,
         page: 1,
         pageSize: 30,
       }
+      this.setState(({ tabContentMap }) => ({
+        ...tabContentMap,
+        [currentTabKey]: {
+          categories: [],
+          productFilter,
+          products: [],
+        },
+      }))
       p = this.requestCategoryContentData(
         currentTab.id,
         shop.code,
@@ -558,18 +582,19 @@ export default class Page extends React.Component<Props, State> {
     if (!currentTabIdx || currentTab.type !== TabType.CATEGORY) return
 
     const nextProductFilter = {
-      inventoryFilter: data.storage,
-      orderField: 'price',
-      orderType: data.priceSorter,
+      inventory: data.storage,
+      sortField: 'price',
+      sortType: data.priceSorter,
       page: 1,
       pageSize: 30,
     }
     const currentTabKey = currentTab.key
     this.setState(({ tabContentMap }) => ({
-      ...tabContentMap,
-      [currentTabKey]: {
-        ...tabContentMap[currentTabKey],
-        productFilter: nextProductFilter,
+      tabContentMap: {
+        ...tabContentMap,
+        [currentTabKey]: {
+          ...tabContentMap[currentTabKey],
+        },
       },
     }))
 
@@ -579,17 +604,19 @@ export default class Page extends React.Component<Props, State> {
       nextProductFilter
     )
     this.setState(({ tabContentMap }) => ({
-      ...tabContentMap,
-      [currentTabKey]: {
-        ...tabContentMap[currentTabKey],
-        products,
+      tabContentMap: {
+        ...tabContentMap,
+        [currentTabKey]: {
+          ...tabContentMap[currentTabKey],
+          productFilter: nextProductFilter,
+          products,
+        },
       },
     }))
   }
 
   onRefresh = () => {
     const { currentTabIdx, shop } = this.state
-    console.log('onRefresh')
     if (currentTabIdx === 0) this.requestTabData(shop.code, shop.type)
     else this.onTabIndexChange(currentTabIdx, true)
   }

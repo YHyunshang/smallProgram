@@ -15,9 +15,9 @@ interface Props {
 }
 
 interface State {
-  storeFilter: StorageChoices
-  orderFiled: string
-  orderType: Sort
+  inventory: StorageChoices
+  sortField: string
+  sortType: Sort
   productList: {}[]
   page: number
   pageSize: number
@@ -28,9 +28,9 @@ export default class ProductListWithFilter extends React.Component<
   State
 > {
   state = {
-    storeFilter: StorageChoices.InStore,
-    orderFiled: 'price',
-    orderType: Sort.ASC,
+    inventory: StorageChoices.InStore,
+    sortField: 'price',
+    sortType: Sort.ASC,
     productList: [],
     page: 1,
     pageSize: 30,
@@ -42,13 +42,14 @@ export default class ProductListWithFilter extends React.Component<
 
   requestProductList = async () => {
     const { shopCode, categoryCode } = this.props
-    const { storeFilter, orderType, page, pageSize } = this.state
+    const { inventory, sortField, sortType, page, pageSize } = this.state
     const { page: pageResult } = await ProductServices.queryProductList(
       shopCode,
       categoryCode,
-      storeFilter === StorageChoices.InStore ? '1' : '0',
-      'price',
-      sort2String(orderType),
+      { [StorageChoices.InStore]: '1', [StorageChoices.All]: '0' }[inventory] ||
+        '',
+      sortField,
+      { [Sort.ASC]: 'ASC', [Sort.DESC]: 'DESC' }[sortType] || '',
       page,
       pageSize
     )
@@ -84,8 +85,8 @@ export default class ProductListWithFilter extends React.Component<
   onFilterChange = data => {
     this.setState(
       {
-        storeFilter: data.storage,
-        orderType: data.priceSorter,
+        inventory: data.storage,
+        sortType: data.priceSorter,
       },
       this.requestProductList
     )
@@ -95,8 +96,8 @@ export default class ProductListWithFilter extends React.Component<
     item.code === '$$filter' ? (
       <ProductFilter
         filters={{
-          storage: this.state.storeFilter,
-          priceSorter: this.state.orderType,
+          storage: this.state.inventory,
+          priceSorter: this.state.sortType,
         }}
         onFilterChange={this.onFilterChange}
       />

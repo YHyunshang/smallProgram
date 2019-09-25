@@ -11,14 +11,13 @@ import {
 } from '@const/resources'
 
 export enum StorageChoices {
-  InStore, // 有货
-  All, // 所有
+  InStore = '1', // 有货
+  All = '0', // 所有
 }
 
 export enum Sort {
-  ASC, // 升序
-  DESC, // 降序
-  // None, // 不排序
+  ASC = 'ASC', // 升序
+  DESC = 'DESC', // 降序
 }
 
 export function sort2String(key) {
@@ -37,7 +36,6 @@ function enumNext(enumDef: { [index: string]: number }, current: number) {
   const length = Object.keys(enumDef).length / 2
   const nextIdx = (current + 1) % length
   const nextVal = enumDef[enumDef[nextIdx]]
-  console.log(current, nextIdx, nextVal)
   return nextVal
 }
 
@@ -52,25 +50,31 @@ interface Props {
 export default function ProductFilter({ filters, onFilterChange }: Props) {
   console.log(filters)
   const { storage, priceSorter } = filters
-  const storeFilterImg =
-    storage === StorageChoices.InStore ? iconChecked : iconUnchecked
+  const storageFilterImg = {
+    [StorageChoices.InStore]: iconChecked,
+    [StorageChoices.All]: iconUnchecked,
+  }[storage]
   const sortImg = {
     [Sort.ASC]: iconSortAsc,
     [Sort.DESC]: iconSortDesc,
     // [Sort.None]: iconSort,
   }[priceSorter]
+
+  console.log(storageFilterImg)
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.filterBtn}
         activeOpacity={0.95}
-        onPress={() =>
+        onPress={() => {
           onFilterChange({
             ...filters,
-            // @ts-ignore
-            storage: enumNext(StorageChoices, storage),
+            storage:
+              storage === StorageChoices.All
+                ? StorageChoices.InStore
+                : StorageChoices.All,
           })
-        }
+        }}
       >
         <View style={styles.filterBox}>
           <Text
@@ -82,7 +86,7 @@ export default function ProductFilter({ filters, onFilterChange }: Props) {
           >
             有货
           </Text>
-          <Image style={styles.filterImg} source={storeFilterImg}></Image>
+          <Image style={styles.filterImg} source={storageFilterImg}></Image>
         </View>
       </TouchableOpacity>
       <TouchableOpacity
@@ -91,8 +95,7 @@ export default function ProductFilter({ filters, onFilterChange }: Props) {
         onPress={() =>
           onFilterChange({
             ...filters,
-            // @ts-ignore
-            priceSorter: enumNext(Sort, priceSorter),
+            priceSorter: priceSorter === Sort.ASC ? Sort.DESC : Sort.ASC,
           })
         }
       >

@@ -13,11 +13,10 @@ import ProductListItem from '@components/business/Content/ProductListItem'
 import { Native } from '@utils'
 import { TabHeight } from './TabBar'
 import theme from '@theme'
-import { number } from 'prop-types'
+import isEqual from 'lodash/isEqual'
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
 const PlaceholderForNativeHeight = Native.getStatusBarHeight() + 86 + TabHeight
-console.log('PlaceholderForNativeHeight', PlaceholderForNativeHeight)
 
 const CategoryFloor = React.memo(
   props => (
@@ -26,36 +25,45 @@ const CategoryFloor = React.memo(
         paddingVertical: 25,
         marginBottom: 10,
         backgroundColor: '#FFF',
-        marginTop: PlaceholderForNativeHeight,
       }}
     >
       <Box {...props} />
     </View>
   ),
-  (pre, next) => pre === next
+  isEqual
 )
 
-const FilterFloor = React.memo(props => (
-  <View
-    style={{
-      backgroundColor: '#FFF',
-      flexShrink: 0,
-    }}
-  >
-    <ProductFilter {...props} />
-  </View>
-))
+const FilterFloor = React.memo(
+  props => (
+    <View
+      style={{
+        backgroundColor: '#FFF',
+        flexShrink: 0,
+      }}
+    >
+      <ProductFilter {...props} />
+    </View>
+  ),
+  isEqual
+)
 
-const ProductFloor = React.memo(props => (
-  <View style={{ backgroundColor: '#fff', padding: 15, position: 'relative' }}>
-    <ProductListItem {...props} disableSync />
-  </View>
-))
+const ProductFloor = React.memo(
+  props => (
+    <View
+      style={{ backgroundColor: '#fff', padding: 15, position: 'relative' }}
+    >
+      <ProductListItem {...props} disableSync />
+    </View>
+  ),
+  isEqual
+)
 
 interface Props {
   loading: boolean
   categories: BoxColumn[]
-  productFilter: {}
+  productFilter: {
+    [index: string]: string
+  }
   products: Product[]
   animatedVal: Animated.Value
   onScroll?: (e: Event) => any
@@ -63,47 +71,18 @@ interface Props {
   onRefresh: () => any
 }
 
-interface State {
-  animatedValRefContentOffsetY: Animated.Value
-}
-
 export default class CategoryScene extends React.PureComponent<Props> {
-  state = {
-    animatedValRefContentOffsetY: new Animated.Value(0),
-  }
-
-  flatListRef = React.createRef<AnimatedFlatList>()
-
-  componentDidUpdate() {
-    console.log(this.flatListRef.current.getNode())
-  }
-
   renderFloor = ({ item: { type, data } }) => {
+    const { onProductFilterChange } = this.props
     switch (type) {
       case 'category':
         return <CategoryFloor data={data} columnNumber={5} />
       case 'filter':
         return (
-          <FilterFloor
-            filters={{
-              storage: data.inventoryFilter,
-              priceSorter: data.orderType,
-            }}
-            onFilterChange={this.props.onProductFilterChange}
-          />
+          <FilterFloor filters={data} onFilterChange={onProductFilterChange} />
         )
       case 'product':
-        return (
-          <View
-            style={{
-              backgroundColor: '#fff',
-              padding: 15,
-              position: 'relative',
-            }}
-          >
-            <ProductListItem {...data} disableSync />
-          </View>
-        )
+        return <ProductFloor {...data} />
     }
   }
 
@@ -113,57 +92,31 @@ export default class CategoryScene extends React.PureComponent<Props> {
     </View>
   )
 
-  onScroll = Animated.event(
-    [
-      {
-        nativeEvent: {
-          contentOffset: { y: this.state.animatedValRefContentOffsetY },
-        },
-      },
-    ],
-    {
-      listener: this.props.onScroll,
-      useNativeDriver: true,
-    }
-  )
+  calcCategoryFloorHeight = () => {
+    const { categories } = this.props
+    return 50 + 10 + (categories.length <= 5 ? 74 : 74 * 2 + 20)
+  }
+
   render() {
     const {
       loading,
       categories,
       productFilter,
       products,
-      onProductFilterChange,
-      onRefresh,
       animatedVal,
+      onRefresh,
+      onScroll,
+      onProductFilterChange,
     } = this.props
 
-    const { animatedValRefContentOffsetY } = this.state
-
-    const boxTranslateY = animatedVal.interpolate({
-      inputRange: [
-        0,
-        PlaceholderForNativeHeight -
-          40 +
-          (categories.length > 5
-            ? 74 * 2 + 20
-            : categories.length > 0
-            ? 74
-            : 0),
-      ],
-      outputRange: [
-        0,
-        -(
-          PlaceholderForNativeHeight -
-          35 +
-          (categories.length > 5 ? 74 * 2 + 20 : categories.length > 0 ? 74 : 0)
-        ),
-      ],
-      extrapolate: 'clamp',
-    })
+    const filter = {
+      storage: productFilter.inventory,
+      priceSorter: productFilter.sortType,
+    }
 
     const flatData = [
       { key: 'category', type: 'category', data: categories },
-      { key: 'filter', type: 'filter', data: productFilter },
+      { key: 'filter', type: 'filter', data: filter },
       ...(products || []).map(ele => ({
         key: ele.code,
         type: 'product',
@@ -171,11 +124,45 @@ export default class CategoryScene extends React.PureComponent<Props> {
       })),
     ]
 
+    const categoryFloorHeight = this.calcCategoryFloorHeight()
+    const floatFilterOpacity = animatedVal.interpolate({
+      inputRange: [50 + categoryFloorHeight, 50 + categoryFloorHeight + 0.1],
+      outputRange: [0, 1],
+      extrapolate: 'clamp',
+    })
+    const floatFilterTranslateY = animatedVal.interpolate({
+      inputRange: [0, 50],
+      outputRange: [
+        PlaceholderForNativeHeight,
+        PlaceholderForNativeHeight - 50,
+      ],
+      extrapolate: 'clamp',
+    })
+
     return (
-      <View style={{ backgroundColor: '#FAFAFA', flex: 1 }}>
+      <View
+        style={{
+          backgroundColor: '#FAFAFA',
+          flex: 1,
+        }}
+      >
+        <Animated.View
+          style={{
+            position: 'absolute',
+            width: '100%',
+            zIndex: 1,
+            opacity: floatFilterOpacity,
+            transform: [{ translateY: floatFilterTranslateY }],
+          }}
+        >
+          <FilterFloor
+            filters={filter}
+            onFilterChange={onProductFilterChange}
+          />
+        </Animated.View>
+
         <AnimatedFlatList
-          ref={this.flatListRef}
-          stickyHeaderIndices={[1]}
+          contentContainerStyle={{ paddingTop: PlaceholderForNativeHeight }}
           style={{ flex: 1 }}
           refreshControl={
             <RefreshControl
@@ -193,7 +180,7 @@ export default class CategoryScene extends React.PureComponent<Props> {
           initialNumToRender={5}
           maxToRenderPerBatch={5}
           showsVerticalScrollIndicator={false}
-          onScroll={this.props.onScroll}
+          onScroll={onScroll}
         />
       </View>
     )
