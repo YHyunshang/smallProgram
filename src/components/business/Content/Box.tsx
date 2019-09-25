@@ -8,6 +8,8 @@ import {
   LayoutAnimation,
   Image,
   TouchableOpacity,
+  Platform,
+  UIManager,
 } from 'react-native'
 import chunk from 'lodash/chunk'
 import styles from './Box.styles'
@@ -17,6 +19,12 @@ import BoxItem, {
 import { iconExpand } from '@const/resources'
 
 const windowWith = Dimensions.get('window').width
+
+if (Platform.OS === 'android') {
+  if (UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true)
+  }
+}
 
 export interface Column extends BoxItemProps {
   key: string | number
