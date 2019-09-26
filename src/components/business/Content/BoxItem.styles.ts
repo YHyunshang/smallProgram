@@ -17,7 +17,7 @@ export default StyleSheet.create({
   },
   boxText: {
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: '400',
     color: theme.black,
   },

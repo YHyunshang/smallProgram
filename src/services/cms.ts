@@ -1,4 +1,3 @@
-import { string } from 'prop-types'
 /**
  * Created by 李华良 on 2019-07-26
  */
