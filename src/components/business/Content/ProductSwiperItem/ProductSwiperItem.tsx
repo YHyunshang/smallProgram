@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styles from './ProductSwiperItem.styles'
 import { View, Image, Text, TouchableWithoutFeedback } from 'react-native'
-import { Native } from '@utils'
+import { Native, Img } from '@utils'
 import withCartCountModify from '../HOC/withCountInCartModifier'
 import { Product } from '../typings'
 import Tag from '../Tag'
@@ -28,6 +28,7 @@ function ProductSwiperItem({
     })
   }
   const tag = priceTags.find(ele => ele.match(/满.+减/))
+  const fitThumbnail = Img.loadRatioImage(thumbnail, 100)
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={navigateToProductDetail}>
@@ -35,7 +36,7 @@ function ProductSwiperItem({
           <View style={styles.thumbnailBox}>
             <Image
               style={styles.thumbnail}
-              source={{ uri: thumbnail }}
+              source={{ uri: fitThumbnail }}
               resizeMode="contain"
             />
 

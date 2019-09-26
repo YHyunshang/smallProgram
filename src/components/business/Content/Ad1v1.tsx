@@ -4,7 +4,7 @@
  */
 import * as React from 'react'
 import { TouchableWithoutFeedback, View, Image } from 'react-native'
-import { Native } from '@utils'
+import { Native, Img } from '@utils'
 import styles from './Ad1v1.styles'
 
 interface Props {
@@ -22,24 +22,24 @@ export default function Ad1v1({ data }: Props) {
 
   return (
     <View style={styles.container}>
-      {imgLst.map(({ image, link }, index) => (
-        <View
-          style={[styles.imgBoxL, styles.imgBoxR][index]}
-          key={index}
-          onLayout={onImgBoxLayout}
-        >
-          <TouchableWithoutFeedback onPress={() => Native.navigateTo(link)}>
-            <Image
-              source={{ uri: image }}
-              style={{
-                width: imgDim.width,
-                height: imgDim.height,
-                borderRadius: 5,
-              }}
-            />
-          </TouchableWithoutFeedback>
-        </View>
-      ))}
+      {imgLst.map(({ image, link }, index) => {
+        const fitImg = Img.loadRatioImage(image, Img.FullWidth / 2)
+        return (
+          <View
+            style={[styles.imgBoxL, styles.imgBoxR][index]}
+            key={index}
+            onLayout={onImgBoxLayout}
+          >
+            <TouchableWithoutFeedback onPress={() => Native.navigateTo(link)}>
+              <Image
+                source={{ uri: fitImg }}
+                style={[styles.imgL, styles.imgR][index]}
+                resizeMode="cover"
+              />
+            </TouchableWithoutFeedback>
+          </View>
+        )
+      })}
     </View>
   )
 }

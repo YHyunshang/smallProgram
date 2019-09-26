@@ -3,10 +3,10 @@
  * Created by 李华良 on 2019-07-12
  */
 import * as React from 'react'
-import { TouchableWithoutFeedback, View } from 'react-native'
+import { TouchableWithoutFeedback, View, Dimensions } from 'react-native'
 import FitImage from 'react-native-fit-image'
 import styles from './AdSingle.styles'
-import { Native } from '@utils'
+import { Native, Img } from '@utils'
 
 export interface Props {
   image: string // 图片链接
@@ -14,12 +14,13 @@ export interface Props {
 }
 
 function AdSingle({ image, link }: Props) {
+  const fitImg = Img.loadRatioImage(image, Img.FullWidth)
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={() => Native.navigateTo(link)}>
         <FitImage
           style={styles.image}
-          source={{ uri: image }}
+          source={{ uri: fitImg }}
           resizeMode="cover"
           indicator={false}
         />

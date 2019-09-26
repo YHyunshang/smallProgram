@@ -12,7 +12,7 @@ import {
 } from 'react-native'
 import styles from './ProductListItem.styles'
 import ProductCountOperator from '../ProductCountOperator'
-import { Native } from '@utils'
+import { Native, Img } from '@utils'
 import ProductCart from '../ProductCart'
 import withCartCountModify from './HOC/withCountInCartModifier'
 import { Product } from './typings'
@@ -41,6 +41,7 @@ function ProductListItem({
       params: { productCode: code, storeCode: shopCode },
     })
   }
+  const fitThumbnail = Img.loadRatioImage(thumbnail, 100)
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={navigateToProductDetail}>
@@ -48,7 +49,7 @@ function ProductListItem({
           <View style={styles.thumbnailBox}>
             <Image
               style={styles.thumbnail}
-              source={{ uri: thumbnail }}
+              source={{ uri: fitThumbnail }}
               resizeMode="contain"
             />
             <View style={styles.productTagRow}>

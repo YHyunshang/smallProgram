@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-12 14:39:32
+ * @LastEditTime: 2019-09-26 18:25:10
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -16,7 +16,8 @@ import TabBar from '../../components/common/TabBar'
 import Loading from '../../components/common/Loading'
 import PreloadingImage from '../../components/common/PreloadingImage'
 import styles from './ProductDetailPage.styles'
-import {Native} from '@utils'
+import {Native, Img} from '@utils'
+import FitImage from 'react-native-fit-image'
 import {getGoodsDetailData, getPosterImgUrl, getSimilarProduct} from '../../services/goodsDetail'
 import GoodsDetailSwiper from '../../components/business/GoodsDetail/GoodsDetailSwiper'
 import SimilarGoods from '../../components/business/GoodsDetail/SimilarGoods'
@@ -220,84 +221,84 @@ export default class ProductDetailPage extends React.Component {
     // favorableRate = favorableRate && parseFloat(favorableRate.toFixed(2))
     // 商品详情图文列表
     const goodsImgList = productImgList ? productImgList.map(({url}, index) => (
-      <PreloadingImage style={styles.goodsDetailImage} uri={url}></PreloadingImage>
+      <PreloadingImage style={styles.goodsDetailImage} sourceType={0} uri={Img.loadRatioImage(url, Img.FullWidth)}></PreloadingImage>
     )) : null
     // 商家文描图文列表
     const shopImgList = shopUrl ? shopUrl.map((item, index) => (
-      <PreloadingImage style={styles.goodsDetailImage} uri={item} ></PreloadingImage>
+      <PreloadingImage style={styles.goodsDetailImage} sourceType={0} uri={Img.loadRatioImage(item, Img.FullWidth)} ></PreloadingImage>
     )) : null
     return (
       <View style={styles.container}>
-        {
-          (
-            <View style={styles.topTab}>
-              <TabBar ref={e => this.tabs = e}
-                index={this.state.currentIndex}
-                data={this.state.tablist}
-                clickScroll={this.clickScroll}
-                onChange={index => {}} />
-              <TouchableOpacity
-                style={styles.shareTouchableOpacity}
-                activeOpacity={0.95}
-                onPress={() => {
-                  this.handleShowModal()
-                }} >
-                <Icon name='share' size={18} color="#4D4D4D" />
-              </TouchableOpacity>
+        <View style={styles.subContainer}>
+          {
+            (
+              <View style={styles.topTab}>
+                <TabBar ref={e => this.tabs = e}
+                  index={this.state.currentIndex}
+                  data={this.state.tablist}
+                  clickScroll={this.clickScroll}
+                  onChange={index => {}} />
+                <TouchableOpacity
+                  style={styles.shareTouchableOpacity}
+                  activeOpacity={0.95}
+                  onPress={() => {
+                    this.handleShowModal()
+                  }} >
+                  <Icon name='share' size={18} color="#4D4D4D" />
+                </TouchableOpacity>
+              </View>
+            )
+          }
+          <ScrollView
+            style={styles.scrollView}
+            ref={(view) => {
+              this.myScrollView = view
+            }}
+            showsVerticalScrollIndicator={false}
+            // 当一帧滚动完毕时调用
+            onMomentumScrollEnd={(event) => this.onMomentumScrollEnd(event)}
+          >
+            <View onLayout={event => {
+              this.goodsLayoutY = event.nativeEvent.layout.y
+            }}>
+              <View onLayout={this.goodsSwiperLayout.bind(this)}>
+                {
+                  imgData ? <GoodsDetailSwiper imgData={imgData}/>
+                    :
+                    <Image style={styles.defaultImage} source={{uri: 'https://static-yh.yonghui.cn/app/static/images/product-default.png'}} resizeMode="contain"/>
+                }
+              </View>
             </View>
-          )
-        }
-        <ScrollView
-          style={styles.scrollView}
-          ref={(view) => {
-            this.myScrollView = view
-          }}
-          showsVerticalScrollIndicator={false}
-          // 当一帧滚动完毕时调用
-          onMomentumScrollEnd={(event) => this.onMomentumScrollEnd(event)}
-        >
-          <View onLayout={event => {
-            this.goodsLayoutY = event.nativeEvent.layout.y
-          }}>
-            <View onLayout={this.goodsSwiperLayout.bind(this)}>
-              {
-                imgData ? <GoodsDetailSwiper imgData={imgData}/>
-                  :
-                  <Image style={styles.defaultImage} source={{uri: 'https://static-yh.yonghui.cn/app/static/images/product-default.png'}} resizeMode="contain"/>
-              }
-            </View>
-          </View>
-          <BuyLimit></BuyLimit>
-          <View>
-            <View style={styles.goodsPromotionPriceRowFlex}>
-              <Text style={styles.goodsPriceSymbol}>¥</Text>
-              <Text style={styles.goodsPrice}>{transPenny(goodsInfo.promotionPrice ? goodsInfo.promotionPrice : goodsInfo.price)}</Text>
-              {
-                goodsInfo.promotionPrice
-                  ? <Text style={styles.throughLine} >¥{transPenny(goodsInfo.price)}</Text>
-                  : null
-              }
-            </View>
-            <Tag textValue='限时抢购' marginLeft={15} width={50} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
-            {/* <Tag textValue='特价' marginLeft={15} width={30} backgroundColor="#FFDED9" color='#FF3914'></Tag> */}
-            <View style={styles.goodsWrapper}>
-              <Text numberOfLines={1} style={styles.goodsName}>{goodsInfo.productName}</Text>
-              {
-                goodsInfo.subTitle ?
-                  <Text style={styles.goodsTips}>{goodsInfo.subTitle}</Text>
-                  : null
-              }
-            </View>
-            <View style={styles.goodsQualityFlex}>
-              {
-                goodsInfo.productSpecific ?
-                  <View style={styles.goodsQualityItemFlex}>
-                    <Image source={productSpecific} style={{width: 14, height: 14}}></Image>
-                    <Text style={styles.goodsQualityValue}>{goodsInfo.productSpecific}</Text>
-                  </View>
-                  : null
-              }
-              {/* {
+            <BuyLimit></BuyLimit>
+            <View>
+              <View style={styles.goodsPromotionPriceRowFlex}>
+                <Text style={styles.goodsPriceSymbol}>¥</Text>
+                <Text style={styles.goodsPrice}>{transPenny(goodsInfo.promotionPrice ? goodsInfo.promotionPrice : goodsInfo.price)}</Text>
+                {
+                  goodsInfo.promotionPrice
+                    ? <Text style={styles.throughLine} >¥{transPenny(goodsInfo.price)}</Text>
+                    : null
+                }
+              </View>
+              {/* <Tag textValue='特价' marginLeft={15}></Tag> */}
+              <View style={styles.goodsWrapper}>
+                <Text numberOfLines={1} style={styles.goodsName}>{goodsInfo.productName}</Text>
+                {
+                  goodsInfo.subTitle ?
+                    <Text style={styles.goodsTips}>{goodsInfo.subTitle}</Text>
+                    : null
+                }
+              </View>
+              <View style={styles.goodsQualityFlex}>
+                {
+                  goodsInfo.productSpecific ?
+                    <View style={styles.goodsQualityItemFlex}>
+                      <Image source={productSpecific} style={{width: 14, height: 14}}></Image>
+                      <Text style={styles.goodsQualityValue}>{goodsInfo.productSpecific}</Text>
+                    </View>
+                    : null
+                }
+                {/* {
                 goodsInfo.shelfLife ?
                   <View style={styles.goodsQualityItemFlex}>
                     <Image source={productConditions} style={{width: 14, height: 14}}></Image>
@@ -305,40 +306,41 @@ export default class ProductDetailPage extends React.Component {
                   </View>
                   : null
               } */}
-              {
-                goodsInfo.originPlace ?
-                  <View style={styles.goodsQualityItemFlex}>
-                    <Image source={productPlace} style={{width: 14, height: 14}}></Image>
-                    <Text style={styles.goodsQualityValue}>{goodsInfo.originPlace}</Text>
-                  </View>
-                  : null
-              }
+                {
+                  goodsInfo.originPlace ?
+                    <View style={styles.goodsQualityItemFlex}>
+                      <Image source={productPlace} style={{width: 14, height: 14}}></Image>
+                      <Text style={styles.goodsQualityValue}>{goodsInfo.originPlace}</Text>
+                    </View>
+                    : null
+                }
+              </View>
             </View>
-          </View>
+            {
+              similarProduct ? <SimilarGoods similarProduct={similarProduct} jumpGoodsDetail={this.jumpGoodsDetail}> ></SimilarGoods>
+                : null
+            }
+            <View onLayout={event => {
+              this.detailLayoutY = event.nativeEvent.layout.y
+            }}>
+              <View style={styles.goodsDetail}>
+                <Text style={styles.goodsDetailTitle}>商品详情</Text>
+              </View>
+              <View style={styles.imagesContent}>
+                {goodsImgList}
+                {shopImgList}
+              </View>
+            </View>
+          </ScrollView>
+          <ShareModal modalBoxHeight={240} productParams={productParams} onShare={this.handlePosterModal} ref={ref => this.shareModal = ref}/>
+          <PosterModal modalBoxHeight={534} imgUrl={imgUrl} ref={ref => this.posterModal = ref}/>
           {
-            similarProduct ? <SimilarGoods similarProduct={similarProduct} jumpGoodsDetail={this.jumpGoodsDetail}> ></SimilarGoods>
-              : null
+            <Loading
+              title={'海报生成中'}
+              ref={ref => this.loadingModal = ref}
+            />
           }
-          <View onLayout={event => {
-            this.detailLayoutY = event.nativeEvent.layout.y
-          }}>
-            <View style={styles.goodsDetail}>
-              <Text style={styles.goodsDetailTitle}>商品详情</Text>
-            </View>
-            <View style={styles.imagesContent}>
-              {goodsImgList}
-              {shopImgList}
-            </View>
-          </View>
-        </ScrollView>
-        <ShareModal modalBoxHeight={240} productParams={productParams} onShare={this.handlePosterModal} ref={ref => this.shareModal = ref}/>
-        <PosterModal modalBoxHeight={534} imgUrl={imgUrl} ref={ref => this.posterModal = ref}/>
-        {
-          <Loading
-            title={'海报生成中'}
-            ref={ref => this.loadingModal = ref}
-          />
-        }
+        </View>
       </View>
     )
   }

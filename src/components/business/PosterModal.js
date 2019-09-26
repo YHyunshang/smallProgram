@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-30 17:12:15
+ * @LastEditTime: 2019-09-16 13:53:10
  */
 
 import React from 'react'
@@ -126,7 +126,7 @@ export default class PosterModal extends React.Component {
           </View>
         </TouchableOpacity>
         <View style={styles.tipsContent}>
-          <Text style={styles.tips}>保存图片到手机相册后，将图片分享到您的圈</Text>
+          <Text style={styles.tips}>保存图片到手机相册后，将图片分享到您的朋友圈</Text>
         </View>
       </PopUp>
     )

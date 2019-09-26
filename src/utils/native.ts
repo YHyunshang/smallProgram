@@ -7,6 +7,7 @@ import {
   Dimensions,
   StatusBar,
   DeviceEventEmitter,
+  NativeEventEmitter,
 } from 'react-native'
 import * as Log from './log'
 import { Product } from '@components/business/Content/typings'
@@ -143,11 +144,16 @@ export function onCartChange(handler: (...args: any) => any) {
 export function showRemarkPickerBeforeAddToCart(
   product: Product
 ): Promise<number> {
+  console.log(product)
+  const price =
+    product.price < product.slashedPrice ? product.slashedPrice : product.price
+  const promotionPrice =
+    product.price < product.slashedPrice ? product.price : 0
   NativeModules.RnAppModule.addToCartWithRemark(
     JSON.stringify({
       productName: product.name,
-      price: product.slashedPrice,
-      promotionPrice: product.price,
+      price,
+      promotionPrice,
       noteContentList: product.remarks,
       imageUrl: product.thumbnail,
       productNum: 0,
@@ -157,14 +163,50 @@ export function showRemarkPickerBeforeAddToCart(
     })
   )
   return new Promise((resolve, reject) => {
-    DeviceEventEmitter.addListener(
+    const eventEmitter = new NativeEventEmitter(
+      NativeModules.SendRNEventManager
+    )
+    eventEmitter.addListener(
       'setItemNumberByProductcode',
       ({ productCode, productNumber }) => {
         Log.debug('[show remark result]', productCode, productNumber)
-        return productNumber === 1
-          ? resolve(productNumber)
+        return productNumber == 1
+          ? resolve(Number(productNumber))
           : reject(new Error('add to cart failed'))
       }
     )
   })
 }
+
+/**
+ * 监听 native 事件
+ */
+export const onNativeEvent = (function() {
+  const emitter = new NativeEventEmitter(NativeModules.SendRNEventManager)
+  let cbMapper: { [eventName: string]: Function[] } = {}
+  let listenerMapper: { [eventName: string]: { remove: Function } } = {}
+
+  return (event: string, handler: Function) => {
+    if (!cbMapper[event] || cbMapper[event].length === 0) {
+      cbMapper[event] = [handler]
+      listenerMapper[event] = emitter.addListener(event, function(
+        ...args: any[]
+      ) {
+        Log.debug(`EVENT::${event}, payload:`, ...args)
+        cbMapper[event].forEach(cb => cb(...args))
+      })
+    } else {
+      cbMapper[event].push(handler)
+    }
+
+    return () => {
+      cbMapper[event] = cbMapper[event].filter(cb => cb !== handler)
+
+      if (cbMapper[event].length === 0) {
+        listenerMapper[event].remove()
+        delete cbMapper[event]
+        delete listenerMapper[event]
+      }
+    }
+  }
+})()

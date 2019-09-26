@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-08-16 09:54:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-29 15:09:46
+ * @LastEditTime: 2019-09-17 14:50:07
  */
 
 /**
@@ -106,7 +106,7 @@ export const helpFeedBackAnswer = {
     },
     {
       questionTitle: '送货地址可以修改吗？',
-      questionContent: '点击APP首页会员中心--地址管理--点“+新建地址‘。'
+      questionContent: '点击APP首页会员中心--地址管理--点“+新建地址“。'
     },
     {
       questionTitle: '可以预约多久时间内的配送',

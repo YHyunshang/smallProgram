@@ -8,7 +8,7 @@ import useTheme from './ProductGridItem.styles'
 import ProductCart from '../ProductCart'
 import { Product } from './typings'
 import withCartCountModify from './HOC/withCountInCartModifier'
-import { Native } from '@utils'
+import { Native, Img } from '@utils'
 
 enum ThemeChoices {
   TWO_PER_ROW = '2x',
@@ -43,6 +43,7 @@ function ProductGridItem({
   }
   const [thumbnailWidth, setThumbnailWidth] = React.useState()
   const tag = [...priceTags, ...productTags][0]
+  const fitThumbnail = Img.loadRatioImage(thumbnail, 200)
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={navigateToProductDetail}>
@@ -59,7 +60,7 @@ function ProductGridItem({
                   height: thumbnailWidth,
                 },
               ]}
-              source={{ uri: thumbnail }}
+              source={{ uri: fitThumbnail }}
               resizeMode="cover"
             />
             <View style={styles.tagRow}>

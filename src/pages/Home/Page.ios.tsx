@@ -104,8 +104,10 @@ class Page extends React.Component<Props, State> {
         Native.getConstant('storeCode'),
         Native.getConstant('storeTypeCode'),
       ])
-      this.setState({ shop: { code: shopCode, type: shopType } })
-      this.requestTabData(shopCode, shopType)
+      if (shopCode && shopType) {
+        this.setState({ shop: { code: shopCode, type: shopType } })
+        this.requestTabData(shopCode, shopType)
+      }
     } else {
       this.requestTabData(shop.code, shop.type)
     }
@@ -142,7 +144,7 @@ class Page extends React.Component<Props, State> {
       data = await Promise.all([
         CMSServices.getHomeTabs(shopCode).then(({ result }) => result),
         ProductServices.getCategory(shopCode, shopType).then(
-          ({ result }) => result
+          ({ result }) => result || []
         ),
       ])
     } finally {
@@ -209,6 +211,14 @@ class Page extends React.Component<Props, State> {
     const { shop } = this.state
     return ProductServices.getCategory(shop.code, shop.type, categoryCode)
       .then(({ result }) => {
+        //首页二级分类数量大于等于5个小于10个，分类展示5个
+        if (result && result.length >= 5 && result.length < 10) {
+          result = result.slice(0, 5)
+        }
+        //首页二级分类数量大于等于10个，分类展示10个
+        else if (result && result.length >= 10) {
+          result = result.slice(0, 10)
+        }
         const categories = result.map(ele => ({
           key: ele.categoryCode,
           image: ele.categoryImage,

@@ -11,7 +11,7 @@ import {
   ImageBackground,
   Platform,
 } from 'react-native'
-import { Native } from '@utils'
+import { Native, Img } from '@utils'
 import styles from './BoxItem.styles'
 import { placeholderBox } from '@const/resources'
 
@@ -22,16 +22,11 @@ export interface Props {
 }
 
 export default function BoxItem({ link, image, title }: Props) {
+  const fitImg = image ? { uri: Img.loadRatioImage(image, 52) } : placeholderBox
   return (
     <TouchableWithoutFeedback onPress={() => Native.navigateTo(link)}>
       <View style={styles.box}>
-        <ImageBackground style={styles.boxImg} source={placeholderBox}>
-          <Image
-            style={styles.boxImg}
-            source={{ uri: image }}
-            resizeMode="contain"
-          />
-        </ImageBackground>
+        <Image style={styles.boxImg} source={fitImg} />
         <Text
           style={styles.boxText}
           selectable={false}

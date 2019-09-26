@@ -2,10 +2,10 @@
  * @Author: 李华良
  * @Date: 2019-08-21 14:48:31
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-09-10 18:43:08
+ * @Last Modified time: 2019-09-18 22:26:23
  */
 import * as React from 'react'
-import { View, FlatList, Image } from 'react-native'
+import { View, FlatList, Image, Dimensions } from 'react-native'
 import styles from './Page.styles'
 import { ProductServices } from '@services'
 import ProductList from './components/ProductList'
@@ -124,7 +124,7 @@ export default class Page extends React.Component<Object, State> {
       price: currentPrice,
       slashedPrice,
       count: data.productNum,
-      inventoryLabel: remarks[0] || '',
+      inventoryLabel: '',
       remarks,
     }
   }
@@ -132,8 +132,7 @@ export default class Page extends React.Component<Object, State> {
   onTabChange = key => {
     this.setState({ currentTabId: key })
     const { tabContentMap } = this.state
-    if (tabContentMap[key] && tabContentMap[key].length > 0)
-      this.flatListRef.current.scrollToIndex({ index: 1 })
+    this.flatListRef.current.scrollToOffset({ offset: 200 - 35.2941 })
     this.requestProductListUnderTab(key)
   }
 
@@ -188,7 +187,11 @@ export default class Page extends React.Component<Object, State> {
         data={floorData}
         renderItem={this.renderFlatItem}
         stickyHeaderIndices={[1]}
+        overScrollMode="always"
         ListFooterComponent={<View style={styles.footer} />}
+        contentContainerStyle={{
+          minHeight: 200 + Dimensions.get('window').height,
+        }}
       />
     )
   }

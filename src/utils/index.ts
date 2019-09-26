@@ -4,9 +4,6 @@
 import * as Log from './log'
 import * as Native from './native'
 import Http from './http'
+import * as Img from './img'
 
-export {
-  Log,
-  Http,
-  Native,
-}
+export { Log, Http, Native, Img }

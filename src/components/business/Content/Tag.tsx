@@ -15,7 +15,10 @@ interface Props {
 
 export default function Tag({ color, children }: Props) {
   return (
-    <Text style={[styles.container, { backgroundColor: color }]}>
+    <Text
+      style={[styles.container, { backgroundColor: color }]}
+      numberOfLines={1}
+    >
       {children}
     </Text>
   )

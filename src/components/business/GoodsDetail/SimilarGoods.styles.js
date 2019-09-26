@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-06 20:42:37
+ * @LastEditTime: 2019-09-24 14:26:22
  */
 
 import {
@@ -39,6 +39,7 @@ export default StyleSheet.create({
   },
   similarGoodsList: {
     width: imageWidth,
+    maxHeight: 250,
     marginLeft: left,
     marginBottom: bottom,
     backgroundColor: '#FFFFFF',

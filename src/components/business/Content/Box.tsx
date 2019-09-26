@@ -8,6 +8,8 @@ import {
   LayoutAnimation,
   Image,
   TouchableOpacity,
+  Platform,
+  UIManager,
 } from 'react-native'
 import chunk from 'lodash/chunk'
 import styles from './Box.styles'
@@ -18,13 +20,13 @@ import { iconExpand } from '@const/resources'
 
 const windowWith = Dimensions.get('window').width
 
-interface Column extends BoxItemProps {
+export interface Column extends BoxItemProps {
   key: string | number
 }
 
 interface Props {
-  data: Column[][]
-  maxRow: number
+  data: Column[]
+  maxRow?: number
   columnNumber: number
 }
 
@@ -35,6 +37,11 @@ export default function Box({ data, columnNumber, maxRow = 2 }: Props) {
 
   const [showAll, setShowAll] = React.useState(false)
 
+  if (Platform.OS === 'android') {
+    if (UIManager.setLayoutAnimationEnabledExperimental) {
+      UIManager.setLayoutAnimationEnabledExperimental(true)
+    }
+  }
   LayoutAnimation.easeInEaseOut()
 
   return (

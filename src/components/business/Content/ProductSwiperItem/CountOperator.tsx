@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-09-05 18:26:23
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-09-10 18:48:26
+ * @Last Modified time: 2019-09-18 22:37:24
  */
 import * as React from 'react'
 import styles from './CountOperator.styles'
@@ -17,6 +17,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient'
 import { plus, minusCircle, addToCart } from '@const/resources'
 import theme from '@theme'
+import { Native } from '@utils'
 
 interface Props {
   count: number
@@ -62,7 +63,11 @@ export default class CountOperator extends React.Component<Props, State> {
   }
 
   onModifyCount = c => {
-    const { max, onChange } = this.props
+    const { max, onChange, disabled } = this.props
+    if (disabled) {
+      Native.showToast('不能添加更多了')
+      return
+    }
     const nextCount = c <= 0 ? 0 : c >= max ? max : c
     onChange(nextCount)
   }
@@ -109,29 +114,27 @@ export default class CountOperator extends React.Component<Props, State> {
             {
               opacity: cartBtnOpacity,
               transform: [{ scaleX: cartBtnScaleX }],
+              zIndex: count <= 0 ? 1 : -1,
             },
           ]}
         >
-          <View>
-            <TouchableOpacity
-              style={styles.cartBtn}
-              activeOpacity={0.75}
-              onPressIn={() => this.onModifyCount(count + 1)}
-              disabled={disabled}
-            >
-              <View style={styles.cartBtnBox}>
-                <LinearGradient
-                  style={styles.gradientBox}
-                  start={{ x: 1, y: 0 }}
-                  end={{ x: 0, y: 0 }}
-                  colors={[theme.primary, theme.secondary]}
-                >
-                  <Image style={styles.addIcon} source={plus} />
-                  <Text style={styles.cartBtnText}>购物车</Text>
-                </LinearGradient>
-              </View>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            style={styles.cartBtn}
+            activeOpacity={0.75}
+            onPressIn={() => this.onModifyCount(count + 1)}
+          >
+            <View style={styles.cartBtnBox}>
+              <LinearGradient
+                style={styles.gradientBox}
+                start={{ x: 1, y: 0 }}
+                end={{ x: 0, y: 0 }}
+                colors={[theme.primary, theme.secondary]}
+              >
+                <Image style={styles.addIcon} source={plus} />
+                <Text style={styles.cartBtnText}>购物车</Text>
+              </LinearGradient>
+            </View>
+          </TouchableOpacity>
         </Animated.View>
       </View>
     )

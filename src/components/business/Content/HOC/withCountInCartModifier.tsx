@@ -1,10 +1,15 @@
+/*
+ * @Author: 李华良
+ * @Date: 2019-09-17 01:20:36
+ * @Last Modified by: 李华良
+ * @Last Modified time: 2019-09-20 18:19:13
+ */
 import * as React from 'react'
 import { Product } from '../typings'
 import debounce from 'lodash/debounce'
 import { CMSServices } from '@services'
 import { Log, Native } from '@utils'
 import { Alert } from 'react-native'
-
 interface Props extends Product {
   shopCode: string // 门店编码
   afterModifyCount?: Function
@@ -30,10 +35,10 @@ export default function withCartCountModify(WrappedComponent) {
       nextProps: Readonly<Props>,
       nextContext: any
     ): void {
+      Log.debug(
+        `count changed from parent: current - ${this.state.count}, next - ${nextProps.count}, disableSync - ${this.props.disableSync}`
+      )
       if (nextProps.count !== this.state.count && !this.props.disableSync) {
-        Log.debug(
-          `count changed from parent: current - ${this.state.count}, next - ${nextProps.count}`
-        )
         this.setState({
           count: nextProps.count,
           modifiedCount: nextProps.count,
@@ -56,8 +61,14 @@ export default function withCartCountModify(WrappedComponent) {
     }, 500)
 
     showRemarksBeforeAddToCart = () => {
+      const { afterModifyCount } = this.props
       Native.showRemarkPickerBeforeAddToCart(this.props).then(
-        count => this.setState({ count, modifiedCount: count }),
+        count => {
+          this.setState(
+            { count, modifiedCount: count },
+            () => afterModifyCount && afterModifyCount(count)
+          )
+        },
         () => this.setState({ count: 0, modifiedCount: 0 })
       )
     }

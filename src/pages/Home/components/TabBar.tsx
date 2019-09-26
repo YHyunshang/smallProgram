@@ -12,7 +12,7 @@ import { Native } from '@utils'
 import sumBy from 'lodash/sumBy'
 import theme from '@theme'
 
-export const TabHeight = 34
+export const TabHeight = 40
 const windowWidth = Dimensions.get('window').width
 const statusBarHeight = Native.getStatusBarHeight()
 const backgroundHeight = statusBarHeight + 86 + TabHeight

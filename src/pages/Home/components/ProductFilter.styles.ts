@@ -4,6 +4,9 @@ import theme from '@theme'
 export default StyleSheet.create({
   container: {
     flexDirection: 'row',
+    backgroundColor: '#FFF',
+    height: 37,
+    alignItems: 'center',
   },
   filterBtn: {
     flex: 1,
@@ -12,7 +15,6 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 76,
-    paddingVertical: 10,
     borderBottomColor: '#EBEBEB',
     borderBottomWidth: 0.5,
     flex: 1,
@@ -21,7 +23,6 @@ export default StyleSheet.create({
     fontSize: 12,
     color: '#666',
     fontWeight: '600',
-    lineHeight: 17,
   },
   filterTextActive: {
     color: theme.primary,

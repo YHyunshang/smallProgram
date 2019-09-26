@@ -110,6 +110,9 @@ export function updateProductCountInCart(
         shopCode,
       }),
       (errMsg, responseData) => {
+        if (errMsg === '未登录')
+          return reject('update cart failed: anonymous user')
+
         if (errMsg) {
           Native.showToast('添加到购物车失败')
           return reject('update cart failed')
@@ -167,13 +170,13 @@ export function formatLink({
 export function formatProduct(data: { [index: string]: any }) {
   const [priceTags, productTags] = groupTags(data.labelList || [])
 
-  const remarkOptions =
-    data.resProductNoteNewVO || { noteContentName: [] }.noteContentName
+  const remarkOptions = (data.resProdcutNoteNewVO || { noteContentName: [] })
+    .noteContentName
   const defaultRemark = remarkOptions.find(r => r.isDefault)
   const remarks = defaultRemark
     ? [
         defaultRemark.name,
-        remarkOptions.filter(r => !r.isDefault).map(ele => ele.name),
+        ...remarkOptions.filter(r => !r.isDefault).map(ele => ele.name),
       ]
     : remarkOptions.map(ele => ele.name)
 
@@ -216,9 +219,11 @@ export function getCartInfo(shopCode: string) {
 export function groupTags(tags: string[]): [string[], string[]] {
   return tags.reduce(
     ([priceTagLst, productTagLst], cur) => {
-      return cur.match(/^\d+(\.\d+)?折/) || cur.match(/^满.+减.+/)
+      return /\d+(\.\d+)?折/.test(cur) ||
+        /满\d/.test(cur) ||
+        /第\d+件/.test(cur)
         ? [[...priceTagLst, cur], productTagLst]
-        : [priceTagLst, [productTagLst]]
+        : [priceTagLst, [...productTagLst, cur]]
     },
     [[], []]
   )

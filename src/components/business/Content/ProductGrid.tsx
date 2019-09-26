@@ -28,7 +28,7 @@ export default function ProductGrid({
 
   const afterCountChange = count => {
     Native.showToast('添加成功', '1')
-    afterModifyCount(count)
+    afterModifyCount && afterModifyCount(count)
   }
 
   const colRender = columns =>
