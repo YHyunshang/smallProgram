@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-26 18:25:10
+ * @LastEditTime: 2019-09-26 19:01:36
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -17,7 +17,6 @@ import Loading from '../../components/common/Loading'
 import PreloadingImage from '../../components/common/PreloadingImage'
 import styles from './ProductDetailPage.styles'
 import {Native, Img} from '@utils'
-import FitImage from 'react-native-fit-image'
 import {getGoodsDetailData, getPosterImgUrl, getSimilarProduct} from '../../services/goodsDetail'
 import GoodsDetailSwiper from '../../components/business/GoodsDetail/GoodsDetailSwiper'
 import SimilarGoods from '../../components/business/GoodsDetail/SimilarGoods'
@@ -280,7 +279,7 @@ export default class ProductDetailPage extends React.Component {
                     : null
                 }
               </View>
-              {/* <Tag textValue='特价' marginLeft={15}></Tag> */}
+              <Tag textValue='限时抢购' marginLeft={15} width={50} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
               <View style={styles.goodsWrapper}>
                 <Text numberOfLines={1} style={styles.goodsName}>{goodsInfo.productName}</Text>
                 {
