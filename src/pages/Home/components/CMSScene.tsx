@@ -39,7 +39,6 @@ function CMSScene({
       windowSize={3}
       initialNumToRender={5}
       maxToRenderPerBatch={5}
-      removeClippedSubviews
       showsVerticalScrollIndicator={false}
       refreshControl={
         <RefreshControl
