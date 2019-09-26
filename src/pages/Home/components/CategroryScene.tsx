@@ -125,11 +125,17 @@ export default class CategoryScene extends React.PureComponent<Props> {
     ]
 
     const categoryFloorHeight = this.calcCategoryFloorHeight()
-    const floatFilterOpacity = animatedVal.interpolate({
-      inputRange: [50 + categoryFloorHeight, 50 + categoryFloorHeight + 0.1],
-      outputRange: [0, 1],
-      extrapolate: 'clamp',
-    })
+    const floatFilterOpacity =
+      (products || []).length > 0
+        ? animatedVal.interpolate({
+            inputRange: [
+              50 + categoryFloorHeight,
+              50 + categoryFloorHeight + 0.1,
+            ],
+            outputRange: [0, 1],
+            extrapolate: 'clamp',
+          })
+        : 0
     const floatFilterTranslateY = animatedVal.interpolate({
       inputRange: [0, 50],
       outputRange: [
