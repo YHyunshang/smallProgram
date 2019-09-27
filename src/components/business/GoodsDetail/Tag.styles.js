@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-08-20 11:29:26
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-09 10:34:39
+ * @LastEditTime: 2019-09-27 14:03:49
  */
 import {
   StyleSheet
@@ -16,6 +16,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 1,
+    paddingHorizontal: 5,
     marginLeft: 15
   },
   goodsTagValue: {

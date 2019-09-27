@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-12 18:30:46
+ * @LastEditTime: 2019-09-27 14:30:30
  */
 
 import React from 'react'
@@ -25,13 +25,14 @@ export default class BuyLimit extends React.Component {
       day: 0,
       hour: 0,
       minute: 0,
-      seconds: 0
+      seconds: 0,
+      activityEndTime: ''
     }
   }
  countTime = () => {
    let date = new Date()
    let now = date.getTime()
-   let time = '2019-09-13 00:00:00'
+   let time = this.state.activityEndTime
    time = time.replace(/-/g, '/') // 把所有-转化成/
    let end = new Date(time).getTime(),
      // end = 1568900000000,
@@ -64,23 +65,41 @@ export default class BuyLimit extends React.Component {
  }
 
  componentDidMount() {
-   this.countTime()
  }
 
  componentWillUnmount() {
 
  }
+ componentWillReceiveProps(nextProps) {
+   if (nextProps.productActivityLabel.activityEndTime) {
+     this.setState({activityEndTime: nextProps.productActivityLabel.activityEndTime})
+     this.countTime()
+   }
+   // rnAppModule.showToast(`activityEndTime::${String(nextProps.productActivityLabel.activityEndTime)}`, '0')
+ }
 
  render() {
    const {day, hour, minute, seconds} = this.state
+   const {productActivityLabel} = this.props
+   // rnAppModule.showToast(`activityEndTime1::${String(productActivityLabel.activityEndTime)}`, '0')
+   // this.countTime(productActivityLabel.activityEndTime)
    return (
      <View style={styles.container}>
        <ImageBackground style={styles.buyLimitBg} source={buyLimit} resizeMode='cover'>
-         <Text style={styles.buyLimitTitle}>限时抢购</Text>
+         {
+           productActivityLabel && productActivityLabel.promotionTypeName ?
+             <Text style={styles.buyLimitTitle}>{productActivityLabel.promotionTypeName}</Text>
+             : null
+         }
          <View style={styles.bgWrapper}>
            <View style={styles.whiteBg}></View>
            <View style={styles.pinkBg}>
-             <Text style={styles.saleNum}>已售32%</Text>
+             {
+               productActivityLabel && productActivityLabel.salesRatio ?
+                 <Text style={styles.saleNum}>已售{productActivityLabel.salesRatio}</Text>
+                 : null
+             }
+
            </View>
          </View>
          <View style={styles.countDownWrapper}>

@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-21 15:59:37
+ * @LastEditTime: 2019-09-27 14:02:29
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import {isIPhoneXMarginTop, isIPhoneXHeight} from '../../utils/IsIphoneX'
@@ -122,6 +122,12 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     marginTop: 10,
+    alignItems: 'center'
+  },
+  goodsTags: {
+    marginLeft: 10,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
     alignItems: 'center'
   },
   goodsQualityColumnFlex: {

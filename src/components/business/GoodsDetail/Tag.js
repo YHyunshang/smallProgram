@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-09 10:38:18
+ * @LastEditTime: 2019-09-27 13:57:29
  */
 
 import React from 'react'
@@ -28,7 +28,7 @@ export default class Tag extends React.Component {
 
   render() {
     return (
-      <View style={[styles.goodsTag, {marginLeft: this.props.marginLeft}, {width: this.props.width, backgroundColor: this.props.backgroundColor}]}>
+      <View style={[styles.goodsTag, {marginLeft: this.props.marginLeft}, {minWidth: this.props.width, backgroundColor: this.props.backgroundColor}]}>
         <Text style={[styles.goodsTagValue, {color: this.props.color}]}>{this.props.textValue}</Text>
       </View>
     )

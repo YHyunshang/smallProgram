@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-24 14:26:22
+ * @LastEditTime: 2019-09-27 16:44:11
  */
 
 import {
@@ -61,6 +61,12 @@ export default StyleSheet.create({
     marginLeft: 10,
     marginBottom: 10,
     color: '#333333'
+  },
+  goodsTags: {
+    marginLeft: 5,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
   },
   throughLinePrice: {
     marginLeft: 10,
