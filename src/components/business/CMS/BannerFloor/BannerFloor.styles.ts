@@ -1,9 +1,0 @@
-/**
- * Created by 李华良 on 2019-07-18
- */
-import { StyleSheet } from 'react-native'
-
-export default StyleSheet.create({
-  container: {
-  },
-})
