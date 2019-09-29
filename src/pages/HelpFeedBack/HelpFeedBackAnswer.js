@@ -4,34 +4,53 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-29 11:11:13
+ * @LastEditTime: 2019-09-29 19:23:36
  */
 import React from 'react'
-import {ScrollView, View, Text} from 'react-native'
+import {ScrollView, View, Text, NativeModules} from 'react-native'
 import {helpFeedBackAnswer} from '../../utils/mock'
 import styles from './HelpFeedBackAnswer.styles'
 import {Native} from '@utils'
+import {getAnswerList} from '../../services/feedback'
+const rnAppModule = NativeModules.RnAppModule// 原生模块
 export default class HelpFeedBackPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      answerList: []
     }
   }
 
   componentDidMount() {
+    this.getAnswerList()
   }
   /**
-   * @description: 跳转到帮助与反馈问题项
+   * @description: 查询问题解答列表
    */
-  handleJumpToFeedBackItem() {
-
+  getAnswerList = () => {
+    const {activityCode} = this.props
+    let questionTypeId = activityCode
+    getAnswerList({questionTypeId})
+      .then(({result: data, message, code}) => {
+        if (code === 200000 && data) {
+          this.setState(
+            {
+              answerList: data
+            }
+          )
+        } else {
+          rnAppModule.showToast(message, '0')
+        }
+      }).catch(({message}) => {
+        rnAppModule.showToast(message, '0')
+      })
   }
-
   render() {
     const {activityCode, type} = this.props
+    const {answerList} = this.state
     let questionType = activityCode
     Native.setTitle(type)
-    const answerItems = helpFeedBackAnswer[questionType] ? helpFeedBackAnswer[questionType].map(({questionTitle, questionContent}, index) => (
+    const answerItems = answerList ? answerList.map(({questionTitle, questionContent}, index) => (
       <View style={[styles.questionItemFlex, index == helpFeedBackAnswer[questionType].length - 1 ? {borderBottomWidth: 0, paddingBottom: 30} : {borderBottomWidth: 1}]}>
         <View style={styles.questionTitleFlex}>
           <Text style={styles.questionIndex}>Q{Number(index + 1)}:</Text>

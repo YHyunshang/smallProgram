@@ -4,10 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-08-16 09:54:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-30 16:33:49
- */
-/**
- * Created by 李华良 on 2019-07-26
+ * @LastEditTime: 2019-09-29 15:03:40
  */
 import {Http} from '@utils'
 import {NativeModules, NativeEventEmitter} from 'react-native'

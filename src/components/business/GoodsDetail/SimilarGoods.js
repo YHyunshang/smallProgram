@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-27 16:47:35
+ * @LastEditTime: 2019-09-29 20:37:55
  */
 
 import React from 'react'
@@ -17,7 +17,7 @@ import Tag from './Tag'
 import {transPenny} from '../../../utils/FormatUtil'
 import styles from './SimilarGoods.styles'
 const cols = 2 // 列数
-const productActivityLabel = {activityBeginTime: '2019-09-29 00:00:00', activityEndTime: '2019-09-29 22:20:40', activityName: '限时抢购活动', discountPrice: 20, labels: ['特价', '满减', '限时抢购'], promotionCode: 'K001', promotionType: 0, promotionTypeName: '限时抢购', ruleType: 0, salesRatio: '45%'}
+// const productActivityLabel = {activityBeginTime: '2019-09-29 00:00:00', activityEndTime: '2019-09-29 22:20:40', activityName: '限时抢购活动', discountPrice: 20, labels: ['特价', '满减', '限时抢购'], promotionCode: 'K001', promotionType: 0, promotionTypeName: '限时抢购', ruleType: 0, salesRatio: '45%'}
 // 商品购物车图标
 export default class SimilarGoods extends React.Component {
   constructor(props) {
@@ -76,15 +76,14 @@ export default class SimilarGoods extends React.Component {
           ></PreloadingImage>
         </View>
         <View style={styles.goodsTags}>
-          {/* {
-          // 标签列表
+          {
+          // 促销类型 1 直降促销, 2 满减促销, 3 满件减满减折促销 ,4 第N件N折/N元,5 限时抢
+          // 2，3取orderActivityLabel,1,3,4取productActivityLabel
             item.productActivityLabel && item.productActivityLabel.labels ? item.productActivityLabel.labels.map((label, index) => (
               <Tag textValue={label} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
-            )) : null
-          } */}
-          {
-          // 标签列表
-            productActivityLabel && productActivityLabel.labels ? productActivityLabel.labels.map((label, index) => (
+            )) : item.productActivityLabel && item.orderActivityLabel && item.productActivityLabel.labels ? item.productActivityLabel.labels.map((label, index) => (
+              <Tag textValue={label} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
+            )) : item.orderActivityLabel && !item.productActivityLabel && item.orderActivityLabel.labels ? item.orderActivityLabel.labels.map((label, index) => (
               <Tag textValue={label} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
             )) : null
           }

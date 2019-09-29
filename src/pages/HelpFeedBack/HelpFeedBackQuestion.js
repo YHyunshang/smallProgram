@@ -4,49 +4,71 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-29 11:13:23
+ * @LastEditTime: 2019-09-29 18:58:17
  */
 import React from 'react'
 import {ScrollView, View, Text, TouchableOpacity, NativeModules} from 'react-native'
 import Icon from '../../components/Icon'
 import {Native} from '@utils'
 import styles from './HelpFeedBackQuestion.styles'
+import {getTypeList} from '../../services/feedback'
+const rnAppModule = NativeModules.RnAppModule// 原生模块
 export default class HelpFeedBackPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       questionList: [
-        {type: 'goodsQuestion', name: '商品问题'},
-        {type: 'deliveryQuestion', name: '配送问题'},
-        {type: 'orderQuestion', name: '订单信息修改'},
-        {type: 'memberQuestion', name: '会员问题'},
-        {type: 'invoiceQuestion', name: '发票问题'},
-        {type: 'refundQuestion', name: '退款退货'}
+        // {id: 'goodsQuestion', questionTypeName: '商品问题'},
+        // {id: 'deliveryQuestion', questionTypeName: '配送问题'},
+        // {id: 'orderQuestion', questionTypeName: '订单信息修改'},
+        // {id: 'memberQuestion', questionTypeName: '会员问题'},
+        // {id: 'invoiceQuestion', questionTypeName: '发票问题'},
+        // {id: 'refundQuestion', questionTypeName: '退款退货'}
       ]
     }
   }
 
   componentDidMount() {
     Native.setTitle('帮助与反馈')
+    this.getTypeList()
   }
   /**
    * @description: 跳转到帮助与反馈问题项
    */
-  handleJumpToFeedBackItem(type, name) {
-    NativeModules.HomeNativeManager.pushToNewPage('1', 'RNHelpFeedBackAnswer', JSON.stringify({title: String(name), params: {activityCode: String(type), type: String(name)}}))
+  handleJumpToFeedBackItem(id, questionTypeName) {
+    NativeModules.HomeNativeManager.pushToNewPage('1', 'RNHelpFeedBackAnswer', JSON.stringify({title: String(questionTypeName), params: {activityCode: String(id), type: String(questionTypeName)}}))
+  }
+  /**
+   * @description: 查询问题类型列表
+   */
+  getTypeList = () => {
+    getTypeList({})
+      .then(({result: data, message, code}) => {
+        if (code === 200000 && data) {
+          this.setState(
+            {
+              questionList: data
+            }
+          )
+        } else {
+          rnAppModule.showToast(message, '0')
+        }
+      }).catch(({message}) => {
+        rnAppModule.showToast(message, '0')
+      })
   }
 
   render() {
     const {questionList} = this.state
-    const questionItems = questionList ? questionList.map(({type, name}, index) => (
+    const questionItems = questionList ? questionList.map(({id, questionTypeName}, index) => (
       <TouchableOpacity
         style={styles.shareTouchableOpacity}
         activeOpacity={0.95}
         onPress={() => {
-          this.handleJumpToFeedBackItem(type, name)
+          this.handleJumpToFeedBackItem(id, questionTypeName)
         }} >
         <View style={styles.questionItemFlex}>
-          <Text style={styles.questionItemName}>{name}</Text>
+          <Text style={styles.questionItemName}>{questionTypeName}</Text>
           <Icon style={styles.rightIcon} name='right' size={10} color="#4D4D4D" />
         </View>
       </TouchableOpacity>

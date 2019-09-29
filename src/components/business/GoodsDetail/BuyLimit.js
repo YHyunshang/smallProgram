@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-27 14:30:30
+ * @LastEditTime: 2019-09-29 20:41:00
  */
 
 import React from 'react'
@@ -32,11 +32,8 @@ export default class BuyLimit extends React.Component {
  countTime = () => {
    let date = new Date()
    let now = date.getTime()
-   let time = this.state.activityEndTime
-   time = time.replace(/-/g, '/') // 把所有-转化成/
-   let end = new Date(time).getTime(),
-     // end = 1568900000000,
-     leftTime = end - now, // 时间差
+   let end = this.state.activityEndTime
+   let leftTime = end - now, // 时间差
      d, h, m, s, ms
    if (leftTime >= 0) {
      d = Math.floor(leftTime / 1000 / 60 / 60 / 24)
