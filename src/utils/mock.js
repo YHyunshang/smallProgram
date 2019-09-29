@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-08-16 09:54:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-17 14:50:07
+ * @LastEditTime: 2019-09-29 09:46:32
  */
 
 /**
@@ -98,7 +98,7 @@ export const helpFeedBackAnswer = {
     },
     {
       questionTitle: '配送单收费情况是？',
-      questionContent: '实付不满配送门槛，收取6元配送费，超过则立享配送优惠；不同区域/商家之间规则会略有不同，具体可查看订单内配送费详情说明。'
+      questionContent: '实付不满配送门槛，收取3元配送费，超过则立享配送优惠；不同区域/商家之间规则会略有不同，具体可查看订单内配送费详情说明。'
     },
     {
       questionTitle: '已超出预约的配送时间，我怎么还没收到商品？',
