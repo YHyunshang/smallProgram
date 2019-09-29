@@ -16,6 +16,7 @@ import ProductGrid from '@components/business/Content/ProductGrid'
 import ProductSwiper from '@components/business/Content/ProductSwiper'
 import Box from '@components/business/Content/Box'
 import Divider from '@components/business/Content/Divider'
+import LimitTimeBuy from "@components/business/Content/LimitTimeBuy";
 
 export function formatFloorData(
   data: { [index: string]: any },
@@ -211,6 +212,25 @@ export function formatFloorData(
         props: {
           image: floor.img,
         },
+      })
+    } else if (floor.type === 7) {
+      // 限时抢购
+      result.push({
+        key: floor.id,
+        component: LimitTimeBuy,
+        props: {
+          // startTime: Number(floor.activityBeginTime),
+          startTime: 1569559859424,
+          // endTime: Number(floor.activityEndTime),
+          endTime: 1569832808096,
+          // products: floor.templateDetailVOList.slice(0, 4).map(ele => CMSServices.formatProduct(ele)),
+          products: [
+            { name: '新鲜进口脐橙新鲜进口脐橙新鲜进口脐橙', code: '1', spec: '100g/包', price: 18.9, thumbnail: 'http://hotfile-cdn.yonghui.cn/files/%7Ccephdata%7Cfilecache%7CYHYS%7CYHYS%7C2019-06-28%7C6717838386972848128' },
+            { name: '新鲜进口脐橙新鲜进口脐橙新鲜进口脐橙', code: '2', spec: '100g/包', price: 18.9, thumbnail: 'http://hotfile-cdn.yonghui.cn/files/%7Ccephdata%7Cfilecache%7CYHYS%7CYHYS%7C2019-06-28%7C6717838386972848128' },
+            { name: '新鲜进口脐橙新鲜进口脐橙新鲜进口脐橙', code: '3', spec: '100g/包', price: 18.9, thumbnail: 'http://hotfile-cdn.yonghui.cn/files/%7Ccephdata%7Cfilecache%7CYHYS%7CYHYS%7C2019-06-28%7C6717838386972848128' },
+            { name: '新鲜进口脐橙新鲜进口脐橙新鲜进口脐橙', code: '4', spec: '100g/包', price: 18.9, thumbnail: 'http://hotfile-cdn.yonghui.cn/files/%7Ccephdata%7Cfilecache%7CYHYS%7CYHYS%7C2019-06-28%7C6717838386972848128' },
+          ]
+        }
       })
     }
     i++
