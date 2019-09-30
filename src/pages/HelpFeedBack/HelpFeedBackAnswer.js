@@ -4,11 +4,11 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-29 19:23:36
+ * @LastEditTime: 2019-09-30 13:50:57
  */
 import React from 'react'
 import {ScrollView, View, Text, NativeModules} from 'react-native'
-import {helpFeedBackAnswer} from '../../utils/mock'
+// import {helpFeedBackAnswer} from '../../utils/mock'
 import styles from './HelpFeedBackAnswer.styles'
 import {Native} from '@utils'
 import {getAnswerList} from '../../services/feedback'
@@ -46,17 +46,16 @@ export default class HelpFeedBackPage extends React.Component {
       })
   }
   render() {
-    const {activityCode, type} = this.props
+    const {type} = this.props
     const {answerList} = this.state
-    let questionType = activityCode
     Native.setTitle(type)
-    const answerItems = answerList ? answerList.map(({questionTitle, questionContent}, index) => (
-      <View style={[styles.questionItemFlex, index == helpFeedBackAnswer[questionType].length - 1 ? {borderBottomWidth: 0, paddingBottom: 30} : {borderBottomWidth: 1}]}>
+    const answerItems = answerList ? answerList.map(({question, answer}, index) => (
+      <View style={[styles.questionItemFlex, index == answerList.length - 1 ? {borderBottomWidth: 0, paddingBottom: 30} : {borderBottomWidth: 1}]}>
         <View style={styles.questionTitleFlex}>
           <Text style={styles.questionIndex}>Q{Number(index + 1)}:</Text>
-          <Text style={styles.questionTitle}>{questionTitle}</Text>
+          <Text style={styles.questionTitle}>{question}</Text>
         </View>
-        <Text style={styles.questionContent}>{questionContent}</Text>
+        <Text style={styles.questionContent}>{answer}</Text>
       </View>
     )
     )

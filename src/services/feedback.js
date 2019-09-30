@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-08-16 09:54:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-29 19:35:49
+ * @LastEditTime: 2019-09-30 10:55:34
  */
 import {Http} from '@utils'
 /**
@@ -16,4 +16,4 @@ export const getTypeList = () => Http.post('feedback', '/sys/sysQuestion/typeLis
  *获取帮助与反馈的问题解答
  * @return {Promise} Http request instance
  */
-export const getAnswerList = (questionTypeId) => Http.post('feedback', '/sys/sysQuestion/subList', {questionTypeId}, {questionTypeId})
+export const getAnswerList = (productParams) => Http.post('feedback', '/sys/sysQuestion/subList', {}, productParams)

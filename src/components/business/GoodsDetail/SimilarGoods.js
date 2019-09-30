@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-29 20:37:55
+ * @LastEditTime: 2019-09-30 13:48:24
  */
 
 import React from 'react'
@@ -78,14 +78,14 @@ export default class SimilarGoods extends React.Component {
         <View style={styles.goodsTags}>
           {
           // 促销类型 1 直降促销, 2 满减促销, 3 满件减满减折促销 ,4 第N件N折/N元,5 限时抢
-          // 2，3取orderActivityLabel,1,3,4取productActivityLabel
-            item.productActivityLabel && item.productActivityLabel.labels ? item.productActivityLabel.labels.map((label, index) => (
-              <Tag textValue={label} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
-            )) : item.productActivityLabel && item.orderActivityLabel && item.productActivityLabel.labels ? item.productActivityLabel.labels.map((label, index) => (
-              <Tag textValue={label} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
-            )) : item.orderActivityLabel && !item.productActivityLabel && item.orderActivityLabel.labels ? item.orderActivityLabel.labels.map((label, index) => (
-              <Tag textValue={label} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
-            )) : null
+          // 满减规则 限时抢购  > 满减（满50-12） > 折扣（0.8折）
+            item.productActivityLabel && item.productActivityLabel.promotionType === 5 && item.productActivityLabel.labels ?
+              <Tag textValue={item.productActivityLabel.labels[0]} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
+              : item.orderActivityLabel && item.orderActivityLabel.promotionType === 3 && item.orderActivityLabel.labels ?
+                <Tag textValue={item.orderActivityLabel.labels[0]} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
+                : item.productActivityLabel && item.productActivityLabel.promotionType === 4 && item.productActivityLabel.labels ?
+                  <Tag textValue={item.productActivityLabel.labels[0]} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
+                  : null
           }
         </View>
         <Text numberOfLines={1} style={styles.goodsDesc}>

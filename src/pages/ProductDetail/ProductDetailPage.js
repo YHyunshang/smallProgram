@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-29 20:24:40
+ * @LastEditTime: 2019-09-30 18:18:01
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -89,7 +89,7 @@ export default class ProductDetailPage extends React.Component {
               shopUrl,
               productParams: object,
               orderActivityLabel: data.resChannelStoreProductVO ? data.resChannelStoreProductVO.orderActivityLabel : {},
-              // productActivityLabel: {activityBeginTime: '2019-09-29 00:00:00', activityEndTime: '2019-09-30 22:20:40', activityName: '限时抢购活动', discountPrice: 20, labels: ['特价', '满减', '限时抢购'], promotionCode: 'K001', promotionType: 0, promotionTypeName: '限时抢购', ruleType: 0, salesRatio: '45%'}
+              // productActivityLabel: {activityBeginTime: '2019-09-29 00:00:00', activityEndTime: '2019-09-30 18:05:40', activityName: '限时抢购活动', discountPrice: 20, labels: ['特价', '满减', '限时抢购'], promotionCode: 'K001', promotionType: 5, promotionTypeName: '限时抢购', ruleType: 0, salesRatio: '45%'}
               productActivityLabel: data.resChannelStoreProductVO ? data.resChannelStoreProductVO.productActivityLabel : {}
             }
           )
@@ -220,7 +220,7 @@ export default class ProductDetailPage extends React.Component {
     goodsDetailManager.pushToEvaluationList()
   }
   render() {
-    let tags
+    let tags// 促销类型 1 直降促销, 2 满减促销, 3 满件减满减折促销 ,4 第N件N折/N元,5 限时抢购
     const {imgData, goodsInfo, productImgList, shopUrl, imgUrl, productParams, similarProduct, productActivityLabel, orderActivityLabel} = this.state
     // let favorableRate = goodsInfo.favorableRate ? goodsInfo.favorableRate * 100 : 0
     // favorableRate = favorableRate && parseFloat(favorableRate.toFixed(2))
@@ -232,18 +232,16 @@ export default class ProductDetailPage extends React.Component {
     const shopImgList = shopUrl ? shopUrl.map((item, index) => (
       <PreloadingImage style={styles.goodsDetailImage} sourceType={0} uri={Img.loadRatioImage(item, Img.FullWidth)} ></PreloadingImage>
     )) : null
-    if ((orderActivityLabel && productActivityLabel) || productActivityLabel) { // 2 满减促销, 3 满件减满减折促销,活动是2，3时，标签取orderActivityLabel
-    // orderActivityLabel和productActivityLabel同事存在，优先取productActivityLabel
-      tags = productActivityLabel && productActivityLabel.labels ? productActivityLabel.labels.map((item, index) => (
-        <Tag textValue={item} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
-      )) : null
-    } else if (orderActivityLabel && !productActivityLabel) { // 2 满减促销, 3 满件减满减折促销,活动是2，3时，标签取orderActivityLabel
-      // orderActivityLabel存在，productActivityLabel不存在取orderActivityLabel
-      tags = orderActivityLabel && orderActivityLabel.labels ? orderActivityLabel.labels.map((item, index) => (
-        <Tag textValue={item} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
-      )) : null
+    if (productActivityLabel && productActivityLabel.promotionType === 5 && productActivityLabel.labels) { //  promotionType：5 限时抢购
+      tags = <Tag textValue={productActivityLabel.labels[0]} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
+    } else {
+      if (productActivityLabel && productActivityLabel.labels) { //  promotionType：1 直降促销， 4 第N件N折/N元
+        tags = <Tag textValue={productActivityLabel.labels[0]} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
+      }
+      if (orderActivityLabel && orderActivityLabel.labels) { //  promotionType：2 满减促销, 3 满件减满减折促销
+        tags = <Tag textValue={orderActivityLabel.labels[0]} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
+      }
     }
-
     return (
       <View style={styles.container}>
         <View style={styles.subContainer}>

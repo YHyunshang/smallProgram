@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-29 18:58:17
+ * @LastEditTime: 2019-09-30 09:37:31
  */
 import React from 'react'
 import {ScrollView, View, Text, TouchableOpacity, NativeModules} from 'react-native'
@@ -17,14 +17,7 @@ export default class HelpFeedBackPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      questionList: [
-        // {id: 'goodsQuestion', questionTypeName: '商品问题'},
-        // {id: 'deliveryQuestion', questionTypeName: '配送问题'},
-        // {id: 'orderQuestion', questionTypeName: '订单信息修改'},
-        // {id: 'memberQuestion', questionTypeName: '会员问题'},
-        // {id: 'invoiceQuestion', questionTypeName: '发票问题'},
-        // {id: 'refundQuestion', questionTypeName: '退款退货'}
-      ]
+      questionList: []
     }
   }
 
