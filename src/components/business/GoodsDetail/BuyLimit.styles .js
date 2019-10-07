@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-08-20 11:29:26
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-30 18:33:46
+ * @LastEditTime: 2019-10-07 23:10:01
  */
 import {
   StyleSheet
@@ -19,14 +19,7 @@ export default StyleSheet.create({
     height: 50,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
-  },
-  bgWrapper: {
-    width: 120,
-    height: 13,
-    flexDirection: 'row',
-    position: 'relative',
-    flex: 1
+    justifyContent: 'flex-start'
   },
   buyLimitTitle: {
     fontSize: 14,
@@ -35,33 +28,12 @@ export default StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 8
   },
-  whiteBg: {
-    zIndex: 10,
-    width: 50,
-    height: 13,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 7
-  },
-  pinkBg: {
-    position: 'absolute',
-    zIndex: 1,
-    left: 40,
-    width: 70,
-    height: 13,
-    backgroundColor: '#FFACBA',
-    borderRadius: 7
-  },
-  saleNum: {
-    fontSize: 10,
-    color: '#F32E57',
-    marginRight: 5,
-    textAlign: 'right'
-  },
   countDownWrapper: {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingRight: 15
+    paddingRight: 15,
+    marginLeft: 30
   },
   countDownText: {
     fontSize: 12,

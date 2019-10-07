@@ -1,10 +1,10 @@
 /*
- * @Description: Tag标签组件
+ * @Description:   限时抢购组件
  * @Company: yh
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-30 18:06:16
+ * @LastEditTime: 2019-10-07 23:37:41
  */
 
 import React from 'react'
@@ -14,6 +14,7 @@ import {
   NativeModules,
   ImageBackground
 } from 'react-native'
+import Progress from '../../common/Progress'
 import styles from './BuyLimit.styles '
 const rnAppModule = NativeModules.RnAppModule// 原生模块
 // 限时抢购背景图片
@@ -69,9 +70,9 @@ export default class BuyLimit extends React.Component {
 
  componentDidMount() {
    const {productActivityLabel} = this.props
-   // let time = productActivityLabel.activityEndTime.replace(/-/g, '/') // 把所有-转化成/
-   // let end = new Date(time).getTime()
-   // this.setState({activityEndTime: productActivityLabel.activityEndTime})
+   //  let time = productActivityLabel.activityEndTime.replace(/-/g, '/') // 把所有-转化成/
+   //  let end = new Date(time).getTime()
+   // this.setState({activityEndTime: end})
    this.setState({activityEndTime: productActivityLabel.activityEndTime})
    this.countTime()
  }
@@ -95,17 +96,7 @@ export default class BuyLimit extends React.Component {
                  <Text style={styles.buyLimitTitle}>{productActivityLabel.promotionTypeName}</Text>
                  : null
              }
-             <View style={styles.bgWrapper}>
-               <View style={styles.whiteBg}></View>
-               <View style={styles.pinkBg}>
-                 {
-                   productActivityLabel && productActivityLabel.salesRatio ?
-                     <Text style={styles.saleNum}>已售{productActivityLabel.salesRatio}</Text>
-                     : null
-                 }
-
-               </View>
-             </View>
+             <Progress saleNum={productActivityLabel.salesRatio}></Progress>
              <View style={styles.countDownWrapper}>
                <Text style={styles.countDownText}>离本场结束：</Text>
                <View style={styles.countDownTime}>
