@@ -15,6 +15,7 @@ import { Native } from '@utils'
 import Tab from './components/Tab'
 import Footer from './components/Footer'
 import Empty from './components/Empty'
+import AdTitle from '@components/business/Content/AdTitle'
 
 interface Props {
   activityCode: string // 活动编码
@@ -151,7 +152,20 @@ export default class Page extends React.Component<Props, State> {
           },
         })
       } else if (floor.type === 2) {
-        // 广告图
+        // 广告标题
+        if (floor.title && !(i === 0 && floor.subType === 1)) {
+          result.push({
+            key: `c-ad-${floor.id}-title`,
+            component: AdTitle,
+            props: {
+              children: floor.title,
+              link: CMSServices.formatLink({
+                linkType: floor.titleLinkType,
+                link: floor.titleLink,
+              }),
+            },
+          })
+        }
         if (floor.subType === 1) {
           // 单张广告图
           const imgObj = floor.templateDetailVOList[0]

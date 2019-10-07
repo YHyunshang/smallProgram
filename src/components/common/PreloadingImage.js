@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-08-29 11:25:46
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-24 17:43:37
+ * @LastEditTime: 2019-09-26 19:33:41
  */
 import React, {Component} from 'react'
 import {StyleSheet, View, Image} from 'react-native'
@@ -48,7 +48,7 @@ export default class PreloadingImage extends Component {
             indicator={false}
             source={source}
             resizeMode="cover"
-            style={[sourceType ? styles.imgPosition : '', sourceType ? style : '']}
+            style={[sourceType ? style : '']}
             onError={(error) => {
               this.setState({
                 type: 1
@@ -60,7 +60,7 @@ export default class PreloadingImage extends Component {
               })
             }}
           />
-          {this.state.isLoadComplete ? null : <Image style={[styles.imgDefault, style]} source={defaultImage} resizeMode="contain"/> }
+          {this.state.isLoadComplete ? null : <Image style={[styles.imgDefault, style, styles.imgPosition]} source={defaultImage} resizeMode="contain"/> }
         </View>
       )
     }
