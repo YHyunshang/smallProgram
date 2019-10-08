@@ -52,10 +52,10 @@ export async function navigateTo({ type, uri, params, title }: Navigation) {
     'calling HomeNativeManager.pushToNewPage with arguments',
     pageType,
     pageUri,
-    JSON.stringify({ params, title })
+    JSON.stringify({ params: { ...params, title } })
   )
 
-  return navigate(pageType, pageUri, JSON.stringify({ params, title }))
+  return navigate(pageType, pageUri, JSON.stringify({ params: { ...params, title } }))
 }
 
 /**
