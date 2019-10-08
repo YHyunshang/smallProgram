@@ -10,7 +10,6 @@ node_install:
   script:
   - node -v
   - npm -v
-  - npm install -g react-native-cli
   - mkdir -p /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}/node_modules
   - rm -rf /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}/node_modules
   - mkdir -p /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}/node_modules
@@ -25,12 +24,26 @@ node_install:
   - tags
   when: manual
 
+node_build_test:
+  stage: node_build
+  script:
+  - mkdir node_modules
+  - cp -r /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}/node_modules/*  node_modules
+  - chmod -R 777 node_modules
+  - npm i react-native-cli
+  - node_build build:test # 编译指令
+  - mkdir -p /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}
+  - cp -r dist /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}/dist
+  only:
+  - test # 指定分支
+
 node_build_master:
   stage: node_build
   script:
   - mkdir -p node_modules
   - cp -r /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}/node_modules/*  node_modules
   - chmod -R 777 node_modules
+  - npm i react-native-cli
   - node_build bundle-ios # 编译指令
   - mkdir -p /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}
   - cp -r dist /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}/dist
