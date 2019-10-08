@@ -1,6 +1,6 @@
 /**
  * Created by 李华良 on 2019-09-29
  */
-import Scene from './Scene'
+import LimitTimeBuyScene from './LimitTimeBuyScene'
 
-export default Scene
+export default LimitTimeBuyScene
