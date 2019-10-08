@@ -1,13 +1,11 @@
 import * as React from 'react'
 import styles from './ProductListWithFilter.styles'
-import { ProductServices } from '@services'
-import { FlatList, View } from 'react-native'
-import ProductFilter, {
-  StorageChoices,
-  Sort,
-  sort2String,
-} from './ProductFilter'
+import {ProductServices} from '@services'
+import {FlatList, View} from 'react-native'
+import ProductFilter, {Sort, StorageChoices,} from './ProductFilter'
 import ProductListItem from '@components/business/Content/ProductListItem'
+import ProductLimitTimeBuy from "@components/business/ProductLimitTimeBuy/ProductLimitTimeBuy";
+import {LimitTimeBuyStatus} from "@components/business/Content/typings";
 
 interface Props {
   shopCode: string
@@ -65,7 +63,7 @@ export default class ProductListWithFilter extends React.Component<
     const slashedPrice = currentPrice < (data.price || 0) ? data.price : 0
     const remarks = data.noteContentList || []
 
-    return {
+    let result = {
       code: data.productCode,
       thumbnail: data.mainUrl.url,
       name: data.productName,
@@ -80,6 +78,29 @@ export default class ProductListWithFilter extends React.Component<
       inventoryLabel: data.inventoryLabel,
       remarks,
     }
+
+    if (data.orderActivityLabel && data.orderActivityLabel.promotionType === 5) {
+      const {activityBeginTime, activityEndTime, salesRatio} = data.productActivityLabel
+      const start = Number(activityBeginTime)
+      const end = Number(activityEndTime)
+      const now = Date.now()
+
+      const status =
+        now < start ? LimitTimeBuyStatus.Pending
+          : now < end ? LimitTimeBuyStatus.Progressing
+          : LimitTimeBuyStatus.Expired
+      if (status === LimitTimeBuyStatus.Progressing) {
+        result = {
+          ...result,
+          isLimitTimeBuy: true,
+          inventoryPercentage: !/(\d+(\.\d+)?)%/.test(salesRatio)
+            ? 100
+            : Number(salesRatio.match(/(\d+(\.\d+)?)%/)[1]),
+          status,
+        }
+      }
+    }
+    return result
   }
 
   onFilterChange = data => {
@@ -103,8 +124,8 @@ export default class ProductListWithFilter extends React.Component<
       />
     ) : (
       <View style={styles.productBox}>
-        <ProductListItem {...item} />
-        <View style={styles.divider}></View>
+        {!item.isLimitTimeBuy ? <ProductListItem {...item} /> : <ProductLimitTimeBuy {...item}/> }
+        <View style={styles.divider} />
       </View>
     )
 

@@ -54,8 +54,6 @@ export default StyleSheet.create({
   },
 
   thumbnail: {
-    width: 100,
-    height: 100,
   },
 
   name: {
@@ -78,6 +76,10 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
+  },
+  inventoryPercentage: {
+    width: 120,
+    marginRight: 10,
   },
   tag: {
     fontSize: 10,
@@ -111,6 +113,13 @@ export default StyleSheet.create({
     fontWeight: '600',
     fontSize: 25,
     fontFamily: theme.priceFFPrimary,
+    marginRight: 5,
+    textAlignVertical: 'bottom',
+  },
+  expectPrice: {
+    fontSize: 12,
+    lineHeight: 25,
+    color: '#FF3914',
     marginRight: 5,
     textAlignVertical: 'bottom',
   },

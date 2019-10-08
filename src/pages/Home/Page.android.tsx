@@ -14,9 +14,10 @@ import TabBar, { TabHeight } from './components/TabBar'
 import CMSScene from './components/CMSScene'
 import CategoryScene from './components/CategroryScene'
 import { StorageChoices, Sort } from './components/ProductFilter'
-import { Product } from '@components/business/Content/typings'
+import {LimitTimeBuyStatus, Product} from '@components/business/Content/typings'
 import theme from '@theme'
 import { formatFloorData } from './utils'
+import {LimitTimeBuyScene} from "@components/Scene";
 
 const PlaceholderForNativeHeight = Native.getStatusBarHeight() + 86 + TabHeight
 const WindowWidth = Dimensions.get('window').width
@@ -249,7 +250,7 @@ export default class Page extends React.Component<Props, State> {
 
     const { shop } = this.state
 
-    return {
+    let result = {
       code: data.productCode,
       thumbnail: data.mainUrl.url,
       name: data.productName,
@@ -264,6 +265,28 @@ export default class Page extends React.Component<Props, State> {
       inventoryLabel: data.inventoryLabel,
       remarks,
     }
+    if (data.orderActivityLabel && data.orderActivityLabel.promotionType === 5) {
+      const {activityBeginTime, activityEndTime, salesRatio} = data.productActivityLabel
+      const start = Number(activityBeginTime)
+      const end = Number(activityEndTime)
+      const now = Date.now()
+
+      const status =
+        now < start ? LimitTimeBuyStatus.Pending
+          : now < end ? LimitTimeBuyStatus.Progressing
+          : LimitTimeBuyStatus.Expired
+      if (status === LimitTimeBuyStatus.Progressing) {
+        result = {
+          ...result,
+          isLimitTimeBuy: true,
+          inventoryPercentage: !/(\d+(\.\d+)?)%/.test(salesRatio)
+            ? 100
+            : Number(salesRatio.match(/(\d+(\.\d+)?)%/)[1]),
+          status,
+        }
+      }
+    }
+    return result
   }
 
   // 当前激活的 tab index 变化
@@ -286,6 +309,8 @@ export default class Page extends React.Component<Props, State> {
         },
       })
     })
+
+    if (currentTab.title === '限时抢购') return
 
     const currentTabKey = currentTab.key
     const preContentData = tabContentMap[currentTabKey]
@@ -445,6 +470,10 @@ export default class Page extends React.Component<Props, State> {
 
     const content = tabContentMap[key]
     const contentLoading = !!tabContentLoadingMap[key]
+
+    if (title === '限时抢购') {
+      return <LimitTimeBuyScene shopCode={this.state.shop.code} paddingTop={PlaceholderForNativeHeight} />
+    }
 
     switch (type) {
       case TabType.CMS:

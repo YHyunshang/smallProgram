@@ -1,37 +1,38 @@
 /**
- * 商品列表项
- * Created by 李华良 on 2019-08-19
+ * 限时抢购商品
+ * Created by 李华良 on 2019-10-07
  */
 import * as React from 'react'
-import {
-  View,
-  Text,
-  Image,
-  TouchableWithoutFeedback,
-} from 'react-native'
-import styles from './ProductListItem.styles'
-import ProductCountOperator from '../ProductCountOperator'
-import {Native, Img} from '@utils'
-import withCartCountModify from './HOC/withCountInCartModifier'
-import { Product } from './typings'
-import Tag from './Tag'
-import PromotionTag from './PromotionTag'
+import {Image, Text, TouchableWithoutFeedback, View,} from 'react-native'
+import styles from './ProductLimitTimeBuy.styles'
+import {Img, Native} from '@utils'
+import withCartCountModify from '../Content/HOC/withCountInCartModifier'
+import {LimitTimeBuyStatus, Product} from '../Content/typings'
+import Tag from '../Content/Tag'
+import ProgressBar from "@components/Scene/LimitTimeBuy/ProgressBar";
+import ProductCountOperatorLTB from "@components/business/ProductLimitTimeBuy/ProductCountOperatorLTB";
 
-function ProductListItem({
+interface Props extends Product {
+  inventoryPercentage?: number // 剩余库存比
+  activityStatus?: LimitTimeBuyStatus // 限时抢购活动状态
+}
+
+function ProductLimitTimeBuy({
   thumbnail,
   code,
   name,
   desc,
   productTags = [],
-  priceTags = [],
   spec,
   price,
   slashedPrice,
   count,
   inventoryLabel,
+  inventoryPercentage = 100,
   onModifyCount,
   shopCode,
-}: Product) {
+  activityStatus,
+}: Props) {
   const navigateToProductDetail = () => {
     Native.navigateTo({
       type: Native.NavPageType.NATIVE,
@@ -39,15 +40,21 @@ function ProductListItem({
       params: {productCode: code, storeCode: shopCode},
     })
   }
-  const fitThumbnail = Img.loadRatioImage(thumbnail, 100)
+  const fitThumbnail = Img.loadRatioImage(thumbnail, 75)
+
+  const thumbnailDim = {width: 75, height: 75}
+  const isCartDisabled = inventoryPercentage <= 0 ||
+    activityStatus === LimitTimeBuyStatus.Pending ||
+    activityStatus === LimitTimeBuyStatus.Expired
+
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={navigateToProductDetail}>
         <View style={styles.productBox}>
           <View style={styles.thumbnailBox}>
             <Image
-              style={styles.thumbnail}
-              source={{ uri: fitThumbnail }}
+              style={[styles.thumbnail, thumbnailDim]}
+              source={{uri: fitThumbnail}}
               resizeMode="contain"
             />
             <View style={styles.productTagRow}>
@@ -66,7 +73,7 @@ function ProductListItem({
               </View>
             )}
           </View>
-          <View style={styles.infoBox}>
+          <View style={[styles.infoBox, ]}>
             <Text style={styles.name} numberOfLines={1} ellipsizeMode="tail">
               {name}
             </Text>
@@ -74,22 +81,20 @@ function ProductListItem({
               {desc}
             </Text>
             <View style={styles.tagRow}>
-              {priceTags.map((tag, idx) =>
-                /满.+减/.test(tag) ? (
-                  <PromotionTag title="满减" content={tag} key={idx} />
-                ) : (
-                  <Text style={styles.tag} key={idx}>
-                    {tag}
-                  </Text>
-                )
-              )}
+              <View style={styles.inventoryPercentage}>
+                <ProgressBar percentage={inventoryPercentage} text="库存"/>
+              </View>
               {!!spec && <Text style={styles.spec}>{spec}</Text>}
             </View>
             <View style={styles.priceRow}>
-              <Text style={styles.currentPrice}>
-                <Text style={styles.pricePrefix}>¥ </Text>
-                {price / 100}
-              </Text>
+              {activityStatus !== LimitTimeBuyStatus.Pending ? (
+                <Text style={styles.currentPrice}>
+                  <Text style={styles.pricePrefix}>¥ </Text>
+                  {price / 100}
+                </Text>
+              ) : (
+                <Text style={styles.expectPrice}>敬请期待</Text>
+              )}
               {!!slashedPrice && (
                 <Text style={styles.slashedPrice}>¥{slashedPrice / 100}</Text>
               )}
@@ -99,15 +104,16 @@ function ProductListItem({
       </TouchableWithoutFeedback>
 
       <View style={styles.cartBox}>
-        <ProductCountOperator
-          size={24}
+        <ProductCountOperatorLTB
           count={count}
           onChange={onModifyCount}
-          disabled={!!inventoryLabel}
-        />
+          disabled={isCartDisabled}
+        >
+          {inventoryPercentage <= 0 ? '已售完' : '去抢购'}
+        </ProductCountOperatorLTB>
       </View>
     </View>
   )
 }
 
-export default withCartCountModify(ProductListItem)
+export default withCartCountModify(ProductLimitTimeBuy)

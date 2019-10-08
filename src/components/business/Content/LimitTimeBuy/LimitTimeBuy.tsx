@@ -10,7 +10,6 @@ import Timer from "./Timer";
 import ProductItem from "@components/business/Content/LimitTimeBuy/ProductItem";
 import {iconArrowRight} from "@const/resources";
 import {Native} from "@utils";
-import {NavPageType} from "../../../../utils/native";
 
 interface Props {
   startTime: number // timestamp
@@ -21,7 +20,7 @@ interface Props {
 export default function LimitTimeBuy({startTime, endTime, products}: Props) {
   return (
     <TouchableWithoutFeedback
-      onPress={() => Native.navigateTo({type: NavPageType.RN, uri: 'LimitTimeBuy', title: '限时抢购'})}>
+      onPress={() => Native.navigateTo({type: Native.NavPageType.RN, uri: 'LimitTimeBuy', title: '限时抢购'})}>
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.title}>限时抢购</Text>

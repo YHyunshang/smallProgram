@@ -11,6 +11,7 @@
     "lint": "eslint . --fix --format=node_modules/eslint-formatter-pretty --quiet"
   },
   "dependencies": {
+    "dayjs": "^1.8.16",
     "memoize-one": "^5.1.1",
     "react": "16.8.3",
     "react-native": "0.59.9",
@@ -24,6 +25,7 @@
     "react-native-tab-view": "^2.10.0",
     "react-native-vector-icons": "^6.6.0",
     "react-native-wechat": "^1.9.10",
+    "recyclerlistview": "^2.0.12",
     "rn-fetch-blob": "^0.10.16"
   },
   "devDependencies": {
