@@ -4,21 +4,20 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-07 23:37:41
+ * @LastEditTime: 2019-10-08 11:46:06
  */
 
 import React from 'react'
 import {
   Text,
   View,
-  NativeModules,
   ImageBackground
 } from 'react-native'
 import Progress from '../../common/Progress'
 import styles from './BuyLimit.styles '
-const rnAppModule = NativeModules.RnAppModule// 原生模块
 // 限时抢购背景图片
 import {buyLimit} from '@const/resources'
+let interval = null // 倒计时
 export default class BuyLimit extends React.Component {
   constructor(props) {
     super(props)
@@ -61,11 +60,11 @@ export default class BuyLimit extends React.Component {
      if (m == '00' && s == '00') {
        this.setState({isShow: false})
      }
+     this.setState({day: d, hour: h, minute: m, seconds: s})
+     interval = setInterval(this.countTime, 100)
    } else {
-     // this.setState({isShow: false})
+     clearInterval(interval)
    }
-   this.setState({day: d, hour: h, minute: m, seconds: s})
-   setTimeout(this.countTime, 50)
  }
 
  componentDidMount() {
@@ -78,7 +77,9 @@ export default class BuyLimit extends React.Component {
  }
 
  componentWillUnmount() {
-
+   if (interval) {
+     clearInterval(interval)
+   }
  }
  componentWillReceiveProps(nextProps) {
  }
