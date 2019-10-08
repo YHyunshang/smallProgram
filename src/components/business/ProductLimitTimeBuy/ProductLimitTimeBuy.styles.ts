@@ -28,7 +28,6 @@ export default StyleSheet.create({
 
   inventoryBox: {
     position: 'absolute',
-    top: 26.5,
     left: 0,
     right: 0,
     flexDirection: 'row',

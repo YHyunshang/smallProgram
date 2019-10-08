@@ -53,7 +53,7 @@ const ProductFloor = React.memo(
     <View
       style={{ backgroundColor: '#fff', padding: 15, position: 'relative' }}
     >
-      {!props.isLimitTimeBuy ? (<ProductListItem {...props} disableSync />) : (<ProductLimitTimeBuy {...props} />)}
+      {!props.isLimitTimeBuy ? (<ProductListItem {...props} disableSync />) : (<ProductLimitTimeBuy {...props} thumbnailSize={100} />)}
     </View>
   ),
   isEqual

@@ -192,7 +192,6 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
           : LimitTimeBuyStatus.Expired,
       }))
       if (!isEqual(tabs, nextTabs)) {
-        console.log('---')
         this.setState(({currentTabIndex, products, dataProvider}) => ({
           dataProvider: dataProvider.cloneWithRows([
             {type: ViewTypes.Banner},
@@ -247,7 +246,7 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
       case ViewTypes.Product:
         return (
           <View style={styles.productListItem}>
-            <ProductLimitTimeBuy {...data} />
+            <ProductLimitTimeBuy {...data} thumbnailSize={75} />
             {index > 3 && <View style={styles.productDivider} />}
           </View>
         )
