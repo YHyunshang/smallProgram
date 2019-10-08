@@ -25,13 +25,19 @@ enum ViewTypes {
   Product = 'product',
 }
 
+interface Tab {
+  start: number
+  end: number
+  status: LimitTimeBuyStatus
+}
+
 interface Props {
   paddingTop?: number
   shopCode: string // 门店编码
 }
 
 interface State {
-  tabs: object[] // 限时活动场次列表
+  tabs: Tab[] // 限时活动场次列表
   products: object[][] // 每个场次下的活动商品列表，下标关联到 tab
   loading: boolean
   dataProvider: DataProvider
@@ -126,7 +132,7 @@ export default class Scene extends React.Component<Props, State> {
   }
 
   // 获取活动数据并格式化返回数据
-  requestActivityList = async (shopCode: string):Promise<[object[], Product[][]]> => {
+  requestActivityList = async (shopCode: string):Promise<[Tab[], Product[][]]> => {
     this.setState({ loading: true })
     let res
     try {
