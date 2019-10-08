@@ -19,6 +19,7 @@ import { TabView } from 'react-native-tab-view'
 import TabBar, { TabHeight } from './components/TabBar'
 import theme from '@theme'
 import { formatFloorData } from './utils'
+import {LimitTimeBuyScene} from "@components/Scene";
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
 const placeholderForNativeHeight = Native.getStatusBarHeight() + 86 + TabHeight
@@ -144,7 +145,7 @@ class Page extends React.Component<Props, State> {
       ...cmsTabs.map(ele => ({
         id: ele.id,
         showName: ele.showName,
-        type: 'cms',
+        type: ele.showName === '限时抢购' ? 'limitTimeBuy' : 'cms',
       })),
       ...categories.map(ele => ({
         id: ele.categoryCode,
@@ -296,7 +297,7 @@ class Page extends React.Component<Props, State> {
         cms: (tabId, isForce) => this.requestFloorData(tabId, idx, isForce),
         category: this.requestCategoryContentData,
       }[currentTab.type]
-      fn(currentTab.id, force || dataExpired)
+      fn && fn(currentTab.id, force || dataExpired)
     }
   }
 
@@ -308,7 +309,7 @@ class Page extends React.Component<Props, State> {
       cms: (tabId, isForce) => this.requestFloorData(tabId, idx, isForce),
       category: this.requestCategoryContentData,
     }[currentTab.type]
-    fn(currentTab.id)
+    fn && fn(currentTab.id)
   }
 
   onContentScroll = Animated.event(
@@ -344,6 +345,10 @@ class Page extends React.Component<Props, State> {
       [{ nativeEvent: { contentOffset: { y: animatedValRefCmsScrollY } } }],
       { listener: this.onPageScroll, useNativeDriver: true }
     )
+
+    if (route.title === '限时抢购') {
+      return <LimitTimeBuyScene shopCode={this.state.shop.code} paddingTop={placeholderForNativeHeight} />
+    }
 
     if (routeIndex === 0) {
       return (

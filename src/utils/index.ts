@@ -5,5 +5,6 @@ import * as Log from './log'
 import * as Native from './native'
 import Http from './http'
 import * as Img from './img'
+import * as Global from './global'
 
-export { Log, Http, Native, Img }
+export { Log, Http, Native, Img, Global }

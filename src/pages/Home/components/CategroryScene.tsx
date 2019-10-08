@@ -14,6 +14,7 @@ import { Native } from '@utils'
 import { TabHeight } from './TabBar'
 import theme from '@theme'
 import isEqual from 'lodash/isEqual'
+import ProductLimitTimeBuy from "@components/business/ProductLimitTimeBuy";
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
 const PlaceholderForNativeHeight = Native.getStatusBarHeight() + 86 + TabHeight
@@ -52,7 +53,7 @@ const ProductFloor = React.memo(
     <View
       style={{ backgroundColor: '#fff', padding: 15, position: 'relative' }}
     >
-      <ProductListItem {...props} disableSync />
+      {!props.isLimitTimeBuy ? (<ProductListItem {...props} disableSync />) : (<ProductLimitTimeBuy {...props} />)}
     </View>
   ),
   isEqual

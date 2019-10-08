@@ -14,6 +14,7 @@ import Found from './src/pages/Found'
 import Activity from './src/pages/Activity'
 import HelpFeedBackQuestion from './src/pages/HelpFeedBack/HelpFeedBackQuestion'
 import HelpFeedBackAnswer from './src/pages/HelpFeedBack/HelpFeedBackAnswer'
+import LimitTimeBuy from './src/pages/LimitTimeBuy'
 
 // 隐藏 RN yellowBox warning 提示
 console.disableYellowBox = true
@@ -28,3 +29,4 @@ AppRegistry.registerComponent(
   () => HelpFeedBackQuestion
 )
 AppRegistry.registerComponent('RNHelpFeedBackAnswer', () => HelpFeedBackAnswer)
+AppRegistry.registerComponent('LimitTimeBuy', () => LimitTimeBuy)

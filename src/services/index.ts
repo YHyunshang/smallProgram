@@ -3,5 +3,6 @@
  */
 import * as CMSServices from './cms'
 import * as ProductServices from './product'
+import * as LimitTimeBuyServices from './limitTimeBuy'
 
-export { CMSServices, ProductServices }
+export { CMSServices, ProductServices, LimitTimeBuyServices }
