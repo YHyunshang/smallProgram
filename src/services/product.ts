@@ -91,10 +91,15 @@ export function queryProductList(
  * 格式化商品中心返回的商品数据
  * @param data api 返回的商品数据
  */
-export function formatProduct(data: {[index:string]: any}):Product {
+export function formatProduct<T extends Product>(data: {[index:string]: any}) {
   const remarkOptions = (data.resProdcutNoteNewVO || { noteContentName: [] }).noteContentName
   const remarks = remarkOptions.sort((a, b) => a.isDefault ? -1 : 1).map(ele => ele.name)
   const salesRatio = (data.productActivityLabel || {}).salesRatio || ''
+
+  const isLimitTimeBuy = (data.productActivityLabel || {}).promotionType === 5
+  const promotionPrice = isLimitTimeBuy
+    ? (data.productActivityLabel || {}).duscountPrice || data.promotionPrice
+    : data.promotionPrice
 
   return {
     cartId: data.shopCartId,
@@ -105,12 +110,12 @@ export function formatProduct(data: {[index:string]: any}):Product {
     productTags: [],
     priceTags: [],
     spec: data.productSpecific,
-    price: data.promotionPrice,
+    price: promotionPrice,
     slashedPrice: data.price,
     count: data.productNum,
     remark: '',
     remarks,
-    isLimitTimeBuy: (data.productActivityLabel || {}).promotionType === 5,
+    isLimitTimeBuy,
     inventoryPercentage: !/(\d+(\.\d+)?)%/.test(salesRatio)
       ? 100
       : Number(salesRatio.match(/(\d+(\.\d+)?)%/)[1]),
