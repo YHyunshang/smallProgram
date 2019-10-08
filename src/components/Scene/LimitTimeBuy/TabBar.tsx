@@ -4,21 +4,14 @@
 import * as React from 'react'
 import {View, Text, TouchableWithoutFeedback} from "react-native";
 import styles from './TabBar.styles'
-import {LimitTimeBuyStatus} from "@components/business/Content/typings";
 import {Global} from "@utils";
+import { Tab } from './typings'
+import {LimitTimeBuyStatus} from "@components/business/Content/typings";
+import {stat} from "react-native-fs";
 const dayjs = require('dayjs')
 
-export interface tabs {
-  start: number
-  end: number
-  status: LimitTimeBuyStatus
-}
-
 interface Props {
-  tabs: {
-    start: number
-    end: number
-  }[]
+  tabs: Tab[]
   currentActiveIndex: number
   onIndexChange: (index: number) => void
 }
@@ -36,35 +29,25 @@ function day(date) {
     : srcDate.format('MM-DD HH:mm')
 }
 
+function statusToText(status: LimitTimeBuyStatus):string {
+  return {
+    [LimitTimeBuyStatus.Pending]: '即将开始',
+    [LimitTimeBuyStatus.Progressing]: '正在抢购',
+    [LimitTimeBuyStatus.Expired]: '已结束',
+  }[status]
+}
+
 export default function TabBar({tabs, currentActiveIndex, onIndexChange}: Props) {
-  const [now, setNow] = React.useState(Date.now())
-  const maxEndTime = Math.max(...tabs.map(ele => ele.end))
-
-  React.useEffect(() => {
-    let interval = setInterval(() => {
-      const _now_ = Date.now()
-      if (_now_ > maxEndTime) {
-        clearInterval(interval)
-      }
-      setNow(_now_)
-    }, 1000)
-
-    return () => clearInterval(interval)
-  }, [maxEndTime])
-
   const indicatorTranslateX = (currentActiveIndex + 0.5) * (Global.WindowWidth / tabs.length) - 2.5
-  console.log(indicatorTranslateX)
 
   return (
     <View style={styles.container}>
-      {tabs.map(({start, end}, index) => {
-        const title = day(start)
-        let status = now < start ? '即将开始' : now < end ? '正在抢购' : '已结束'
+      {tabs.map(({start, status}, index) => {
         return (
           <TouchableWithoutFeedback onPress={() => onIndexChange(index)} key={index}>
             <View style={[styles.tabBox, currentActiveIndex === index && styles.tabActive]}>
-              <Text style={[styles.tabTitle, currentActiveIndex === index && styles.tabTitleActive]}>{title}</Text>
-              <Text style={[styles.tabStatus, currentActiveIndex === index && styles.tabStatusActive]}>{status}</Text>
+              <Text style={[styles.tabTitle, currentActiveIndex === index && styles.tabTitleActive]}>{day(start)}</Text>
+              <Text style={[styles.tabStatus, currentActiveIndex === index && styles.tabStatusActive]}>{statusToText(status)}</Text>
             </View>
           </TouchableWithoutFeedback>
         )
