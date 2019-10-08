@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-08-20 11:29:26
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-07 23:10:01
+ * @LastEditTime: 2019-10-08 17:42:22
  */
 import {
   StyleSheet
@@ -15,6 +15,7 @@ export default StyleSheet.create({
     flex: 1
   },
   buyLimitBg: {
+    position: 'relative',
     width: '100%',
     height: 50,
     flexDirection: 'row',
@@ -29,11 +30,12 @@ export default StyleSheet.create({
     paddingRight: 8
   },
   countDownWrapper: {
+    position: 'absolute',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     paddingRight: 15,
-    marginLeft: 30
+    right: 0
   },
   countDownText: {
     fontSize: 12,

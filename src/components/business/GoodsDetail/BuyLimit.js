@@ -4,20 +4,22 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-08 11:46:06
+ * @LastEditTime: 2019-10-08 17:36:38
  */
 
 import React from 'react'
 import {
   Text,
   View,
-  ImageBackground
+  ImageBackground,
+  NativeModules
 } from 'react-native'
 import Progress from '../../common/Progress'
 import styles from './BuyLimit.styles '
 // 限时抢购背景图片
 import {buyLimit} from '@const/resources'
-let interval = null // 倒计时
+const rnAppModule = NativeModules.RnAppModule// 原生模块
+let timer = null // 倒计时
 export default class BuyLimit extends React.Component {
   constructor(props) {
     super(props)
@@ -36,6 +38,7 @@ export default class BuyLimit extends React.Component {
    let end = this.state.activityEndTime
    let leftTime = end - now, // 时间差
      d, h, m, s, ms
+   // rnAppModule.showToast(String(end), '0')
    if (leftTime >= 0) {
      d = Math.floor(leftTime / 1000 / 60 / 60 / 24)
      h = Math.floor(leftTime / 1000 / 60 / 60)
@@ -60,25 +63,25 @@ export default class BuyLimit extends React.Component {
      if (m == '00' && s == '00') {
        this.setState({isShow: false})
      }
-     this.setState({day: d, hour: h, minute: m, seconds: s})
-     interval = setInterval(this.countTime, 100)
    } else {
-     clearInterval(interval)
+     // clearInterval(interval)
    }
+   this.setState({day: d, hour: h, minute: m, seconds: s})
+   timer = setTimeout(this.countTime, 50)
  }
 
  componentDidMount() {
    const {productActivityLabel} = this.props
    //  let time = productActivityLabel.activityEndTime.replace(/-/g, '/') // 把所有-转化成/
    //  let end = new Date(time).getTime()
-   // this.setState({activityEndTime: end})
+   //  this.setState({activityEndTime: end})
    this.setState({activityEndTime: productActivityLabel.activityEndTime})
    this.countTime()
  }
 
  componentWillUnmount() {
-   if (interval) {
-     clearInterval(interval)
+   if (timer) {
+     clearTimeout(timer)
    }
  }
  componentWillReceiveProps(nextProps) {

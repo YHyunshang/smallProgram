@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-09-06 13:54:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-07 23:54:32
+ * @LastEditTime: 2019-10-08 15:33:41
  */
 import {Platform} from 'react-native'
 
@@ -125,3 +125,6 @@ export const iconPlusCircleRed = isAndroid
 export const iconMinusCircleRed = isAndroid
   ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/icon-minus-circle-red.png'}
   : require('@img/icon-minus-circle-red.png')
+export const buyLimit =isAndroid
+    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/buy-limit.png' }
+    : require('@img/buy-limit.png')
