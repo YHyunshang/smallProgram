@@ -4,26 +4,17 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-23 18:21:32
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-07-24 11:43:09
+ * @LastEditTime: 2019-08-27 10:07:12
  */
 
-import React,{ Component } from 'react';
+import React, {Component} from 'react'
 import {
-    StyleSheet,
-    View,
-    Text,
-    TouchableOpacity,
-    ScrollView,
-    Dimensions
-} from 'react-native';
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity
+} from 'react-native'
 
-const dimen = Dimensions.get('window');
-const deviceWidth = dimen.width;
-
-function px(size) {
-
-    return Math.round(deviceWidth / 750 * size);
-}
 /**
  * tab组件头部
  * props    data    tab列表
@@ -32,69 +23,77 @@ function px(size) {
  * props    onChange    选中
  */
 export default class TabBar extends Component {
-
     static defaultProps = {
-        data: [],
-        index: -1,
-        onChange: () => { },
+      data: [],
+      index: -1,
+      onChange: () => { }
     }
     constructor(props) {
-        super(props);
-        this.state = {
-            index: props.index,
-        }
-        this.scroll = null;
-        this.laout_list = []
-        this.scrollW = 0;
+      super(props)
+      this.state = {
+        index: props.index
+      }
+      this.scroll = null
+      this.laout_list = []
+      this.scrollW = 0
     }
     render() {
-        return <View style={[tabBarStyle.tab, this.props.style]}>
-                {this.props.data.map((item, index) =>
-                    <TouchableOpacity onPress={() => this.setIndex(index)} key={item.id} style={tabBarStyle.itemBtn}>
-                        <Text style={[tabBarStyle.item]} > {item.name}</Text>
-                        <View style={[tabBarStyle.line, this.state.index === index ? tabBarStyle.active : null]}></View>
-                    </TouchableOpacity>
-                )}
-        </View>
+      return <View style={[tabBarStyle.tab, this.props.style]}>
+        {this.props.data.map((item, index) =>
+          <TouchableOpacity activeOpacity={0.95} onPress={() => this.setIndex(index)} key={item.id} style={tabBarStyle.itemBtn}>
+            <Text style={[this.state.index === index ? tabBarStyle.active : tabBarStyle.item]} > {item.name}</Text>
+          </TouchableOpacity>
+        )}
+      </View>
     }
+    /**
+     * @description: 调用父组件的setIndex方法并修改当前index状态
+     * @param {index}
+     * @return:  void
+     */
     setIndex(index, bl = true) {
-        let {clickScroll}=this.props;
-        clickScroll(index)
-        this.setState({ index })
+      let {clickScroll} = this.props
+      clickScroll(index)
+      this.setState({index})
+    }
+    /**
+     * @description: 重置当前index状态
+     * @param {index}
+     * @return:  void
+     */
+    resetIndex(index) {
+      this.setState({index})
     }
 }
+/**
+ * @description: tabBar组件样式
+ */
 const tabBarStyle = StyleSheet.create({
-    tab: {
-        backgroundColor: '#F8F8F8',
-        flexDirection: 'row',
-        alignItems: "center",
-        justifyContent: "center",
-        borderBottomColor: '#efefef',
-        borderBottomWidth: px(1),
-        height: 40
-    },
-    itemBtn: {
-        paddingHorizontal: 12,
-        // paddingTop: 2,
-        flexDirection: 'column',
-        justifyContent: "center",
-        alignItems: "center"
-    },
-    item: {
-        fontSize: px(28),
-        color: "#858385"
-    },
-    line: {
-        width: 20,
-        height: 2,
-        backgroundColor: "#F8F8F8",
-        marginTop: 10
-    },
-    active: {
-        backgroundColor: "#EE4239"
-    },
-    sortimg: {
-        width: 55,
-        height: 40,
-    }
-});
+  tab: {
+    backgroundColor: '#FFFFFF',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 40
+  },
+  itemBtn: {
+    paddingHorizontal: 20,
+    paddingTop: 2,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  item: {
+    fontSize: 19,
+    color: '#B3B3B3'
+  },
+  active: {
+    color: '#4D4D4D',
+    fontSize: 19,
+    fontWeight: '800'
+  },
+  sortimg: {
+    width: 55,
+    height: 40
+  }
+})
