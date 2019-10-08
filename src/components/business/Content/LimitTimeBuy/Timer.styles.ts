@@ -21,7 +21,7 @@ export default StyleSheet.create({
   timerText: {
     fontSize: 13,
     fontFamily: Platform.OS === 'ios' ? 'Arial' : 'monospace',
-    width: 20,
+    minWidth: 20,
     lineHeight: 20,
     textAlign: 'center',
     textAlignVertical: 'center',
