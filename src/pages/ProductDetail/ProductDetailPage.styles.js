@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-27 14:02:29
+ * @LastEditTime: 2019-10-08 19:04:32
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import {isIPhoneXMarginTop, isIPhoneXHeight} from '../../utils/IsIphoneX'
@@ -56,6 +56,11 @@ export default StyleSheet.create({
   defaultImage: {
     width: '100%',
     height: 375
+  },
+  goodsPriceWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   goodsPrice: {
     fontSize: 24,
