@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-30 18:18:01
+ * @LastEditTime: 2019-10-08 19:06:16
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -292,11 +292,24 @@ export default class ProductDetailPage extends React.Component {
             <View>
               <View style={styles.goodsPromotionPriceRowFlex}>
                 <Text style={styles.goodsPriceSymbol}>¥</Text>
-                <Text style={styles.goodsPrice}>{transPenny(goodsInfo.promotionPrice ? goodsInfo.promotionPrice : goodsInfo.price)}</Text>
                 {
-                  goodsInfo.promotionPrice
-                    ? <Text style={styles.throughLine} >¥{transPenny(goodsInfo.price)}</Text>
-                    : null
+                  productActivityLabel && productActivityLabel.promotionType === 5 ?
+                    <View style={styles.goodsPriceWrapper}>
+                      <Text style={styles.goodsPrice}>{transPenny(goodsInfo.price)}</Text>
+                      {
+                        productActivityLabel.discountPrice
+                          ? <Text style={styles.throughLine} >¥{transPenny(productActivityLabel.discountPrice)}</Text>
+                          : null
+                      }
+                    </View>
+                    : <View style={styles.goodsPriceWrapper}>
+                      <Text style={styles.goodsPrice}>{transPenny(goodsInfo.promotionPrice ? goodsInfo.promotionPrice : goodsInfo.price)}</Text>
+                      {
+                        goodsInfo.promotionPrice
+                          ? <Text style={styles.throughLine} >¥{transPenny(goodsInfo.price)}</Text>
+                          : null
+                      }
+                    </View>
                 }
               </View>
               <View style={styles.goodsTags}>
