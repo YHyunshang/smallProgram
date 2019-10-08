@@ -16,6 +16,7 @@ export default StyleSheet.create({
     flexShrink: 0,
     flexGrow: 0,
     marginRight: 15,
+    position: 'relative',
   },
 
   productTagRow: {
@@ -27,7 +28,7 @@ export default StyleSheet.create({
 
   inventoryBox: {
     position: 'absolute',
-    top: 39,
+    top: 26.5,
     left: 0,
     right: 0,
     flexDirection: 'row',
