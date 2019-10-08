@@ -105,20 +105,20 @@ const { height: D_HEIGHT, width: D_WIDTH } = DEVICE_SIZE
 /**
  * 是否是 iOS 设备
  */
-export const isiOS = () => Platform.OS === 'ios'
+export const isiOS = (() => Platform.OS === 'ios')()
 
 /**
  * 是否是 iPhoneX
  */
-export const isiPhoneX = () => {
+export const isiPhoneX = (() => {
   return (
-    (isiOS() &&
+    (isiOS &&
       ((D_HEIGHT === X_HEIGHT && D_WIDTH === X_WIDTH) ||
         (D_HEIGHT === X_WIDTH && D_WIDTH === X_HEIGHT))) ||
     ((D_HEIGHT === XSMAX_HEIGHT && D_WIDTH === XSMAX_WIDTH) ||
       (D_HEIGHT === XSMAX_WIDTH && D_WIDTH === XSMAX_HEIGHT))
   )
-}
+})()
 
 /**
  * 获取系统 StatusBar 高度
@@ -127,7 +127,7 @@ export const isiPhoneX = () => {
  * Android 统一为当前 StatusBar 高度 + 5（美人尖高度）
  */
 export const getStatusBarHeight = () =>
-  isiOS() ? (isiPhoneX() ? 44 : 20) : StatusBar.currentHeight + 5
+  isiOS ? (isiPhoneX ? 44 : 20) : StatusBar.currentHeight + 5
 
 /**
  * 监听购物车变化

@@ -17,7 +17,7 @@ import { StorageChoices, Sort } from './components/ProductFilter'
 import {LimitTimeBuyStatus, Product} from '@components/business/Content/typings'
 import theme from '@theme'
 import { formatFloorData } from './utils'
-import {LimitTimeBuyScene} from "@components/Scene";
+import {LimitTimeBuy as LimitTimeBuyScene} from "@components/Scene";
 
 const PlaceholderForNativeHeight = Native.getStatusBarHeight() + 86 + TabHeight
 const WindowWidth = Dimensions.get('window').width
