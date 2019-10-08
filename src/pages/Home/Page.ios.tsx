@@ -19,7 +19,7 @@ import { TabView } from 'react-native-tab-view'
 import TabBar, { TabHeight } from './components/TabBar'
 import theme from '@theme'
 import { formatFloorData } from './utils'
-import {LimitTimeBuyScene} from "@components/Scene";
+import {LimitTimeBuy as LimitTimeBuyScene} from "@components/Scene";
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
 const placeholderForNativeHeight = Native.getStatusBarHeight() + 86 + TabHeight
