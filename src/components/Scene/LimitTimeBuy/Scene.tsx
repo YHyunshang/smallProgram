@@ -39,6 +39,10 @@ interface State {
 }
 
 export default class Scene extends React.Component<Props, State> {
+  static defaultProps = {
+    paddingTop: 0,
+  }
+
   state = {
     loading: false,
     tabs: [],
@@ -46,10 +50,6 @@ export default class Scene extends React.Component<Props, State> {
     dataProvider: new DataProvider((r1, r2) => r1 !== r2)
       .cloneWithRows([ {type: ViewTypes.Banner} ]),
     currentTabIndex: 0,
-  }
-
-  defaultProps = {
-    paddingTop: 0,
   }
 
   layoutProvider = new LayoutProvider(
@@ -215,7 +215,7 @@ export default class Scene extends React.Component<Props, State> {
     }))
   }
 
-  rowRenderer = (type, data) => {
+  rowRenderer = (type, data, index) => {
     const {tabs, currentTabIndex} = this.state
     const currentTab = tabs[currentTabIndex]
 
@@ -243,7 +243,7 @@ export default class Scene extends React.Component<Props, State> {
         return (
           <View style={styles.productListItem}>
             <ProductLimitTimeBuy {...data} />
-            <View style={styles.productDivider} />
+            {index > 3 && <View style={styles.productDivider} />}
           </View>
         )
     }
