@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-08 19:06:16
+ * @LastEditTime: 2019-10-08 19:50:23
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -295,10 +295,10 @@ export default class ProductDetailPage extends React.Component {
                 {
                   productActivityLabel && productActivityLabel.promotionType === 5 ?
                     <View style={styles.goodsPriceWrapper}>
-                      <Text style={styles.goodsPrice}>{transPenny(goodsInfo.price)}</Text>
+                      <Text style={styles.goodsPrice}>{transPenny(productActivityLabel.discountPrice ? productActivityLabel.discountPrice : goodsInfo.price)}</Text>
                       {
                         productActivityLabel.discountPrice
-                          ? <Text style={styles.throughLine} >¥{transPenny(productActivityLabel.discountPrice)}</Text>
+                          ? <Text style={styles.throughLine} >¥{transPenny(goodsInfo.price)}</Text>
                           : null
                       }
                     </View>
