@@ -1,11 +1,13 @@
 /**
  * Created by 李华良 on 2019-07-23
  */
+/// <reference path="http.model.ts" />
 import { NativeModules } from 'react-native'
 import RequestErr from './http-err'
 import HostMapper from './host-mapper'
 import * as Log from '../log'
 import { showToast } from '../native'
+import * as HttpModel from './http.model'
 
 /**
  * send http request based on native
@@ -84,7 +86,7 @@ async function request(
  * @param path {string}
  * @param query {object}
  */
-export function formatUrl(hostKey: string, path: string, query = {}) {
+export function formatUrl(hostKey: string, path: string, query:{[idx:string]: string} = {}) {
   const nativeEnv = NativeModules.HttpNativeManager.envPathType
   const env = { 0: 'test', 1: 'dev', 2: 'prod' }[nativeEnv]
   if (!env)

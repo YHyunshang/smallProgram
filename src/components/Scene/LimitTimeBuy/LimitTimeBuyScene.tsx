@@ -2,18 +2,20 @@
  * Created by 李华良 on 2019-09-29
  */
 import * as React from 'react'
-import {ActivityIndicator, Dimensions, Image, View} from "react-native";
+import {ActivityIndicator, Image, RefreshControl, View} from "react-native";
 import { RecyclerListView, DataProvider, LayoutProvider } from 'recyclerlistview'
+import StickyContainer from 'recyclerlistview/sticky';
 import {CMSServices, LimitTimeBuyServices} from "@services";
 import {bannerLimitTimeBuy} from "@const/resources";
 import TabBar from "./TabBar";
 import Timer from "@components/business/Content/LimitTimeBuy/Timer";
-import styles from "./Scene.styles";
+import styles from "./LimitTimeBuyScene.styles";
 import theme from "@theme";
 import {LimitTimeBuyStatus, Product} from "@components/business/Content/typings";
 import {Global} from "@utils";
 import ProductLimitTimeBuy from "@components/business/ProductLimitTimeBuy";
 import isEqual from 'lodash/isEqual'
+import { Tab } from "./Typings";
 
 const WindowWidth = Global.WindowWidth
 const BannerHeight = WindowWidth * 150 / 375
@@ -31,14 +33,14 @@ interface Props {
 }
 
 interface State {
-  tabs: object[] // 限时活动场次列表
+  tabs: Tab[] // 限时活动场次列表
   products: object[][] // 每个场次下的活动商品列表，下标关联到 tab
   loading: boolean
   dataProvider: DataProvider
   currentTabIndex: number
 }
 
-export default class Scene extends React.Component<Props, State> {
+export default class LimitTimeBuyScene extends React.Component<Props, State> {
   static defaultProps = {
     paddingTop: 0,
   }
@@ -126,7 +128,7 @@ export default class Scene extends React.Component<Props, State> {
   }
 
   // 获取活动数据并格式化返回数据
-  requestActivityList = async (shopCode: string):Promise<[object[], Product[][]]> => {
+  requestActivityList = async (shopCode: string):Promise<[Tab[], Product[][]]> => {
     this.setState({ loading: true })
     let res
     try {
@@ -189,14 +191,16 @@ export default class Scene extends React.Component<Props, State> {
           : now < ele.end ? LimitTimeBuyStatus.Progressing
           : LimitTimeBuyStatus.Expired,
       }))
-      if (!isEqual(tabs, nextTabs)) this.setState(({currentTabIndex, products, dataProvider }) => ({
-        dataProvider: dataProvider.cloneWithRows([
-          { type: ViewTypes.Banner },
-          { type: ViewTypes.Tab },
-          { Type: ViewTypes.Timer },
-          ...(products[currentTabIndex] || []).map(ele => ({...ele, activityStatus: tabs[currentTabIndex].status}))
-        ]),
-      }))
+      if (!isEqual(tabs, nextTabs)) {
+        this.setState(({currentTabIndex, products, dataProvider}) => ({
+          dataProvider: dataProvider.cloneWithRows([
+            {type: ViewTypes.Banner},
+            {type: ViewTypes.Tab},
+            {Type: ViewTypes.Timer},
+            ...(products[currentTabIndex] || []).map(ele => ({...ele, activityStatus: tabs[currentTabIndex].status}))
+          ]),
+        }), () => this.init(this.props.shopCode))
+      }
       if (Math.max(...tabs.map(ele => ele.end), now) === now) {
         clearInterval(this.timer)
       }
@@ -242,7 +246,7 @@ export default class Scene extends React.Component<Props, State> {
       case ViewTypes.Product:
         return (
           <View style={styles.productListItem}>
-            <ProductLimitTimeBuy {...data} />
+            <ProductLimitTimeBuy {...data} thumbnailSize={75} />
             {index > 3 && <View style={styles.productDivider} />}
           </View>
         )
@@ -250,24 +254,37 @@ export default class Scene extends React.Component<Props, State> {
   }
 
   render() {
-    const { paddingTop } = this.props
-    const { dataProvider, loading } = this.state
+    const { paddingTop, shopCode } = this.props
+    const { dataProvider, loading, tabs } = this.state
 
     return (
       <View style={styles.container}>
-        {loading && (
+        {loading && tabs.length === 0 && (
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color={theme.primary} />
           </View>
         )}
 
-        <RecyclerListView
-          style={{ ...styles.productList }}
-          scrollViewProps={{contentContainerStyle: { paddingTop }}}
-          dataProvider={dataProvider}
-          rowRenderer={this.rowRenderer}
-          layoutProvider={this.layoutProvider}
-        />
+        <StickyContainer stickyHeaderIndices={[1]}>
+          <RecyclerListView
+            style={{ ...styles.productList }}
+            scrollViewProps={{
+              contentContainerStyle: { paddingTop },
+              refreshControl: (
+                <RefreshControl
+                  refreshing={loading}
+                  onRefresh={() => this.init(shopCode)}
+                  colors={[theme.primary, theme.white]}
+                  tintColor={theme.primary}
+                  progressViewOffset={paddingTop}
+                />
+              )
+            }}
+            dataProvider={dataProvider}
+            rowRenderer={this.rowRenderer}
+            layoutProvider={this.layoutProvider}
+          />
+        </StickyContainer>
       </View>
     )
   }
