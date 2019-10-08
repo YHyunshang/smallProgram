@@ -13,11 +13,13 @@ import ProgressBar from "@components/Scene/LimitTimeBuy/ProgressBar";
 import ProductCountOperatorLTB from "@components/business/ProductLimitTimeBuy/ProductCountOperatorLTB";
 
 interface Props extends Product {
+  thumbnailSize: number // 商品图片大小
   inventoryPercentage?: number // 剩余库存比
   activityStatus?: LimitTimeBuyStatus // 限时抢购活动状态
 }
 
 function ProductLimitTimeBuy({
+  thumbnailSize,
   thumbnail,
   code,
   name,
@@ -40,9 +42,9 @@ function ProductLimitTimeBuy({
       params: {productCode: code, storeCode: shopCode},
     })
   }
-  const fitThumbnail = Img.loadRatioImage(thumbnail, 75)
+  const fitThumbnail = Img.loadRatioImage(thumbnail, thumbnailSize)
 
-  const thumbnailDim = {width: 75, height: 75}
+  const thumbnailDim = {width: thumbnailSize, height: thumbnailSize}
   const isCartDisabled = inventoryPercentage <= 0 ||
     activityStatus === LimitTimeBuyStatus.Pending ||
     activityStatus === LimitTimeBuyStatus.Expired
@@ -66,7 +68,7 @@ function ProductLimitTimeBuy({
             </View>
 
             {!!inventoryLabel && (
-              <View style={styles.inventoryBox}>
+              <View style={[styles.inventoryBox, { top: thumbnailSize / 2 - 11 }]}>
                 <View style={styles.inventoryLabelBg}>
                   <Text style={styles.inventoryLabel}>{inventoryLabel}</Text>
                 </View>

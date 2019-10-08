@@ -237,11 +237,11 @@ export default class Page extends React.Component<Props, State> {
           return []
         }
       )
-      .then(products => products.map(this.formateProductData))
+      .then(products => products.map(this.formatProductData))
   }
 
   // 格式化分类下的商品数据
-  formateProductData = data => {
+  formatProductData = data => {
     const currentPrice = Math.min(
       Math.min(data.price || 0, data.promotionPrice || Infinity)
     )
@@ -265,11 +265,12 @@ export default class Page extends React.Component<Props, State> {
       inventoryLabel: data.inventoryLabel,
       remarks,
     }
-    if (data.orderActivityLabel && data.orderActivityLabel.promotionType === 5) {
+    if (data.productActivityLabel && data.productActivityLabel.promotionType === 5) {
       const {activityBeginTime, activityEndTime, salesRatio} = data.productActivityLabel
       const start = Number(activityBeginTime)
       const end = Number(activityEndTime)
       const now = Date.now()
+      const price = Math.min(currentPrice, data.discountPrice || Infinity)
 
       const status =
         now < start ? LimitTimeBuyStatus.Pending
@@ -283,6 +284,7 @@ export default class Page extends React.Component<Props, State> {
             ? 100
             : Number(salesRatio.match(/(\d+(\.\d+)?)%/)[1]),
           status,
+          price,
         }
       }
     }

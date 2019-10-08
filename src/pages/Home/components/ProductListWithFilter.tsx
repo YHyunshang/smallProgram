@@ -4,7 +4,7 @@ import {ProductServices} from '@services'
 import {FlatList, View} from 'react-native'
 import ProductFilter, {Sort, StorageChoices,} from './ProductFilter'
 import ProductListItem from '@components/business/Content/ProductListItem'
-import ProductLimitTimeBuy from "@components/business/ProductLimitTimeBuy/ProductLimitTimeBuy";
+import ProductLimitTimeBuy from "@components/business/ProductLimitTimeBuy";
 import {LimitTimeBuyStatus} from "@components/business/Content/typings";
 
 interface Props {
@@ -52,11 +52,11 @@ export default class ProductListWithFilter extends React.Component<
       pageSize
     )
     this.setState({
-      productList: pageResult.result.map(this.formateProductData),
+      productList: pageResult.result.map(this.formatProductData),
     })
   }
 
-  formateProductData = data => {
+  formatProductData = (data) => {
     const currentPrice = Math.min(
       Math.min(data.price || 0, data.promotionPrice || Infinity)
     )
@@ -79,11 +79,12 @@ export default class ProductListWithFilter extends React.Component<
       remarks,
     }
 
-    if (data.orderActivityLabel && data.orderActivityLabel.promotionType === 5) {
+    if (data.productActivityLabel && data.productActivityLabel.promotionType === 5) {
       const {activityBeginTime, activityEndTime, salesRatio} = data.productActivityLabel
       const start = Number(activityBeginTime)
       const end = Number(activityEndTime)
       const now = Date.now()
+      const price = Math.min(currentPrice, data.discountPrice || Infinity)
 
       const status =
         now < start ? LimitTimeBuyStatus.Pending
@@ -97,6 +98,7 @@ export default class ProductListWithFilter extends React.Component<
             ? 100
             : Number(salesRatio.match(/(\d+(\.\d+)?)%/)[1]),
           status,
+          price,
         }
       }
     }
@@ -124,7 +126,7 @@ export default class ProductListWithFilter extends React.Component<
       />
     ) : (
       <View style={styles.productBox}>
-        {!item.isLimitTimeBuy ? <ProductListItem {...item} /> : <ProductLimitTimeBuy {...item}/> }
+        {!item.isLimitTimeBuy ? <ProductListItem {...item} /> : <ProductLimitTimeBuy {...item} thumbnailSize={100}/> }
         <View style={styles.divider} />
       </View>
     )
