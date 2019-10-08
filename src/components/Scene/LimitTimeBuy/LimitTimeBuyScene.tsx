@@ -30,6 +30,7 @@ enum ViewTypes {
 interface Props {
   paddingTop?: number
   shopCode: string // 门店编码
+  afterAddCart: (count: number) => void
 }
 
 interface State {
@@ -221,6 +222,7 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
 
   rowRenderer = (type, data, index) => {
     const {tabs, currentTabIndex} = this.state
+    const {afterAddCart} = this.props
     const currentTab = tabs[currentTabIndex]
 
     switch (type) {
@@ -246,7 +248,7 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
       case ViewTypes.Product:
         return (
           <View style={styles.productListItem}>
-            <ProductLimitTimeBuy {...data} thumbnailSize={75} />
+            <ProductLimitTimeBuy {...data} thumbnailSize={75} afterModifyCount={afterAddCart} />
             {index > 3 && <View style={styles.productDivider} />}
           </View>
         )

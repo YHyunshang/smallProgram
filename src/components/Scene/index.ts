@@ -3,4 +3,6 @@
  */
 import LimitTimeBuy from './LimitTimeBuy'
 
-export const LimitTimeBuyScene = LimitTimeBuy
+export {
+  LimitTimeBuy,
+}
