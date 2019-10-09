@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-08 17:36:38
+ * @LastEditTime: 2019-10-09 15:19:37
  */
 
 import React from 'react'
@@ -88,7 +88,7 @@ export default class BuyLimit extends React.Component {
  }
 
  render() {
-   const {day, hour, minute, seconds, isShow} = this.state
+   const {hour, minute, seconds, isShow} = this.state
    const {productActivityLabel} = this.props
    return (
      <View style={styles.container}>
@@ -104,10 +104,10 @@ export default class BuyLimit extends React.Component {
              <View style={styles.countDownWrapper}>
                <Text style={styles.countDownText}>离本场结束：</Text>
                <View style={styles.countDownTime}>
-                 <View style={styles.countDownTimeBg}>
+                 {/* <View style={styles.countDownTimeBg}>
                    <Text style={styles.countDownTimeText}>{day}</Text>
                  </View>
-                 <Text style={styles.countDownTimeSymbo}>:</Text>
+                 <Text style={styles.countDownTimeSymbo}>:</Text> */}
                  <View style={styles.countDownTimeBg}>
                    <Text style={styles.countDownTimeText}>{hour}</Text>
                  </View>
