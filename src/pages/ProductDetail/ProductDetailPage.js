@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-08 19:50:23
+ * @LastEditTime: 2019-10-09 16:24:20
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -89,7 +89,7 @@ export default class ProductDetailPage extends React.Component {
               shopUrl,
               productParams: object,
               orderActivityLabel: data.resChannelStoreProductVO ? data.resChannelStoreProductVO.orderActivityLabel : {},
-              // productActivityLabel: {activityBeginTime: '2019-09-29 00:00:00', activityEndTime: '2019-09-30 18:05:40', activityName: '限时抢购活动', discountPrice: 20, labels: ['特价', '满减', '限时抢购'], promotionCode: 'K001', promotionType: 5, promotionTypeName: '限时抢购', ruleType: 0, salesRatio: '45%'}
+              // productActivityLabel: {activityBeginTime: '2019-10-09 16:23:00', activityEndTime: '2019-10-09 17:20:00', activityName: '限时抢购活动', discountPrice: 20, labels: ['限时抢购', '满减', '特价'], promotionCode: 'K001', promotionType: 5, promotionTypeName: '限时抢购', ruleType: 0, salesRatio: '45%'}
               productActivityLabel: data.resChannelStoreProductVO ? data.resChannelStoreProductVO.productActivityLabel : {}
             }
           )
