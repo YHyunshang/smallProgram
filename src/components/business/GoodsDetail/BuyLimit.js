@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-09 15:19:37
+ * @LastEditTime: 2019-10-09 16:24:12
  */
 
 import React from 'react'
@@ -29,22 +29,26 @@ export default class BuyLimit extends React.Component {
       minute: 0,
       seconds: 0,
       isShow: true, // 是否展示限时抢购
-      activityEndTime: ''
+      activityEndTime: '', // 活动结束时间
+      activityBeginTime: ''// 活动开始时间
     }
   }
  countTime = () => {
    let date = new Date()
    let now = date.getTime()
    let end = this.state.activityEndTime
-   let leftTime = end - now, // 时间差
+   let start = this.state.activityBeginTime
+   let startLeftTime = now - start // 活动开始时间差
+   let endLeftTime = end - now, // 活动结束时间差
      d, h, m, s, ms
-   // rnAppModule.showToast(String(end), '0')
-   if (leftTime >= 0) {
-     d = Math.floor(leftTime / 1000 / 60 / 60 / 24)
-     h = Math.floor(leftTime / 1000 / 60 / 60)
-     m = Math.floor(leftTime / 1000 / 60 % 60)
-     s = Math.floor(leftTime / 1000 % 60)
-     ms = Math.floor(leftTime % 1000)
+   // rnAppModule.showToast(String(startLeftTime), '0')
+   if (endLeftTime >= 0 && startLeftTime >= 0) {
+     this.setState({isShow: true})
+     d = Math.floor(endLeftTime / 1000 / 60 / 60 / 24)
+     h = Math.floor(endLeftTime / 1000 / 60 / 60)
+     m = Math.floor(endLeftTime / 1000 / 60 % 60)
+     s = Math.floor(endLeftTime / 1000 % 60)
+     ms = Math.floor(endLeftTime % 1000)
      if (ms < 100) {
        ms = `0${ms}`
      }
@@ -60,11 +64,11 @@ export default class BuyLimit extends React.Component {
      if (d < 10) {
        d = `0${d}`
      }
-     if (m == '00' && s == '00') {
+     if (h == '00' && m == '00' && s == '00') {
        this.setState({isShow: false})
      }
    } else {
-     // clearInterval(interval)
+     this.setState({isShow: false})
    }
    this.setState({day: d, hour: h, minute: m, seconds: s})
    timer = setTimeout(this.countTime, 50)
@@ -74,8 +78,12 @@ export default class BuyLimit extends React.Component {
    const {productActivityLabel} = this.props
    //  let time = productActivityLabel.activityEndTime.replace(/-/g, '/') // 把所有-转化成/
    //  let end = new Date(time).getTime()
+   //  let activityBeginTime = productActivityLabel.activityBeginTime.replace(/-/g, '/') // 把所有-转化成/
+   //  let startTime = new Date(activityBeginTime).getTime()
    //  this.setState({activityEndTime: end})
+   //  this.setState({activityBeginTime: startTime})
    this.setState({activityEndTime: productActivityLabel.activityEndTime})
+   this.setState({activityBeginTime: productActivityLabel.activityBeginTime})
    this.countTime()
  }
 
