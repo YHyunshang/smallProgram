@@ -27,7 +27,7 @@ function ProductSwiperItem({
       params: { productCode: code, storeCode: shopCode },
     })
   }
-  const tag = priceTags.find(ele => ele.match(/满.+减/))
+  const tag = priceTags.find(ele => /满.+减/.test(ele))
   const fitThumbnail = Img.loadRatioImage(thumbnail, 100)
   return (
     <View style={styles.container}>
@@ -74,11 +74,14 @@ function ProductSwiperItem({
       </TouchableWithoutFeedback>
 
       <View style={styles.cartBox}>
-        <CountOperator
-          count={count}
-          onChange={onModifyCount}
-          disabled={!!inventoryLabel}
-        />
+        {!!inventoryLabel ? (
+          <Text style={styles.soldOutText}>今日已售罄</Text>
+        ) : (
+          <CountOperator
+            count={count}
+            onChange={onModifyCount}
+          />
+        )}
       </View>
     </View>
   )

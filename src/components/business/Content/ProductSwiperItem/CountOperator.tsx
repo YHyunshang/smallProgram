@@ -23,7 +23,6 @@ interface Props {
   count: number
   max?: number
   onChange: (count: number) => void
-  disabled: boolean
 }
 
 interface State {
@@ -63,18 +62,14 @@ export default class CountOperator extends React.Component<Props, State> {
   }
 
   onModifyCount = c => {
-    const { max, onChange, disabled } = this.props
-    if (disabled) {
-      Native.showToast('不能添加更多了')
-      return
-    }
+    const { max, onChange } = this.props
     const nextCount = c <= 0 ? 0 : c >= max ? max : c
     onChange(nextCount)
   }
 
   render() {
     const { animatedVal } = this.state
-    const { count, max, disabled } = this.props
+    const { count } = this.props
 
     const cartBtnScaleX = animatedVal.interpolate({
       inputRange: [0, 1],

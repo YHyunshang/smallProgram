@@ -99,12 +99,15 @@ function ProductListItem({
       </TouchableWithoutFeedback>
 
       <View style={styles.cartBox}>
-        <ProductCountOperator
-          size={24}
-          count={count}
-          onChange={onModifyCount}
-          disabled={!!inventoryLabel}
-        />
+        {!!inventoryLabel ? (
+          <Text style={styles.soldOutText}>今日已售罄</Text>
+        ) : (
+          <ProductCountOperator
+            size={24}
+            count={count}
+            onChange={onModifyCount}
+          />
+        )}
       </View>
     </View>
   )
