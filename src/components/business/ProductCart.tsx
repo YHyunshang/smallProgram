@@ -8,15 +8,10 @@ import { Native } from '@utils'
 interface Props {
   count: number
   onCountChange: (count: number) => void
-  disabled: boolean
 }
 
-export default function ProductCart({ count, onCountChange, disabled }: Props) {
+export default function ProductCart({ count, onCountChange }: Props) {
   const onPress = () => {
-    if (disabled) {
-      Native.showToast('不能添加更多了')
-      return
-    }
     onCountChange(count + 1)
   }
   return (

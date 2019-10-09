@@ -132,4 +132,10 @@ export default StyleSheet.create({
     bottom: 3,
     zIndex: 1,
   },
+
+  soldOutText: {
+    fontSize: 14,
+    color: theme.gray1,
+    lineHeight: 24,
+  }
 })

@@ -44,6 +44,14 @@ function ProductGridItem({
   const [thumbnailWidth, setThumbnailWidth] = React.useState()
   const tag = [...priceTags, ...productTags][0]
   const fitThumbnail = Img.loadRatioImage(thumbnail, 200)
+  const onCountChange = c => {
+    if (inventoryLabel) {
+      Native.showToast('商品补货中')
+    } else {
+      onModifyCount(c)
+    }
+  }
+
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={navigateToProductDetail}>
@@ -94,8 +102,7 @@ function ProductGridItem({
       <View style={styles.cartBox}>
         <ProductCart
           count={count}
-          onCountChange={onModifyCount}
-          disabled={!!inventoryLabel}
+          onCountChange={onCountChange}
         />
       </View>
     </View>

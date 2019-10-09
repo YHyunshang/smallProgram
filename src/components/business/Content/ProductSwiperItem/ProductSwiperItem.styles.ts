@@ -92,4 +92,10 @@ export default StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
+
+  soldOutText: {
+    fontSize: 12,
+    color: theme.gray1,
+    lineHeight: 20,
+  }
 })

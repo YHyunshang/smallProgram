@@ -16,7 +16,6 @@ interface Props {
   count: number
   max?: number
   onChange: (count: number) => void
-  disabled?: boolean
 }
 
 interface State {
@@ -55,17 +54,13 @@ export default class ProductCountOperator extends React.Component<
   }
 
   onModifyCurrentCount = (c: number) => {
-    const { max, onChange, disabled } = this.props
-    if (disabled) {
-      Native.showToast('不能添加更多了')
-      return
-    }
+    const { max, onChange } = this.props
     const nextCount = c <= 0 ? 0 : c >= max ? max : c
     onChange(nextCount)
   }
 
   render() {
-    const { count, max, disabled, size } = this.props
+    const { count, max, size } = this.props
     const { animatedVal } = this.state
 
     const addRotate = animatedVal.interpolate({
