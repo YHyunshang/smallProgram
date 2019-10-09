@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-07 15:02:09
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-07 23:36:00
+ * @LastEditTime: 2019-10-09 15:17:59
  */
 import React, {Component} from 'react'
 import {
@@ -20,6 +20,8 @@ export default class Progress extends Component {
   }
   render() {
     const {saleNum} = this.props
+    // let saleNum = '100%'
+    let showText = saleNum == '100%' ? '库存' : '剩余'
     return (
       <View style={styles.box}>
         <View style={[styles.child, {width: saleNum}]}>
@@ -27,7 +29,7 @@ export default class Progress extends Component {
         <View style={styles.processAnimate}>
           {
             saleNum ?
-              <Text style={styles.saleNum}>已售{saleNum}</Text>
+              <Text style={styles.saleNum}>{showText}{saleNum}</Text>
               : null
           }
         </View>
@@ -42,7 +44,8 @@ const styles = StyleSheet.create({
     width: 120,
     height: 13,
     borderRadius: 7,
-    backgroundColor: '#FFACBA'
+    backgroundColor: '#FFACBA',
+    textAlign: 'center'
   },
   child: {
     height: '100%',
@@ -51,7 +54,7 @@ const styles = StyleSheet.create({
   },
   processAnimate: {
     position: 'absolute',
-    right: 0,
+    right: 39,
     top: 0,
     bottom: 0,
     borderRadius: 7
@@ -59,7 +62,6 @@ const styles = StyleSheet.create({
   saleNum: {
     fontSize: 10,
     color: '#F32E57',
-    marginRight: 5,
-    textAlign: 'right'
+    textAlign: 'center'
   }
 })
