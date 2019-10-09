@@ -241,7 +241,7 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
       case ViewTypes.Timer:
         return (
           <View style={styles.timerBox}>
-            <Timer start={currentTab.start} end={currentTab.end} />
+            <Timer start={currentTab.start} end={currentTab.end} millisecondVis />
             <View style={styles.timerBoxDivider} />
           </View>
         )
