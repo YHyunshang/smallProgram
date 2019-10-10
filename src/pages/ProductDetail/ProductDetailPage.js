@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-10 14:45:17
+ * @LastEditTime: 2019-10-10 18:24:57
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -89,7 +89,7 @@ export default class ProductDetailPage extends React.Component {
               shopUrl,
               productParams: object,
               orderActivityLabel: data.resChannelStoreProductVO ? data.resChannelStoreProductVO.orderActivityLabel : {},
-              // productActivityLabel: {activityBeginTime: '2019-10-09 16:23:00', activityEndTime: '2019-10-11 17:20:00', activityName: '限时抢购活动', discountPrice: 20, labels: ['限时抢购', '满减', '特价'], promotionCode: 'K001', promotionType: 5, promotionTypeName: '限时抢购', ruleType: 0, salesRatio: '100%'}
+              // productActivityLabel: {activityBeginTime: '2019-10-09 16:23:00', activityEndTime: '2019-10-11 17:20:00', activityName: '第N件N折/N元', discountPrice: 899, labels: ['第N件N折/N元', '满减', '特价'], promotionCode: 'K001', promotionType: 4, promotionTypeName: '第N件N折/N元', ruleType: 0, salesRatio: '100%'}
               productActivityLabel: data.resChannelStoreProductVO ? data.resChannelStoreProductVO.productActivityLabel : {}
             }
           )
@@ -297,7 +297,7 @@ export default class ProductDetailPage extends React.Component {
                     <View style={styles.goodsPriceWrapper}>
                       <Text style={styles.goodsPrice}>{transPenny(productActivityLabel.discountPrice ? productActivityLabel.discountPrice : goodsInfo.price)}</Text>
                       {
-                        productActivityLabel.discountPrice
+                        productActivityLabel.discountPrice && productActivityLabel.discountPrice != goodsInfo.price
                           ? <Text style={styles.throughLine} >¥{transPenny(goodsInfo.price)}</Text>
                           : null
                       }
