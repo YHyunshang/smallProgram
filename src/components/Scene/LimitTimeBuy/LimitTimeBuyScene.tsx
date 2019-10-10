@@ -222,7 +222,7 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
           ]),
         }))
       }
-      if (Math.max(...tabs.map(ele => ele.end), now) === now) {
+      if (!nextTabs.find(ele => ele.status !== LimitTimeBuyStatus.Expired)) {
         this.props.onAllExpired && this.props.onAllExpired()
         clearInterval(this.timer)
       }
