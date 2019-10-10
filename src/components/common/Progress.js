@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-07 15:02:09
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-10 14:45:28
+ * @LastEditTime: 2019-10-10 20:04:03
  */
 import React, {Component} from 'react'
 import {
@@ -30,7 +30,7 @@ export default class Progress extends Component {
     }
     return (
       <View style={styles.box}>
-        <View style={[styles.child, {width: saleNum}]}>
+        <View style={[styles.child, {width: saleNum > '100%' ? '100%' : saleNum}]}>
         </View>
         <View style={styles.processAnimate}>
           {
