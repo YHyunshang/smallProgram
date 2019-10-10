@@ -15,7 +15,7 @@ import {
   Easing,
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
-import {iconMinusCircleRed, iconPlusCircleRed} from '@const/resources'
+import {iconMinusCircleRed, iconPlusCircleRed, plusCircleDisabled} from '@const/resources'
 import theme from '@theme'
 import {Native} from '@utils'
 
@@ -24,6 +24,7 @@ interface Props {
   max?: number
   onChange: (count: number) => void
   disabled: boolean
+  disableAdd: boolean
 }
 
 interface State {
@@ -74,7 +75,7 @@ export default class ProductCountOperatorLTB extends React.Component<Props, Stat
 
   render() {
     const {animatedVal} = this.state
-    const {count, max, disabled, children} = this.props
+    const {count, max, disabled, children, disableAdd} = this.props
 
     const cartBtnScaleX = animatedVal.interpolate({
       inputRange: [0, 1],
@@ -104,7 +105,7 @@ export default class ProductCountOperatorLTB extends React.Component<Props, Stat
             activeOpacity={0.75}
             onPress={() => this.onModifyCount(count + 1)}
           >
-            <Image style={styles.operImg} source={iconPlusCircleRed}/>
+            <Image style={styles.operImg} source={disableAdd ? plusCircleDisabled : iconPlusCircleRed}/>
           </TouchableOpacity>
         </View>
 
@@ -131,6 +132,7 @@ export default class ProductCountOperatorLTB extends React.Component<Props, Stat
                     shadowColor: '#EE4239',
                     shadowOpacity: 0.23,
                     shadowRadius: 4,
+                    backgroundColor: '#FFF',
                   }
                 ]}
                 start={{x: 1, y: 0}}

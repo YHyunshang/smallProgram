@@ -17,6 +17,10 @@ import { Product } from './typings'
 import Tag from './Tag'
 import PromotionTag from './PromotionTag'
 
+interface Props extends Product {
+  disableAdd?: boolean
+}
+
 function ProductListItem({
   thumbnail,
   code,
@@ -31,7 +35,8 @@ function ProductListItem({
   inventoryLabel,
   onModifyCount,
   shopCode,
-}: Product) {
+  disableAdd,
+}: Props) {
   const navigateToProductDetail = () => {
     Native.navigateTo({
       type: Native.NavPageType.NATIVE,
@@ -106,6 +111,7 @@ function ProductListItem({
             size={24}
             count={count}
             onChange={onModifyCount}
+            disableAdd={disableAdd}
           />
         )}
       </View>

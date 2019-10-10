@@ -29,14 +29,24 @@ export default StyleSheet.create({
   },
   priceRow: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-end',
   },
-  tag: {
+  waiting: {
     color: '#E74646',
     fontSize: 11,
     paddingRight: 5,
   },
   price: {
+    color: '#E74646',
+    fontSize: 20,
+    textAlignVertical: 'bottom',
+    fontFamily: theme.priceFFPrimary,
+    paddingRight: 5,
+  },
+  pricePrefix: {
+    fontSize: 11,
+  },
+  slashedPrice: {
     fontSize: 12,
     color: '#999',
     textDecorationLine: 'line-through'

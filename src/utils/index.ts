@@ -6,5 +6,6 @@ import * as Native from './native'
 import Http from './http'
 import * as Img from './img'
 import * as Global from './global'
+import * as Formatter from './FormatUtil.js'
 
-export { Log, Http, Native, Img, Global }
+export { Log, Http, Native, Img, Global, Formatter }

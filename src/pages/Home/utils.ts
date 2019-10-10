@@ -21,7 +21,8 @@ import LimitTimeBuy from "@components/business/Content/LimitTimeBuy";
 export function formatFloorData(
   data: { [index: string]: any },
   shopCode: string,
-  currentTabIdx: number
+  currentTabIdx: number,
+  onLimitTimeBuyExpire = () => {}
 ) {
   let sortedData = data
     .sort((a, b) => a.pos - b.pos) // step 1: 排序
@@ -222,6 +223,7 @@ export function formatFloorData(
           startTime: Number(floor.activityBeginTime),
           endTime: Number(floor.activityEndTime),
           products: floor.templateDetailVOList.slice(0, 4).map(ele => CMSServices.formatProduct(ele)),
+          onExpired: onLimitTimeBuyExpire
         }
       })
     }

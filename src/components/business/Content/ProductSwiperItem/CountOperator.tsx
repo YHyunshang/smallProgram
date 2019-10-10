@@ -15,7 +15,7 @@ import {
   Easing,
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
-import { plus, minusCircle, addToCart } from '@const/resources'
+import {plus, minusCircle, addToCart, plusCircleDisabled} from '@const/resources'
 import theme from '@theme'
 import { Native } from '@utils'
 
@@ -23,6 +23,7 @@ interface Props {
   count: number
   max?: number
   onChange: (count: number) => void
+  disableAdd: boolean
 }
 
 interface State {
@@ -69,7 +70,7 @@ export default class CountOperator extends React.Component<Props, State> {
 
   render() {
     const { animatedVal } = this.state
-    const { count } = this.props
+    const { count, disableAdd } = this.props
 
     const cartBtnScaleX = animatedVal.interpolate({
       inputRange: [0, 1],
@@ -99,7 +100,7 @@ export default class CountOperator extends React.Component<Props, State> {
             activeOpacity={0.75}
             onPress={() => this.onModifyCount(count + 1)}
           >
-            <Image style={styles.operImg} source={addToCart} />
+            <Image style={styles.operImg} source={disableAdd ? plusCircleDisabled : addToCart} />
           </TouchableOpacity>
         </View>
 
