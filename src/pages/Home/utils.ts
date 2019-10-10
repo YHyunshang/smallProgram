@@ -22,7 +22,7 @@ export function formatFloorData(
   data: { [index: string]: any },
   shopCode: string,
   currentTabIdx: number,
-  onLimitTimeBuyExpire = () => {}
+  onLimitTimeBuyExpire: () => void
 ) {
   let sortedData = data
     .sort((a, b) => a.pos - b.pos) // step 1: 排序
@@ -215,17 +215,20 @@ export function formatFloorData(
         },
       })
     } else if (floor.type === 7) {
-      // 限时抢购
-      result.push({
-        key: floor.id,
-        component: LimitTimeBuy,
-        props: {
-          startTime: Number(floor.activityBeginTime),
-          endTime: Number(floor.activityEndTime),
-          products: floor.templateDetailVOList.slice(0, 4).map(ele => CMSServices.formatProduct(ele)),
-          onExpired: onLimitTimeBuyExpire
-        }
-      })
+      const { activityBeginTime, activityEndTime } = floor
+      if (activityBeginTime && activityEndTime) {
+        // 限时抢购
+        result.push({
+          key: floor.id,
+          component: LimitTimeBuy,
+          props: {
+            startTime: Number(activityBeginTime),
+            endTime: Number(activityEndTime),
+            products: floor.templateDetailVOList.slice(0, 4).map(ele => CMSServices.formatProduct(ele)),
+            onExpired: onLimitTimeBuyExpire
+          }
+        })
+      }
     }
     i++
   }

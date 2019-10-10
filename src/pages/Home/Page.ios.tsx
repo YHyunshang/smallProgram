@@ -330,8 +330,9 @@ class Page extends React.Component<Props, State> {
   }
 
   onRefreshScene = idx => {
-    const { tabList, tabFloorMap } = this.state
+    const { tabList, tabFloorMap, shop } = this.state
     const currentTab = tabList[idx]
+    if (idx === 0) return this.requestTabData(shop.code, shop.type)
     if (!currentTab) return
     const fn = {
       cms: (tabId, isForce) => this.requestFloorData(tabId, idx, isForce),
@@ -343,7 +344,7 @@ class Page extends React.Component<Props, State> {
   // 限时抢购所有活动都已过期
   onAllLimitTimeBuyExpire = () => {
     const { shop: { code, type }, currentTabIdx, tabList } = this.state
-    if (tabList[currentTabIdx].title === '限时抢购') {
+    if (tabList[currentTabIdx].showName === '限时抢购') {
       this.setState({ currentTabIdx: 0 })
       this.requestTabData(code, type)
     } else {
@@ -357,7 +358,7 @@ class Page extends React.Component<Props, State> {
     if (currentTabIdx === 0) {
       this.onTabIndexChange(0, true)
     } else {
-      this.setState({ shouldRefreshFirstTab: true })
+      this.setState(() => ({ shouldRefreshFirstTab: true }))
     }
   }
 
