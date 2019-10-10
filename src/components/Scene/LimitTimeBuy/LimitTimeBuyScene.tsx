@@ -274,7 +274,7 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
               contentContainerStyle: { paddingTop },
               refreshControl: (
                 <RefreshControl
-                  refreshing={loading}
+                  refreshing={loading && tabs.length > 0}
                   onRefresh={() => this.init(shopCode)}
                   colors={[theme.primary, theme.white]}
                   tintColor={theme.primary}
