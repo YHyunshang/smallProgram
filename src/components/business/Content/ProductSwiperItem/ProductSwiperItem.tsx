@@ -7,6 +7,10 @@ import { Product } from '../typings'
 import Tag from '../Tag'
 import CountOperator from './CountOperator'
 
+interface Props extends Product {
+  disableAdd: boolean
+}
+
 function ProductSwiperItem({
   code,
   thumbnail,
@@ -19,7 +23,8 @@ function ProductSwiperItem({
   inventoryLabel,
   shopCode,
   onModifyCount,
-}: Product) {
+  disableAdd,
+}: Props) {
   const navigateToProductDetail = () => {
     Native.navigateTo({
       type: Native.NavPageType.NATIVE,
@@ -80,6 +85,7 @@ function ProductSwiperItem({
           <CountOperator
             count={count}
             onChange={onModifyCount}
+            disableAdd={disableAdd}
           />
         )}
       </View>

@@ -5,7 +5,9 @@ import {StyleSheet} from "react-native";
 import theme from '@theme'
 
 export default StyleSheet.create({
-  container: {},
+  container: {
+    backgroundColor: theme.white,
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -13,7 +15,7 @@ export default StyleSheet.create({
     paddingLeft: 24,
     paddingRight: 15,
     borderBottomWidth: 0.25,
-    borderBottomColor: '#EBEBEB'
+    borderBottomColor: '#EBEBEB',
   },
   title: {
     fontSize: 18,
@@ -25,7 +27,7 @@ export default StyleSheet.create({
     paddingLeft: 13,
     paddingRight: 3,
     fontSize: 13,
-    color: '#BEBEBE'
+    color: '#BEBEBE',
   },
   iconArrowRight: {
     width: 10,

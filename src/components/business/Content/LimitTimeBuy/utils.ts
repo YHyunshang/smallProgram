@@ -8,7 +8,7 @@ export enum TimeUnit {
   MsH = 'millisecond-hundred'
 }
 export function padTimeByUnit(duration:number, unit: TimeUnit) {
-  const g = (num:number) => `${num}`.padStart(2, '0')
+  const g = (num:number) => `${num}`.padStart(unit === TimeUnit.MsH ? 1 : 2, '0')
 
   let val
   switch (unit) {

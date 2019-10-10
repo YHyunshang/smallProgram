@@ -3,12 +3,16 @@
  */
 import * as React from 'react'
 import {View, Image, Text} from "react-native";
-import {Product} from "@components/business/Content/typings";
+import {LimitTimeBuyStatus, Product} from "@components/business/Content/typings";
 import styles from './ProductItem.styles'
-import {Img} from "@utils";
+import {Formatter, Img} from "@utils";
 import {placeholderProduct} from "@const/resources";
 
-export default function ProductItem ({ name, spec, price, thumbnail }: Product) {
+interface Props extends Product {
+  status: LimitTimeBuyStatus
+}
+
+export default function ProductItem ({ name, spec, price, slashedPrice, status, thumbnail }: Props) {
   const fitThumbnail = Img.loadRatioImage(thumbnail, 50, 50)
   return (
     <View style={styles.container}>
@@ -17,8 +21,17 @@ export default function ProductItem ({ name, spec, price, thumbnail }: Product) 
         <Text style={styles.name} numberOfLines={1}>{name}</Text>
         <Text style={styles.spec} numberOfLines={1}>{spec}</Text>
         <View style={styles.priceRow}>
-          <Text style={styles.tag} numberOfLines={1}>敬请期待</Text>
-          <Text style={styles.price} numberOfLines={1}>¥{price}</Text>
+          {status === LimitTimeBuyStatus.Pending ? (
+            <Text style={styles.waiting} numberOfLines={1}>敬请期待</Text>
+          ) : (
+            <Text style={styles.price}>
+              <Text style={styles.pricePrefix}>¥ </Text>
+              {Formatter.transPenny(price)}
+            </Text>
+          )}
+          {slashedPrice && (
+            <Text style={styles.slashedPrice} numberOfLines={1}>¥{Formatter.transPenny(slashedPrice)}</Text>
+          )}
         </View>
       </View>
     </View>
