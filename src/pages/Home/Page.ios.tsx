@@ -182,6 +182,8 @@ class Page extends React.Component<Props, State> {
         ...preState.tabLoadingMap,
         ...(cmsTabs.length > 0 ? { [cmsTabs[0].id]: false } : {}),
       },
+      shouldRefreshTab: false,
+      shouldRefreshFirstTab: false,
     }))
   }
   // 获取 tab 下的 CMS 数据
@@ -315,7 +317,12 @@ class Page extends React.Component<Props, State> {
       (idx === 0 && shouldRefreshFirstTab)
     ) {
       const fn = {
-        cms: (tabId, isForce) => this.requestFloorData(tabId, idx, isForce),
+        cms: (tabId, isForce) => this.requestFloorData(tabId, idx, isForce)
+          .then(() => this.setState(
+            ({ shouldRefreshFirstTab }) => ({
+              shouldRefreshFirstTab: idx === 0 ? false : shouldRefreshFirstTab
+            }))
+          ),
         category: this.requestCategoryContentData,
       }[currentTab.type]
       fn && fn(currentTab.id, force || dataExpired)
@@ -337,6 +344,7 @@ class Page extends React.Component<Props, State> {
   onAllLimitTimeBuyExpire = () => {
     const { shop: { code, type }, currentTabIdx, tabList } = this.state
     if (tabList[currentTabIdx].title === '限时抢购') {
+      this.setState({ currentTabIdx: 0 })
       this.requestTabData(code, type)
     } else {
       this.setState({ shouldRefreshTab: true })
@@ -461,7 +469,7 @@ class Page extends React.Component<Props, State> {
           }
           showsVerticalScrollIndicator={false}
           ListHeaderComponent={
-            <View style={{ height: placeholderForNativeHeight }}></View>
+            <View style={{ height: placeholderForNativeHeight }} />
           }
         />
       )

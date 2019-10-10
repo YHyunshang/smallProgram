@@ -475,6 +475,7 @@ export default class Page extends React.Component<Props, State> {
   onAllLimitTimeBuyExpire = () => {
     const { shop: { code, type }, currentTabIdx, tabList } = this.state
     if (tabList[currentTabIdx].title === '限时抢购') {
+      this.setState({ currentTabIdx: 0 })
       this.requestTabData(code, type)
     } else {
       this.setState({ shouldRefreshTab: true })
