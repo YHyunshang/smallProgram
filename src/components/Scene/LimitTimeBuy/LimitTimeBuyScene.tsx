@@ -114,6 +114,7 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
 
   componentWillUnmount(): void {
     if (this.timer) clearInterval(this.timer)
+    this.removeCartChangeListener()
   }
 
   init = async (shopCode) => {
