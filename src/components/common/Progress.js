@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-07 15:02:09
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-09 15:17:59
+ * @LastEditTime: 2019-10-10 14:45:28
  */
 import React, {Component} from 'react'
 import {
@@ -20,8 +20,14 @@ export default class Progress extends Component {
   }
   render() {
     const {saleNum} = this.props
-    // let saleNum = '100%'
-    let showText = saleNum == '100%' ? '库存' : '剩余'
+    let showText = ''
+    if (saleNum == '100%') {
+      showText = '库存'
+    } else if ((saleNum >= '50%') || saleNum == '0%') {
+      showText = '剩余'
+    } else {
+      showText = '仅剩'
+    }
     return (
       <View style={styles.box}>
         <View style={[styles.child, {width: saleNum}]}>
