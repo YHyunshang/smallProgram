@@ -38,7 +38,7 @@ function statusToText(status: LimitTimeBuyStatus):string {
 }
 
 export default function TabBar({tabs, currentActiveIndex, onIndexChange}: Props) {
-  const indicatorTranslateX = (currentActiveIndex + 0.5) * (Global.WindowWidth / tabs.length) - 2.5
+  const indicatorTranslateX = tabs.length > 0 ? (currentActiveIndex + 0.5) * (Global.WindowWidth / tabs.length) - 2.5 : 0
 
   return (
     <View style={styles.container}>
@@ -52,7 +52,7 @@ export default function TabBar({tabs, currentActiveIndex, onIndexChange}: Props)
           </TouchableWithoutFeedback>
         )
       })}
-      <View style={[ styles.indicator, { transform: [{ translateX: indicatorTranslateX }] } ]} />
+      {tabs.length > 0 && <View style={[ styles.indicator, { transform: [{ translateX: indicatorTranslateX }] } ]} />}
     </View>
   )
 }
