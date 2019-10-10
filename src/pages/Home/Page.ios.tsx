@@ -217,10 +217,12 @@ class Page extends React.Component<Props, State> {
       })
   }
   // 获取 top 分类下的数据
-  requestCategoryContentData = categoryCode => {
-    this.setState(({ tabLoadingMap }) => ({
-      tabLoadingMap: { ...tabLoadingMap, [categoryCode]: true },
-    }))
+  requestCategoryContentData = (categoryCode, force) => {
+    if (!force) {
+      this.setState(({tabLoadingMap}) => ({
+        tabLoadingMap: {...tabLoadingMap, [categoryCode]: true},
+      }))
+    }
     const { shop } = this.state
     return ProductServices.getCategory(shop.code, shop.type, categoryCode)
       .then(({ result }) => {
@@ -267,7 +269,7 @@ class Page extends React.Component<Props, State> {
           },
         }))
       })
-      .finally(() =>
+      .finally(() => !force &&
         this.setState(({ tabLoadingMap }) => ({
           tabLoadingMap: { ...tabLoadingMap, [categoryCode]: false },
         }))
@@ -282,8 +284,6 @@ class Page extends React.Component<Props, State> {
       },
     } = e
     CMSServices.pushScrollToNative(x, y)
-
-    console.log('--------', y)
   }
 
   onTabIndexChange = (idx, force = false) => {
