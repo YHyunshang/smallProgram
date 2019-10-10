@@ -8,7 +8,7 @@ import {
   Animated,
   Easing,
 } from 'react-native'
-import { addToCart, minusCircle } from '@const/resources'
+import {addToCart, minusCircle, plusCircleDisabled} from '@const/resources'
 import { Log, Native } from '@utils'
 
 interface Props {
@@ -16,6 +16,7 @@ interface Props {
   count: number
   max?: number
   onChange: (count: number) => void
+  disableAdd: boolean
 }
 
 interface State {
@@ -60,7 +61,7 @@ export default class ProductCountOperator extends React.Component<
   }
 
   render() {
-    const { count, max, size } = this.props
+    const { count, max, size, disableAdd } = this.props
     const { animatedVal } = this.state
 
     const addRotate = animatedVal.interpolate({
@@ -135,7 +136,7 @@ export default class ProductCountOperator extends React.Component<
                 transform: [{ rotate: addRotate }],
               },
             ]}
-            source={addToCart}
+            source={disableAdd ? plusCircleDisabled : addToCart}
           />
         </TouchableOpacity>
       </View>

@@ -7,41 +7,12 @@ import styles from './Timer.styles'
 import {padTimeByUnit, TimeUnit} from "./utils";
 
 interface Props {
-  start: number // 开始时间戳
-  end: number // 结束时间戳
+  title: string
+  duration: number
   millisecondVis?: boolean // 是否展示毫秒
 }
 
-export default function Timer({start, end, millisecondVis}: Props) {
-  const [now, setNow] = React.useState(Date.now())
-
-  React.useEffect(() => {
-    let interval: number
-    if (now < end) {
-      interval = setInterval(() => {
-        const _now_ = Date.now()
-        if (_now_ > end) {
-          clearInterval(interval)
-        }
-        setNow(_now_)
-      }, 100)
-    }
-    return () => interval && clearInterval(interval)
-  })
-
-  let title = ''
-  let duration = 0
-  if (now < start) {
-    title = '离本场开始'
-    duration = start - now
-  } else if (now < end) {
-    title = '离本场结束'
-    duration = end - now
-  } else {
-    title = '本场已结束'
-    duration = -1
-  }
-
+export default function Timer({ title, duration, millisecondVis }: Props) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>

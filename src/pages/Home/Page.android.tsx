@@ -62,6 +62,9 @@ interface State {
       | []
       | { categories: []; productFilter: {}; products: Product[] })[]
   }
+
+  shouldRefreshFirstTab: boolean
+  shouldRefreshTab: boolean
 }
 
 export default class Page extends React.Component<Props, State> {
@@ -75,6 +78,9 @@ export default class Page extends React.Component<Props, State> {
     currentTabIdx: 0,
     tabContentLoadingMap: {},
     tabContentMap: {},
+
+    shouldRefreshFirstTab: false,
+    shouldRefreshTab: false,
   }
 
   removeShopChangeListener: Function
@@ -167,10 +173,13 @@ export default class Page extends React.Component<Props, State> {
               [cmsTabs[0].id]: formatFloorData(
                 cmsTabs[0].templateVOList || [],
                 shopCode,
-                0
+                0,
+                this.onFloorLimitTimeBuyExpire
               ),
             }
           : {},
+      shouldRefreshTab: false,
+      shouldRefreshFirstTab: false,
     })
   }
 
@@ -298,6 +307,8 @@ export default class Page extends React.Component<Props, State> {
       shop,
       animatedValRefCmsScrollY,
       tabContentMap,
+      shouldRefreshFirstTab,
+      shouldRefreshTab
     } = this.state
 
     const currentTab = tabList[index]
@@ -312,7 +323,9 @@ export default class Page extends React.Component<Props, State> {
       })
     })
 
-    if (currentTab.title === '限时抢购') return
+    if (currentTab.title === '限时抢购') {
+      return shouldRefreshTab ? this.requestTabData(shop.code, shop.type) : null
+    }
 
     const currentTabKey = currentTab.key
     const preContentData = tabContentMap[currentTabKey]
@@ -320,7 +333,8 @@ export default class Page extends React.Component<Props, State> {
     if (
       !isRefresh &&
       ((currentTab.type === TabType.CMS && (preContentData || []).length > 0) ||
-        (currentTab.type === TabType.CATEGORY && preContentData))
+        (currentTab.type === TabType.CATEGORY && preContentData)) &&
+      !(index === 0 && shouldRefreshFirstTab)
     )
       return
 
@@ -330,11 +344,17 @@ export default class Page extends React.Component<Props, State> {
     let p = Promise.resolve()
     if (currentTab.type === TabType.CMS) {
       p = this.requestCMSContentData(currentTabKey, shop.code).then(data =>
-        this.setState(({ tabContentMap }) => ({
+        this.setState(({ tabContentMap, shouldRefreshFirstTab }) => ({
           tabContentMap: {
             ...tabContentMap,
-            [currentTabKey]: formatFloorData(data, shop.code, index),
+            [currentTabKey]: formatFloorData(
+              data,
+              shop.code,
+              index,
+              this.onFloorLimitTimeBuyExpire
+            ),
           },
+          shouldRefreshFirstTab: index === 0 ? false : shouldRefreshFirstTab
         }))
       )
     } else if (currentTab.type === TabType.CATEGORY) {
@@ -451,6 +471,26 @@ export default class Page extends React.Component<Props, State> {
     else this.onTabIndexChange(currentTabIdx, true)
   }
 
+  // 限时抢购所有活动都已过期
+  onAllLimitTimeBuyExpire = () => {
+    const { shop: { code, type }, currentTabIdx, tabList } = this.state
+    if (tabList[currentTabIdx].title === '限时抢购') {
+      this.requestTabData(code, type)
+    } else {
+      this.setState({ shouldRefreshTab: true })
+    }
+  }
+
+  // 限时抢购楼层的活动过期
+  onFloorLimitTimeBuyExpire = () => {
+    const { currentTabIdx } = this.state
+    if (currentTabIdx === 0) {
+      this.onTabIndexChange(0, true)
+    } else {
+      this.setState({ shouldRefreshFirstTab: true })
+    }
+  }
+
   renderTabBar = props => {
     const { animatedValRefCmsScrollY } = this.state
     return <TabBar {...props} animatedVal={animatedValRefCmsScrollY} />
@@ -474,7 +514,11 @@ export default class Page extends React.Component<Props, State> {
     const contentLoading = !!tabContentLoadingMap[key]
 
     if (title === '限时抢购') {
-      return <LimitTimeBuyScene shopCode={this.state.shop.code} paddingTop={PlaceholderForNativeHeight} />
+      return <LimitTimeBuyScene
+        shopCode={this.state.shop.code}
+        paddingTop={PlaceholderForNativeHeight}
+        onAllExpired={this.onAllLimitTimeBuyExpire}
+      />
     }
 
     switch (type) {

@@ -15,6 +15,7 @@ import ProductCountOperatorLTB from "@components/business/ProductLimitTimeBuy/Pr
 interface Props extends Product {
   thumbnailSize: number // 商品图片大小
   inventoryPercentage?: number // 剩余库存比
+  disableAdd?: boolean
   activityStatus?: LimitTimeBuyStatus // 限时抢购活动状态
 }
 
@@ -34,6 +35,7 @@ function ProductLimitTimeBuy({
   onModifyCount,
   shopCode,
   activityStatus,
+  disableAdd,
 }: Props) {
   const navigateToProductDetail = () => {
     Native.navigateTo({
@@ -110,6 +112,7 @@ function ProductLimitTimeBuy({
           count={count}
           onChange={onModifyCount}
           disabled={isCartDisabled}
+          disableAdd={disableAdd}
         >
           {inventoryPercentage <= 0 ? '已售完' : '去抢购'}
         </ProductCountOperatorLTB>

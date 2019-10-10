@@ -8,11 +8,11 @@ import StickyContainer from 'recyclerlistview/sticky';
 import {CMSServices, LimitTimeBuyServices} from "@services";
 import {bannerLimitTimeBuy} from "@const/resources";
 import TabBar from "./TabBar";
-import Timer from "@components/business/Content/LimitTimeBuy/Timer";
+import Timer from "./Timer";
 import styles from "./LimitTimeBuyScene.styles";
 import theme from "@theme";
 import {LimitTimeBuyStatus, Product} from "@components/business/Content/typings";
-import {Global} from "@utils";
+import {Global, Native} from "@utils";
 import ProductLimitTimeBuy from "@components/business/ProductLimitTimeBuy";
 import isEqual from 'lodash/isEqual'
 import { Tab } from "./Typings";
@@ -30,7 +30,8 @@ enum ViewTypes {
 interface Props {
   paddingTop?: number
   shopCode: string // 门店编码
-  afterAddCart: (count: number) => void
+  afterAddCart?: (count: number) => void
+  onAllExpired: () => void // 所有活动均结束
 }
 
 interface State {
@@ -91,12 +92,18 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
     }
   )
   timer = null // 计时器
+  removeCartChangeListener: Function
 
   async componentDidMount() {
     const { shopCode } = this.props
     if (shopCode) {
       this.init(shopCode)
     }
+
+    this.removeCartChangeListener = Native.onNativeEvent(
+      'notifyRefreshCartNum',
+      () => this.init(shopCode)
+    )
   }
 
   componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
@@ -125,6 +132,8 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
 
     if (tabs.findIndex(ele => ele.status !== LimitTimeBuyStatus.Pending)) {
       this.startTimer()
+    } else {
+      this.props.onAllExpired && this.props.onAllExpired()
     }
   }
 
@@ -200,7 +209,7 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
             {Type: ViewTypes.Timer},
             ...(products[currentTabIndex] || []).map(ele => ({...ele, activityStatus: tabs[currentTabIndex].status}))
           ]),
-        }), () => this.init(this.props.shopCode))
+        }))
       }
       if (Math.max(...tabs.map(ele => ele.end), now) === now) {
         clearInterval(this.timer)
@@ -218,6 +227,13 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
         ...(products[index] || [])
       ]),
     }))
+  }
+
+  // 当前活动状态变化
+  onCurrentActivityStatusChange = (preStatus, status) => {
+    if (status === LimitTimeBuyStatus.Expired) {
+      this.init(this.props.shopCode)
+    }
   }
 
   rowRenderer = (type, data, index) => {
@@ -241,7 +257,7 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
       case ViewTypes.Timer:
         return (
           <View style={styles.timerBox}>
-            <Timer start={currentTab.start} end={currentTab.end} millisecondVis />
+            <Timer start={currentTab.start} end={currentTab.end} onStatusChange={this.onCurrentActivityStatusChange} />
             <View style={styles.timerBoxDivider} />
           </View>
         )

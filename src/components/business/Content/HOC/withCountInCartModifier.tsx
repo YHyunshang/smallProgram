@@ -19,6 +19,7 @@ interface Props extends Product {
 interface State {
   count: number // 商品在购物车中的数量
   modifiedCount: number
+  disableAdd: boolean // 无法购物买更多
 }
 
 export default function withCartCountModify(WrappedComponent) {
@@ -28,6 +29,7 @@ export default function withCartCountModify(WrappedComponent) {
       this.state = {
         count: props.count || 0,
         modifiedCount: props.count || 0,
+        disableAdd: false
       }
     }
 
@@ -51,11 +53,11 @@ export default function withCartCountModify(WrappedComponent) {
       CMSServices.updateProductCountInCart(code, count, price, '', shopCode)
         .then(() => {
           Log.debug(`change count success: current is ${count}`)
-          this.setState({ count })
+          this.setState({ count, disableAdd: false })
           afterModifyCount && afterModifyCount(count)
         })
         .catch(err => {
-          this.setState(({ count: preCount }) => ({ modifiedCount: preCount }))
+          this.setState(({ count: preCount }) => ({ modifiedCount: preCount, disableAdd: err === '无法购买更多了' }))
           throw err
         })
     }, 500)
@@ -91,6 +93,7 @@ export default function withCartCountModify(WrappedComponent) {
         <WrappedComponent
           {...this.props}
           count={this.state.modifiedCount}
+          disableAdd={this.state.disableAdd}
           onModifyCount={this.onModifyCount}
         />
       )

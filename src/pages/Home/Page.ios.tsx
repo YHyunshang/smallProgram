@@ -25,6 +25,8 @@ const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
 const placeholderForNativeHeight = Native.getStatusBarHeight() + 86 + TabHeight
 const windowWidth = Dimensions.get('window').width
 
+interface Props {}
+
 interface State {
   loading: boolean // 加载中
   shop: {
@@ -43,6 +45,9 @@ interface State {
   }
   animatedValRefCmsScrollY: Animated.AnimatedValue
   dataExpired: boolean
+
+  shouldRefreshFirstTab: boolean
+  shouldRefreshTab: boolean
 }
 
 class Page extends React.Component<Props, State> {
@@ -62,6 +67,9 @@ class Page extends React.Component<Props, State> {
     tabLoadingMap: {},
     animatedValRefCmsScrollY: new Animated.Value(0),
     dataExpired: false,
+
+    shouldRefreshFirstTab: false,
+    shouldRefreshTab: false,
   }
 
   nativeSubscription: { remove: Function }
@@ -164,7 +172,8 @@ class Page extends React.Component<Props, State> {
               [cmsTabs[0].id]: formatFloorData(
                 cmsTabs[0].templateVOList || [],
                 shopCode,
-                0
+                0,
+                this.onFloorLimitTimeBuyExpire
               ),
             }
           : {}),
@@ -194,7 +203,8 @@ class Page extends React.Component<Props, State> {
             [tabId]: formatFloorData(
               result.templateVOList || [],
               shopCode,
-              tabIdx
+              tabIdx,
+              this.onFloorLimitTimeBuyExpire
             ),
           },
         }))
@@ -272,18 +282,28 @@ class Page extends React.Component<Props, State> {
       },
     } = e
     CMSServices.pushScrollToNative(x, y)
+
+    console.log('--------', y)
   }
 
   onTabIndexChange = (idx, force = false) => {
     this.setState({ currentTabIdx: idx })
     const {
+      shop,
       tabList,
       tabFloorMap,
       dataExpired,
       animatedValRefCmsScrollY,
+      shouldRefreshFirstTab,
+      shouldRefreshTab,
     } = this.state
     const currentTab = tabList[idx]
     if (!currentTab) return
+
+    if (currentTab.title === '限时抢购') {
+      return shouldRefreshTab ? this.requestTabData(shop.code, shop.type) : null
+    }
+
     if ((tabFloorMap[currentTab.id] || []).length === 0) {
       animatedValRefCmsScrollY.setValue(0)
       CMSServices.pushScrollToNative(0, 0)
@@ -291,7 +311,8 @@ class Page extends React.Component<Props, State> {
     if (
       force ||
       dataExpired ||
-      (currentTab && (tabFloorMap[currentTab.id] || []).length === 0)
+      (currentTab && (tabFloorMap[currentTab.id] || []).length === 0) ||
+      (idx === 0 && shouldRefreshFirstTab)
     ) {
       const fn = {
         cms: (tabId, isForce) => this.requestFloorData(tabId, idx, isForce),
@@ -312,16 +333,25 @@ class Page extends React.Component<Props, State> {
     fn && fn(currentTab.id)
   }
 
-  onContentScroll = Animated.event(
-    [
-      {
-        nativeEvent: {
-          contentOffset: { y: this.state.animatedValRefCmsScrollY },
-        },
-      },
-    ],
-    { listener: this.onPageScroll, useNativeDriver: true }
-  )
+  // 限时抢购所有活动都已过期
+  onAllLimitTimeBuyExpire = () => {
+    const { shop: { code, type }, currentTabIdx, tabList } = this.state
+    if (tabList[currentTabIdx].title === '限时抢购') {
+      this.requestTabData(code, type)
+    } else {
+      this.setState({ shouldRefreshTab: true })
+    }
+  }
+
+  // 限时抢购楼层的活动过期
+  onFloorLimitTimeBuyExpire = () => {
+    const { currentTabIdx } = this.state
+    if (currentTabIdx === 0) {
+      this.onTabIndexChange(0, true)
+    } else {
+      this.setState({ shouldRefreshFirstTab: true })
+    }
+  }
 
   renderFlatItem = ({ item: { wrapperStyle, component: Comp, props } }) => (
     <View style={wrapperStyle}>
@@ -347,7 +377,11 @@ class Page extends React.Component<Props, State> {
     )
 
     if (route.title === '限时抢购') {
-      return <LimitTimeBuyScene shopCode={this.state.shop.code} paddingTop={placeholderForNativeHeight} />
+      return <LimitTimeBuyScene
+        shopCode={this.state.shop.code}
+        paddingTop={placeholderForNativeHeight}
+        onAllExpired={this.onAllLimitTimeBuyExpire}
+      />
     }
 
     if (routeIndex === 0) {
