@@ -21,6 +21,7 @@ import {LimitTimeBuy as LimitTimeBuyScene} from "@components/Scene";
 
 const PlaceholderForNativeHeight = Native.getStatusBarHeight() + 86 + TabHeight
 const WindowWidth = Dimensions.get('window').width
+const WindowHeight = Dimensions.get('window').height
 
 enum TabType {
   CMS = 'cms',
@@ -314,13 +315,12 @@ export default class Page extends React.Component<Props, State> {
     const currentTab = tabList[index]
     if (!currentTab) return
 
-    this.setState({ currentTabIdx: index }, () => {
-      animatedValRefCmsScrollY.setValue(0)
-      this.syncScrollToNative({
-        nativeEvent: {
-          contentOffset: { x: 0, y: 0 },
-        },
-      })
+    this.setState({ currentTabIdx: index })
+    animatedValRefCmsScrollY.setValue(0)
+    this.syncScrollToNative({
+      nativeEvent: {
+        contentOffset: { x: 0, y: 0 },
+      },
     })
 
     if (currentTab.title === '限时抢购') {
@@ -410,21 +410,6 @@ export default class Page extends React.Component<Props, State> {
     CMSServices.pushScrollToNative(x, y)
   }
 
-  // 页面滚动
-  onPageScroll = Animated.event(
-    [
-      {
-        nativeEvent: {
-          contentOffset: { y: this.state.animatedValRefCmsScrollY },
-        },
-      },
-    ],
-    {
-      listener: this.syncScrollToNative,
-      useNativeDriver: true,
-    }
-  )
-
   // 分类页商品 filter 变化
   onProductFilterChange = async data => {
     const { currentTabIdx, tabList, shop } = this.state
@@ -507,12 +492,9 @@ export default class Page extends React.Component<Props, State> {
     } = this.state
 
     const currentRouteIdx = tabList.findIndex(ele => ele.key === key)
-    if (Math.abs(currentActiveTabIdx - currentRouteIdx) > 2) {
+    if (Math.abs(currentActiveTabIdx - currentRouteIdx) > 1 && title !== '限时抢购') {
       return <View />
     }
-
-    const content = tabContentMap[key]
-    const contentLoading = !!tabContentLoadingMap[key]
 
     if (title === '限时抢购') {
       return <LimitTimeBuyScene
@@ -521,6 +503,23 @@ export default class Page extends React.Component<Props, State> {
         onAllExpired={this.onAllLimitTimeBuyExpire}
       />
     }
+
+    const content = tabContentMap[key]
+    const contentLoading = !!tabContentLoadingMap[key]
+
+    const onPageScroll = Animated.event(
+      [
+        {
+          nativeEvent: {
+            contentOffset: { y: this.state.animatedValRefCmsScrollY },
+          },
+        },
+      ],
+      {
+        listener: this.syncScrollToNative,
+        useNativeDriver: true,
+      }
+    )
 
     switch (type) {
       case TabType.CMS:
@@ -531,7 +530,7 @@ export default class Page extends React.Component<Props, State> {
             contentOffset={
               currentActiveTabIdx === 0 ? 0 : PlaceholderForNativeHeight
             }
-            onScroll={this.onPageScroll}
+            onScroll={onPageScroll}
             onRefresh={this.onRefresh}
           />
         )
@@ -545,7 +544,7 @@ export default class Page extends React.Component<Props, State> {
             animatedVal={animatedValRefCmsScrollY}
             onProductFilterChange={this.onProductFilterChange}
             onRefresh={this.onRefresh}
-            onScroll={this.onPageScroll}
+            onScroll={onPageScroll}
           />
         )
       default:
@@ -573,8 +572,8 @@ export default class Page extends React.Component<Props, State> {
           renderTabBar={this.renderTabBar}
           renderScene={this.renderScene}
           onIndexChange={this.onTabIndexChange}
-          initialLayout={{ height: 0, width: WindowWidth }}
-          sceneContainerStyle={{ backgroundColor: '#FAFAFA' }}
+          initialLayout={{ height: WindowHeight, width: WindowWidth }}
+          removeClippedSubviews
         />
       </View>
     )

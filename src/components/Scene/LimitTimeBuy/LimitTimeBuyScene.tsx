@@ -33,7 +33,7 @@ interface Props {
   paddingTop?: number
   shopCode: string // 门店编码
   afterAddCart?: (count: number) => void
-  onAllExpired: () => void // 所有活动均结束
+  onAllExpired?: () => void // 所有活动均结束
 }
 
 interface State {
