@@ -22,7 +22,7 @@ export interface Props {
 }
 
 export default function BoxItem({ link, image, title }: Props) {
-  const fitImg = image ? { uri: Img.loadRatioImage(image, 52) } : placeholderBox
+  const fitImg = image ? { uri: Img.loadRatioImage(image, 50) } : placeholderBox
   return (
     <TouchableWithoutFeedback onPress={() => Native.navigateTo(link)}>
       <View style={styles.box}>
