@@ -71,7 +71,7 @@ export async function getConstant(key: string): Promise<any> {
  * @param title 页面 title
  */
 export function setTitle(title = '') {
-  return NativeModules.HomeNativeManager.setTitle(title)
+  return NativeModules.HomeNativeManager.setTitle(title || '')
 }
 
 /**
