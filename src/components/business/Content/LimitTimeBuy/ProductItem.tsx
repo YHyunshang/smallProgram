@@ -13,10 +13,10 @@ interface Props extends Product {
 }
 
 export default function ProductItem ({ name, spec, price, slashedPrice, status, thumbnail }: Props) {
-  const fitThumbnail = Img.loadRatioImage(thumbnail, 50, 50)
+  const fitThumbnail = thumbnail ? Img.loadRatioImage(thumbnail, 50, 50) : placeholderProduct
   return (
     <View style={styles.container}>
-      <Image style={styles.thumbnail} source={{ uri: fitThumbnail }} defaultSource={placeholderProduct} />
+      <Image style={styles.thumbnail} source={{ uri: fitThumbnail }} />
       <View style={styles.detailBox}>
         <Text style={styles.name} numberOfLines={1}>{name}</Text>
         <Text style={styles.spec} numberOfLines={1}>{spec}</Text>
