@@ -113,7 +113,7 @@ export default class ProductCountOperator extends React.Component<
           style={[
             styles.countText,
             {
-              fontSize: Math.max(size * 0.6, 10),
+              fontSize: 14,
               opacity: minusAndCountOpacity,
               transform: [{ translateX: countTranslateX }],
             },
