@@ -374,7 +374,7 @@ export default class Page extends React.Component<Props, State> {
         },
       }))
       p = this.requestCategoryContentData(
-        currentTab.id,
+        currentTab.key,
         shop.code,
         shop.type,
         productFilter
