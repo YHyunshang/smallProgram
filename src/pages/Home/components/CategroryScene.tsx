@@ -15,6 +15,7 @@ import { TabHeight } from './TabBar'
 import theme from '@theme'
 import isEqual from 'lodash/isEqual'
 import ProductLimitTimeBuy from "@components/business/ProductLimitTimeBuy";
+import {placeholderProduct} from "@const/resources";
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
 const PlaceholderForNativeHeight = Native.getStatusBarHeight() + 86 + TabHeight
@@ -138,8 +139,9 @@ export default class CategoryScene extends React.PureComponent<Props> {
           })
         : 0
     const floatFilterTranslateY = animatedVal.interpolate({
-      inputRange: [0, 50],
+      inputRange: [0, 25, 50],
       outputRange: [
+        -PlaceholderForNativeHeight,
         PlaceholderForNativeHeight,
         PlaceholderForNativeHeight - 50,
       ],
@@ -169,7 +171,6 @@ export default class CategoryScene extends React.PureComponent<Props> {
         </Animated.View>
 
         <AnimatedFlatList
-          contentContainerStyle={{ paddingTop: PlaceholderForNativeHeight }}
           style={{ flex: 1 }}
           refreshControl={
             <RefreshControl
@@ -188,6 +189,7 @@ export default class CategoryScene extends React.PureComponent<Props> {
           maxToRenderPerBatch={5}
           showsVerticalScrollIndicator={false}
           onScroll={onScroll}
+          ListHeaderComponent={<View style={{ height: PlaceholderForNativeHeight }} />}
         />
       </View>
     )
