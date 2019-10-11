@@ -31,7 +31,6 @@ function CMSScene({
   return (
     <AnimatedFlatList
       style={{ flex: 1 }}
-      contentContainerStyle={{ paddingTop: contentOffset }}
       data={data}
       renderItem={renderCMSFloor}
       keyExtractor={item => `${item.key}`}
@@ -49,6 +48,7 @@ function CMSScene({
           progressViewOffset={PlaceholderForNativeHeight}
         />
       }
+      ListHeaderComponent={<View style={{ height: contentOffset }} />}
     />
   )
 }
