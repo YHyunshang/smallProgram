@@ -10,7 +10,7 @@ import { Http, Log, Native } from '@utils'
  * @return {Promise} Http request instance
  */
 export function getHomeTabs(shopCode) {
-  return Http.get('productCenter', `/cms/mobile/${shopCode}/getHomePage`)
+  return Http.get('productCenter', `/v2/cms/mobile/${shopCode}/getHomePage`)
 }
 
 /**
