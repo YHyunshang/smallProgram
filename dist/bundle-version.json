@@ -1,7 +1,7 @@
 {
-  "version": "0.4.1",
-  "iosDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.4.1/ios/dist-ios.zip",
-  "androidDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.4.1/android/index.jsbundle",
+  "version": "0.4.14",
+  "iosDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.4.14/ios/dist-ios.zip",
+  "androidDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/0.4.14/android/index.jsbundle",
   "iosNativeVersion": "1.0.6",
   "androidNativeVersion": "1.0.7",
   "versionDesc": ["U - 限时促销"]

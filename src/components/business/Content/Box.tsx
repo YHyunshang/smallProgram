@@ -37,12 +37,12 @@ export default function Box({ data, columnNumber, maxRow = 2 }: Props) {
 
   const [showAll, setShowAll] = React.useState(false)
 
-  if (Platform.OS === 'android') {
-    if (UIManager.setLayoutAnimationEnabledExperimental) {
-      UIManager.setLayoutAnimationEnabledExperimental(true)
-    }
-  }
-  LayoutAnimation.easeInEaseOut()
+  // if (Platform.OS === 'android') {
+  //   if (UIManager.setLayoutAnimationEnabledExperimental) {
+  //     UIManager.setLayoutAnimationEnabledExperimental(true)
+  //   }
+  // }
+  // LayoutAnimation.easeInEaseOut()
 
   return (
     <View style={styles.container}>
