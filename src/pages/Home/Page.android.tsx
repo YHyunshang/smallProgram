@@ -573,7 +573,6 @@ export default class Page extends React.Component<Props, State> {
           renderScene={this.renderScene}
           onIndexChange={this.onTabIndexChange}
           initialLayout={{ height: WindowHeight, width: WindowWidth }}
-          removeClippedSubviews
         />
       </View>
     )
