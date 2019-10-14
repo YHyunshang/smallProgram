@@ -1,3 +1,10 @@
+/*
+ * @Descripttion: 
+ * @Author: yuwen.liu
+ * @Date: 2019-10-14 10:30:28
+ * @LastEditors: yuwen.liu
+ * @LastEditTime: 2019-10-14 10:31:14
+ */
 import { StyleSheet } from 'react-native'
 import theme from '@theme'
 
@@ -14,7 +21,8 @@ export default StyleSheet.create({
   filterBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 76,
+    justifyContent: 'center',
+    // paddingHorizontal: 76,
     borderBottomColor: '#EBEBEB',
     borderBottomWidth: 0.5,
     flex: 1,
