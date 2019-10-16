@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-08 19:04:32
+ * @LastEditTime: 2019-10-16 16:09:41
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import {isIPhoneXMarginTop, isIPhoneXHeight} from '../../utils/IsIphoneX'
@@ -52,6 +52,23 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  newPerson: {
+    width: 54,
+    height: 16,
+    marginTop: 16,
+    marginLeft: 15,
+    paddingHorizontal: 2,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderTopLeftRadius: 5,
+    borderBottomRightRadius: 5,
+    backgroundColor: '#41B25D'
+  },
+  newPersonText: {
+    color: '#FFFFFF',
+    fontSize: 12
   },
   defaultImage: {
     width: '100%',

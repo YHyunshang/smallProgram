@@ -9,6 +9,7 @@ import Carousel from '@components/business/Content/Carousel'
 import AdTitle from '@components/business/Content/AdTitle'
 import ProductSwiperWithBg from '@components/business/Content/ProductSwiperWithBg'
 import AdSingle from '@components/business/Content/AdSingle'
+import NewPersonGiftAdSingle from '@components/business/Content/NewPersonGiftAdSingle'
 import Ad1v2 from '@components/business/Content/Ad1v2'
 import Ad1v1 from '@components/business/Content/Ad1v1'
 import ProductList from '@components/business/Content/ProductList'
@@ -203,6 +204,20 @@ export function formatFloorData(
           data: boxData,
           maxRow: 2,
         },
+      })
+      //首页1元新人礼包广告图入口
+      result.push({
+        key: floor.id,
+        component: NewPersonGiftAdSingle,
+        wrapperStyle: [
+          {
+            marginHorizontal:10,
+          },
+          currentTabIdx === 0 && {
+            borderRadius: 5,
+            overflow: 'hidden',
+          },
+        ]
       })
     } else if (floor.type === 5) {
       // 分割图

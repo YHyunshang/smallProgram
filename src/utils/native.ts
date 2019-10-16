@@ -1,5 +1,9 @@
-/**
- * Created by 李华良 on 2019-07-29
+/*
+ * @Descripttion: 原生通用方法封装
+ * @Author: yuwen.liu
+ * @Date: 2019-10-12 11:25:52
+ * @LastEditors: yuwen.liu
+ * @LastEditTime: 2019-10-16 16:18:51
  */
 import {
   NativeModules,
@@ -72,6 +76,16 @@ export async function getConstant(key: string): Promise<any> {
  */
 export function setTitle(title = '') {
   return NativeModules.HomeNativeManager.setTitle(title || '')
+}
+
+/**
+ * 首页1元新人礼包调用原生弹窗
+ * @param showPromotionProductListDialog  首页弹出新人购弹窗事件
+ * @param params 参数
+ */
+export function jumpToNativeDialog(showPromotionProductListDialog: string, params: string) {
+  //RN模块调用原生的通用方法
+  return NativeModules.RnAppModule.sendEventToNative(showPromotionProductListDialog, params)
 }
 
 /**
