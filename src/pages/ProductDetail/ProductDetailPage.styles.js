@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-16 16:09:41
+ * @LastEditTime: 2019-10-18 13:52:17
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import {isIPhoneXMarginTop, isIPhoneXHeight} from '../../utils/IsIphoneX'
@@ -54,10 +54,12 @@ export default StyleSheet.create({
     alignItems: 'center'
   },
   newPerson: {
+    zIndex: 100,
+    position: 'absolute',
     width: 54,
     height: 16,
-    marginTop: 16,
-    marginLeft: 15,
+    top: 16,
+    left: 15,
     paddingHorizontal: 2,
     flexDirection: 'row',
     justifyContent: 'center',

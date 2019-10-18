@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-15 16:53:39
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-16 14:36:04
+ * @LastEditTime: 2019-10-18 13:45:34
  */
 import * as React from 'react'
 import { TouchableWithoutFeedback, View, Dimensions } from 'react-native'
@@ -26,14 +26,15 @@ export default class NewPersonGiftAdSingle extends React.Component<State>  {
     }
     componentDidMount() {
       CMSServices.getNewPersonBanner().then(
-        ({result = {}}) => {    
+        ({result = {},message}) => {    
           if(result){
             this.setState({bannerUrl:result.bannerUrl,newcomerFlag:result.newcomerFlag} )
           }
         }
       )
-      .catch(error=>{
-        Native.showToast(error,'0')
+      .catch(({result = {},message})=>{
+        // Native.showToast('报错','0')
+        Native.showToast(message,'0')
       })
     }
 
