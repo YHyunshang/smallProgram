@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-30 13:48:24
+ * @LastEditTime: 2019-10-18 16:24:17
  */
 
 import React from 'react'
@@ -77,15 +77,17 @@ export default class SimilarGoods extends React.Component {
         </View>
         <View style={styles.goodsTags}>
           {
-          // 促销类型 1 直降促销, 2 满减促销, 3 满件减满减折促销 ,4 第N件N折/N元,5 限时抢
-          // 满减规则 限时抢购  > 满减（满50-12） > 折扣（0.8折）
+          // 促销类型 1 直降促销, 2 满减促销, 3 满件减满减折促销 ,4 第N件N折/N元,5 限时抢购
+          // 满减规则 5>1>4>2>3
             item.productActivityLabel && item.productActivityLabel.promotionType === 5 && item.productActivityLabel.labels ?
               <Tag textValue={item.productActivityLabel.labels[0]} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
-              : item.orderActivityLabel && item.orderActivityLabel.promotionType === 3 && item.orderActivityLabel.labels ?
-                <Tag textValue={item.orderActivityLabel.labels[0]} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
+              : item.productActivityLabel && item.productActivityLabel.promotionType === 1 && item.productActivityLabel.labels ?
+                <Tag textValue={item.productActivityLabel.labels[0]} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
                 : item.productActivityLabel && item.productActivityLabel.promotionType === 4 && item.productActivityLabel.labels ?
                   <Tag textValue={item.productActivityLabel.labels[0]} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
-                  : null
+                  : item.orderActivityLabel && item.orderActivityLabel.labels && (
+                    <Tag textValue={item.orderActivityLabel.labels[0]} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
+                  )
           }
         </View>
         <Text numberOfLines={1} style={styles.goodsDesc}>
