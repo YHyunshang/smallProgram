@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-10 18:24:57
+ * @LastEditTime: 2019-10-18 10:21:22
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -89,7 +89,8 @@ export default class ProductDetailPage extends React.Component {
               shopUrl,
               productParams: object,
               orderActivityLabel: data.resChannelStoreProductVO ? data.resChannelStoreProductVO.orderActivityLabel : {},
-              // productActivityLabel: {activityBeginTime: '2019-10-09 16:23:00', activityEndTime: '2019-10-11 17:20:00', activityName: '第N件N折/N元', discountPrice: 899, labels: ['第N件N折/N元', '满减', '特价'], promotionCode: 'K001', promotionType: 4, promotionTypeName: '第N件N折/N元', ruleType: 0, salesRatio: '100%'}
+              // orderActivityLabel: {activityBeginTime: '2019-10-09 16:23:00', activityEndTime: '2019-10-11 17:20:00', activityName: '第N件N折/N元', discountPrice: 899, labels: ['满100减10元'], promotionCode: 'K001', promotionType: 2, promotionTypeName: '阶梯满减', ruleType: 0, salesRatio: '100%'},
+              // productActivityLabel: {activityBeginTime: '2019-10-09 16:23:00', activityEndTime: '2019-10-11 17:20:00', activityName: '第N件N折/N元', discountPrice: 899, labels: ['第N件N折/N元'], promotionCode: 'K001', promotionType: 4, promotionTypeName: '第N件N折/N元', ruleType: 0, salesRatio: '100%'}
               productActivityLabel: data.resChannelStoreProductVO ? data.resChannelStoreProductVO.productActivityLabel : {}
             }
           )
@@ -220,7 +221,7 @@ export default class ProductDetailPage extends React.Component {
     goodsDetailManager.pushToEvaluationList()
   }
   render() {
-    let tags// 促销类型 1 直降促销, 2 满减促销, 3 满件减满减折促销 ,4 第N件N折/N元,5 限时抢购
+    let tags, productTags, orderTags// 促销类型 1 直降促销, 2 满减促销, 3 满件减满减折促销 ,4 第N件N折/N元,5 限时抢购
     const {imgData, goodsInfo, productImgList, shopUrl, imgUrl, productParams, similarProduct, productActivityLabel, orderActivityLabel} = this.state
     // let favorableRate = goodsInfo.favorableRate ? goodsInfo.favorableRate * 100 : 0
     // favorableRate = favorableRate && parseFloat(favorableRate.toFixed(2))
@@ -236,10 +237,10 @@ export default class ProductDetailPage extends React.Component {
       tags = <Tag textValue={productActivityLabel.labels[0]} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
     } else {
       if (productActivityLabel && productActivityLabel.labels) { //  promotionType：1 直降促销， 4 第N件N折/N元
-        tags = <Tag textValue={productActivityLabel.labels[0]} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
+        productTags = <Tag textValue={productActivityLabel.labels[0]} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
       }
       if (orderActivityLabel && orderActivityLabel.labels) { //  promotionType：2 满减促销, 3 满件减满减折促销
-        tags = <Tag textValue={orderActivityLabel.labels[0]} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
+        orderTags = <Tag textValue={orderActivityLabel.labels[0]} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
       }
     }
     return (
@@ -313,9 +314,9 @@ export default class ProductDetailPage extends React.Component {
                 }
               </View>
               <View style={styles.goodsTags}>
-                {
-                  tags
-                }
+                {tags}
+                {productTags}
+                {orderTags}
               </View>
               <View style={styles.goodsWrapper}>
                 <Text numberOfLines={1} style={styles.goodsName}>{goodsInfo.productName}</Text>
