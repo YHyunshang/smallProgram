@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-27 16:44:11
+ * @LastEditTime: 2019-10-18 19:15:42
  */
 
 import {
@@ -113,5 +113,24 @@ export default StyleSheet.create({
     position: 'absolute',
     right: 10,
     bottom: 10
+  },
+  newPerson: {
+    zIndex: 100,
+    position: 'absolute',
+    width: 54,
+    height: 16,
+    top: 0,
+    left: 0,
+    paddingHorizontal: 2,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderTopLeftRadius: 5,
+    borderBottomRightRadius: 5,
+    backgroundColor: '#41B25D'
+  },
+  newPersonText: {
+    color: '#FFFFFF',
+    fontSize: 12
   }
 })

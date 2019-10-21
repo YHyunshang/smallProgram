@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-18 10:21:22
+ * @LastEditTime: 2019-10-21 21:04:07
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -278,6 +278,13 @@ export default class ProductDetailPage extends React.Component {
               this.goodsLayoutY = event.nativeEvent.layout.y
             }}>
               <View onLayout={this.goodsSwiperLayout.bind(this)}>
+                {
+                  productActivityLabel && productActivityLabel.promotionType === 13 && (
+                    <View style={styles.newPerson}>
+                      <Text style={styles.newPersonText}>{productActivityLabel.promotionTypeName}</Text>
+                    </View>
+                  )
+                }
                 {
                   imgData ? <GoodsDetailSwiper imgData={imgData}/>
                     :

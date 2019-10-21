@@ -86,7 +86,7 @@ export default class Page extends React.Component<Props, State> {
 
   removeShopChangeListener: Function
   removeCartChangeListener: Function
-
+  removeNewcomerChangeListener: Function
   componentDidMount() {
     Native.setHomeFirstTabActiveStatus(true)
     this.syncScrollToNative({ nativeEvent: { contentOffset: { x: 0, y: 0 } } })
@@ -121,6 +121,12 @@ export default class Page extends React.Component<Props, State> {
       'notifyRefreshCartNum',
       this.onCartChange
     )
+
+    // 注册 是否是新人身份变更回调
+    this.removeNewcomerChangeListener = Native.onNativeEvent(
+      'newcomerChange',
+      this.newcomerChange
+    )
   }
 
   onShopChange = ({ storeCode, storeTypeCode }) => {
@@ -136,7 +142,11 @@ export default class Page extends React.Component<Props, State> {
 
     this.onTabIndexChange(currentTabIdx)
   }
-
+  
+  newcomerChange = ({ storeCode, storeTypeCode }) => {
+    this.requestTabData(storeCode, storeTypeCode)
+  }
+   
   requestTabData = async (shopCode: string, shopTypeCode: string) => {
     this.setState({ loading: true })
     let data: any[]

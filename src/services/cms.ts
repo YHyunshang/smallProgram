@@ -1,5 +1,9 @@
-/**
- * Created by 李华良 on 2019-07-26
+/*
+ * @Descripttion: 
+ * @Author: yuwen.liu
+ * @Date: 2019-10-12 11:25:52
+ * @LastEditors: yuwen.liu
+ * @LastEditTime: 2019-10-21 17:25:46
  */
 import { NativeEventEmitter, NativeModules } from 'react-native'
 import { Http, Log, Native } from '@utils'
@@ -11,6 +15,17 @@ import { Http, Log, Native } from '@utils'
  */
 export function getHomeTabs(shopCode) {
   return Http.get('productCenter', `/v2/cms/mobile/${shopCode}/getHomePage`)
+}
+
+/**
+ * 根据token来判断是否是新人，如果是新人则显示1元新人礼包banner图
+ * @return {Promise} Http request instance
+ */
+export function getNewPersonBanner() {
+  return Http.get(
+    'productCenter',
+    `/newcomer/banner`
+  )
 }
 
 /**
@@ -68,6 +83,15 @@ export function pushScrollToNative(x, y) {
 export function subscriptShopChange(handler: (...args: any[]) => any) {
   const eventEmitter = new NativeEventEmitter(NativeModules.SendRNEventManager)
   return eventEmitter.addListener('storeChange', handler)
+}
+
+/**
+ * 添加 newcomer 新人身份变化事件监听
+ * @param handler 事件处理函数
+ */
+export function subscriptNewcomerChange(handler: (...args: any[]) => any) {
+  const eventEmitter = new NativeEventEmitter(NativeModules.SendRNEventManager)
+  return eventEmitter.addListener('newcomerChange', handler)
 }
 
 /**

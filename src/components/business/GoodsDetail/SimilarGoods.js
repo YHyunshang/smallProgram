@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-18 16:24:17
+ * @LastEditTime: 2019-10-21 21:03:14
  */
 
 import React from 'react'
@@ -69,6 +69,13 @@ export default class SimilarGoods extends React.Component {
         }}
       >
         <View style={styles.similarGoodsWrapper}>
+          {
+            item.productActivityLabel && item.productActivityLabel.promotionType === 13 && (
+              <View style={styles.newPerson}>
+                <Text style={styles.newPersonText}>{item.productActivityLabel.promotionTypeName}</Text>
+              </View>
+            )
+          }
           <PreloadingImage
             style={styles.similarGoodsImg}
             sourceType={1}
