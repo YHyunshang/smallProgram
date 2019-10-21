@@ -114,6 +114,11 @@ class Page extends React.Component<Props, State> {
       this.onNativeShopChange
     )
 
+    // 是否新人身份变化 native 事件监听
+   this.nativeSubscription = CMSServices.subscriptNewcomerChange(
+    this.onNativeNewcomerChange
+  )
+
     // 监听购物车变化
     Native.onCartChange(() => {
       const { currentTabIdx } = this.state
@@ -132,6 +137,11 @@ class Page extends React.Component<Props, State> {
       this.requestTabData(storeCode, storeTypeCode)
     }
   }
+    // 监听 是否是新人身份变化
+    onNativeNewcomerChange = data => {
+      const { storeCode, storeTypeCode } = data
+      this.requestTabData(storeCode, storeTypeCode)
+    }
 
   // 获取初始 CMS 数据
   requestTabData = async (shopCode: string, shopType) => {

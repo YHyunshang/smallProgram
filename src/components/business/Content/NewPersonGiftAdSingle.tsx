@@ -1,9 +1,10 @@
+
 /*
  * @Descripttion: 1元新人礼包广告图
  * @Author: yuwen.liu
  * @Date: 2019-10-15 16:53:39
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-18 13:45:34
+ * @LastEditTime: 2019-10-21 20:30:09
  */
 import * as React from 'react'
 import { TouchableWithoutFeedback, View, Dimensions } from 'react-native'
@@ -25,19 +26,30 @@ export default class NewPersonGiftAdSingle extends React.Component<State>  {
       newcomerFlag: false
     }
     componentDidMount() {
+      //this.getNewPersonBanner()
+    }
+    componentWillReceiveProps(nextProps) {
+       this.getNewPersonBanner()
+    }
+    /**
+     * @msg: 判断是否为新人身份，并展示首页新人礼包banner图
+     */
+    getNewPersonBanner(){
       CMSServices.getNewPersonBanner().then(
         ({result = {},message}) => {    
-          if(result){
+          if(result){//是新人身份
             this.setState({bannerUrl:result.bannerUrl,newcomerFlag:result.newcomerFlag} )
+          }
+          else{//不是新人身份
+            this.setState({bannerUrl:'',newcomerFlag:false} )
           }
         }
       )
-      .catch(({result = {},message})=>{
-        // Native.showToast('报错','0')
+      .catch(({message})=>{
         Native.showToast(message,'0')
+        this.setState({bannerUrl:'',newcomerFlag:false} )
       })
     }
-
     render() {
       const {bannerUrl,newcomerFlag}=this.state
       const fitImg = Img.loadRatioImage(bannerUrl, Img.FullWidth)
