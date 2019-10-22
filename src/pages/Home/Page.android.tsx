@@ -121,8 +121,7 @@ export default class Page extends React.Component<Props, State> {
       'notifyRefreshCartNum',
       this.onCartChange
     )
-
-    // 注册 是否是新人身份变更回调
+    // 注册是否是新人身份变更回调
     this.removeNewcomerChangeListener = Native.onNativeEvent(
       'newcomerChange',
       this.newcomerChange

@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-15 16:53:39
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-21 20:30:09
+ * @LastEditTime: 2019-10-22 15:27:50
  */
 import * as React from 'react'
 import { TouchableWithoutFeedback, View, Dimensions } from 'react-native'
@@ -12,11 +12,16 @@ import FitImage from 'react-native-fit-image'
 import styles from './NewPersonGiftAdSingle.styles'
 import { Native, Img } from '@utils'
 import { CMSServices } from '@services'
+
+export interface Props {
+  updateTime: number  // 更新时间
+}
+
 interface State {
     bannerUrl: string
     newcomerFlag: boolean
 }
-export default class NewPersonGiftAdSingle extends React.Component<State>  {
+export default class NewPersonGiftAdSingle extends React.Component<Props,State>  {
     constructor(props) {
       super(props)
     }
@@ -26,10 +31,12 @@ export default class NewPersonGiftAdSingle extends React.Component<State>  {
       newcomerFlag: false
     }
     componentDidMount() {
-      //this.getNewPersonBanner()
+      this.getNewPersonBanner()
     }
     componentWillReceiveProps(nextProps) {
-       this.getNewPersonBanner()
+      if(this.props.updateTime!==nextProps.updateTime){
+        this.getNewPersonBanner()
+      }
     }
     /**
      * @msg: 判断是否为新人身份，并展示首页新人礼包banner图

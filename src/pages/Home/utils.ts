@@ -217,7 +217,10 @@ export function formatFloorData(
             borderRadius: 5,
             overflow: 'hidden',
           },
-        ]
+        ],
+        props: {
+          updateTime:new Date().getSeconds()
+        }
       })
     } else if (floor.type === 5) {
       // 分割图
