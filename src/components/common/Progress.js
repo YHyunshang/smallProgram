@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-07 15:02:09
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-10 20:04:03
+ * @LastEditTime: 2019-10-23 18:10:29
  */
 import React, {Component} from 'react'
 import {
@@ -19,25 +19,28 @@ export default class Progress extends Component {
   componentDidMount() {
   }
   render() {
-    const {saleNum} = this.props
+    let {saleNum} = this.props
+    let newSaleNum = saleNum ? saleNum.split('%') : ''
     let showText = ''
-    if (saleNum == '100%') {
-      showText = '库存'
-    } else if ((saleNum >= '50%') || saleNum == '0%') {
-      showText = '剩余'
-    } else {
-      showText = '仅剩'
+    if (newSaleNum) {
+      if (Number(newSaleNum[0]) >= 100) {
+        showText = '库存'
+      } else if ((Number(newSaleNum[0]) > 50 && Number(newSaleNum[0]) < 100) || Number(newSaleNum[0] == 0)) {
+        showText = '剩余'
+      } else {
+        showText = '仅剩'
+      }
     }
     return (
       <View style={styles.box}>
-        <View style={[styles.child, {width: saleNum > '100%' ? '100%' : saleNum}]}>
-        </View>
-        <View style={styles.processAnimate}>
-          {
-            saleNum ?
-              <Text style={styles.saleNum}>{showText}{saleNum}</Text>
-              : null
-          }
+        <View style={[styles.child, {width: Number(newSaleNum[0]) >= 100 ? '100%' : saleNum}]}>
+          <View>
+            {
+              saleNum ?
+                <Text style={styles.saleNum}>{showText}{saleNum}</Text>
+                : null
+            }
+          </View>
         </View>
       </View>
     )
@@ -56,14 +59,10 @@ const styles = StyleSheet.create({
   child: {
     height: '100%',
     borderRadius: 7,
-    backgroundColor: '#FFFFFF'
-  },
-  processAnimate: {
-    position: 'absolute',
-    right: 39,
-    top: 0,
-    bottom: 0,
-    borderRadius: 7
+    backgroundColor: '#FFFFFF',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   saleNum: {
     fontSize: 10,
