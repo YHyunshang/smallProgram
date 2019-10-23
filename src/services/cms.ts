@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-12 11:25:52
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-21 17:25:46
+ * @LastEditTime: 2019-10-23 10:24:45
  */
 import { NativeEventEmitter, NativeModules } from 'react-native'
 import { Http, Log, Native } from '@utils'
@@ -156,7 +156,7 @@ export function updateProductCountInCart(
  * @param shopCode 门店编码
  */
 export function getFoundPageData(shopCode: string) {
-  return Http.get('productCenter', `/cms/mobile/${shopCode}/getDiscoveryPage`)
+  return Http.get('productCenter', `/cms/mobile/${shopCode}/getDiscoveryPage?version=1`)
 }
 
 /**
