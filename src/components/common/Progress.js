@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-07 15:02:09
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-23 18:10:29
+ * @LastEditTime: 2019-10-23 19:36:09
  */
 import React, {Component} from 'react'
 import {
@@ -33,14 +33,13 @@ export default class Progress extends Component {
     }
     return (
       <View style={styles.box}>
-        <View style={[styles.child, {width: Number(newSaleNum[0]) >= 100 ? '100%' : saleNum}]}>
-          <View>
-            {
-              saleNum ?
-                <Text style={styles.saleNum}>{showText}{saleNum}</Text>
-                : null
-            }
-          </View>
+        <View style={[styles.child, {width: Number(newSaleNum[0]) >= 100 ? '100%' : saleNum}]}/>
+        <View style={styles.processAnimate}>
+          {
+            saleNum ?
+              <Text style={styles.saleNum}>{showText}{saleNum}</Text>
+              : null
+          }
         </View>
       </View>
     )
@@ -63,6 +62,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  processAnimate: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 7
   },
   saleNum: {
     fontSize: 10,
