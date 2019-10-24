@@ -212,6 +212,7 @@ export function formatFloorData(
         wrapperStyle: [
           {
             marginHorizontal:10,
+            marginBottom:10
           },
           currentTabIdx === 0 && {
             borderRadius: 5,
