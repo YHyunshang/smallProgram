@@ -16,6 +16,7 @@ import withCartCountModify from './HOC/withCountInCartModifier'
 import { Product } from './typings'
 import Tag from './Tag'
 import PromotionTag from './PromotionTag'
+import FastImage from 'react-native-fast-image'
 
 interface Props extends Product {
   disableAdd?: boolean
@@ -45,15 +46,16 @@ function ProductListItem({
     })
   }
   const fitThumbnail = Img.loadRatioImage(thumbnail, 100)
+  if (name === '鲜伊品肋排') console.log('rendering 鲜伊品肋排')
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={navigateToProductDetail}>
         <View style={styles.productBox}>
           <View style={styles.thumbnailBox}>
-            <Image
+            <FastImage
               style={styles.thumbnail}
               source={{ uri: fitThumbnail }}
-              resizeMode="contain"
+              resizeMode={FastImage.resizeMode.contain}
             />
             <View style={styles.productTagRow}>
               {productTags.slice(0, 2).map((tag, idx) => (

@@ -2,22 +2,25 @@ import * as React from 'react'
 import styles from './Page.styles'
 import { Native } from '@utils'
 import { CMSServices } from '@services'
-import { FlatList } from 'react-native-gesture-handler'
-import ActivityWithIPS from '@components/business/Content/ActivityWithIPS'
-import { RefreshControl, View } from 'react-native'
+import ActivityWithIPSC from '@components/business/Content/ActivityWithIPS'
+import {RefreshControl, View, FlatList} from 'react-native'
 import theme from '@theme'
+
+const ActivityWithIPS = React.memo(ActivityWithIPSC)
 
 interface State {
   loading: boolean
   floorData: {}[]
   shopCode: string
+  enablePageScroll: boolean
 }
 
-export default class Page extends React.Component<Object, State> {
+export default class Page extends React.PureComponent<Object, State> {
   state = {
     loading: false,
     floorData: [],
     shopCode: '',
+    enablePageScroll: true
   }
 
   nativeSubscription: { remove: Function }
@@ -112,22 +115,25 @@ export default class Page extends React.Component<Object, State> {
   )
 
   render() {
-    const { floorData, loading, shopCode } = this.state
+    const { floorData, loading, shopCode, enablePageScroll } = this.state
     return (
-      <FlatList
-        data={floorData}
-        keyExtractor={item => `${item.key}`}
-        renderItem={this.renderFlatItem}
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl
-            refreshing={loading}
-            onRefresh={() => this.requestPageData(shopCode)}
-            colors={[theme.primary, theme.white]}
-            tintColor={theme.primary}
-          />
-        }
-      />
+      <View style={styles.container}>
+        <FlatList
+          data={floorData}
+          keyExtractor={item => `${item.key}`}
+          renderItem={this.renderFlatItem}
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={loading}
+              onRefresh={() => this.requestPageData(shopCode)}
+              colors={[theme.primary, theme.white]}
+              tintColor={theme.primary}
+            />
+          }
+          scrollEnabled={enablePageScroll}
+        />
+      </View>
     )
   }
 }

@@ -6,16 +6,15 @@ export default StyleSheet.create({
     backgroundColor: '#FFF',
     borderRadius: 10,
     overflow: 'hidden',
-    shadowColor: 'rgba(0,0,0,0.6)',
-    shadowRadius: 11,
-    shadowOpacity: 1,
   },
   image: {
     borderRadius: 10,
     overflow: 'hidden',
   },
 
-  productSwiper: {},
+  productSwiper: {
+    height: 180,
+  },
 
   productBox: {
     paddingHorizontal: 7.5,

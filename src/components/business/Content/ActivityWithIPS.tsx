@@ -9,10 +9,12 @@
 import * as React from 'react'
 import styles from './ActivityWithIPS.styles'
 import { Product } from './typings'
-import { View, Image, TouchableOpacity, Text, ScrollView } from 'react-native'
-import { Native } from '@utils'
-import FitImage from 'react-native-fit-image'
-import { placeholderProduct } from '@const/resources'
+import {View, TouchableOpacity, Text, FlatList} from 'react-native'
+import {Formatter, Global, Img, Native} from '@utils'
+import FastImage from 'react-native-fast-image'
+import memorize from 'memoize-one'
+
+const loadRatioImage = memorize((imgSrc, width) => Img.loadRatioImage(imgSrc, width))
 
 interface Props {
   image: string
@@ -32,51 +34,74 @@ export default function ActivityWithIPS({
       uri: 'RNActivity',
       params: { activityCode, type: 'activity' },
     })
-  const total = products.length
-  const productList = products.map(
-    ({ code, thumbnail, name, price }, index) => (
-      <TouchableOpacity
-        activeOpacity={0.95}
-        onPress={navigateToActivity}
-        key={code}
-      >
-        <View
-          style={[
-            styles.productBox,
-            index === 0 && styles.productBoxFirst,
-            index === total - 1 && styles.productBoxLast,
-          ]}
-        >
-          <Image style={styles.thumbnail} source={{ uri: thumbnail }} />
-          <View style={styles.nameBox}>
-            <Text style={styles.name} numberOfLines={2}>
-              {name}
-            </Text>
-          </View>
-          <Text style={styles.price}>
-            <Text style={styles.pricePrefix}>¥ </Text>
-            {price / 100}
-          </Text>
-        </View>
-      </TouchableOpacity>
-    )
+
+  const fitImg = loadRatioImage(image, Img.FullWidth)
+
+  const [ imgLayoutW, setImgLayoutW ] = React.useState(0)
+  const [ imgRatio, setImgRatio ] = React.useState(-1)
+  React.useEffect(() => {
+    Img.getRatio({ uri: fitImg })
+      .then(ratio => setImgRatio(ratio))
+    return () => setImgRatio(-1)
+  }, [ fitImg ])
+  const onImageLayout = e => {
+    const { width } = e.nativeEvent.layout
+    if (width !== imgLayoutW) setImgLayoutW(width)
+  }
+
+  const imgLayout = (imgLayoutW && imgRatio)
+    ? { width: '100%', height: imgLayoutW / imgRatio }
+    : { width: '100%' }
+
+  const productItemRender = ({ item }) => (
+    <TouchableOpacity activeOpacity={0.95} onPress={navigateToActivity}>
+      <ProductItem {...item} />
+    </TouchableOpacity>
   )
+
   return (
     <View style={styles.container}>
       <TouchableOpacity activeOpacity={0.95} onPress={navigateToActivity}>
-        <FitImage
-          style={styles.image}
-          source={{ uri: image }}
-          indicator={false}
+        <FastImage
+          style={[ styles.image, imgLayout ]}
+          source={{ uri: fitImg }}
+          onLayout={onImageLayout}
+          resizeMode={FastImage.resizeMode.contain}
         />
       </TouchableOpacity>
-      <ScrollView
-        style={styles.productSwiper}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-      >
-        {productList}
-      </ScrollView>
+
+      {products.length > 0 && (
+        <FlatList
+          style={styles.productSwiper}
+          horizontal
+          data={products}
+          keyExtractor={item => item.code}
+          renderItem={productItemRender}
+          showsHorizontalScrollIndicator={false}
+        />
+      )}
     </View>
   )
 }
+
+const ProductItem = React.memo(({ thumbnail, name, price }: Product) => {
+  const fitThumbnail = Img.loadRatioImage(thumbnail, 80)
+  return (
+    <View
+      style={[
+        styles.productBox,
+      ]}
+    >
+      <FastImage style={styles.thumbnail} source={{ uri: fitThumbnail }} resizeMode={FastImage.resizeMode.center} />
+      <View style={styles.nameBox}>
+        <Text style={styles.name} numberOfLines={2}>
+          {name}
+        </Text>
+      </View>
+      <Text style={styles.price}>
+        <Text style={styles.pricePrefix}>¥ </Text>
+        {Formatter.transPenny(price)}
+      </Text>
+    </View>
+  )
+})

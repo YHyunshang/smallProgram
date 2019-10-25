@@ -4,20 +4,33 @@
  * @Last Modified by: 李华良
  * @Last Modified time: 2019-09-26 18:23:07
  */
+import * as React from 'react'
 import { CMSServices } from '@services'
-import Carousel from '@components/business/Content/Carousel'
-import AdTitle from '@components/business/Content/AdTitle'
+import CarouselC from '@components/business/Content/Carousel'
+import AdTitleC from '@components/business/Content/AdTitle'
 import ProductSwiperWithBg from '@components/business/Content/ProductSwiperWithBg'
-import AdSingle from '@components/business/Content/AdSingle'
+import AdSingleC from '@components/business/Content/AdSingle'
 import NewPersonGiftAdSingle from '@components/business/Content/NewPersonGiftAdSingle'
-import Ad1v2 from '@components/business/Content/Ad1v2'
-import Ad1v1 from '@components/business/Content/Ad1v1'
-import ProductList from '@components/business/Content/ProductList'
-import ProductGrid from '@components/business/Content/ProductGrid'
-import ProductSwiper from '@components/business/Content/ProductSwiper'
-import Box from '@components/business/Content/Box'
-import Divider from '@components/business/Content/Divider'
+import Ad1v2C from '@components/business/Content/Ad1v2'
+import Ad1v1C from '@components/business/Content/Ad1v1'
+import ProductListC from '@components/business/Content/ProductList'
+import ProductGridC from '@components/business/Content/ProductGrid'
+import ProductSwiperC from '@components/business/Content/ProductSwiper'
+import BoxC from '@components/business/Content/Box'
+import DividerC from '@components/business/Content/Divider'
 import LimitTimeBuy from "@components/business/Content/LimitTimeBuy";
+import {Global} from "@utils";
+
+const Carousel = React.memo(CarouselC)
+const AdTitle = React.memo(AdTitleC)
+const ProductList = React.memo(ProductListC)
+const ProductGrid = React.memo(ProductGridC)
+const ProductSwiper = React.memo(ProductSwiperC)
+const AdSingle = React.memo(AdSingleC)
+const Ad1v1 = React.memo(Ad1v1C)
+const Ad1v2 = React.memo(Ad1v2C)
+const Box = React.memo(BoxC)
+const Divider = React.memo(DividerC)
 
 export function formatFloorData(
   data: { [index: string]: any },
@@ -47,7 +60,9 @@ export function formatFloorData(
         component: Carousel,
         wrapperStyle: { paddingHorizontal: 0 },
         props: {
-          imageHeight: currentTabIdx === 0 && i === 0 ? 290 : 150,
+          imageHeight: currentTabIdx === 0 && i === 0
+            ? Global.WindowWidth * 290 / 375
+            : Global.WindowWidth * 150 / 375,
           data: floor.templateDetailVOList.map(ele => ({
             key: ele.id,
             image: ele.imgUrl,
@@ -98,6 +113,7 @@ export function formatFloorData(
           i += 2
           continue
         }
+
         result.push({
           key: floor.id,
           component: AdSingle,

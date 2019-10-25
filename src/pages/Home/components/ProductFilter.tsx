@@ -1,10 +1,8 @@
 import * as React from 'react'
 import styles from './ProductFilter.styles'
 import { View, Image, Text, TouchableOpacity } from 'react-native'
-import { object } from 'prop-types'
 import {
   iconChecked,
-  iconSort,
   iconSortAsc,
   iconSortDesc,
   iconUnchecked,
@@ -48,7 +46,6 @@ interface Props {
 }
 
 export default function ProductFilter({ filters, onFilterChange }: Props) {
-  console.log(filters)
   const { storage, priceSorter } = filters
   const storageFilterImg = {
     [StorageChoices.InStore]: iconChecked,
@@ -60,7 +57,6 @@ export default function ProductFilter({ filters, onFilterChange }: Props) {
     // [Sort.None]: iconSort,
   }[priceSorter]
 
-  console.log(storageFilterImg)
   return (
     <View style={styles.container}>
       <TouchableOpacity

@@ -42,7 +42,6 @@ export function loadRatioImage(src: string, width?: number, height?: number) {
     .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v.toString())}`)
     .join('&')
 
-  console.log('fixedWidth', fixedWidth, src, queryStr)
   return !!queryStr ? `${src}?${queryStr}` : src
 }
 

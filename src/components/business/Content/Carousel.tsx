@@ -7,6 +7,7 @@ import { View, Image, TouchableWithoutFeedback } from 'react-native'
 import Swiper from 'react-native-swiper'
 import Styles from './Carousel.styles'
 import { Native, Img } from '@utils'
+import FastImage from 'react-native-fast-image'
 
 interface Props {
   imageHeight: number
@@ -19,7 +20,7 @@ interface Props {
 
 export default function Carousel({ imageHeight = 290, data }: Props) {
   return (
-    <View style={Styles.container}>
+    <View style={Styles.container} onStartShouldSetResponder={() => true}>
       <Swiper
         height={imageHeight}
         autoplay
@@ -32,17 +33,17 @@ export default function Carousel({ imageHeight = 290, data }: Props) {
         {data.map(({ image, link, key }) => {
           const fitImg = Img.loadRatioImage(image, Img.FullWidth)
           return (
-            <TouchableWithoutFeedback
-              key={key}
-              onPress={() => link.type && Native.navigateTo(link)}
-            >
-              <View style={Styles.slider}>
-                <Image
+            <View style={Styles.slider} key={key}>
+              <TouchableWithoutFeedback
+                onPress={() => link.type && Native.navigateTo(link)}
+              >
+                <FastImage
                   style={[Styles.image, { height: imageHeight }]}
                   source={{ uri: fitImg }}
                 />
-              </View>
-            </TouchableWithoutFeedback>
+              </TouchableWithoutFeedback>
+
+            </View>
           )
         })}
       </Swiper>

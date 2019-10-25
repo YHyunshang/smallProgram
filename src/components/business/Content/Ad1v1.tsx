@@ -3,22 +3,20 @@
  * Created by 李华良 on 2019-08-21
  */
 import * as React from 'react'
-import { TouchableWithoutFeedback, View, Image } from 'react-native'
+import { TouchableWithoutFeedback, View } from 'react-native'
 import { Native, Img } from '@utils'
 import styles from './Ad1v1.styles'
+import FastImage from 'react-native-fast-image'
 
 interface Props {
   data: {
     image: string
-    link: {}
+    link: Native.Navigation
   }[]
 }
 
 export default function Ad1v1({ data }: Props) {
   const imgLst = data.slice(0, 2)
-  const [imgDim, setImgDim] = React.useState({ width: 0, height: 0 })
-
-  const onImgBoxLayout = ({ nativeEvent }) => setImgDim(nativeEvent.layout)
 
   return (
     <View style={styles.container}>
@@ -28,13 +26,12 @@ export default function Ad1v1({ data }: Props) {
           <View
             style={[styles.imgBoxL, styles.imgBoxR][index]}
             key={index}
-            onLayout={onImgBoxLayout}
           >
             <TouchableWithoutFeedback onPress={() => Native.navigateTo(link)}>
-              <Image
+              <FastImage
                 source={{ uri: fitImg }}
                 style={[styles.imgL, styles.imgR][index]}
-                resizeMode="cover"
+                resizeMode={FastImage.resizeMode.contain}
               />
             </TouchableWithoutFeedback>
           </View>

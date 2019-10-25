@@ -7,7 +7,6 @@ import styles from './TabBar.styles'
 import {Global} from "@utils";
 import { Tab } from './typings'
 import {LimitTimeBuyStatus} from "@components/business/Content/typings";
-import {stat} from "react-native-fs";
 const dayjs = require('dayjs')
 
 interface Props {

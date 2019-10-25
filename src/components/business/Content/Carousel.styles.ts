@@ -2,6 +2,7 @@
  * Created by 李华良 on 2019-08-19
  */
 import { StyleSheet } from 'react-native'
+import {Global} from "@utils";
 
 export default StyleSheet.create({
   container: {},
@@ -22,8 +23,9 @@ export default StyleSheet.create({
   },
   slider: {
     justifyContent: 'flex-end',
+    backgroundColor: '#eee',
   },
   image: {
-    width: '100%',
+    width: Global.WindowWidth,
   },
 })

@@ -9,6 +9,7 @@ import ProductCart from '../ProductCart'
 import { Product } from './typings'
 import withCartCountModify from './HOC/withCountInCartModifier'
 import { Native, Img } from '@utils'
+import FastImage from 'react-native-fast-image'
 
 enum ThemeChoices {
   TWO_PER_ROW = '2x',
@@ -60,7 +61,7 @@ function ProductGridItem({
             style={styles.thumbnailBox}
             onLayout={e => setThumbnailWidth(e.nativeEvent.layout.width)}
           >
-            <Image
+            <FastImage
               style={[
                 styles.thumbnail,
                 thumbnailWidth && {
@@ -69,7 +70,7 @@ function ProductGridItem({
                 },
               ]}
               source={{ uri: fitThumbnail }}
-              resizeMode="cover"
+              resizeMode={FastImage.resizeMode.cover}
             />
             <View style={styles.tagRow}>
               {!!tag && <Text style={styles.tag}>{tag}</Text>}

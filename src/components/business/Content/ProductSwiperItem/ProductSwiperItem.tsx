@@ -6,6 +6,7 @@ import withCartCountModify from '../HOC/withCountInCartModifier'
 import { Product } from '../typings'
 import Tag from '../Tag'
 import CountOperator from './CountOperator'
+import FastImage from 'react-native-fast-image'
 
 interface Props extends Product {
   disableAdd: boolean
@@ -39,10 +40,10 @@ function ProductSwiperItem({
       <TouchableWithoutFeedback onPress={navigateToProductDetail}>
         <View style={styles.productBox}>
           <View style={styles.thumbnailBox}>
-            <Image
+            <FastImage
               style={styles.thumbnail}
               source={{ uri: fitThumbnail }}
-              resizeMode="contain"
+              resizeMode={FastImage.resizeMode.contain}
             />
 
             {!!tag && (

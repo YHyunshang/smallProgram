@@ -11,6 +11,9 @@ import {
 import { Native } from '@utils'
 import sumBy from 'lodash/sumBy'
 import theme from '@theme'
+import memoize from "memoize-one"
+import isEqual from 'lodash/isEqual'
+import isEmpty from 'lodash/isEmpty'
 
 export const TabHeight = 40
 const windowWidth = Dimensions.get('window').width
@@ -35,8 +38,6 @@ interface Layout {
 }
 
 interface State {
-  indicatorWidth: number
-  indicatorTranslateX: number
   tabTextLayoutMap: {
     [key: string]: Layout
   }
@@ -45,14 +46,12 @@ interface State {
   }
 }
 
-export default class TabBar extends React.Component<Props, State> {
+export default class TabBar extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props)
   }
 
   state = {
-    indicatorWidth: 0,
-    indicatorTranslateX: 0,
     tabTextLayoutMap: {},
     tabBoxLayoutMap: {},
   }
@@ -62,37 +61,11 @@ export default class TabBar extends React.Component<Props, State> {
 
   private scrollViewRef
 
-  static getDerivedStateFromProps(props, state) {
-    const {
-      navigationState: { routes, index },
-    } = props
-    const { tabTextLayoutMap, tabBoxLayoutMap } = state
-    if (routes.length > 0) {
-      const currentActiveRoute = routes[index]
-      const currentActiveTabTextLayout =
-        tabTextLayoutMap[currentActiveRoute.key]
-      if (currentActiveTabTextLayout) {
-        const indicatorWidth = currentActiveTabTextLayout.width * 1.4
-        const routesBeforeCurrentActive = routes.slice(0, index)
-        const tabLayoutsBeforeCurrentActive = routesBeforeCurrentActive.map(
-          ele => tabBoxLayoutMap[ele.key]
-        )
-        const indicatorTranslateX =
-          sumBy(tabLayoutsBeforeCurrentActive, ele => ele.width) +
-          currentActiveTabTextLayout.x +
-          currentActiveTabTextLayout.width / 2 -
-          indicatorWidth / 2
-        return {
-          indicatorWidth,
-          indicatorTranslateX,
-        }
-      }
-    }
-    return null
-  }
-
   componentDidUpdate() {
-    const { indicatorTranslateX, indicatorWidth } = this.state
+    const { navigationState } = this.props
+    const { tabTextLayoutMap, tabBoxLayoutMap } = this.state
+    const { indicatorWidth, indicatorTranslateX } =
+      this.calcIndicatorLayout(navigationState, tabTextLayoutMap, tabBoxLayoutMap)
     if (!indicatorWidth) return
 
     const scrollToX = Math.max(
@@ -121,6 +94,37 @@ export default class TabBar extends React.Component<Props, State> {
       this.setState({ tabBoxLayoutMap: this.cachedTabBoxLayoutMap })
     }
   }
+
+  calcIndicatorLayout = memoize((navigationState, tabTextLayoutMap, tabBoxLayoutMap) => {
+    const { routes, index } = navigationState
+
+    if (routes.length > 0 && !isEmpty(tabBoxLayoutMap) && !isEmpty(tabTextLayoutMap)) {
+      const currentActiveRoute = routes[index]
+      const currentActiveTabTextLayout =
+        tabTextLayoutMap[currentActiveRoute.key]
+      if (currentActiveTabTextLayout) {
+        const indicatorWidth = currentActiveTabTextLayout.width + 10
+        const routesBeforeCurrentActive = routes.slice(0, index)
+        const tabLayoutsBeforeCurrentActive = routesBeforeCurrentActive.map(
+          ele => tabBoxLayoutMap[ele.key]
+        )
+
+        const indicatorTranslateX =
+          sumBy(tabLayoutsBeforeCurrentActive, ele => ele.width) +
+          currentActiveTabTextLayout.x +
+          currentActiveTabTextLayout.width / 2 -
+          indicatorWidth / 2
+        return {
+          indicatorWidth,
+          indicatorTranslateX,
+        }
+      }
+    }
+    return {
+      indicatorWidth: 0,
+      indicatorTranslateX: 0,
+    }
+  }, isEqual)
 
   renderTabs = () => {
     const {
@@ -199,11 +203,11 @@ export default class TabBar extends React.Component<Props, State> {
   }
 
   render() {
-    const {
-      navigationState: { index, routes },
-      animatedVal,
-    } = this.props
-    const { indicatorWidth, indicatorTranslateX } = this.state
+    const { navigationState, animatedVal } = this.props
+    const { tabTextLayoutMap, tabBoxLayoutMap } = this.state
+    const { index } = navigationState
+    const { indicatorWidth, indicatorTranslateX } =
+      this.calcIndicatorLayout(navigationState, tabTextLayoutMap, tabBoxLayoutMap)
 
     const tabTranslateY = animatedVal.interpolate({
       inputRange: [0, 50],

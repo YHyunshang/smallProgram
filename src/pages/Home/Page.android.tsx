@@ -537,8 +537,9 @@ export default class Page extends React.Component<Props, State> {
             loading={contentLoading}
             data={content || []}
             contentOffset={
-              currentActiveTabIdx === 0 ? 0 : PlaceholderForNativeHeight
+              currentRouteIdx === 0 ? 0 : PlaceholderForNativeHeight
             }
+            animatedVal={animatedValRefCmsScrollY}
             onScroll={onPageScroll}
             onRefresh={this.onRefresh}
           />

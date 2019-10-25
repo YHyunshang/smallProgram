@@ -2,18 +2,17 @@ import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
   container: {
-    backgroundColor: '#FFF',
+    flex: 1,
+    backgroundColor: '#F8F8F8',
   },
 
   floorBox: {
-    marginHorizontal: 10,
-    marginVertical: 7.5,
+    paddingHorizontal: 10,
+    paddingVertical: 7.5,
     borderRadius: 10,
     overflow: 'hidden',
-    backgroundColor: '#FFF',
-    shadowColor: '#000000',
+    shadowColor: "#000",
     shadowOpacity: 0.06,
     shadowRadius: 11,
-    elevation: 5,
   },
 })

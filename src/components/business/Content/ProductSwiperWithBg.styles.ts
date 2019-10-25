@@ -1,12 +1,16 @@
 import { StyleSheet } from 'react-native'
 import theme from '@theme'
+import {Global} from "@utils";
 
 export default StyleSheet.create({
   container: {
     position: 'relative',
-    minHeight: 160,
   },
-  bgImg: {},
+  bgImg: {
+    width: '100%',
+    height: Global.WindowWidth * 264 / 375,
+    paddingBottom: 56,
+  },
   swiper: {
     position: 'absolute',
     bottom: 0,
