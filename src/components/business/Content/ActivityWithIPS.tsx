@@ -75,7 +75,7 @@ export default function ActivityWithIPS({
           style={styles.productSwiper}
           horizontal
           data={products}
-          keyExtractor={item => item.code}
+          keyExtractor={item => item._key_}
           renderItem={productItemRender}
           showsHorizontalScrollIndicator={false}
         />
@@ -84,15 +84,25 @@ export default function ActivityWithIPS({
   )
 }
 
-const ProductItem = React.memo(({ thumbnail, name, price }: Product) => {
+const ProductItem = React.memo(({ thumbnail, name, price, code, shopCode }: Product) => {
   const fitThumbnail = Img.loadRatioImage(thumbnail, 80)
+
+  const navigateToProductDetail = () => {
+    Native.navigateTo({
+      type: Native.NavPageType.NATIVE,
+      uri: 'A003,A003',
+      params: {productCode: code, storeCode: shopCode},
+    })
+  }
+
   return (
+    <TouchableOpacity activeOpacity={0.95} onPress={navigateToProductDetail}>
     <View
       style={[
         styles.productBox,
       ]}
     >
-      <FastImage style={styles.thumbnail} source={{ uri: fitThumbnail }} resizeMode={FastImage.resizeMode.center} />
+      <FastImage style={styles.thumbnail} source={{ uri: fitThumbnail }} resizeMode={FastImage.resizeMode.contain} />
       <View style={styles.nameBox}>
         <Text style={styles.name} numberOfLines={2}>
           {name}
@@ -103,5 +113,6 @@ const ProductItem = React.memo(({ thumbnail, name, price }: Product) => {
         {Formatter.transPenny(price)}
       </Text>
     </View>
+    </TouchableOpacity>
   )
 })

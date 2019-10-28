@@ -70,7 +70,7 @@ export default class Page extends React.PureComponent<Object, State> {
         floorData.push({
           key: curFloor.id,
           image: imgObj.imgUrl,
-          products: nextFloor.templateDetailVOList.map(this.productFormatter),
+          products: nextFloor.templateDetailVOList.map(this.productFormatter, shopCode),
           activityCode: imgObj.link,
         })
         i += 2
@@ -87,7 +87,7 @@ export default class Page extends React.PureComponent<Object, State> {
         floorData.push({
           key: curFloor.id,
           image: null,
-          products: curFloor.templateDetailVOList.map(this.productFormatter),
+          products: curFloor.templateDetailVOList.map(this.productFormatter, shopCode),
           link: {},
         })
       }
@@ -96,7 +96,7 @@ export default class Page extends React.PureComponent<Object, State> {
     this.setState({ floorData })
   }
 
-  productFormatter = data => {
+  productFormatter = (data, shopCode) => {
     const price = Math.min(data.price || 0, data.promotionPrice || 0)
     const slashedPrice = price < (data.price || 0) ? data.price : 0
     return {
@@ -105,6 +105,8 @@ export default class Page extends React.PureComponent<Object, State> {
       code: data.code,
       price,
       slashedPrice,
+      shopCode,
+      _key_: data.id,
     }
   }
 
