@@ -59,7 +59,11 @@ export async function navigateTo({ type, uri, params, title }: Navigation) {
     JSON.stringify({ params: { ...params, title } })
   )
 
-  return navigate(pageType, pageUri, JSON.stringify({ params: { ...params, title } }))
+  return navigate(
+    pageType,
+    pageUri,
+    JSON.stringify({ params: { ...params, title: title || '永辉买菜' } })
+  )
 }
 
 /**
