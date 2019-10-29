@@ -1,10 +1,10 @@
 /*
- * @Description: 茅台预购页面
+ * @Description: 资格查询页面
  * @Company: yh
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-29 21:04:27
+ * @LastEditTime: 2019-10-29 21:06:14
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -17,7 +17,7 @@ import ProgressBar from '../../components/business/Moutai/ProgressBar'
 import OperateNumber from '../../components/business/Moutai/OperateNumber'
 import PercentageCircle from 'react-native-percentage-circle'
 const rnAppModule = NativeModules.RnAppModule// 原生模块
-export default class PreviewPurchase extends React.Component {
+export default class QualificationsQuery extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -29,8 +29,7 @@ export default class PreviewPurchase extends React.Component {
   }
 
   componentDidMount() {
-    Native.setTitle('茅台预购')
-    this.animate()
+    Native.setTitle('资格查询')
   }
   /**
    * @msg:百分比进度条动画
@@ -65,12 +64,12 @@ export default class PreviewPurchase extends React.Component {
   /**
    * @description: 跳转到资格查询页面
    */
-  handleQualificationsQuery() {
-    Native.navigateTo({
-      type: Native.NavPageType.RN,
-      uri: 'RNQualificationQuery',
-      params: {}
-    })
+  handleQualificationQuery() {
+    // Native.navigateTo({
+    //   type: Native.NavPageType.RN,
+    //   uri: 'RNQualificationQuery',
+    //   params: {}
+    // })
   }
 
   render() {
@@ -113,14 +112,9 @@ export default class PreviewPurchase extends React.Component {
                     onPress={() => {
                       this.handleQualificationQuery()
                     }} >
-                    <TouchableOpacity
-                      style={styles.shareTouchableOpacity}
-                      activeOpacity={0.95}
-                      onPress={() => {
-                        this.handleQualificationsQuery()
-                      }} >
+                    <View >
                       <Text style={styles.buttonText}>预购资格查询</Text>
-                    </TouchableOpacity>
+                    </View>
                   </TouchableOpacity>
                   <View style={styles.splitLine}></View>
                   <View>

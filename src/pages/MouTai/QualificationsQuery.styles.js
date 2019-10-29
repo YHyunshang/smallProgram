@@ -1,10 +1,10 @@
 /*
- * @Description: 茅台预购页面页面样式
+ * @Description:资格查询页面页面样式
  * @Company: yh
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-29 21:03:12
+ * @LastEditTime: 2019-10-29 21:03:22
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import theme from '@theme'
