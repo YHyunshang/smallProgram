@@ -139,7 +139,8 @@ export default class Page extends React.Component<Props, State> {
   onCartChange = () => {
     const { currentTabIdx } = this.state
 
-    this.onTabIndexChange(currentTabIdx)
+    console.log('------')
+    this.onTabIndexChange(currentTabIdx, true)
   }
   
   newcomerChange = ({ storeCode, storeTypeCode }) => {
@@ -325,12 +326,14 @@ export default class Page extends React.Component<Props, State> {
     if (!currentTab) return
 
     this.setState({ currentTabIdx: index })
-    animatedValRefCmsScrollY.setValue(0)
-    this.syncScrollToNative({
-      nativeEvent: {
-        contentOffset: { x: 0, y: 0 },
-      },
-    })
+    if (!isRefresh) {
+      animatedValRefCmsScrollY.setValue(0)
+      this.syncScrollToNative({
+        nativeEvent: {
+          contentOffset: {x: 0, y: 0},
+        },
+      })
+    }
 
     if (currentTab.title === '限时抢购') {
       return shouldRefreshTab ? this.requestTabData(shop.code, shop.type) : null

@@ -1,8 +1,6 @@
 import * as React from 'react'
 import {FlatList, Animated, View, RefreshControl, Platform} from 'react-native'
 import theme from '@theme'
-import { Native } from '@utils'
-import { TabHeight } from './TabBar'
 import SceneFooter from "./SceneFooter"
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
