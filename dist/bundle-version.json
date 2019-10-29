@@ -1,8 +1,8 @@
 {
-  "version": "0.4.2",
-  "iosDownloadUrl": "http://static-yh.yonghui.cn/xsztRN/0.4.2/ios/dist-ios.zip",
-  "androidDownloadUrl": "http://static-yh.yonghui.cn/xsztRN/0.4.2/android/index.jsbundle",
-  "iosNativeVersion": "1.0.7",
-  "androidNativeVersion": "1.0.8",
-  "versionDesc": ["U - 增加限时促销", "U - 增加广告图标题", "U - Android 首页交互优化"]
+  "version": "1.0.1",
+  "iosDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/1.0.1/ios/dist-ios.zip",
+  "androidDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/1.0.1/android/index.jsbundle",
+  "iosNativeVersion": "1.0.9",
+  "androidNativeVersion": "1.1.1",
+  "versionDesc": ["U - 发现页商品跳转到商品详情"]
 }
