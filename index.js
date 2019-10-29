@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-08-26 09:41:18
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-23 15:27:49
+ * @LastEditTime: 2019-10-29 17:50:54
  */
 import { AppRegistry } from 'react-native'
 import Home from './src/pages/Home'
@@ -15,7 +15,7 @@ import Activity from './src/pages/Activity'
 import HelpFeedBackQuestion from './src/pages/HelpFeedBack/HelpFeedBackQuestion'
 import HelpFeedBackAnswer from './src/pages/HelpFeedBack/HelpFeedBackAnswer'
 import LimitTimeBuy from './src/pages/LimitTimeBuy'
-
+import PreviewPurchase from './src/pages/MouTai/PreviewPurchase'
 // 隐藏 RN yellowBox warning 提示
 console.disableYellowBox = true
 
@@ -27,3 +27,4 @@ AppRegistry.registerComponent('RNHotSaleBoard', () => HotSaleBoard)
 AppRegistry.registerComponent('RNHelpFeedBackQuestion', () => HelpFeedBackQuestion)
 AppRegistry.registerComponent('RNHelpFeedBackAnswer', () => HelpFeedBackAnswer)
 AppRegistry.registerComponent('LimitTimeBuy', () => LimitTimeBuy)
+AppRegistry.registerComponent('RNPreviewPurchase', () => PreviewPurchase)
