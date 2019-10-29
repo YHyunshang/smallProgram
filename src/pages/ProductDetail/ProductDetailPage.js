@@ -226,8 +226,8 @@ export default class ProductDetailPage extends React.Component {
     // let favorableRate = goodsInfo.favorableRate ? goodsInfo.favorableRate * 100 : 0
     // favorableRate = favorableRate && parseFloat(favorableRate.toFixed(2))
     // 商品详情图文列表
-    const goodsImgList = productImgList ? productImgList.map(({url}, index) => (
-      <PreloadingImage style={styles.goodsDetailImage} sourceType={0} uri={Img.loadRatioImage(url, Img.FullWidth)}></PreloadingImage>
+    const goodsImgList = productImgList ? productImgList.map(({url, id}, index) => (
+      <PreloadingImage key={id} style={styles.goodsDetailImage} sourceType={0} uri={Img.loadRatioImage(url, Img.FullWidth)}></PreloadingImage>
     )) : null
     // 商家文描图文列表
     const shopImgList = shopUrl ? shopUrl.map((item, index) => (

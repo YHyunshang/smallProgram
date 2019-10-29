@@ -11,13 +11,16 @@ import {
   StyleSheet,
   Dimensions
 } from 'react-native'
-const {width} = Dimensions.get('window') //解构赋值 获取屏幕宽度
+import {Global} from '@utils'
+
+const FullWidth = Global.WindowWidth
+
 export default StyleSheet.create({
   wrapper: {
   },
   container: {
-    width,
-    height: width,
+    width: FullWidth,
+    height: FullWidth,
     overflow: 'hidden'
   },
   paginationStyle: {
@@ -25,11 +28,11 @@ export default StyleSheet.create({
   },
   imgView: {
     flex: 1,
-    height: 375
+    height: FullWidth
   },
   image: {
     width: '100%',
-    height: 375
+    height: FullWidth
   },
   dot: {
     width: 7,

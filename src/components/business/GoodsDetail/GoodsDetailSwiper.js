@@ -8,14 +8,14 @@
  */
 
 import React from 'react'
-import {
-  Image,
-  View
-} from 'react-native'
-import {Img} from '@utils'
+import { View } from 'react-native'
+import FastImage from 'react-native-fast-image'
+import {Img, Global} from '@utils'
 import Swiper from 'react-native-swiper'
 import styles from './GoodsDetailSwiper.styles'
-export default class GoodsDetailSwiper extends React.Component {
+import memorize from 'memoize-one'
+
+export default class GoodsDetailSwiper extends React.PureComponent {
   constructor(props) {
     super(props)
   }
@@ -28,20 +28,23 @@ export default class GoodsDetailSwiper extends React.Component {
 
   }
 
+  loadFitImg = memorize(imgSrc => Img.loadRatioImage(imgSrc, Img.FullWidth))
+
   render() {
     const {imgData} = this.props
     const dot = <View style={styles.dot} />
     const activeDot = <View style={{...styles.dot, ...styles.activeDot}} />
-    const swiperList = imgData.map(({url}, index) => (
-      <View style={styles.imgView}>
-        <Image style={styles.image} source={{uri: Img.loadRatioImage(url, Img.FullWidth)}} resizeMode="cover"/>
+    const swiperList = imgData.map(({url, id}, index) => (
+      <View style={styles.imgView} key={id || index}>
+        <FastImage style={styles.image} source={{uri: this.loadFitImg(url)}} resizeMode={FastImage.resizeMode.contain}/>
       </View>
     ))
+
+    console.log('rendering')
     return (
       <View style={styles.container}>
         <Swiper
-          key={imgData.length}
-          height={160}
+          height={Global.WindowWidth}
           removeClippedSubviews={false} // 这个很主要啊，解决白屏问题
           autoplay={true}
           autoplayTimeout={2}
