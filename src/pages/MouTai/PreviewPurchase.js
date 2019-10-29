@@ -4,16 +4,16 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-29 18:05:18
+ * @LastEditTime: 2019-10-29 21:00:21
  */
 import React from 'react'
-import {ScrollView, View, Text, Image, NativeModules} from 'react-native'
+import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import {Native, Img} from '@utils'
 import styles from './PreviewPurchase.styles'
 import {yellowWarn} from '@const/resources'
 import PreloadingImage from '../../components/common/PreloadingImage'
-// import ProgressBar from '../../components/business/Moutai/ProgressBar'
+import ProgressBar from '../../components/business/Moutai/ProgressBar'
 import OperateNumber from '../../components/business/Moutai/OperateNumber'
 import PercentageCircle from 'react-native-percentage-circle'
 const rnAppModule = NativeModules.RnAppModule// 原生模块
@@ -105,7 +105,7 @@ export default class PreviewPurchase extends React.Component {
 
               <View style={styles.stockNumberWrapper}>
                 <Text style={styles.stockNumberTips}>门店茅台库存</Text>
-                {/* <ProgressBar width={180} height={10} startColor={'#C1882C'} endColor={'#EFDCA6'} backgroundColor={'#F0F0ED'}></ProgressBar> */}
+                <ProgressBar width={180} height={10} startColor={'#C1882C'} endColor={'#EFDCA6'} backgroundColor={'#F0F0ED'}></ProgressBar>
                 <View style={styles.operateButton}>
                   <TouchableOpacity
                     style={styles.shareTouchableOpacity}
