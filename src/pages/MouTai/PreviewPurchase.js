@@ -4,17 +4,18 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-30 16:14:59
+ * @LastEditTime: 2019-10-30 19:44:30
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import {Native, Img} from '@utils'
 import styles from './PreviewPurchase.styles'
-import {yellowWarn} from '@const/resources'
+import {yellowWarn, soldOutDefault} from '@const/resources'
 import PreloadingImage from '../../components/common/PreloadingImage'
 import ProgressBar from '../../components/business/Moutai/ProgressBar'
 import OperateNumber from '../../components/business/Moutai/OperateNumber'
+import StoreModal from '../../components/business/Moutai/StoreModal'
 import PercentageCircle from 'react-native-percentage-circle'
 const rnAppModule = NativeModules.RnAppModule// 原生模块
 export default class PreviewPurchase extends React.Component {
@@ -22,6 +23,7 @@ export default class PreviewPurchase extends React.Component {
     super(props)
     this.state = {
       percent: 0,
+      inventoryProgress: 10, // 当前库存数量
       isQualifications: true, // 是否有购买资格
       availableQuantity: 2, // 本月可预购的数量
       totalQuantity: 3// 本月总预购的数量
@@ -29,7 +31,7 @@ export default class PreviewPurchase extends React.Component {
   }
 
   componentDidMount() {
-    Native.setTitle('茅台预购')
+    Native.setTitle('茅台专售')
     this.animate()
   }
   /**
@@ -63,6 +65,12 @@ export default class PreviewPurchase extends React.Component {
   handleMinNumber=(number) => {
   }
   /**
+   * @description: 可预约门店弹窗
+   */
+  handleStoreModal() {
+    this.storeModal.show()
+  }
+  /**
    * @description: 跳转到资格查询页面
    */
   handleQualificationsQuery() {
@@ -74,7 +82,7 @@ export default class PreviewPurchase extends React.Component {
   }
 
   render() {
-    const {availableQuantity, isQualifications} = this.state
+    const {availableQuantity, isQualifications, inventoryProgress} = this.state
     let url = 'http://static-yh.yonghui.cn/app/assets/xszt-RN/head-banner.png'
     return (
       <LinearGradient
@@ -83,44 +91,54 @@ export default class PreviewPurchase extends React.Component {
       >
         <View style={styles.container}>
           <ScrollView
-            style={styles.scrollView}
             showsVerticalScrollIndicator={false}
           >
             <View style={styles.headBannerImage}>
               <PreloadingImage style={styles.headBannerImage} sourceType={0} uri={Img.loadRatioImage(url, Img.FullWidth)}></PreloadingImage>
             </View>
             <View style={styles.headBanner}>
-              <View style={styles.purchaseNumberWrapper}>
-                <Text style={styles.purchaseTips}>您的茅台预购额度(本月度)</Text>
-                {/* <View style={styles.circularBar}>
-                  <Text>{availableQuantity}瓶</Text>
-                </View> */}
-
-                <PercentageCircle radius={60.5} percent={this.state.percent} borderWidth={10} bgcolor={'#F0F0ED'} color={'#C1882C'}>
-                  <Text style={styles.quantityText}>{availableQuantity}</Text>
-                  <Text style={styles.standardsText}>/瓶</Text>
-                </PercentageCircle>
-                <Text style={styles.purchaseProductName}>53度 500ml 飞天茅台(2019款)</Text>
-              </View>
-
-              <View style={styles.stockNumberWrapper}>
-                <Text style={styles.stockNumberTips}>门店茅台库存</Text>
-                <ProgressBar width={180} height={10} startColor={'#C1882C'} endColor={'#EFDCA6'} backgroundColor={'#F0F0ED'}></ProgressBar>
-                <View style={styles.operateButton}>
-                  <TouchableOpacity
-                    style={styles.shareTouchableOpacity}
-                    activeOpacity={0.95}
-                    onPress={() => {
-                      this.handleQualificationsQuery()
-                    }} >
-                    <Text style={styles.buttonText}>预购资格查询</Text>
-                  </TouchableOpacity>
-                  <View style={styles.splitLine}></View>
+              {
+                inventoryProgress > 0 ? (
                   <View>
-                    <Text style={styles.buttonText}>可预约门店</Text>
+                    <View style={styles.purchaseNumberWrapper}>
+                      <Text style={styles.purchaseTips}>您的茅台预购额度(本月度)</Text>
+                      <PercentageCircle radius={60.5} percent={this.state.percent} borderWidth={10} bgcolor={'#F0F0ED'} color={'#C1882C'}>
+                        <Text style={styles.quantityText}>{availableQuantity}</Text>
+                        <Text style={styles.standardsText}>/瓶</Text>
+                      </PercentageCircle>
+                      <Text style={styles.purchaseProductName}>53度 500ml 飞天茅台(2019款)</Text>
+                    </View>
+                    <View style={styles.stockNumberWrapper}>
+                      <Text style={styles.stockNumberTips}>门店茅台库存</Text>
+                      <ProgressBar width={180} height={10} startColor={'#C1882C'} endColor={'#EFDCA6'} backgroundColor={'#F0F0ED'}></ProgressBar>
+                      <View style={styles.operateButton}>
+                        <TouchableOpacity
+                          style={styles.shareTouchableOpacity}
+                          activeOpacity={0.95}
+                          onPress={() => {
+                            this.handleQualificationsQuery()
+                          }} >
+                          <Text style={styles.buttonText}>预购资格查询</Text>
+                        </TouchableOpacity>
+                        <View style={styles.splitLine}></View>
+                        <TouchableOpacity
+                          style={styles.shareTouchableOpacity}
+                          activeOpacity={0.95}
+                          onPress={() => {
+                            this.handleStoreModal()
+                          }} >
+                          <Text style={styles.buttonText}>可预约门店</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
                   </View>
-                </View>
-              </View>
+                )
+                  :
+                  <View style={styles.emptyWrapper}>
+                    <Image style={styles.defaultImage} source={soldOutDefault} resizeMode="contain"/>
+                    <Text style={styles.defaultText}>当前已抢完，敬请期待</Text>
+                  </View>
+              }
               <View style={styles.explainWrapper}>
                 <View style={styles.explainTextWrapper}>
                   <Text style={styles.explainText}>———————— // 预购说明 //———————— </Text>
@@ -178,6 +196,7 @@ export default class PreviewPurchase extends React.Component {
           )
           }
         </View>
+        <StoreModal ref={ref => this.storeModal = ref}/>
       </LinearGradient>
     )
   }

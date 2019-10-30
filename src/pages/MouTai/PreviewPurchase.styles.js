@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-29 21:03:12
+ * @LastEditTime: 2019-10-30 19:31:10
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import theme from '@theme'
@@ -35,6 +35,29 @@ export default StyleSheet.create({
     shadowRadius: 5,
     shadowOpacity: 1,
     elevation: 5
+  },
+  emptyWrapper: {
+    width: 351,
+    height: 234,
+    backgroundColor: '#ffffff',
+    borderRadius: 5,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    shadowColor: 'rgba(0, 0, 0, 0.1)',
+    shadowOffset: {h: 10, w: 10},
+    shadowRadius: 5,
+    shadowOpacity: 1,
+    elevation: 5
+  },
+  defaultImage: {
+    width: 125,
+    height: 125
+  },
+  defaultText: {
+    fontSize: 16,
+    color: '#38A295',
+    fontWeight: 'bold'
   },
   purchaseTips: {
     fontSize: 16,

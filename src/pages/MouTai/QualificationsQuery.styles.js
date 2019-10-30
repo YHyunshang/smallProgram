@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-30 16:09:34
+ * @LastEditTime: 2019-10-30 17:45:24
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import theme from '@theme'
@@ -85,8 +85,7 @@ export default StyleSheet.create({
   },
   buyList: {
     flexDirection: 'column',
-    justifyContent: 'center',
-    paddingTop: 10
+    justifyContent: 'center'
 
   },
   buyItem: {
