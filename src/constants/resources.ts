@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-09-06 13:54:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-29 20:52:03
+ * @LastEditTime: 2019-10-30 10:47:10
  */
 import {Platform} from 'react-native'
 
@@ -131,4 +131,6 @@ export const buyLimit =isAndroid
 export const yellowWarn =isAndroid
     ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/yellow-info.png' }
     : require('@img/yellow-info.png')
-
+export const greenWarn =isAndroid
+    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/green-info.png' }
+    : require('@img/green-info.png')

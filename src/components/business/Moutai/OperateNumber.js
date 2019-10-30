@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-07 15:02:09
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-29 17:27:00
+ * @LastEditTime: 2019-10-30 15:01:24
  */
 import React, {Component} from 'react'
 import {
@@ -36,7 +36,7 @@ export default class OperateNumber extends Component {
     const {availableQuantity, onAdd} = this.props
     if (Number(numberText) >= Number(availableQuantity)) {
       this.setState({iconColor: '#CCCCCC'})
-      rnAppModule.showToast(`您当月可购买数量为${availableQuantity}瓶`, '0')
+      rnAppModule.showToast('您已超出可购买数量', '0')
       return false
     } else {
       numberText++

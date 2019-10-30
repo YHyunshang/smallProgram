@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-29 21:04:27
+ * @LastEditTime: 2019-10-30 16:14:59
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -111,16 +111,9 @@ export default class PreviewPurchase extends React.Component {
                     style={styles.shareTouchableOpacity}
                     activeOpacity={0.95}
                     onPress={() => {
-                      this.handleQualificationQuery()
+                      this.handleQualificationsQuery()
                     }} >
-                    <TouchableOpacity
-                      style={styles.shareTouchableOpacity}
-                      activeOpacity={0.95}
-                      onPress={() => {
-                        this.handleQualificationsQuery()
-                      }} >
-                      <Text style={styles.buttonText}>预购资格查询</Text>
-                    </TouchableOpacity>
+                    <Text style={styles.buttonText}>预购资格查询</Text>
                   </TouchableOpacity>
                   <View style={styles.splitLine}></View>
                   <View>
