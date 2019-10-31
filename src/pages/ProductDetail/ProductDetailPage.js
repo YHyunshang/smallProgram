@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-29 17:53:02
+ * @LastEditTime: 2019-10-31 17:30:08
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -136,7 +136,11 @@ export default class ProductDetailPage extends React.Component {
     this.sharePoster(productParams)
   }
   handleMaota() {
-    NativeModules.HomeNativeManager.pushToNewPage('1', 'RNPreviewPurchase', '')
+    Native.navigateTo({
+      type: Native.NavPageType.RN,
+      uri: 'RNPreviewPurchase',
+      params: {}
+    })
   }
   /**
    * @description: 点击相似商品列表跳转至商品详情

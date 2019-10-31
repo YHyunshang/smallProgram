@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-31 15:54:19
+ * @LastEditTime: 2019-10-31 17:28:53
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -24,10 +24,18 @@ export default class PreviewPurchase extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      exchangeInfoVO: {integralExchangeUrl: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/head-banner.png',
+        availableQuantity: 2, // 本月可预购的数量
+        monthTotalNumber: 3, // 当月最多购买数量
+        inventoryNumber: 98, // 当前库存剩余数量
+        inventoryProgressBar: 80, // 当前库存比
+        isQualifications: true, // 是否有购买资格
+        productName: '53度 500ml 飞天茅台(2019款'
+      },
       percent: 0,
-      inventoryProgress: 10, // 当前库存数量
-      isQualifications: true, // 是否有购买资格
-      availableQuantity: 2, // 本月可预购的数量
+      // inventoryProgress: 10, // 当前库存数量
+      // isQualifications: true, // 是否有购买资格
+      // availableQuantity: 2, // 本月可预购的数量
       totalQuantity: 3// 本月总预购的数量
     }
   }
@@ -48,8 +56,8 @@ export default class PreviewPurchase extends React.Component {
    * @msg:百分比进度条动画
    */
   animate() {
-    const {availableQuantity, totalQuantity} = this.state
-    let availablePercent = availableQuantity / totalQuantity
+    const {exchangeInfoVO} = this.state
+    let availablePercent = exchangeInfoVO.availableQuantity / exchangeInfoVO.monthTotalNumber
     availablePercent = Math.round(availablePercent * 100)
     if (availablePercent != 0) {
       let interval = setInterval(() => {
@@ -111,8 +119,7 @@ export default class PreviewPurchase extends React.Component {
   }
 
   render() {
-    const {availableQuantity, isQualifications, inventoryProgress} = this.state
-    let url = 'http://static-yh.yonghui.cn/app/assets/xszt-RN/head-banner.png'
+    const {availableQuantity, isQualifications, exchangeInfoVO} = this.state
     return (
       <LinearGradient
         style={styles.container}
@@ -123,23 +130,23 @@ export default class PreviewPurchase extends React.Component {
             showsVerticalScrollIndicator={false}
           >
             <View style={styles.headBannerImage}>
-              <PreloadingImage style={styles.headBannerImage} sourceType={0} uri={Img.loadRatioImage(url, Img.FullWidth)}></PreloadingImage>
+              <PreloadingImage style={styles.headBannerImage} sourceType={0} uri={Img.loadRatioImage(exchangeInfoVO.integralExchangeUrl, Img.FullWidth)}></PreloadingImage>
             </View>
             <View style={styles.headBanner}>
               {
-                inventoryProgress > 0 ? (
+                exchangeInfoVO && exchangeInfoVO.inventoryNumber > 0 ? (
                   <View>
                     <View style={styles.purchaseNumberWrapper}>
                       <Text style={styles.purchaseTips}>您的茅台预购额度(本月度)</Text>
                       <PercentageCircle radius={60.5} percent={this.state.percent} borderWidth={10} bgcolor={'#F0F0ED'} color={'#C1882C'}>
-                        <Text style={styles.quantityText}>{availableQuantity}</Text>
+                        <Text style={styles.quantityText}>{exchangeInfoVO.availableQuantity}</Text>
                         <Text style={styles.standardsText}>/瓶</Text>
                       </PercentageCircle>
-                      <Text style={styles.purchaseProductName}>53度 500ml 飞天茅台(2019款)</Text>
+                      <Text style={styles.purchaseProductName}>{exchangeInfoVO.productName}</Text>
                     </View>
                     <View style={styles.stockNumberWrapper}>
                       <Text style={styles.stockNumberTips}>门店茅台库存</Text>
-                      <ProgressBar width={180} height={10} startColor={'#C1882C'} endColor={'#EFDCA6'} backgroundColor={'#F0F0ED'}></ProgressBar>
+                      <ProgressBar width={180} height={10} stockNumber={exchangeInfoVO.inventoryNumber} saleNum={exchangeInfoVO.inventoryProgressBar} startColor={'#C1882C'} endColor={'#EFDCA6'} backgroundColor={'#F0F0ED'}></ProgressBar>
                       <View style={styles.operateButton}>
                         <TouchableOpacity
                           style={styles.shareTouchableOpacity}
@@ -184,7 +191,7 @@ export default class PreviewPurchase extends React.Component {
                 </View>
               </View>
               {
-                !isQualifications && (
+                exchangeInfoVO && !exchangeInfoVO.isQualifications && (
                   <View style={styles.goHomeShadow}>
                     <LinearGradient
                       style={[styles.goHomeButton]}
@@ -199,19 +206,19 @@ export default class PreviewPurchase extends React.Component {
               }
             </View>
             {
-              isQualifications && (
+              exchangeInfoVO && exchangeInfoVO.isQualifications && (
                 <View style={styles.availableInfo}>
                   <Image source={yellowWarn} style={{width: 16, height: 16}}></Image>
-                  <Text style={styles.availableQuantityText}>您当月可购买数量仅剩{availableQuantity}瓶</Text>
+                  <Text style={styles.availableQuantityText}>您当月可购买数量仅剩{exchangeInfoVO.availableQuantity}瓶</Text>
                 </View>
               )
             }
           </ScrollView>
-          { isQualifications && (
+          { exchangeInfoVO && exchangeInfoVO.isQualifications && (
             <View style={styles.buyButton}>
               <View style={styles.leftWrapper}>
                 <Text style={styles.leftText}>预定数量</Text>
-                <OperateNumber availableQuantity={availableQuantity} onAdd={this.handleAddNumber} onMin={this.handleMinNumber}/>
+                <OperateNumber availableQuantity={exchangeInfoVO.availableQuantity} onAdd={this.handleAddNumber} onMin={this.handleMinNumber}/>
               </View>
               <LinearGradient
                 style={[styles.rightWrapper]}

@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-31 13:41:33
+ * @LastEditTime: 2019-10-31 17:27:49
  */
 import React, {Component} from 'react'
 import LinearGradient from 'react-native-linear-gradient'
@@ -77,13 +77,13 @@ export default class RuleModal extends Component {
 
 const styles = StyleSheet.create({
   ruleList: {
-    marginLeft: 25,
     backgroundColor: '#fff'
   },
   ruleText: {
     fontSize: 13,
     color: '#808080',
     lineHeight: 20,
+    paddingHorizontal: 25,
     marginBottom: 15
   },
   ruleTitleWrapper: {
