@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-31 14:58:09
+ * @LastEditTime: 2019-10-31 15:54:19
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -72,6 +72,17 @@ export default class PreviewPurchase extends React.Component {
   onNativeRuleModalChange = () => {
     this.ruleModal.showModal()
   }
+  /**
+   * @description: 立即购买,跳转原生的订单确认页面
+   */
+  handleGoBuy() {
+    Native.navigateTo({
+      type: Native.NavPageType.NATIVE,
+      uri: 'D001,D001',
+      params: {preOrderNo: '10000111'}
+    })
+  }
+
   /**
    * @description: 增加预定数量
    */
@@ -159,14 +170,16 @@ export default class PreviewPurchase extends React.Component {
               }
               <View style={styles.explainWrapper}>
                 <View style={styles.explainTextWrapper}>
-                  <Text style={styles.explainText}>———————— // 预购说明 //———————— </Text>
+                  <View>
+                    <Text style={styles.qualificationText}>————————   / / <Text style={styles.explainText}> 预购说明 </Text>  / /   ————————</Text>
+                  </View>
                 </View>
                 <View style={styles.purchaseQualification}>
-                  <Text style={styles.qualificationText}>※ 购买资格</Text>
+                  <Text style={styles.qualificationBoldText}>※ 购买资格</Text>
                   <Text style={styles.qualificationText}>1000积分+1499元即可换购1瓶53度500ml飞天茅台</Text>
                 </View>
                 <View style={styles.purchaseQualification}>
-                  <Text style={styles.qualificationText}>※ 限购条件</Text>
+                  <Text style={styles.qualificationBoldText}>※ 限购条件</Text>
                   <Text style={styles.qualificationText}>每月限购3瓶,全年不超过12瓶,当月如有遗留份额,则不累计</Text>
                 </View>
               </View>
@@ -206,9 +219,16 @@ export default class PreviewPurchase extends React.Component {
                 start={{x: 0, y: 0}}
                 end={{x: 1, y: 0}}
               >
-                <View>
-                  <Text style={styles.buyText}>立即购买</Text>
-                </View>
+                <TouchableOpacity
+                  style={styles.shareTouchableOpacity}
+                  activeOpacity={0.95}
+                  onPress={() => {
+                    this.handleGoBuy()
+                  }} >
+                  <View>
+                    <Text style={styles.buyText}>立即购买</Text>
+                  </View>
+                </TouchableOpacity>
               </LinearGradient>
             </View>
           )

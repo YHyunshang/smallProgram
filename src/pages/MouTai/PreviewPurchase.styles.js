@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-30 19:31:10
+ * @LastEditTime: 2019-10-31 15:54:04
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import theme from '@theme'
@@ -129,21 +129,30 @@ export default StyleSheet.create({
     marginBottom: 40
   },
   explainTextWrapper: {
-    marginBottom: 6,
-    marginLeft: 12
+    // width: 336,
+    // marginBottom: 6,
+    // marginLeft: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   explainText: {
-    width: 336,
     fontSize: 14,
+    fontWeight: 'bold',
     color: '#9ED7C7'
   },
   purchaseQualification: {
     marginTop: 10,
     marginLeft: 12
   },
-  qualificationText: {
+  qualificationBoldText: {
     fontSize: 13,
     fontWeight: 'bold',
+    paddingBottom: 4,
+    color: '#9ED7C7'
+  },
+  qualificationText: {
+    fontSize: 13,
     paddingBottom: 4,
     color: '#9ED7C7'
   },
