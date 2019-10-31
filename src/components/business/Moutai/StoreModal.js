@@ -4,12 +4,14 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-31 13:38:48
+ * @LastEditTime: 2019-10-31 19:36:42
  */
 import React, {Component} from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import CommonModal from '../../common/CommonModal'
-import {StyleSheet, View, Text, ScrollView, TouchableOpacity} from 'react-native'
+import {getReservationShopList} from '../../../services/mouTaiActivity'
+import {StyleSheet, View, Text, ScrollView, TouchableOpacity, NativeModules} from 'react-native'
+const rnAppModule = NativeModules.RnAppModule// 原生模块
 /**
  * 弹出层
  */
@@ -39,6 +41,28 @@ export default class StoreModal extends Component {
 */
   handleCloseModal() {
     this.commonModal.hide()
+  }
+  componentDidMount() {
+
+  }
+  /**
+   * @msg:查询可预约名店列表
+   */
+  getReservationShopList = () => {
+    getReservationShopList()
+      .then(({result: data, message, code}) => {
+        if (code === 200000 && data) {
+          this.setState(
+            {
+              storeList: data
+            }
+          )
+        } else {
+          rnAppModule.showToast(message, '0')
+        }
+      }).catch(({message}) => {
+        rnAppModule.showToast(message, '0')
+      })
   }
   render() {
     const {storeList} = this.state

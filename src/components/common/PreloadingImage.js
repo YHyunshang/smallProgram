@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-08-29 11:25:46
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-26 19:33:41
+ * @LastEditTime: 2019-10-31 19:59:34
  */
 import React, {Component} from 'react'
 import {StyleSheet, View, Image} from 'react-native'

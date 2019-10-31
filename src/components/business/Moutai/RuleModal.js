@@ -4,12 +4,14 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-31 17:27:49
+ * @LastEditTime: 2019-10-31 19:38:51
  */
 import React, {Component} from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import CommonModal from '../../common/CommonModal'
-import {StyleSheet, View, Text, ScrollView, TouchableOpacity} from 'react-native'
+import {getRuleDescription} from '../../../services/mouTaiActivity'
+import {StyleSheet, View, Text, ScrollView, TouchableOpacity, NativeModules} from 'react-native'
+const rnAppModule = NativeModules.RnAppModule// 原生模块
 /**
  * 弹出层
  */
@@ -36,6 +38,28 @@ export default class RuleModal extends Component {
 */
   handleCloseModal() {
     this.commonModal.hide()
+  }
+  componentDidMount() {
+
+  }
+  /**
+   * @msg:查询积分兑换活动规则
+   */
+  getRuleDescription = () => {
+    getRuleDescription()
+      .then(({result: data, message, code}) => {
+        if (code === 200000 && data) {
+          this.setState(
+            {
+              ruleList: data
+            }
+          )
+        } else {
+          rnAppModule.showToast(message, '0')
+        }
+      }).catch(({message}) => {
+        rnAppModule.showToast(message, '0')
+      })
   }
   render() {
     const {ruleList} = this.state

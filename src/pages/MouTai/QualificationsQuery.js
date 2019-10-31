@@ -4,13 +4,14 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-31 17:23:55
+ * @LastEditTime: 2019-10-31 19:33:21
  */
 import React from 'react'
 import {View, ScrollView, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
 import {Native} from '@utils'
 import styles from './QualificationsQuery.styles'
 import {greenWarn} from '@const/resources'
+import {getIntegralList} from '../../services/mouTaiActivity'
 const rnAppModule = NativeModules.RnAppModule// 原生模块
 export default class QualificationsQuery extends React.Component {
   constructor(props) {
@@ -58,6 +59,25 @@ export default class QualificationsQuery extends React.Component {
   }
   componentDidMount() {
     Native.setTitle('资格查询')
+  }
+  /**
+   * @msg:查询资格查询积分列表
+   */
+  getIntegralList = () => {
+    getIntegralList()
+      .then(({result: data, message, code}) => {
+        if (code === 200000 && data) {
+          this.setState(
+            {
+              qualificationInfo: data
+            }
+          )
+        } else {
+          rnAppModule.showToast(message, '0')
+        }
+      }).catch(({message}) => {
+        rnAppModule.showToast(message, '0')
+      })
   }
   render() {
     let {qualificationInfo, isShowMore} = this.state

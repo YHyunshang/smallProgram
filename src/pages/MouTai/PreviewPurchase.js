@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-31 17:28:53
+ * @LastEditTime: 2019-10-31 19:54:37
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -18,19 +18,23 @@ import OperateNumber from '../../components/business/Moutai/OperateNumber'
 import StoreModal from '../../components/business/Moutai/StoreModal'
 import RuleModal from '../../components/business/Moutai/RuleModal'
 import PercentageCircle from 'react-native-percentage-circle'
-import {subscriptRuleModalChange} from '../../services/mouTaiActivity'
+import {subscriptRuleModalChange, getPurchaseActivity, handleOrderAmount} from '../../services/mouTaiActivity'
 const rnAppModule = NativeModules.RnAppModule// 原生模块
+
 export default class PreviewPurchase extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      preOrderNo: '', // 预订号
       exchangeInfoVO: {integralExchangeUrl: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/head-banner.png',
         availableQuantity: 2, // 本月可预购的数量
         monthTotalNumber: 3, // 当月最多购买数量
         inventoryNumber: 98, // 当前库存剩余数量
         inventoryProgressBar: 80, // 当前库存比
         isQualifications: true, // 是否有购买资格
-        productName: '53度 500ml 飞天茅台(2019款'
+        productName: '53度 500ml 飞天茅台(2019款',
+        exchangeCondition: '1000积分+1499元即可换购1瓶53度500ml飞天茅台',
+        limitDesc: '每月限购3瓶,全年不超过12瓶,当月如有遗留份额,则不累计'
       },
       percent: 0,
       // inventoryProgress: 10, // 当前库存数量
@@ -49,6 +53,44 @@ export default class PreviewPurchase extends React.Component {
     )
     this.animate()
   }
+  /**
+   * @msg:获取预购活动
+   */
+  getPurchaseActivity = (shopCode) => {
+    getPurchaseActivity(shopCode)
+      .then(({result: data, message, code}) => {
+        if (code === 200000 && data) {
+          this.setState(
+            {
+              exchangeInfoVO: data
+            }
+          )
+        } else {
+          rnAppModule.showToast(message, '0')
+        }
+      }).catch(({message}) => {
+        rnAppModule.showToast(message, '0')
+      })
+  }
+  /**
+   * @msg:【立即购买】按钮（去结算)
+   */
+  handleOrderAmount() {
+    handleOrderAmount({})
+      .then(({result: data, message, code}) => {
+        if (code === 200000 && data) {
+          this.setState(
+            {
+              preOrderNo: data
+            }
+          )
+        } else {
+          rnAppModule.showToast(message, '0')
+        }
+      }).catch(({message}) => {
+        rnAppModule.showToast(message, '0')
+      })
+  }
   componentWillUnmount() {
     this.nativeSubscription && this.nativeSubscription.remove()
   }
@@ -57,7 +99,8 @@ export default class PreviewPurchase extends React.Component {
    */
   animate() {
     const {exchangeInfoVO} = this.state
-    let availablePercent = exchangeInfoVO.availableQuantity / exchangeInfoVO.monthTotalNumber
+    let monthTotalNumber = exchangeInfoVO.monthTotalNumber ? exchangeInfoVO.monthTotalNumber : 3
+    let availablePercent = exchangeInfoVO.availableQuantity / monthTotalNumber
     availablePercent = Math.round(availablePercent * 100)
     if (availablePercent != 0) {
       let interval = setInterval(() => {
@@ -87,7 +130,7 @@ export default class PreviewPurchase extends React.Component {
     Native.navigateTo({
       type: Native.NavPageType.NATIVE,
       uri: 'D001,D001',
-      params: {preOrderNo: '10000111'}
+      params: {preOrderNo: this.state.preOrderNo}
     })
   }
 
@@ -183,11 +226,19 @@ export default class PreviewPurchase extends React.Component {
                 </View>
                 <View style={styles.purchaseQualification}>
                   <Text style={styles.qualificationBoldText}>※ 购买资格</Text>
-                  <Text style={styles.qualificationText}>1000积分+1499元即可换购1瓶53度500ml飞天茅台</Text>
+                  {
+                    exchangeInfoVO && exchangeInfoVO.exchangeCondition && (
+                      <Text style={styles.qualificationText}>{exchangeInfoVO.exchangeCondition}</Text>
+                    )
+                  }
                 </View>
                 <View style={styles.purchaseQualification}>
                   <Text style={styles.qualificationBoldText}>※ 限购条件</Text>
-                  <Text style={styles.qualificationText}>每月限购3瓶,全年不超过12瓶,当月如有遗留份额,则不累计</Text>
+                  {
+                    exchangeInfoVO && exchangeInfoVO.limitDesc && (
+                      <Text style={styles.qualificationText}>{exchangeInfoVO.limitDesc}</Text>
+                    )
+                  }
                 </View>
               </View>
               {
