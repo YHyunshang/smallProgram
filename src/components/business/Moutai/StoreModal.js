@@ -4,22 +4,28 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-31 10:43:21
+ * @LastEditTime: 2019-10-31 13:38:48
  */
 import React, {Component} from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import CommonModal from '../../common/CommonModal'
-import {StyleSheet, View, Text, Dimensions, ScrollView, TouchableOpacity} from 'react-native'
+import {StyleSheet, View, Text, ScrollView, TouchableOpacity} from 'react-native'
 /**
  * 弹出层
  */
-const {width, height} = Dimensions.get('window')
 export default class StoreModal extends Component {
   constructor(props) {
     super(props)
     this.state = {
       show: false,
-      storeList: [] // 可预约门店列表
+      storeList: [{cityName: '重庆市', resStoreVOList: [{storeName: '永辉超市-汉渝路店'},
+        {storeName: '永辉超市-石坪桥店'},
+        {storeName: '永辉超市-万盛区民盛店'},
+        {storeName: '永辉超市-泽胜广场店'},
+        {storeName: '永辉超市-梁平大众店'}
+      ]},
+      {cityName: '成都市', resStoreVOList: [{storeName: '永辉超市-抚琴南路店'}, {storeName: '永辉超市-新城市广场店'}]}
+      ]
     }
   }
   /**
@@ -35,19 +41,27 @@ export default class StoreModal extends Component {
     this.commonModal.hide()
   }
   render() {
+    const {storeList} = this.state
+    // 预约门店列表
+    const storeListWrapper = storeList && storeList.map((item, cityIndex) => (
+      <View key={cityIndex}>
+        <Text style={styles.cityText}>{item.cityName}</Text>
+        <View style={styles.cityText}>
+          {
+            item.resStoreVOList && item.resStoreVOList.map((storeItem, storeIndex) => (
+              <Text key={storeIndex} style={styles.addressText}>{storeItem.storeName}</Text>
+            ))
+          }
+        </View>
+      </View>
+    ))
     return (
       <CommonModal ref={ref => this.commonModal = ref} modalBoxHeight={424} modalBoxWidth={325}>
         <ScrollView
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.storeList}>
-            <View>
-              <Text style={styles.cityText}>重庆市</Text>
-              <View style={styles.cityText}>
-                <Text style={styles.addressText}>永辉超市-汉渝路店</Text>
-                <Text style={styles.addressText}>永辉超市-石坪桥店</Text>
-              </View>
-            </View>
+            {storeListWrapper}
           </View>
         </ScrollView>
         <TouchableOpacity
@@ -74,7 +88,7 @@ const styles = StyleSheet.create({
   storeList: {
     marginTop: 40,
     marginLeft: 25,
-    zIndex: 999
+    backgroundColor: '#fff'
   },
   cityText: {
     fontSize: 20,

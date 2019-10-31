@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-31 10:13:00
+ * @LastEditTime: 2019-10-31 14:07:04
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -16,7 +16,9 @@ import PreloadingImage from '../../components/common/PreloadingImage'
 import ProgressBar from '../../components/business/Moutai/ProgressBar'
 import OperateNumber from '../../components/business/Moutai/OperateNumber'
 import StoreModal from '../../components/business/Moutai/StoreModal'
+import RuleModal from '../../components/business/Moutai/RuleModal'
 import PercentageCircle from 'react-native-percentage-circle'
+import {subscriptRuleModalChange} from '../../services/mouTaiActivity'
 const rnAppModule = NativeModules.RnAppModule// 原生模块
 export default class PreviewPurchase extends React.Component {
   constructor(props) {
@@ -31,8 +33,18 @@ export default class PreviewPurchase extends React.Component {
   }
 
   componentDidMount() {
-    Native.setTitle('茅台专售')
+    let params = {middleTitle: '茅台专售', rightTitle: '规则说明', rightEventName: 'notifyRulePopup'}
+    Native.setActivityPageTitle('setActivityPageTitle', JSON.stringify(params))
+    // Native.setActivityPageTitle('w', 'w')
+    // Native.setTitle('茅台专售')
+    // 规则说明弹窗事件监听
+    this.nativeSubscription = subscriptRuleModalChange(
+      this.onNativeRuleModalChange
+    )
     this.animate()
+  }
+  componentWillUnmount() {
+    this.nativeSubscription && this.nativeSubscription.remove()
   }
   /**
    * @msg:百分比进度条动画
@@ -53,6 +65,15 @@ export default class PreviewPurchase extends React.Component {
         }
       }, 20)
     }
+  }
+  /**
+   * @param {productCode}
+   * @param {productNumber}
+   * @description: 相似商品列表添加购物车返回productCode和productNumber
+   */
+  onNativeRuleModalChange = () => {
+    rnAppModule.showToast('规则调用成功', '0')
+    this.ruleModal.showModal()
   }
   /**
    * @description: 增加预定数量
@@ -197,6 +218,7 @@ export default class PreviewPurchase extends React.Component {
           }
         </View>
         <StoreModal ref={ref => this.storeModal = ref} />
+        <RuleModal ref={ref => this.ruleModal = ref} />
       </LinearGradient>
     )
   }

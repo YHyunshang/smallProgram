@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-12 11:25:52
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-16 16:18:51
+ * @LastEditTime: 2019-10-31 13:47:36
  */
 import {
   NativeModules,
@@ -90,6 +90,16 @@ export function setTitle(title = '') {
 export function jumpToNativeDialog(showPromotionProductListDialog: string, params: string) {
   //RN模块调用原生的通用方法
   return NativeModules.RnAppModule.sendEventToNative(showPromotionProductListDialog, params)
+}
+
+/**
+ * 调用原生的方法设置茅台专售的标题和右边的规则说明
+ * @param setActivityPageTitle 茅台活动页面设置右边的title的事件
+ * @param params 参数
+ */
+export function setActivityPageTitle(setActivityPageTitle: string, params: string) {
+  //RN模块调用原生的通用方法
+  return NativeModules.RnAppModule.sendEventToNative(setActivityPageTitle, params)
 }
 
 /**

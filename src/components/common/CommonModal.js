@@ -4,11 +4,10 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-31 10:41:56
+ * @LastEditTime: 2019-10-31 11:34:51
  */
 import React, {Component} from 'react'
-import LinearGradient from 'react-native-linear-gradient'
-import {StyleSheet, View, Text, Dimensions, ScrollView, TouchableOpacity} from 'react-native'
+import {StyleSheet, View, Dimensions} from 'react-native'
 /**
  * 弹出层
  */
@@ -42,7 +41,7 @@ export default class CommonModal extends Component {
     if (this.state.show) {
       return (
         <View style={styles.container}>
-          <View style={[styles.modalBo, {width: modalBoxWidth, height: modalBoxHeight}]}>
+          <View style={[styles.modalBox, {width: modalBoxWidth, height: modalBoxHeight}]}>
             {this.props.children}
           </View>
         </View>
@@ -59,14 +58,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
     position: 'absolute',
     top: 0,
-    zIndex: 9
+    zIndex: 9,
+    flexDirection: 'column',
+    alignItems: 'center'
   },
   modalBox: {
     position: 'absolute',
     borderRadius: 6,
-    left: 25,
     top: 94,
-    backgroundColor: '#fff',
-    zIndex: 9999
+    backgroundColor: '#fff'
   }
 })
