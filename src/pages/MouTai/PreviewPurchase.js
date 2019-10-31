@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-30 19:44:30
+ * @LastEditTime: 2019-10-31 10:13:00
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -68,7 +68,7 @@ export default class PreviewPurchase extends React.Component {
    * @description: 可预约门店弹窗
    */
   handleStoreModal() {
-    this.storeModal.show()
+    this.storeModal.showModal()
   }
   /**
    * @description: 跳转到资格查询页面
@@ -196,7 +196,7 @@ export default class PreviewPurchase extends React.Component {
           )
           }
         </View>
-        <StoreModal ref={ref => this.storeModal = ref}/>
+        <StoreModal ref={ref => this.storeModal = ref} />
       </LinearGradient>
     )
   }

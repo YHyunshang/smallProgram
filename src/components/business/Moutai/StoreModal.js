@@ -4,10 +4,11 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-30 20:30:16
+ * @LastEditTime: 2019-10-31 10:43:21
  */
 import React, {Component} from 'react'
 import LinearGradient from 'react-native-linear-gradient'
+import CommonModal from '../../common/CommonModal'
 import {StyleSheet, View, Text, Dimensions, ScrollView, TouchableOpacity} from 'react-native'
 /**
  * 弹出层
@@ -17,97 +18,63 @@ export default class StoreModal extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      show: false
+      show: false,
+      storeList: [] // 可预约门店列表
     }
   }
   /**
-   * @description: 展示弹层方法
-   */
-  show() {
-    this.setState({
-      show: true
-    })
+  * @description: 显示弹层
+  */
+  showModal() {
+    this.commonModal.show()
   }
   /**
-   * @description: 隐藏弹层方法
-   */
-  hide() {
-    this.setState({
-      show: false
-    })
-  }
-  /**
-   * @description: 关闭弹层
-   */
+* @description: 隐藏弹层
+*/
   handleCloseModal() {
-    this.setState({
-      show: false
-    })
+    this.commonModal.hide()
   }
-
   render() {
-    if (this.state.show) {
-      return (
-        <View style={styles.container}>
-          <View style={styles.modalBox}>
-            <ScrollView
-              showsVerticalScrollIndicator={false}
-            >
-              <View style={styles.storeList}>
-                <View>
-                  <Text style={styles.cityText}>重庆市</Text>
-                  <View style={styles.cityText}>
-                    <Text style={styles.addressText}>永辉超市-汉渝路店</Text>
-                    <Text style={styles.addressText}>永辉超市-石坪桥店</Text>
-                  </View>
-                </View>
+    return (
+      <CommonModal ref={ref => this.commonModal = ref} modalBoxHeight={424} modalBoxWidth={325}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.storeList}>
+            <View>
+              <Text style={styles.cityText}>重庆市</Text>
+              <View style={styles.cityText}>
+                <Text style={styles.addressText}>永辉超市-汉渝路店</Text>
+                <Text style={styles.addressText}>永辉超市-石坪桥店</Text>
               </View>
-            </ScrollView>
-            <TouchableOpacity
-              style={styles.shareTouchableOpacity}
-              activeOpacity={0.95}
-              onPress={() => {
-                this.handleCloseModal()
-              }} >
-              <LinearGradient
-                style={[styles.knowButton]}
-                colors={['#C1882C', '#E5B655']}
-                start={{x: 0, y: 0}}
-                end={{x: 1, y: 0}}
-              >
-                <Text style={styles.knowText}>好的</Text>
-              </LinearGradient>
-            </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      )
-    }
-    return <View/>
+        </ScrollView>
+        <TouchableOpacity
+          style={styles.shareTouchableOpacity}
+          activeOpacity={0.95}
+          onPress={() => {
+            this.handleCloseModal()
+          }} >
+          <LinearGradient
+            style={[styles.knowButton]}
+            colors={['#C1882C', '#E5B655']}
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 0}}
+          >
+            <Text style={styles.knowText}>好的</Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      </CommonModal>
+    )
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    width,
-    height,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    position: 'absolute',
-    top: 0,
-    zIndex: 9
-  },
-  modalBox: {
-    position: 'absolute',
-    width: 325,
-    height: 424,
-    borderRadius: 6,
-    left: 25,
-    top: 94,
-    backgroundColor: '#fff',
-    zIndex: 9999
-  },
   storeList: {
     marginTop: 40,
-    marginLeft: 25
+    marginLeft: 25,
+    zIndex: 999
   },
   cityText: {
     fontSize: 20,
