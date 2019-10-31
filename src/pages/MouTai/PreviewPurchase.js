@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-31 14:07:04
+ * @LastEditTime: 2019-10-31 14:58:09
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -35,8 +35,6 @@ export default class PreviewPurchase extends React.Component {
   componentDidMount() {
     let params = {middleTitle: '茅台专售', rightTitle: '规则说明', rightEventName: 'notifyRulePopup'}
     Native.setActivityPageTitle('setActivityPageTitle', JSON.stringify(params))
-    // Native.setActivityPageTitle('w', 'w')
-    // Native.setTitle('茅台专售')
     // 规则说明弹窗事件监听
     this.nativeSubscription = subscriptRuleModalChange(
       this.onNativeRuleModalChange
@@ -72,7 +70,6 @@ export default class PreviewPurchase extends React.Component {
    * @description: 相似商品列表添加购物车返回productCode和productNumber
    */
   onNativeRuleModalChange = () => {
-    rnAppModule.showToast('规则调用成功', '0')
     this.ruleModal.showModal()
   }
   /**
