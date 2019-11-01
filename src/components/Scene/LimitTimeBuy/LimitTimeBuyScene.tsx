@@ -108,7 +108,7 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
 
     this.removeCartChangeListener = Native.onNativeEvent(
       'notifyRefreshCartNum',
-      () => this.init(shopCode)
+      () => this.init(this.props.shopCode)
     )
   }
 
@@ -297,7 +297,7 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
     const { dataProvider, loading, tabs } = this.state
 
     return (
-      <View style={styles.container}>
+      <View style={[ styles.container, { paddingTop } ]}>
         {loading && tabs.length === 0 && (
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color={theme.primary} />
@@ -308,14 +308,12 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
           <RecyclerListView
             style={{ ...styles.productList }}
             scrollViewProps={{
-              contentContainerStyle: { paddingTop },
               refreshControl: (
                 <RefreshControl
                   refreshing={loading && tabs.length > 0}
                   onRefresh={() => this.init(shopCode)}
                   colors={[theme.primary, theme.white]}
                   tintColor={theme.primary}
-                  progressViewOffset={paddingTop}
                 />
               )
             }}
