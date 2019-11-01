@@ -22,6 +22,7 @@ export default function Carousel({ imageHeight = 290, data }: Props) {
   return (
     <View style={Styles.container} onStartShouldSetResponder={() => true}>
       <Swiper
+        removeClippedSubviews={false}
         height={imageHeight}
         autoplay
         loop
