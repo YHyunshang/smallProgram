@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-31 19:54:37
+ * @LastEditTime: 2019-11-01 17:35:50
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -18,14 +18,17 @@ import OperateNumber from '../../components/business/Moutai/OperateNumber'
 import StoreModal from '../../components/business/Moutai/StoreModal'
 import RuleModal from '../../components/business/Moutai/RuleModal'
 import PercentageCircle from 'react-native-percentage-circle'
-import {subscriptRuleModalChange, getPurchaseActivity, handleOrderAmount} from '../../services/mouTaiActivity'
+import {subscriptRuleModalChange, getPurchaseActivity, getRuleDescription, getReservationShopList, handleOrderAmount} from '../../services/mouTaiActivity'
 const rnAppModule = NativeModules.RnAppModule// 原生模块
 
 export default class PreviewPurchase extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      activityCode: '', // 活动code
       preOrderNo: '', // 预订号
+      ruleList: [], // 规则内容list
+      storeList: [], // 门店list
       exchangeInfoVO: {integralExchangeUrl: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/head-banner.png',
         availableQuantity: 2, // 本月可预购的数量
         monthTotalNumber: 3, // 当月最多购买数量
@@ -47,11 +50,19 @@ export default class PreviewPurchase extends React.Component {
   componentDidMount() {
     let params = {middleTitle: '茅台专售', rightTitle: '规则说明', rightEventName: 'notifyRulePopup'}
     Native.setActivityPageTitle('setActivityPageTitle', JSON.stringify(params))
+    this.animate()
+    this.init()
     // 规则说明弹窗事件监听
     this.nativeSubscription = subscriptRuleModalChange(
       this.onNativeRuleModalChange
     )
-    this.animate()
+  }
+  // 初始化
+  async init() {
+    const [shopCode] = await Promise.all([
+      Native.getConstant('storeCode')
+    ])
+    this.getPurchaseActivity(shopCode)
   }
   /**
    * @msg:获取预购活动
@@ -62,7 +73,8 @@ export default class PreviewPurchase extends React.Component {
         if (code === 200000 && data) {
           this.setState(
             {
-              exchangeInfoVO: data
+              exchangeInfoVO: data,
+              activityCode: data.activityCode
             }
           )
         } else {
@@ -112,7 +124,7 @@ export default class PreviewPurchase extends React.Component {
         if (currentPercent === availablePercent) {
           clearTimeout(interval)
         }
-      }, 20)
+      }, 1)
     }
   }
   /**
@@ -121,7 +133,46 @@ export default class PreviewPurchase extends React.Component {
    * @description: 相似商品列表添加购物车返回productCode和productNumber
    */
   onNativeRuleModalChange = () => {
-    this.ruleModal.showModal()
+    this.getRuleDescription()
+  }
+  /**
+   * @msg:查询可预约名店列表
+   */
+  getReservationShopList = () => {
+    getReservationShopList(this.state.activityCode)
+      .then(({result: data, message, code}) => {
+        if (code === 200000 && data) {
+          this.setState(
+            {
+              storeList: data
+            }
+          )
+        } else {
+          rnAppModule.showToast(message, '0')
+        }
+      }).catch(({message}) => {
+        rnAppModule.showToast(message, '0')
+      })
+  }
+  /**
+   * @msg:查询积分兑换活动规则
+   */
+  getRuleDescription = () => {
+    getRuleDescription(this.state.activityCode)
+      .then(({result: data, message, code}) => {
+        if (code === 200000 && data) {
+          this.setState(
+            {
+              ruleList: data
+            }
+          )
+          this.ruleModal.showModal()
+        } else {
+          rnAppModule.showToast(message, '0')
+        }
+      }).catch(({message}) => {
+        rnAppModule.showToast(message, '0')
+      })
   }
   /**
    * @description: 立即购买,跳转原生的订单确认页面
@@ -148,6 +199,7 @@ export default class PreviewPurchase extends React.Component {
    * @description: 可预约门店弹窗
    */
   handleStoreModal() {
+    this.getReservationShopList()
     this.storeModal.showModal()
   }
   /**
@@ -157,12 +209,22 @@ export default class PreviewPurchase extends React.Component {
     Native.navigateTo({
       type: Native.NavPageType.RN,
       uri: 'RNQualificationQuery',
+      params: {activityCode: this.state.activityCode}
+    })
+  }
+  /**
+   * @msg: 跳转至首页
+   */
+  handleGoHome() {
+    Native.navigateTo({
+      type: Native.NavPageType.RN,
+      uri: 'RNHome',
       params: {}
     })
   }
 
   render() {
-    const {availableQuantity, isQualifications, exchangeInfoVO} = this.state
+    const {ruleList, storeList, exchangeInfoVO} = this.state
     return (
       <LinearGradient
         style={styles.container}
@@ -243,16 +305,23 @@ export default class PreviewPurchase extends React.Component {
               </View>
               {
                 exchangeInfoVO && !exchangeInfoVO.isQualifications && (
-                  <View style={styles.goHomeShadow}>
-                    <LinearGradient
-                      style={[styles.goHomeButton]}
-                      colors={['#F2E08C', '#FEF8CC']}
-                      start={{x: 0, y: 1}}
-                      end={{x: 0, y: 0}}
-                    >
-                      <Text style={styles.goHomeButtonText}>去首页逛逛</Text>
-                    </LinearGradient>
-                  </View>
+                  <TouchableOpacity
+                    style={styles.shareTouchableOpacity}
+                    activeOpacity={0.95}
+                    onPress={() => {
+                      this.handleGoHome()
+                    }} >
+                    <View style={styles.goHomeShadow}>
+                      <LinearGradient
+                        style={[styles.goHomeButton]}
+                        colors={['#F2E08C', '#FEF8CC']}
+                        start={{x: 0, y: 1}}
+                        end={{x: 0, y: 0}}
+                      >
+                        <Text style={styles.goHomeButtonText}>去首页逛逛</Text>
+                      </LinearGradient>
+                    </View>
+                  </TouchableOpacity>
                 )
               }
             </View>
@@ -292,8 +361,8 @@ export default class PreviewPurchase extends React.Component {
           )
           }
         </View>
-        <StoreModal ref={ref => this.storeModal = ref} />
-        <RuleModal ref={ref => this.ruleModal = ref} />
+        <StoreModal ref={ref => this.storeModal = ref} storeList={storeList}/>
+        <RuleModal ref={ref => this.ruleModal = ref} ruleList={ruleList}/>
       </LinearGradient>
     )
   }

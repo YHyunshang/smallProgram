@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-08-16 09:54:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-31 19:51:18
+ * @LastEditTime: 2019-11-01 16:44:51
  */
 import {Http} from '@utils'
 import {NativeModules, NativeEventEmitter} from 'react-native'
@@ -18,17 +18,17 @@ export const getPurchaseActivity = (shopCode) => Http.get('productCenter', '/int
 /**
  * 根据查询资格查询积分列表
  */
-export const getIntegralList = () => Http.get('productCenter', '/integralExchange/integralList', {})
+export const getIntegralList = (activityCode) => Http.get('productCenter', '/integralExchange/integralList', {activityCode})
 
 /**
  * 查询可预约名店列表
  */
-export const getReservationShopList = () => Http.get('productCenter', '/integralExchange/reservationShopList', {})
+export const getReservationShopList = (activityCode) => Http.get('productCenter', '/integralExchange/reservationShopList', {activityCode})
 
 /**
  * 查询积分兑换活动规则
  */
-export const getRuleDescription = (ruleCode) => Http.get('productCenter', '/integralExchange/ruleDescription', {ruleCode})
+export const getRuleDescription = (activityCode) => Http.get('productCenter', '/integralExchange/ruleDescription', {activityCode})
 
 /**
  *【立即购买】按钮（去结算)

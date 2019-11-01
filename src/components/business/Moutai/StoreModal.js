@@ -4,12 +4,11 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-31 19:36:42
+ * @LastEditTime: 2019-11-01 16:45:32
  */
 import React, {Component} from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import CommonModal from '../../common/CommonModal'
-import {getReservationShopList} from '../../../services/mouTaiActivity'
 import {StyleSheet, View, Text, ScrollView, TouchableOpacity, NativeModules} from 'react-native'
 const rnAppModule = NativeModules.RnAppModule// 原生模块
 /**
@@ -20,13 +19,14 @@ export default class StoreModal extends Component {
     super(props)
     this.state = {
       show: false,
-      storeList: [{cityName: '重庆市', resStoreVOList: [{storeName: '永辉超市-汉渝路店'},
-        {storeName: '永辉超市-石坪桥店'},
-        {storeName: '永辉超市-万盛区民盛店'},
-        {storeName: '永辉超市-泽胜广场店'},
-        {storeName: '永辉超市-梁平大众店'}
-      ]},
-      {cityName: '成都市', resStoreVOList: [{storeName: '永辉超市-抚琴南路店'}, {storeName: '永辉超市-新城市广场店'}]}
+      storeList: [
+        // {cityName: '重庆市', resActivityStoreVOList: [{storeName: '永辉超市-汉渝路店'},
+        //   {storeName: '永辉超市-石坪桥店'},
+        //   {storeName: '永辉超市-万盛区民盛店'},
+        //   {storeName: '永辉超市-泽胜广场店'},
+        //   {storeName: '永辉超市-梁平大众店'}
+        // ]},
+        // {cityName: '成都市', resActivityStoreVOList: [{storeName: '永辉超市-抚琴南路店'}, {storeName: '永辉超市-新城市广场店'}]}
       ]
     }
   }
@@ -43,36 +43,16 @@ export default class StoreModal extends Component {
     this.commonModal.hide()
   }
   componentDidMount() {
-
-  }
-  /**
-   * @msg:查询可预约名店列表
-   */
-  getReservationShopList = () => {
-    getReservationShopList()
-      .then(({result: data, message, code}) => {
-        if (code === 200000 && data) {
-          this.setState(
-            {
-              storeList: data
-            }
-          )
-        } else {
-          rnAppModule.showToast(message, '0')
-        }
-      }).catch(({message}) => {
-        rnAppModule.showToast(message, '0')
-      })
   }
   render() {
-    const {storeList} = this.state
+    const {storeList} = this.props
     // 预约门店列表
     const storeListWrapper = storeList && storeList.map((item, cityIndex) => (
       <View key={cityIndex}>
         <Text style={styles.cityText}>{item.cityName}</Text>
         <View style={styles.cityText}>
           {
-            item.resStoreVOList && item.resStoreVOList.map((storeItem, storeIndex) => (
+            item.resActivityStoreVOList && item.resActivityStoreVOList.map((storeItem, storeIndex) => (
               <Text key={storeIndex} style={styles.addressText}>{storeItem.storeName}</Text>
             ))
           }

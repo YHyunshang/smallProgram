@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-31 19:33:21
+ * @LastEditTime: 2019-11-01 16:52:45
  */
 import React from 'react'
 import {View, ScrollView, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -19,24 +19,24 @@ export default class QualificationsQuery extends React.Component {
     this.state = {
       isShowMore: false, // 默认收起状态
       qualificationInfo: {
-        availableIntegral: 2400,
-        year: 2019, // 查询积分的年份
-        yearTotalNumber: 12, // 年度最多购买数量
-        yearAvailableQuantity: 0,
-        yearIntegralList: [// 用户换购记录
-          {integralDate: '2019年01月', quantity: 1},
-          {integralDate: '2019年02月', quantity: 1},
-          {integralDate: '2019年03月', quantity: 1},
-          {integralDate: '2019年04月', quantity: 1},
-          {integralDate: '2019年05月', quantity: 1},
-          {integralDate: '2019年06月', quantity: 1},
-          {integralDate: '2019年07月', quantity: 1}
-          // {integralDate: '2019年08月', quantity: 1},
-          // {integralDate: '2019年09月', quantity: 1},
-          // {integralDate: '2019年10月', quantity: 1},
-          // {integralDate: '2019年11月', quantity: 1},
-          // {integralDate: '2019年12月', quantity: 1}
-        ]
+        // availableIntegral: 0,
+        // year: 2019, // 查询积分的年份
+        // yearTotalNumber: 12, // 年度最多购买数量
+        // yearAvailableQuantity: 0,
+        // yearIntegralList: [// 用户换购记录
+        //   {integralDate: '2019年01月', quantity: 1},
+        //   {integralDate: '2019年02月', quantity: 1},
+        //   {integralDate: '2019年03月', quantity: 1},
+        //   {integralDate: '2019年04月', quantity: 1},
+        //   {integralDate: '2019年05月', quantity: 1},
+        //   {integralDate: '2019年06月', quantity: 1},
+        //   {integralDate: '2019年07月', quantity: 1}
+        //   // {integralDate: '2019年08月', quantity: 1},
+        //   // {integralDate: '2019年09月', quantity: 1},
+        //   // {integralDate: '2019年10月', quantity: 1},
+        //   // {integralDate: '2019年11月', quantity: 1},
+        //   // {integralDate: '2019年12月', quantity: 1}
+        // ]
       }
     }
   }
@@ -59,12 +59,14 @@ export default class QualificationsQuery extends React.Component {
   }
   componentDidMount() {
     Native.setTitle('资格查询')
+    this.getIntegralList()
   }
   /**
    * @msg:查询资格查询积分列表
    */
   getIntegralList = () => {
-    getIntegralList()
+    const {activityCode} = this.props
+    getIntegralList(activityCode)
       .then(({result: data, message, code}) => {
         if (code === 200000 && data) {
           this.setState(
@@ -110,7 +112,7 @@ export default class QualificationsQuery extends React.Component {
         >
           <View style={styles.topBanner}>
             <Text style={styles.currentPointText}>您目前的可使用积分</Text>
-            <Text style={styles.currentPointValue}>{qualificationInfo.availableIntegral}</Text>
+            <Text style={styles.currentPointValue}>{qualificationInfo.availableIntegral ? qualificationInfo.availableIntegral : 0}</Text>
             <View style={styles.tipsWrapper}>
               <Image source={greenWarn} style={{width: 14, height: 14}}></Image>
               <Text style={styles.tips}>根据历史消费记录，累计积分核定当前茅台预购资格</Text>
