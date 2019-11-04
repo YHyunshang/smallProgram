@@ -4,14 +4,14 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-04 21:14:48
+ * @LastEditTime: 2019-11-04 22:21:45
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity, Alert} from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import {Native, Img} from '@utils'
 import styles from './PreviewPurchase.styles'
-import {yellowWarn, soldOutDefault} from '@const/resources'
+import {yellowWarn, soldOutDefault, noActivity} from '@const/resources'
 import PreloadingImage from '../../components/common/PreloadingImage'
 import ProgressBar from '../../components/business/Moutai/ProgressBar'
 import OperateNumber from '../../components/business/Moutai/OperateNumber'
@@ -25,6 +25,7 @@ export default class PreviewPurchase extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      isActivity: true, // 是否有茅台活动
       isRuleFirst: true, // 是否是第一次请求规则接口
       isStoreFirst: true, // 是否是第一次请求预约门店接口
       activityCode: '', // 活动code
@@ -54,12 +55,9 @@ export default class PreviewPurchase extends React.Component {
 
   componentDidMount() {
     const {activityCode} = this.props
-    // let productCode = activityCode && activityCode.split('-')[1]
-    let productCode = 'NS7419983'
+    let productCode = activityCode && activityCode.split('-')[1]
     this.setState({productCode})
     // rnAppModule.showToast(`productCode::::${productCode}`, '0')
-    let params = {middleTitle: '茅台专售', rightTitle: '规则说明', rightEventName: 'notifyRulePopup'}
-    Native.setActivityPageTitle('setActivityPageTitle', JSON.stringify(params))
     this.animate()
     this.init()
     // 规则说明弹窗事件监听
@@ -82,12 +80,19 @@ export default class PreviewPurchase extends React.Component {
     getPurchaseActivity(productCode, shopCode)
       .then(({result: data, message, code}) => {
         if (code === 200000 && data) {
+          let params = {middleTitle: '茅台专售', rightTitle: '规则说明', rightEventName: 'notifyRulePopup'}
           this.setState(
             {
               exchangeInfoVO: data,
+              isActivity: data.isActivity,
               activityCode: data.activityCode
             }
           )
+          if (data.isActivity) {
+            Native.setActivityPageTitle('setActivityPageTitle', JSON.stringify(params))
+          } else {
+            Native.setTitle('茅台专售')
+          }
         } else {
           rnAppModule.showToast(message, '0')
         }
@@ -248,146 +253,162 @@ export default class PreviewPurchase extends React.Component {
   }
 
   render() {
-    const {ruleList, storeList, exchangeInfoVO} = this.state
+    const {ruleList, storeList, exchangeInfoVO, isActivity} = this.state
     return (
-      <LinearGradient
-        style={styles.container}
-        colors={['#3F9A93', '#336054']}
-      >
-        <View style={styles.container}>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-          >
-            <View style={styles.headBannerImage}>
-              <PreloadingImage style={styles.headBannerImage} sourceType={0} uri={Img.loadRatioImage(exchangeInfoVO.integralExchangeUrl, Img.FullWidth)}></PreloadingImage>
-            </View>
-            <View style={styles.headBanner}>
-              {
-                exchangeInfoVO && exchangeInfoVO.inventoryNumber > 0 ? (
-                  <View>
-                    <View style={styles.purchaseNumberWrapper}>
-                      <Text style={styles.purchaseTips}>您的茅台预购额度(本月度)</Text>
-                      <PercentageCircle radius={60.5} percent={this.state.percent} borderWidth={10} bgcolor={'#F0F0ED'} color={'#C1882C'}>
-                        <Text style={styles.quantityText}>{exchangeInfoVO.availableQuantity}</Text>
-                        <Text style={styles.standardsText}>/瓶</Text>
-                      </PercentageCircle>
-                      <Text style={styles.purchaseProductName}>{exchangeInfoVO.productName}</Text>
-                    </View>
-                    <View style={styles.stockNumberWrapper}>
-                      <Text style={styles.stockNumberTips}>门店茅台库存</Text>
-                      <ProgressBar width={180} height={10} stockNumber={exchangeInfoVO.inventoryNumber} saleNum={exchangeInfoVO.inventoryProgressBar} startColor={'#C1882C'} endColor={'#EFDCA6'} backgroundColor={'#F0F0ED'}></ProgressBar>
-                      <View style={styles.operateButton}>
-                        <TouchableOpacity
-                          style={styles.shareTouchableOpacity}
-                          activeOpacity={0.95}
-                          onPress={() => {
-                            this.handleQualificationsQuery()
-                          }} >
-                          <Text style={styles.buttonText}>预购资格查询</Text>
-                        </TouchableOpacity>
-                        <View style={styles.splitLine}></View>
-                        <TouchableOpacity
-                          style={styles.shareTouchableOpacity}
-                          activeOpacity={0.95}
-                          onPress={() => {
-                            this.handleStoreModal()
-                          }} >
-                          <Text style={styles.buttonText}>可预约门店</Text>
-                        </TouchableOpacity>
+      <View style={styles.container}>
+        {
+          !isActivity ?
+            <LinearGradient
+              style={styles.container}
+              colors={['#3F9A93', '#336054']}
+            >
+              <View style={styles.container}>
+                <ScrollView
+                  showsVerticalScrollIndicator={false}
+                >
+                  <View style={styles.headBannerImage}>
+                    <PreloadingImage style={styles.headBannerImage} sourceType={0} uri={Img.loadRatioImage(exchangeInfoVO.integralExchangeUrl, Img.FullWidth)}></PreloadingImage>
+                  </View>
+                  <View style={styles.headBanner}>
+                    {
+                      exchangeInfoVO && exchangeInfoVO.inventoryNumber > 0 ? (
+                        <View>
+                          <View style={styles.purchaseNumberWrapper}>
+                            <Text style={styles.purchaseTips}>您的茅台预购额度(本月度)</Text>
+                            <PercentageCircle radius={60.5} percent={this.state.percent} borderWidth={10} bgcolor={'#F0F0ED'} color={'#C1882C'}>
+                              <Text style={styles.quantityText}>{exchangeInfoVO.availableQuantity}</Text>
+                              <Text style={styles.standardsText}>/瓶</Text>
+                            </PercentageCircle>
+                            <Text style={styles.purchaseProductName}>{exchangeInfoVO.productName}</Text>
+                          </View>
+                          <View style={styles.stockNumberWrapper}>
+                            <Text style={styles.stockNumberTips}>门店茅台库存</Text>
+                            <ProgressBar width={180} height={10} stockNumber={exchangeInfoVO.inventoryNumber} saleNum={exchangeInfoVO.inventoryProgressBar} startColor={'#C1882C'} endColor={'#EFDCA6'} backgroundColor={'#F0F0ED'}></ProgressBar>
+                            <View style={styles.operateButton}>
+                              <TouchableOpacity
+                                style={styles.shareTouchableOpacity}
+                                activeOpacity={0.95}
+                                onPress={() => {
+                                  this.handleQualificationsQuery()
+                                }} >
+                                <Text style={styles.buttonText}>预购资格查询</Text>
+                              </TouchableOpacity>
+                              <View style={styles.splitLine}></View>
+                              <TouchableOpacity
+                                style={styles.shareTouchableOpacity}
+                                activeOpacity={0.95}
+                                onPress={() => {
+                                  this.handleStoreModal()
+                                }} >
+                                <Text style={styles.buttonText}>可预约门店</Text>
+                              </TouchableOpacity>
+                            </View>
+                          </View>
+                        </View>
+                      )
+                        :
+                        <View style={styles.emptyWrapper}>
+                          <Image style={styles.defaultImage} source={soldOutDefault} resizeMode="contain"/>
+                          <Text style={styles.defaultText}>当前已抢完，敬请期待</Text>
+                        </View>
+                    }
+                    <View style={styles.explainWrapper}>
+                      <View style={styles.explainTextWrapper}>
+                        <View>
+                          <Text style={styles.qualificationText}>————————   / / <Text style={styles.explainText}> 预购说明 </Text>  / /   ————————</Text>
+                        </View>
+                      </View>
+                      <View style={styles.purchaseQualification}>
+                        <Text style={styles.qualificationBoldText}>※ 购买资格</Text>
+                        {
+                          exchangeInfoVO && exchangeInfoVO.exchangeCondition && (
+                            <Text style={styles.qualificationText}>{exchangeInfoVO.exchangeCondition}</Text>
+                          )
+                        }
+                      </View>
+                      <View style={styles.purchaseQualification}>
+                        <Text style={styles.qualificationBoldText}>※ 限购条件</Text>
+                        {
+                          exchangeInfoVO && exchangeInfoVO.limitDesc && (
+                            <Text style={styles.qualificationText}>{exchangeInfoVO.limitDesc}</Text>
+                          )
+                        }
                       </View>
                     </View>
+                    {
+                      exchangeInfoVO && !exchangeInfoVO.isQualifications && (
+                        <TouchableOpacity
+                          style={styles.shareTouchableOpacity}
+                          activeOpacity={0.95}
+                          onPress={() => {
+                            this.handleGoHome()
+                          }} >
+                          <View style={styles.goHomeShadow}>
+                            <LinearGradient
+                              style={[styles.goHomeButton]}
+                              colors={['#F2E08C', '#FEF8CC']}
+                              start={{x: 0, y: 1}}
+                              end={{x: 0, y: 0}}
+                            >
+                              <Text style={styles.goHomeButtonText}>去首页逛逛</Text>
+                            </LinearGradient>
+                          </View>
+                        </TouchableOpacity>
+                      )
+                    }
                   </View>
-                )
-                  :
-                  <View style={styles.emptyWrapper}>
-                    <Image style={styles.defaultImage} source={soldOutDefault} resizeMode="contain"/>
-                    <Text style={styles.defaultText}>当前已抢完，敬请期待</Text>
-                  </View>
-              }
-              <View style={styles.explainWrapper}>
-                <View style={styles.explainTextWrapper}>
-                  <View>
-                    <Text style={styles.qualificationText}>————————   / / <Text style={styles.explainText}> 预购说明 </Text>  / /   ————————</Text>
-                  </View>
-                </View>
-                <View style={styles.purchaseQualification}>
-                  <Text style={styles.qualificationBoldText}>※ 购买资格</Text>
                   {
-                    exchangeInfoVO && exchangeInfoVO.exchangeCondition && (
-                      <Text style={styles.qualificationText}>{exchangeInfoVO.exchangeCondition}</Text>
+                    exchangeInfoVO && exchangeInfoVO.isQualifications && (
+                      <View style={styles.availableInfo}>
+                        <Image source={yellowWarn} style={{width: 16, height: 16}}></Image>
+                        <Text style={styles.availableQuantityText}>您当月可购买数量仅剩{exchangeInfoVO.availableQuantity}瓶</Text>
+                      </View>
                     )
                   }
-                </View>
-                <View style={styles.purchaseQualification}>
-                  <Text style={styles.qualificationBoldText}>※ 限购条件</Text>
-                  {
-                    exchangeInfoVO && exchangeInfoVO.limitDesc && (
-                      <Text style={styles.qualificationText}>{exchangeInfoVO.limitDesc}</Text>
-                    )
-                  }
-                </View>
-              </View>
-              {
-                exchangeInfoVO && !exchangeInfoVO.isQualifications && (
-                  <TouchableOpacity
-                    style={styles.shareTouchableOpacity}
-                    activeOpacity={0.95}
-                    onPress={() => {
-                      this.handleGoHome()
-                    }} >
-                    <View style={styles.goHomeShadow}>
-                      <LinearGradient
-                        style={[styles.goHomeButton]}
-                        colors={['#F2E08C', '#FEF8CC']}
-                        start={{x: 0, y: 1}}
-                        end={{x: 0, y: 0}}
-                      >
-                        <Text style={styles.goHomeButtonText}>去首页逛逛</Text>
-                      </LinearGradient>
+                </ScrollView>
+                { exchangeInfoVO && exchangeInfoVO.isQualifications && (
+                  <View style={styles.buyButton}>
+                    <View style={styles.leftWrapper}>
+                      <Text style={styles.leftText}>预定数量</Text>
+                      <OperateNumber availableQuantity={exchangeInfoVO.availableQuantity} onAdd={this.handleAddNumber} onMin={this.handleMinNumber}/>
                     </View>
-                  </TouchableOpacity>
-                )
-              }
-            </View>
-            {
-              exchangeInfoVO && exchangeInfoVO.isQualifications && (
-                <View style={styles.availableInfo}>
-                  <Image source={yellowWarn} style={{width: 16, height: 16}}></Image>
-                  <Text style={styles.availableQuantityText}>您当月可购买数量仅剩{exchangeInfoVO.availableQuantity}瓶</Text>
-                </View>
-              )
-            }
-          </ScrollView>
-          { exchangeInfoVO && exchangeInfoVO.isQualifications && (
-            <View style={styles.buyButton}>
-              <View style={styles.leftWrapper}>
-                <Text style={styles.leftText}>预定数量</Text>
-                <OperateNumber availableQuantity={exchangeInfoVO.availableQuantity} onAdd={this.handleAddNumber} onMin={this.handleMinNumber}/>
-              </View>
-              <LinearGradient
-                style={[styles.rightWrapper]}
-                colors={['#F2E08C', '#FEF8CC']}
-                start={{x: 0, y: 0}}
-                end={{x: 1, y: 0}}
-              >
-                <TouchableOpacity
-                  style={styles.shareTouchableOpacity}
-                  activeOpacity={0.95}
-                  onPress={() => {
-                    this.handleGoBuy()
-                  }} >
-                  <View>
-                    <Text style={styles.buyText}>立即购买</Text>
+                    <LinearGradient
+                      style={[styles.rightWrapper]}
+                      colors={['#F2E08C', '#FEF8CC']}
+                      start={{x: 0, y: 0}}
+                      end={{x: 1, y: 0}}
+                    >
+                      <TouchableOpacity
+                        style={styles.shareTouchableOpacity}
+                        activeOpacity={0.95}
+                        onPress={() => {
+                          this.handleGoBuy()
+                        }} >
+                        <View>
+                          <Text style={styles.buyText}>立即购买</Text>
+                        </View>
+                      </TouchableOpacity>
+                    </LinearGradient>
                   </View>
-                </TouchableOpacity>
-              </LinearGradient>
+                )
+                }
+              </View>
+              <StoreModal ref={ref => this.storeModal = ref} storeList={storeList}/>
+              <RuleModal ref={ref => this.ruleModal = ref} ruleList={ruleList}/>
+            </LinearGradient>
+            :
+            <View style={styles.container}>
+              <View style={styles.noActivityWrapper}>
+                <Image style={styles.noActivityImage} source={noActivity} resizeMode="contain"/>
+              </View>
+              <Text style={styles.noActivityText}>活动正在筹备中…</Text>
+              <Text style={styles.noActivityOtherText}>看看其他的吧</Text>
+              <View style={styles.goSee}>
+                <Text style={styles.goSeeText} >去逛逛</Text>
+              </View>
             </View>
-          )
-          }
-        </View>
-        <StoreModal ref={ref => this.storeModal = ref} storeList={storeList}/>
-        <RuleModal ref={ref => this.ruleModal = ref} ruleList={ruleList}/>
-      </LinearGradient>
+        }
+      </View>
     )
   }
 }

@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-04 21:29:50
+ * @LastEditTime: 2019-11-04 21:36:10
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -374,7 +374,7 @@ export default class ProductDetailPage extends React.Component {
               this.detailLayoutY = event.nativeEvent.layout.y
             }}>
               <View style={styles.goodsDetail}>
-                <Text style={styles.goodsDetailTitle}>商品详情</Text>
+                <Text style={styles.goodsDetailTitle}>商品详情2222</Text>
               </View>
               <TouchableOpacity
                 style={styles.shareTouchableOpacity}

@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-01 16:51:35
+ * @LastEditTime: 2019-11-04 22:21:08
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import theme from '@theme'
@@ -226,5 +226,39 @@ export default StyleSheet.create({
     fontSize: 18,
     color: '#B5750C',
     fontWeight: 'bold'
+  },
+  noActivityWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  noActivityImage: {
+    width: 190,
+    height: 190
+  },
+  noActivityText: {
+    fontSize: 16,
+    paddingTop: 19,
+    textAlign: 'center',
+    color: '#4A4A4A'
+  },
+  noActivityOtherText: {
+    fontSize: 14,
+    paddingTop: 19,
+    textAlign: 'center',
+    color: '#A4A4B4'
+  },
+  goSee: {
+    width: 110,
+    height: 35,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 20,
+    backgroundColor: '#41B25D'
+  },
+  goSeeText: {
+    fontSize: 14,
+    color: '#FFFFFF'
   }
 })

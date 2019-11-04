@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-12 11:25:52
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-04 20:43:29
+ * @LastEditTime: 2019-11-04 22:02:00
  */
 import {
   NativeModules,
@@ -66,7 +66,7 @@ if(uri==='RNPreviewPurchase'){//如果是茅台专售页面再需判断是否登
         return navigate(
           pageType,
           pageUri,
-          JSON.stringify({ params: { ...params, title: title || '永辉买菜' } })
+          JSON.stringify({ params: { ...params, title: title || '茅台专售' } })
         )
       }
     }

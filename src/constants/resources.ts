@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-09-06 13:54:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-30 19:03:31
+ * @LastEditTime: 2019-11-04 22:08:51
  */
 import {Platform} from 'react-native'
 
@@ -137,3 +137,6 @@ export const greenWarn =isAndroid
 export const soldOutDefault =isAndroid
     ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/sold-out-default.png' }
     : require('@img/sold-out-default.png')
+export const noActivity =isAndroid
+    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/sold-out-default.png' }
+    : require('@img/no-activity.png')
