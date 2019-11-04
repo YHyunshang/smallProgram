@@ -20,7 +20,8 @@ import BoxC from '@components/business/Content/Box'
 import DividerC from '@components/business/Content/Divider'
 import LimitTimeBuy from "@components/business/Content/LimitTimeBuy";
 import {Global} from "@utils";
-
+import { NativeModules } from 'react-native';
+const rnAppModule = NativeModules.RnAppModule// 原生模块
 const Carousel = React.memo(CarouselC)
 const AdTitle = React.memo(AdTitleC)
 const ProductList = React.memo(ProductListC)
@@ -65,7 +66,7 @@ export function formatFloorData(
           data: floor.templateDetailVOList.map(ele => ({
             key: ele.id,
             image: ele.imgUrl,
-            link: ele.name && ele.name.indexOf("茅台") != -1  ? CMSServices.mouTaiActivityLink() : CMSServices.formatLink(ele),
+            link: ele.name && ele.name.indexOf("茅台") != -1  ? CMSServices.mouTaiActivityLink(ele.name) : CMSServices.formatLink(ele),
           })),
         },
       })
@@ -127,7 +128,7 @@ export function formatFloorData(
           ],
           props: {
             image: imgObj.imgUrl,
-            link: imgObj.name && imgObj.name.indexOf("茅台") != -1  ? CMSServices.mouTaiActivityLink() : CMSServices.formatLink(imgObj),
+            link: imgObj.name && imgObj.name.indexOf("茅台") != -1  ? CMSServices.mouTaiActivityLink(imgObj.name) : CMSServices.formatLink(imgObj),
           },
         })
       } else if (floor.subType === 2) {

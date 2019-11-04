@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-31 17:30:08
+ * @LastEditTime: 2019-11-04 21:29:50
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -139,7 +139,7 @@ export default class ProductDetailPage extends React.Component {
     Native.navigateTo({
       type: Native.NavPageType.RN,
       uri: 'RNPreviewPurchase',
-      params: {}
+      params: {activityCode: '茅台-NS7419983'}
     })
   }
   /**

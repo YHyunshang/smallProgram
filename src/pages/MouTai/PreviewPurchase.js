@@ -4,10 +4,10 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-01 17:35:50
+ * @LastEditTime: 2019-11-04 21:14:48
  */
 import React from 'react'
-import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
+import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity, Alert} from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import {Native, Img} from '@utils'
 import styles from './PreviewPurchase.styles'
@@ -25,8 +25,13 @@ export default class PreviewPurchase extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      isRuleFirst: true, // 是否是第一次请求规则接口
+      isStoreFirst: true, // 是否是第一次请求预约门店接口
       activityCode: '', // 活动code
+      productCode: '', // 商品code
+      shopCode: '', // 门店code
       preOrderNo: '', // 预订号
+      buyQuantity: 1, // 购买数量
       ruleList: [], // 规则内容list
       storeList: [], // 门店list
       exchangeInfoVO: {integralExchangeUrl: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/head-banner.png',
@@ -48,6 +53,11 @@ export default class PreviewPurchase extends React.Component {
   }
 
   componentDidMount() {
+    const {activityCode} = this.props
+    // let productCode = activityCode && activityCode.split('-')[1]
+    let productCode = 'NS7419983'
+    this.setState({productCode})
+    // rnAppModule.showToast(`productCode::::${productCode}`, '0')
     let params = {middleTitle: '茅台专售', rightTitle: '规则说明', rightEventName: 'notifyRulePopup'}
     Native.setActivityPageTitle('setActivityPageTitle', JSON.stringify(params))
     this.animate()
@@ -62,13 +72,14 @@ export default class PreviewPurchase extends React.Component {
     const [shopCode] = await Promise.all([
       Native.getConstant('storeCode')
     ])
-    this.getPurchaseActivity(shopCode)
+    this.setState({shopCode})
+    this.getPurchaseActivity(this.state.productCode, shopCode)
   }
   /**
    * @msg:获取预购活动
    */
-  getPurchaseActivity = (shopCode) => {
-    getPurchaseActivity(shopCode)
+  getPurchaseActivity = (productCode, shopCode) => {
+    getPurchaseActivity(productCode, shopCode)
       .then(({result: data, message, code}) => {
         if (code === 200000 && data) {
           this.setState(
@@ -88,14 +99,30 @@ export default class PreviewPurchase extends React.Component {
    * @msg:【立即购买】按钮（去结算)
    */
   handleOrderAmount() {
-    handleOrderAmount({})
+    let params = {
+      activityCode: this.state.activityCode,
+      billFeeType: 2,
+      items: [
+        {
+          productCode: this.state.productCode,
+          quantity: this.state.buyQuantity,
+          sellPrice: 0
+        }
+      ],
+      remarks: '',
+      shopCode: this.state.shopCode,
+      wantDistributionTime: ''
+    }
+    // let params = {productCode: this.state.productCode, activityCode: this.state.activityCode, shopCode: this.state.shopCode, quantity: this.state.buyQuantity}
+    handleOrderAmount(params)
       .then(({result: data, message, code}) => {
         if (code === 200000 && data) {
-          this.setState(
-            {
-              preOrderNo: data
-            }
-          )
+          this.setState({preOrderNo: data.preOrderNo})
+          Native.navigateTo({
+            type: Native.NavPageType.NATIVE,
+            uri: 'D001,D001',
+            params: {preOrderNo: data.preOrderNo}
+          })
         } else {
           rnAppModule.showToast(message, '0')
         }
@@ -133,72 +160,69 @@ export default class PreviewPurchase extends React.Component {
    * @description: 相似商品列表添加购物车返回productCode和productNumber
    */
   onNativeRuleModalChange = () => {
+    Native.setNavigationBarEventSwitch('navigationBarEventSwitch', JSON.stringify({swithTag: '0'}))
     this.getRuleDescription()
   }
   /**
    * @msg:查询可预约名店列表
    */
   getReservationShopList = () => {
-    getReservationShopList(this.state.activityCode)
-      .then(({result: data, message, code}) => {
-        if (code === 200000 && data) {
-          this.setState(
-            {
-              storeList: data
-            }
-          )
-        } else {
+    if (this.state.isStoreFirst) {
+      getReservationShopList(this.state.activityCode)
+        .then(({result: data, message, code}) => {
+          if (code === 200000 && data) {
+            this.setState({storeList: data, isStoreFirst: false})
+          } else {
+            rnAppModule.showToast(message, '0')
+          }
+        }).catch(({message}) => {
           rnAppModule.showToast(message, '0')
-        }
-      }).catch(({message}) => {
-        rnAppModule.showToast(message, '0')
-      })
+        })
+    }
   }
   /**
    * @msg:查询积分兑换活动规则
    */
   getRuleDescription = () => {
-    getRuleDescription(this.state.activityCode)
-      .then(({result: data, message, code}) => {
-        if (code === 200000 && data) {
-          this.setState(
-            {
-              ruleList: data
-            }
-          )
-          this.ruleModal.showModal()
-        } else {
+    this.ruleModal.showModal()
+    if (this.state.isRuleFirst) {
+      getRuleDescription(this.state.activityCode)
+        .then(({result: data, message, code}) => {
+          if (code === 200000 && data) {
+            this.setState({ruleList: data, isRuleFirst: false}
+            )
+          } else {
+            rnAppModule.showToast(message, '0')
+          }
+        }).catch(({message}) => {
           rnAppModule.showToast(message, '0')
-        }
-      }).catch(({message}) => {
-        rnAppModule.showToast(message, '0')
-      })
+        })
+    }
   }
   /**
    * @description: 立即购买,跳转原生的订单确认页面
    */
   handleGoBuy() {
-    Native.navigateTo({
-      type: Native.NavPageType.NATIVE,
-      uri: 'D001,D001',
-      params: {preOrderNo: this.state.preOrderNo}
-    })
+    this.handleOrderAmount()
   }
 
   /**
    * @description: 增加预定数量
    */
   handleAddNumber=(number) => {
+    this.setState({buyQuantity: number})
   }
   /**
    * @description: 减少预定数量
    */
-  handleMinNumber=(number) => {
+  handleMinNumber=(buyQuantity) => {
+    this.setState({buyQuantity})
   }
   /**
    * @description: 可预约门店弹窗
    */
   handleStoreModal() {
+    Native.setNavigationBarEventSwitch('navigationBarEventSwitch', JSON.stringify({swithTag: '0'}))
     this.getReservationShopList()
     this.storeModal.showModal()
   }

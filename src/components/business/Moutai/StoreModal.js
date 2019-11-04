@@ -4,8 +4,9 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-01 16:45:32
+ * @LastEditTime: 2019-11-04 15:51:43
  */
+import {Native} from '@utils'
 import React, {Component} from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import CommonModal from '../../common/CommonModal'
@@ -41,6 +42,7 @@ export default class StoreModal extends Component {
 */
   handleCloseModal() {
     this.commonModal.hide()
+    Native.setNavigationBarEventSwitch('navigationBarEventSwitch', JSON.stringify({swithTag: '1'}))
   }
   componentDidMount() {
   }
