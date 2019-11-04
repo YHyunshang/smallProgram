@@ -100,9 +100,9 @@ export default class SimilarGoods extends React.Component {
         <Text numberOfLines={1} style={styles.goodsDesc}>
           {item.productName}
         </Text>
-        {item.promotionPrice ? (
-          <Text style={styles.throughLinePrice}>¥{transPenny(item.price)}</Text>
-        ) : null}
+        <Text style={styles.throughLinePrice}>
+          {item.promotionPrice ? `¥${transPenny(item.price)}` : ''}
+        </Text>
       </TouchableOpacity>
       <View style={styles.goodsPriceFlex}>
         <View style={styles.goodsPriceWrap}>

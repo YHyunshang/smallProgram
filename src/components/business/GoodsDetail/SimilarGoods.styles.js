@@ -66,7 +66,8 @@ export default StyleSheet.create({
     marginLeft: 5,
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
+    minHeight: 16,
   },
   throughLinePrice: {
     marginLeft: 10,
