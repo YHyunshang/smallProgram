@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-05 16:54:30
+ * @LastEditTime: 2019-11-05 18:22:20
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -272,7 +272,7 @@ export default class PreviewPurchase extends React.Component {
                         <View>
                           <View style={styles.purchaseNumberWrapper}>
                             <Text style={styles.purchaseTips}>您的茅台预购额度(本月度)</Text>
-                            <PercentageCircle radius={60.5} percent={this.state.percent} borderWidth={10} bgcolor={'#F0F0ED'} color={'#C1882C'}>
+                            <PercentageCircle radius={60} percent={this.state.percent} borderWidth={10} bgcolor={'#F0F0ED'} color={'#C1882C'}>
                               <Text style={styles.quantityText}>{exchangeInfoVO.availableQuantity}</Text>
                               <Text style={styles.standardsText}>/瓶</Text>
                             </PercentageCircle>
