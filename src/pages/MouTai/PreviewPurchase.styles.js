@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-05 09:56:04
+ * @LastEditTime: 2019-11-05 21:43:16
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import theme from '@theme'
@@ -24,7 +24,7 @@ export default StyleSheet.create({
   },
   purchaseNumberWrapper: {
     width: 351,
-    height: 234,
+    height: 285,
     backgroundColor: '#ffffff',
     borderRadius: 5,
     flexDirection: 'column',
@@ -63,7 +63,8 @@ export default StyleSheet.create({
     fontSize: 16,
     color: '#4D4D4D',
     fontWeight: 'bold',
-    marginTop: 24
+    marginTop: 24,
+    marginBottom: 25
   },
   quantityText: {
     fontSize: 64,
@@ -77,9 +78,31 @@ export default StyleSheet.create({
     right: 15,
     bottom: 15
   },
+  purchaseProductPriceInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 24
+  },
+  purchaseProductText: {
+    fontSize: 15,
+    color: '#333333'
+  },
+  purchaseProductPrice: {
+    fontSize: 20,
+    color: '#EB2F2F',
+    fontFamily: theme.priceFFPrimary
+  },
+  purchaseProductSymbol: {
+    fontSize: 15,
+    color: '#EB2F2F',
+    fontFamily: theme.priceFFPrimary
+  },
   purchaseProductName: {
     fontSize: 13,
-    color: '#C1882C'
+    color: '#C1882C',
+    marginTop: 12,
+    marginBottom: 25
   },
   stockNumberWrapper: {
     width: 351,

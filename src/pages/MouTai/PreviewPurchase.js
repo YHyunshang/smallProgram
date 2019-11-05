@@ -4,13 +4,14 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-05 18:22:20
+ * @LastEditTime: 2019-11-05 21:50:51
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import {Native, Img} from '@utils'
 import styles from './PreviewPurchase.styles'
+import {transPenny} from '../../utils/FormatUtil'
 import {yellowWarn, soldOutDefault, noActivity} from '@const/resources'
 import TopBannerImage from '../../components/common/TopBannerImage'
 import ProgressBar from '../../components/business/Moutai/ProgressBar'
@@ -25,7 +26,7 @@ export default class PreviewPurchase extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isActivity: false, // 是否有茅台活动
+      isActivity: true, // 是否有茅台活动
       isRuleFirst: true, // 是否是第一次请求规则接口
       isStoreFirst: true, // 是否是第一次请求预约门店接口
       activityCode: '', // 活动code
@@ -33,17 +34,18 @@ export default class PreviewPurchase extends React.Component {
       shopCode: '', // 门店code
       preOrderNo: '', // 预订号
       buyQuantity: 1, // 购买数量
-      ruleList: [], // 规则内容list
-      storeList: [], // 门店list
-      exchangeInfoVO: {integralExchangeUrl: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/head-banner.png',
-        availableQuantity: 2, // 本月可预购的数量
-        monthTotalNumber: 3, // 当月最多购买数量
-        inventoryNumber: 98, // 当前库存剩余数量
-        inventoryProgressBar: 80, // 当前库存比
-        isQualifications: true, // 是否有购买资格
-        productName: '53度 500ml 飞天茅台(2019款',
-        exchangeCondition: '1000积分+1499元即可换购1瓶53度500ml飞天茅台',
-        limitDesc: '每月限购3瓶,全年不超过12瓶,当月如有遗留份额,则不累计'
+      ruleList: [''], // 规则内容list
+      storeList: [''], // 门店list
+      exchangeInfoVO: {
+        integralExchangeUrl: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/head-banner.png'
+        // availableQuantity: 2, // 本月可预购的数量
+        // monthTotalNumber: 3, // 当月最多购买数量
+        // inventoryNumber: 98, // 当前库存剩余数量
+        // inventoryProgressBar: 80, // 当前库存比
+        // isQualifications: true, // 是否有购买资格
+        // productName: '53度 500ml 飞天茅台(2019款',
+        // exchangeCondition: '1000积分+1499元即可换购1瓶53度500ml飞天茅台',
+        // limitDesc: '每月限购3瓶,全年不超过12瓶,当月如有遗留份额,则不累计'
       },
       percent: 0,
       // inventoryProgress: 10, // 当前库存数量
@@ -264,18 +266,22 @@ export default class PreviewPurchase extends React.Component {
                   showsVerticalScrollIndicator={false}
                 >
                   <View style={styles.headBannerImage}>
-                    <TopBannerImage style={styles.headBannerImage} uri={Img.loadRatioImage(exchangeInfoVO.integralExchangeUrl, Img.FullWidth)}></TopBannerImage>
+                    <TopBannerImage style={styles.headBannerImage} headImg={Img.loadRatioImage(exchangeInfoVO.integralExchangeUrl, Img.FullWidth)}></TopBannerImage>
                   </View>
                   <View style={styles.headBanner}>
                     {
                       exchangeInfoVO && exchangeInfoVO.inventoryNumber > 0 ? (
                         <View>
                           <View style={styles.purchaseNumberWrapper}>
-                            <Text style={styles.purchaseTips}>您的茅台预购额度(本月度)</Text>
+                            <Text style={styles.purchaseTips}>当前可购买数量</Text>
                             <PercentageCircle radius={60} percent={this.state.percent} borderWidth={10} bgcolor={'#F0F0ED'} color={'#C1882C'}>
                               <Text style={styles.quantityText}>{exchangeInfoVO.availableQuantity}</Text>
                               <Text style={styles.standardsText}>/瓶</Text>
                             </PercentageCircle>
+                            <View style={styles.purchaseProductPriceInfo}>
+                              <Text style={styles.purchaseProductText}>专售价:</Text>
+                              <Text style={styles.purchaseProductPrice}><Text style={styles.purchaseProductSymbol}>￥</Text>{transPenny(exchangeInfoVO.price ? exchangeInfoVO.price : 0)}</Text>
+                            </View>
                             <Text style={styles.purchaseProductName}>{exchangeInfoVO.productName}</Text>
                           </View>
                           <View style={styles.stockNumberWrapper}>

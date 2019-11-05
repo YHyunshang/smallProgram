@@ -4,13 +4,14 @@
  * @Author: yuwen.liu
  * @Date: 2019-08-29 11:25:46
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-05 16:49:07
+ * @LastEditTime: 2019-11-05 21:20:40
  */
 import React, {Component} from 'react'
-import {StyleSheet, View} from 'react-native'
+import {StyleSheet, View, NativeModules} from 'react-native'
 import PropTypes from 'prop-types'
 import {placeholderProduct} from '@const/resources'
 import FastImage from 'react-native-fast-image'
+const rnAppModule = NativeModules.RnAppModule// 原生模块
 /**
  * 渲染顶部banner图片
  */
@@ -36,18 +37,18 @@ export default class TopBannerImage extends Component {
     }
 
     render() {
-      const {uri, defaultImage, errImage, style} = this.props
-      let source = {uri}
+      let {headImg, defaultImage, errImage, style} = this.props
+      // rnAppModule.showToast(`headImg::${headImg}`, '0')
       if (this.state.type === 1) {
-        source = errImage
+        headImg = errImage
       }
       return (
         <View style={styles.container}>
           <FastImage
             indicator={false}
             style={[style]}
-            source={source}
-            resizeMode={FastImage.resizeMode.contain}
+            source={{uri: headImg}}
+            resizeMode={FastImage.resizeMode.stretch}
             onError={(error) => {
               this.setState({
                 type: 1
