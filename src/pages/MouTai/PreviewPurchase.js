@@ -4,10 +4,10 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-04 22:21:45
+ * @LastEditTime: 2019-11-05 13:50:35
  */
 import React from 'react'
-import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity, Alert} from 'react-native'
+import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import {Native, Img} from '@utils'
 import styles from './PreviewPurchase.styles'
@@ -57,7 +57,6 @@ export default class PreviewPurchase extends React.Component {
     const {activityCode} = this.props
     let productCode = activityCode && activityCode.split('-')[1]
     this.setState({productCode})
-    // rnAppModule.showToast(`productCode::::${productCode}`, '0')
     this.animate()
     this.init()
     // 规则说明弹窗事件监听
@@ -118,7 +117,6 @@ export default class PreviewPurchase extends React.Component {
       shopCode: this.state.shopCode,
       wantDistributionTime: ''
     }
-    // let params = {productCode: this.state.productCode, activityCode: this.state.activityCode, shopCode: this.state.shopCode, quantity: this.state.buyQuantity}
     handleOrderAmount(params)
       .then(({result: data, message, code}) => {
         if (code === 200000 && data) {
@@ -160,9 +158,7 @@ export default class PreviewPurchase extends React.Component {
     }
   }
   /**
-   * @param {productCode}
-   * @param {productNumber}
-   * @description: 相似商品列表添加购物车返回productCode和productNumber
+   * @msg:监听规则弹窗
    */
   onNativeRuleModalChange = () => {
     Native.setNavigationBarEventSwitch('navigationBarEventSwitch', JSON.stringify({swithTag: '0'}))
@@ -257,7 +253,7 @@ export default class PreviewPurchase extends React.Component {
     return (
       <View style={styles.container}>
         {
-          !isActivity ?
+          isActivity ?
             <LinearGradient
               style={styles.container}
               colors={['#3F9A93', '#336054']}
@@ -397,15 +393,22 @@ export default class PreviewPurchase extends React.Component {
               <RuleModal ref={ref => this.ruleModal = ref} ruleList={ruleList}/>
             </LinearGradient>
             :
-            <View style={styles.container}>
-              <View style={styles.noActivityWrapper}>
+            <View style={styles.noActivityWrapper}>
+              <View>
                 <Image style={styles.noActivityImage} source={noActivity} resizeMode="contain"/>
               </View>
               <Text style={styles.noActivityText}>活动正在筹备中…</Text>
               <Text style={styles.noActivityOtherText}>看看其他的吧</Text>
-              <View style={styles.goSee}>
-                <Text style={styles.goSeeText} >去逛逛</Text>
-              </View>
+              <TouchableOpacity
+                style={styles.shareTouchableOpacity}
+                activeOpacity={0.95}
+                onPress={() => {
+                  this.handleGoHome()
+                }} >
+                <View style={styles.goSee}>
+                  <Text style={styles.goSeeText} >去逛逛</Text>
+                </View>
+              </TouchableOpacity>
             </View>
         }
       </View>

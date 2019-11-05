@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-04 22:21:08
+ * @LastEditTime: 2019-11-05 09:56:04
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import theme from '@theme'
@@ -191,7 +191,7 @@ export default StyleSheet.create({
     color: '#FFBD65'
   },
   buyButton: {
-    width: 375,
+    width: '100%',
     height: 50,
     flexDirection: 'row',
     alignItems: 'center',
@@ -228,9 +228,10 @@ export default StyleSheet.create({
     fontWeight: 'bold'
   },
   noActivityWrapper: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: 90
   },
   noActivityImage: {
     width: 190,
@@ -244,7 +245,7 @@ export default StyleSheet.create({
   },
   noActivityOtherText: {
     fontSize: 14,
-    paddingTop: 19,
+    paddingTop: 16,
     textAlign: 'center',
     color: '#A4A4B4'
   },
@@ -255,6 +256,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 20,
+    marginTop: 13,
     backgroundColor: '#41B25D'
   },
   goSeeText: {
