@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-05 16:19:06
+ * @LastEditTime: 2019-11-05 16:54:30
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -243,8 +243,8 @@ export default class PreviewPurchase extends React.Component {
    */
   handleGoHome() {
     Native.navigateTo({
-      type: Native.NavPageType.RN,
-      uri: 'RNHome',
+      type: Native.NavPageType.NATIVE,
+      uri: 'AA01,AA01',
       params: {}
     })
   }
