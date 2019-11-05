@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-12 11:25:52
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-16 16:18:51
+ * @LastEditTime: 2019-11-04 22:02:00
  */
 import {
   NativeModules,
@@ -12,10 +12,11 @@ import {
   StatusBar,
   DeviceEventEmitter,
   NativeEventEmitter,
+  Alert,
 } from 'react-native'
 import * as Log from './log'
 import { Product } from '@components/business/Content/typings'
-
+const rnAppModule = NativeModules.RnAppModule// 原生模块
 export enum NavPageType {
   NATIVE = '0',
   RN = '1',
@@ -58,12 +59,26 @@ export async function navigateTo({ type, uri, params, title }: Navigation) {
     pageUri,
     JSON.stringify({ params: { ...params, title } })
   )
-
+if(uri==='RNPreviewPurchase'){//如果是茅台专售页面再需判断是否登录，登录成功才跳转至茅台购买页面，否则跳转至登录页面
+  NativeModules.RnAppModule.verifyIsOnlineCallback(
+    (errMsg, responseData) => {
+      if (responseData=='1') {//返回1表示已登录，0表示未登录
+        return navigate(
+          pageType,
+          pageUri,
+          JSON.stringify({ params: { ...params, title: title || '茅台专售' } })
+        )
+      }
+    }
+  )
+}
+else{
   return navigate(
     pageType,
     pageUri,
     JSON.stringify({ params: { ...params, title: title || '永辉买菜' } })
   )
+}
 }
 
 /**
@@ -92,6 +107,40 @@ export function jumpToNativeDialog(showPromotionProductListDialog: string, param
   return NativeModules.RnAppModule.sendEventToNative(showPromotionProductListDialog, params)
 }
 
+/**
+ * 调用原生的方法设置茅台专售的标题和右边的规则说明
+ * @param setActivityPageTitle 茅台活动页面设置右边的title的事件
+ * @param params 参数
+ */
+export function setActivityPageTitle(setActivityPageTitle: string, params: string) {
+  //RN模块调用原生的通用方法
+  return NativeModules.RnAppModule.sendEventToNative(setActivityPageTitle, params)
+}
+
+/**
+ * 开启或关闭导航栏的点击事件
+ * @param navigationBarEventSwitch 开启或关闭导航栏的点击事件名
+ * @param params 参数
+ */
+export function setNavigationBarEventSwitch(navigationBarEventSwitch: string, params: string) {
+  //RN模块调用原生的通用方法
+  return NativeModules.RnAppModule.sendEventToNative(navigationBarEventSwitch, params)
+}
+
+/**
+ * 根据回调结果查询用户是否登陆，未登录时跳转登录页
+ * @param setActivityPageTitle 茅台活动页面设置右边的title的事件
+ * @param params 参数
+ */
+export function verifyIsOnlineCallback() {
+  return NativeModules.RnAppModule.verifyIsOnlineCallback(
+    (errMsg, responseData) => {
+      if (responseData) {
+        Log.error('add to cart failed')
+      }
+    }
+  )
+}
 /**
  * 展示 toast
  * @param message 消息文本

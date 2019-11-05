@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-09-06 13:54:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-08 15:33:41
+ * @LastEditTime: 2019-11-05 14:16:34
  */
 import {Platform} from 'react-native'
 
@@ -128,3 +128,18 @@ export const iconMinusCircleRed = isAndroid
 export const buyLimit =isAndroid
     ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/buy-limit.png' }
     : require('@img/buy-limit.png')
+export const yellowWarn =isAndroid
+    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/yellow-info.png' }
+    : require('@img/yellow-info.png')
+export const greenWarn =isAndroid
+    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/green-info.png' }
+    : require('@img/green-info.png')
+export const soldOutDefault =isAndroid
+    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/sold-out-default.png' }
+    : require('@img/sold-out-default.png')
+export const noActivity =isAndroid
+    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/no-activity.png' }
+    : require('@img/no-activity.png')
+export const noStore =isAndroid
+    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/no-store.png' }
+    : require('@img/no-store.png')

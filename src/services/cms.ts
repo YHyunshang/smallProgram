@@ -3,9 +3,9 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-12 11:25:52
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-23 10:24:45
+ * @LastEditTime: 2019-11-04 16:36:17
  */
-import { NativeEventEmitter, NativeModules } from 'react-native'
+import { NativeEventEmitter, NativeModules, Alert } from 'react-native'
 import { Http, Log, Native } from '@utils'
 
 /**
@@ -183,6 +183,17 @@ export function formatLink({
       type === Native.NavPageType.RN
         ? { activityCode: link, type: 'activity' }
         : {},
+  }
+}
+
+/**
+ * 跳转到茅台专售活动的专用链接
+ */
+export function mouTaiActivityLink(link: string) {
+  return {
+    type: Native.NavPageType.RN,
+    uri: 'RNPreviewPurchase',
+    params:{ activityCode: link},
   }
 }
 

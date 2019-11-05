@@ -20,7 +20,8 @@ import BoxC from '@components/business/Content/Box'
 import DividerC from '@components/business/Content/Divider'
 import LimitTimeBuy from "@components/business/Content/LimitTimeBuy";
 import {Global} from "@utils";
-
+import { NativeModules } from 'react-native';
+const rnAppModule = NativeModules.RnAppModule// 原生模块
 const Carousel = React.memo(CarouselC)
 const AdTitle = React.memo(AdTitleC)
 const ProductList = React.memo(ProductListC)
@@ -46,7 +47,6 @@ export function formatFloorData(
         ele.img ||
         (ele.templateDetailVOList && ele.templateDetailVOList.length > 0)
     )
-
   // step 3: 整合成组件
   let result = []
   let i = 0
@@ -66,7 +66,7 @@ export function formatFloorData(
           data: floor.templateDetailVOList.map(ele => ({
             key: ele.id,
             image: ele.imgUrl,
-            link: CMSServices.formatLink(ele),
+            link: ele.name && ele.name.indexOf("茅台") != -1  ? CMSServices.mouTaiActivityLink(ele.name) : CMSServices.formatLink(ele),
           })),
         },
       })
@@ -113,7 +113,6 @@ export function formatFloorData(
           i += 2
           continue
         }
-
         result.push({
           key: floor.id,
           component: AdSingle,
@@ -129,7 +128,7 @@ export function formatFloorData(
           ],
           props: {
             image: imgObj.imgUrl,
-            link: CMSServices.formatLink(imgObj),
+            link: imgObj.name && imgObj.name.indexOf("茅台") != -1  ? CMSServices.mouTaiActivityLink(imgObj.name) : CMSServices.formatLink(imgObj),
           },
         })
       } else if (floor.subType === 2) {

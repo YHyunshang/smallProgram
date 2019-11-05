@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-21 21:04:07
+ * @LastEditTime: 2019-11-05 10:43:08
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
@@ -135,7 +135,13 @@ export default class ProductDetailPage extends React.Component {
     this.posterModal.showPosterModal()
     this.sharePoster(productParams)
   }
-
+  handleMaota() {
+    Native.navigateTo({
+      type: Native.NavPageType.RN,
+      uri: 'RNPreviewPurchase',
+      params: {activityCode: '茅台-NS7419983'}
+    })
+  }
   /**
    * @description: 点击相似商品列表跳转至商品详情
    */
@@ -370,6 +376,14 @@ export default class ProductDetailPage extends React.Component {
               <View style={styles.goodsDetail}>
                 <Text style={styles.goodsDetailTitle}>商品详情</Text>
               </View>
+              {/* <TouchableOpacity
+                style={styles.shareTouchableOpacity}
+                activeOpacity={0.95}
+                onPress={() => {
+                  this.handleMaota()
+                }} >
+                <Icon name='share' size={18} color="#4D4D4D" />
+              </TouchableOpacity> */}
               <View style={styles.imagesContent}>
                 {goodsImgList}
                 {shopImgList}

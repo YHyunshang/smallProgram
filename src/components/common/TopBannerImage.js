@@ -1,20 +1,20 @@
 /*
- * @Description:PreloadingImage
+ * @Description:TopBannerImage
  * @Company: yh
  * @Author: yuwen.liu
  * @Date: 2019-08-29 11:25:46
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-31 19:59:34
+ * @LastEditTime: 2019-11-05 16:49:07
  */
 import React, {Component} from 'react'
-import {StyleSheet, View, Image} from 'react-native'
+import {StyleSheet, View} from 'react-native'
 import PropTypes from 'prop-types'
 import {placeholderProduct} from '@const/resources'
-import FitImage from 'react-native-fit-image'
+import FastImage from 'react-native-fast-image'
 /**
- * 自定义图片
+ * 渲染顶部banner图片
  */
-export default class PreloadingImage extends Component {
+export default class TopBannerImage extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -36,19 +36,18 @@ export default class PreloadingImage extends Component {
     }
 
     render() {
-      const {uri, defaultImage, errImage, style, sourceType} = this.props
+      const {uri, defaultImage, errImage, style} = this.props
       let source = {uri}
       if (this.state.type === 1) {
         source = errImage
       }
       return (
-        <View style={[sourceType ? styles.imgDefault : styles.container]}>
-          <FitImage
-            // indicator={ sourceType ? true : false}
+        <View style={styles.container}>
+          <FastImage
             indicator={false}
+            style={[style]}
             source={source}
-            resizeMode="cover"
-            style={[sourceType ? style : '']}
+            resizeMode={FastImage.resizeMode.contain}
             onError={(error) => {
               this.setState({
                 type: 1
@@ -60,18 +59,21 @@ export default class PreloadingImage extends Component {
               })
             }}
           />
-          {this.state.isLoadComplete ? null : <Image style={[styles.imgDefault, style, styles.imgPosition]} source={defaultImage} resizeMode="contain"/> }
+          {this.state.isLoadComplete ? null : <FastImage style={[styles.imgDefault]} source={defaultImage} resizeMode={FastImage.resizeMode.contain}/> }
         </View>
       )
     }
 }
 const styles = StyleSheet.create({
   container: {
-    width: '100%'
+    width: '100%',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   imgDefault: {
-    width: 150,
-    height: 150
+    width: 300,
+    height: 300
   },
   imgPosition: {
     overflow: 'hidden',
