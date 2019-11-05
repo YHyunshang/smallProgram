@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-05 14:38:32
+ * @LastEditTime: 2019-11-05 20:21:17
  */
 import {Native} from '@utils'
 import {noStore} from '@const/resources'
@@ -60,11 +60,12 @@ export default class StoreModal extends Component {
           }
         </View>
       </View>
-    )) : <View style={styles.noStoreWrapper}>
-      <Image style={styles.noStoreImage} source={noStore} resizeMode="contain"/>
-      <Text style={styles.noStoteText}>暂无可预约门店</Text>
-      <Text style={styles.seeOtherText}>看看其他的吧</Text>
-    </View>
+    )) : null
+    // )) : <View style={styles.noStoreWrapper}>
+    //   <Image style={styles.noStoreImage} source={noStore} resizeMode="contain"/>
+    //   <Text style={styles.noStoteText}>暂无可预约门店</Text>
+    //   <Text style={styles.seeOtherText}>看看其他的吧</Text>
+    // </View>
     return (
       <CommonModal ref={ref => this.commonModal = ref} modalBoxHeight={424} modalBoxWidth={325}>
         <ScrollView

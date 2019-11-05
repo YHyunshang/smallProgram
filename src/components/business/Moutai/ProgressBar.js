@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-07 15:02:09
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-31 16:33:16
+ * @LastEditTime: 2019-11-05 20:31:28
  */
 import React, {Component} from 'react'
 import LinearGradient from 'react-native-linear-gradient'
@@ -33,8 +33,10 @@ export default class ProgressBar extends Component {
         startColor = '#FF5333'
         endColor = '#EFC5A6'
       } else {
-        if (Number(saleNum) >= 5) {
+        if (Number(saleNum) >= 5 && Number(saleNum) <= 100) {
           showText = `剩余${saleNum}%`
+        } else if (Number(saleNum) > 100) {
+          showText = '剩余100%'
         } else {
           showText = `不足${saleNum}%`
           textColor = '#FF5333'
