@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-05 15:13:22
+ * @LastEditTime: 2019-11-05 16:19:06
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -12,7 +12,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import {Native, Img} from '@utils'
 import styles from './PreviewPurchase.styles'
 import {yellowWarn, soldOutDefault, noActivity} from '@const/resources'
-import PreloadingImage from '../../components/common/PreloadingImage'
+import TopBannerImage from '../../components/common/TopBannerImage'
 import ProgressBar from '../../components/business/Moutai/ProgressBar'
 import OperateNumber from '../../components/business/Moutai/OperateNumber'
 import StoreModal from '../../components/business/Moutai/StoreModal'
@@ -264,7 +264,7 @@ export default class PreviewPurchase extends React.Component {
                   showsVerticalScrollIndicator={false}
                 >
                   <View style={styles.headBannerImage}>
-                    <PreloadingImage style={styles.headBannerImage} sourceType={0} uri={Img.loadRatioImage(exchangeInfoVO.integralExchangeUrl, Img.FullWidth)}></PreloadingImage>
+                    <TopBannerImage style={styles.headBannerImage} uri={Img.loadRatioImage(exchangeInfoVO.integralExchangeUrl, Img.FullWidth)}></TopBannerImage>
                   </View>
                   <View style={styles.headBanner}>
                     {
