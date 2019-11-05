@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-07 15:02:09
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-30 15:01:24
+ * @LastEditTime: 2019-11-06 00:31:21
  */
 import React, {Component} from 'react'
 import {
@@ -21,7 +21,8 @@ export default class OperateNumber extends Component {
     super(props)
     this.state = {
       numberText: 1,
-      iconColor: '#666666'
+      addIconColor: '#666666',
+      minIconColor: '#666666'
     }
   }
   componentDidMount() {
@@ -35,12 +36,16 @@ export default class OperateNumber extends Component {
     let {numberText} = this.state
     const {availableQuantity, onAdd} = this.props
     if (Number(numberText) >= Number(availableQuantity)) {
-      this.setState({iconColor: '#CCCCCC'})
+      this.setState({addIconColor: '#CCCCCC'})
       rnAppModule.showToast('您已超出可购买数量', '0')
       return false
     } else {
       numberText++
-      this.setState({numberText, iconColor: '#666666'})
+      if (Number(numberText) >= Number(availableQuantity)) {
+        this.setState({numberText, addIconColor: '#CCCCCC'})
+      } else {
+        this.setState({numberText, addIconColor: '#666666', minIconColor: '#666666'})
+      }
     }
     onAdd(numberText)
   }
@@ -54,31 +59,34 @@ export default class OperateNumber extends Component {
       numberText--
       this.setState({numberText})
     }
+    if (numberText == 1) {
+      this.setState({minIconColor: '#CCCCCC'})
+    }
     if (Number(numberText) < Number(availableQuantity)) {
-      this.setState({iconColor: '#666666'})
+      this.setState({addIconColor: '#666666'})
     }
     onMin(numberText)
   }
   render() {
-    const {numberText, iconColor} = this.state
+    const {numberText, addIconColor, minIconColor} = this.state
     return (
       <View style={styles.container}>
         <TouchableOpacity
-          style={styles.shareTouchableOpacity}
+          style={styles.operateButton}
           activeOpacity={0.95}
           onPress={() => {
             this.handleMin()
           }} >
-          <Icon name='minus' size={15} color="#CCCCCC" />
+          <Icon name='minus' size={15} color={Number(this.state.numberText) <= 1 ? '#CCCCCC' : minIconColor } />
         </TouchableOpacity>
         <Text style={styles.numberText}>{numberText}</Text>
         <TouchableOpacity
-          style={styles.shareTouchableOpacity}
+          style={styles.operateButton}
           activeOpacity={0.95}
           onPress={() => {
             this.handleAdd()
           }} >
-          <Icon name='plus' size={15} color={iconColor} />
+          <Icon name='plus' size={15} color={Number(this.state.numberText) >= Number(this.props.availableQuantity) ? '#CCCCCC' : addIconColor} />
         </TouchableOpacity>
       </View>
     )
@@ -95,6 +103,13 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     borderWidth: 1,
     borderColor: '#CCCCCC'
+  },
+  operateButton: {
+    width: 30,
+    height: 30,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   symbolText: {
     fontSize: 20,

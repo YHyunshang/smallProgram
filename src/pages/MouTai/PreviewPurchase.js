@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-05 21:50:51
+ * @LastEditTime: 2019-11-06 00:39:53
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -84,6 +84,7 @@ export default class PreviewPurchase extends React.Component {
           this.setState(
             {
               exchangeInfoVO: data,
+              buyQuantity: data.availableQuantity,
               isActivity: data.isActivity,
               activityCode: data.activityCode
             }
@@ -213,14 +214,18 @@ export default class PreviewPurchase extends React.Component {
   /**
    * @description: 增加预定数量
    */
-  handleAddNumber=(number) => {
-    this.setState({buyQuantity: number})
+  handleAddNumber=(buyQuantity) => {
+    setTimeout(() => {
+      this.setState({buyQuantity})
+    }, 100)
   }
   /**
    * @description: 减少预定数量
    */
   handleMinNumber=(buyQuantity) => {
-    this.setState({buyQuantity})
+    setTimeout(() => {
+      this.setState({buyQuantity})
+    }, 100)
   }
   /**
    * @description: 可预约门店弹窗
