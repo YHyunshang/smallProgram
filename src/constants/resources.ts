@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-09-06 13:54:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-04 22:08:51
+ * @LastEditTime: 2019-11-05 14:16:34
  */
 import {Platform} from 'react-native'
 
@@ -138,5 +138,8 @@ export const soldOutDefault =isAndroid
     ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/sold-out-default.png' }
     : require('@img/sold-out-default.png')
 export const noActivity =isAndroid
-    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/sold-out-default.png' }
+    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/no-activity.png' }
     : require('@img/no-activity.png')
+export const noStore =isAndroid
+    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/no-store.png' }
+    : require('@img/no-store.png')

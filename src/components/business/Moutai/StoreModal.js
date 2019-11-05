@@ -4,14 +4,14 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-04 15:51:43
+ * @LastEditTime: 2019-11-05 14:38:32
  */
 import {Native} from '@utils'
+import {noStore} from '@const/resources'
 import React, {Component} from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import CommonModal from '../../common/CommonModal'
-import {StyleSheet, View, Text, ScrollView, TouchableOpacity, NativeModules} from 'react-native'
-const rnAppModule = NativeModules.RnAppModule// 原生模块
+import {StyleSheet, View, Text, Image, ScrollView, TouchableOpacity} from 'react-native'
 /**
  * 弹出层
  */
@@ -49,18 +49,22 @@ export default class StoreModal extends Component {
   render() {
     const {storeList} = this.props
     // 预约门店列表
-    const storeListWrapper = storeList && storeList.map((item, cityIndex) => (
+    const storeListWrapper = storeList && storeList.length > 0 ? storeList.map((item, cityIndex) => (
       <View key={cityIndex}>
         <Text style={styles.cityText}>{item.cityName}</Text>
         <View style={styles.cityText}>
           {
-            item.resActivityStoreVOList && item.resActivityStoreVOList.map((storeItem, storeIndex) => (
+            item.resActivityStoreVOList && item.resActivityStoreVOList.length > 0 && item.resActivityStoreVOList.map((storeItem, storeIndex) => (
               <Text key={storeIndex} style={styles.addressText}>{storeItem.storeName}</Text>
             ))
           }
         </View>
       </View>
-    ))
+    )) : <View style={styles.noStoreWrapper}>
+      <Image style={styles.noStoreImage} source={noStore} resizeMode="contain"/>
+      <Text style={styles.noStoteText}>暂无可预约门店</Text>
+      <Text style={styles.seeOtherText}>看看其他的吧</Text>
+    </View>
     return (
       <CommonModal ref={ref => this.commonModal = ref} modalBoxHeight={424} modalBoxWidth={325}>
         <ScrollView
@@ -120,5 +124,26 @@ const styles = StyleSheet.create({
   knowText: {
     fontSize: 17,
     color: '#FFFFFF'
+  },
+  noStoreWrapper: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  noStoreImage: {
+    width: 150,
+    height: 150,
+    marginTop: 30
+  },
+  noStoteText: {
+    fontSize: 16,
+    textAlign: 'center',
+    color: '#4A4A4A'
+  },
+  seeOtherText: {
+    fontSize: 14,
+    textAlign: 'center',
+    marginTop: 16,
+    color: '#A4A4B4'
   }
 })

@@ -4,13 +4,14 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-04 15:51:23
+ * @LastEditTime: 2019-11-05 14:59:06
  */
 import {Native} from '@utils'
+import {noStore} from '@const/resources'
 import React, {Component} from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import CommonModal from '../../common/CommonModal'
-import {StyleSheet, View, Text, ScrollView, TouchableOpacity} from 'react-native'
+import {StyleSheet, View, Text, ScrollView, Image, TouchableOpacity} from 'react-native'
 /**
  * 弹出层
  */
@@ -42,14 +43,18 @@ export default class RuleModal extends Component {
   componentDidMount() {
   }
   render() {
-    // const {ruleList} = this.state
     const {ruleList} = this.props
     // 规则详细
-    const ruleListWrapper = ruleList && ruleList.map((item, index) => (
+    const ruleListWrapper = ruleList && ruleList.length > 0 ? ruleList.map((item, index) => (
       <View key={index}>
         <Text style={styles.ruleText}>{item}</Text>
       </View>
-    ))
+    )) :
+      <View style={styles.noRuleWrapper}>
+        <Image style={styles.noRuleImage} source={noStore} resizeMode="contain"/>
+        <Text style={styles.noRuleText}>暂无规则</Text>
+        <Text style={styles.seeOtherText}>看看其他的吧</Text>
+      </View>
     return (
       <CommonModal ref={ref => this.commonModal = ref} modalBoxHeight={481} modalBoxWidth={325}>
         <View style={styles.ruleTitleWrapper}><Text style={styles.ruleTitle}>规则说明</Text></View>
@@ -116,5 +121,26 @@ const styles = StyleSheet.create({
   knowText: {
     fontSize: 17,
     color: '#FFFFFF'
+  },
+  noRuleWrapper: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  noRuleImage: {
+    width: 150,
+    height: 150,
+    marginTop: 30
+  },
+  noRuleText: {
+    fontSize: 16,
+    textAlign: 'center',
+    color: '#4A4A4A'
+  },
+  seeOtherText: {
+    fontSize: 14,
+    textAlign: 'center',
+    marginTop: 16,
+    color: '#A4A4B4'
   }
 })

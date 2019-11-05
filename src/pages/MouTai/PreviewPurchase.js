@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-05 13:50:35
+ * @LastEditTime: 2019-11-05 15:13:22
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -25,7 +25,7 @@ export default class PreviewPurchase extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isActivity: true, // 是否有茅台活动
+      isActivity: false, // 是否有茅台活动
       isRuleFirst: true, // 是否是第一次请求规则接口
       isStoreFirst: true, // 是否是第一次请求预约门店接口
       activityCode: '', // 活动code
@@ -57,7 +57,6 @@ export default class PreviewPurchase extends React.Component {
     const {activityCode} = this.props
     let productCode = activityCode && activityCode.split('-')[1]
     this.setState({productCode})
-    this.animate()
     this.init()
     // 规则说明弹窗事件监听
     this.nativeSubscription = subscriptRuleModalChange(
@@ -87,6 +86,7 @@ export default class PreviewPurchase extends React.Component {
               activityCode: data.activityCode
             }
           )
+          this.animate()
           if (data.isActivity) {
             Native.setActivityPageTitle('setActivityPageTitle', JSON.stringify(params))
           } else {
@@ -143,6 +143,7 @@ export default class PreviewPurchase extends React.Component {
     const {exchangeInfoVO} = this.state
     let monthTotalNumber = exchangeInfoVO.monthTotalNumber ? exchangeInfoVO.monthTotalNumber : 3
     let availablePercent = exchangeInfoVO.availableQuantity / monthTotalNumber
+    // rnAppModule.showToast(exchangeInfoVO.availableQuantity, '0')
     availablePercent = Math.round(availablePercent * 100)
     if (availablePercent != 0) {
       let interval = setInterval(() => {
