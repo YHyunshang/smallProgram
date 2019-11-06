@@ -4,12 +4,13 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-30 09:37:31
+ * @LastEditTime: 2019-11-06 16:12:57
  */
 import React from 'react'
 import {ScrollView, View, Text, TouchableOpacity, NativeModules} from 'react-native'
 import Icon from '../../components/Icon'
 import {Native} from '@utils'
+import Loading from '../../components/common/Loading'
 import styles from './HelpFeedBackQuestion.styles'
 import {getTypeList} from '../../services/feedback'
 const rnAppModule = NativeModules.RnAppModule// 原生模块
@@ -35,18 +36,18 @@ export default class HelpFeedBackPage extends React.Component {
    * @description: 查询问题类型列表
    */
   getTypeList = () => {
+    this.loading.showLoading()
     getTypeList({})
       .then(({result: data, message, code}) => {
         if (code === 200000 && data) {
-          this.setState(
-            {
-              questionList: data
-            }
-          )
+          this.setState({questionList: data})
+          this.loading.hideLoading()
         } else {
+          this.loading.hideLoading()
           rnAppModule.showToast(message, '0')
         }
       }).catch(({message}) => {
+        this.loading.hideLoading()
         rnAppModule.showToast(message, '0')
       })
   }
@@ -79,6 +80,7 @@ export default class HelpFeedBackPage extends React.Component {
           </View>
           {questionItems}
         </ScrollView>
+        <Loading ref={ref => this.loading = ref}></Loading>
       </View>
     )
   }

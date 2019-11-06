@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-06 16:01:07
+ * @LastEditTime: 2019-11-06 16:07:32
  */
 import React from 'react'
 import {View, ScrollView, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -61,6 +61,7 @@ export default class QualificationsQuery extends React.Component {
   componentDidMount() {
     Native.setTitle('资格查询')
     this.getIntegralList()
+    this.loading.hideLoading()
   }
   /**
    * @msg:查询资格查询积分列表

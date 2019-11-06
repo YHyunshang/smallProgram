@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-06 15:58:45
+ * @LastEditTime: 2019-11-06 16:08:18
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -131,6 +131,7 @@ export default class PreviewPurchase extends React.Component {
             uri: 'D001,D001',
             params: {preOrderNo: data.preOrderNo}
           })
+          this.loading.hideLoading()
         } else {
           rnAppModule.showToast(message, '0')
           this.loading.hideLoading()
