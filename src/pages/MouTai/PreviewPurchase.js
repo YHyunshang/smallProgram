@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-06 15:10:11
+ * @LastEditTime: 2019-11-06 15:58:45
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -74,7 +74,7 @@ export default class PreviewPurchase extends React.Component {
    * @msg:获取预购活动
    */
   getPurchaseActivity = (productCode, shopCode) => {
-    // this.loading.showLoading()
+    this.loading.showLoading()
     getPurchaseActivity(productCode, shopCode)
       .then(({result: data, message, code}) => {
         if (code === 200000 && data) {
@@ -87,7 +87,7 @@ export default class PreviewPurchase extends React.Component {
               activityCode: data.activityCode
             }
           )
-          // this.loading.dismissLoading()
+          this.loading.hideLoading()
           this.animate()
           if (data.isActivity) {
             Native.setActivityPageTitle('setActivityPageTitle', JSON.stringify(params))
@@ -96,11 +96,11 @@ export default class PreviewPurchase extends React.Component {
           }
         } else {
           rnAppModule.showToast(message, '0')
-          // this.loading.dismissLoading()
+          this.loading.hideLoading()
         }
       }).catch(({message}) => {
         rnAppModule.showToast(message, '0')
-        // this.loading.dismissLoading()
+        this.loading.hideLoading()
       })
   }
   /**
@@ -121,6 +121,7 @@ export default class PreviewPurchase extends React.Component {
       shopCode: this.state.shopCode,
       wantDistributionTime: ''
     }
+    this.loading.showLoading()
     handleOrderAmount(params)
       .then(({result: data, message, code}) => {
         if (code === 200000 && data) {
@@ -132,9 +133,11 @@ export default class PreviewPurchase extends React.Component {
           })
         } else {
           rnAppModule.showToast(message, '0')
+          this.loading.hideLoading()
         }
       }).catch(({message}) => {
         rnAppModule.showToast(message, '0')
+        this.loading.hideLoading()
       })
   }
   componentWillUnmount() {
@@ -173,15 +176,19 @@ export default class PreviewPurchase extends React.Component {
    */
   getReservationShopList = () => {
     if (this.state.isStoreFirst) {
+      this.loading.showLoading()
       getReservationShopList(this.state.activityCode)
         .then(({result: data, message, code}) => {
           if (code === 200000 && data) {
             this.setState({storeList: data, isStoreFirst: false})
+            this.loading.hideLoading()
           } else {
             rnAppModule.showToast(message, '0')
+            this.loading.hideLoading()
           }
         }).catch(({message}) => {
           rnAppModule.showToast(message, '0')
+          this.loading.hideLoading()
         })
     }
   }
@@ -191,16 +198,19 @@ export default class PreviewPurchase extends React.Component {
   getRuleDescription = () => {
     this.ruleModal.showModal()
     if (this.state.isRuleFirst) {
+      this.loading.showLoading()
       getRuleDescription(this.state.activityCode)
         .then(({result: data, message, code}) => {
           if (code === 200000 && data) {
-            this.setState({ruleList: data, isRuleFirst: false}
-            )
+            this.setState({ruleList: data, isRuleFirst: false})
+            this.loading.hideLoading()
           } else {
             rnAppModule.showToast(message, '0')
+            this.loading.hideLoading()
           }
         }).catch(({message}) => {
           rnAppModule.showToast(message, '0')
+          this.loading.hideLoading()
         })
     }
   }

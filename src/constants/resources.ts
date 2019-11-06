@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-09-06 13:54:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-05 14:16:34
+ * @LastEditTime: 2019-11-06 15:16:27
  */
 import {Platform} from 'react-native'
 
@@ -143,3 +143,6 @@ export const noActivity =isAndroid
 export const noStore =isAndroid
     ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/no-store.png' }
     : require('@img/no-store.png')
+export const greenLoading =isAndroid
+    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/green-loading.png' }
+    : require('@img/green-loading.png')

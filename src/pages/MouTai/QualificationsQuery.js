@@ -4,13 +4,14 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-05 16:56:58
+ * @LastEditTime: 2019-11-06 16:01:07
  */
 import React from 'react'
 import {View, ScrollView, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
 import {Native} from '@utils'
 import styles from './QualificationsQuery.styles'
 import {greenWarn} from '@const/resources'
+import Loading from '../../components/common/Loading'
 import {getIntegralList} from '../../services/mouTaiActivity'
 const rnAppModule = NativeModules.RnAppModule// 原生模块
 export default class QualificationsQuery extends React.Component {
@@ -66,19 +67,19 @@ export default class QualificationsQuery extends React.Component {
    */
   getIntegralList = () => {
     const {activityCode} = this.props
+    this.loading.showLoading()
     getIntegralList(activityCode)
       .then(({result: data, message, code}) => {
         if (code === 200000 && data) {
-          this.setState(
-            {
-              qualificationInfo: data
-            }
-          )
+          this.setState({qualificationInfo: data})
+          this.loading.hideLoading()
         } else {
           rnAppModule.showToast(message, '0')
+          this.loading.hideLoading()
         }
       }).catch(({message}) => {
         rnAppModule.showToast(message, '0')
+        this.loading.hideLoading()
       })
   }
   render() {
@@ -168,6 +169,7 @@ export default class QualificationsQuery extends React.Component {
             </View>
           </View>
         </ScrollView>
+        <Loading ref={ref => this.loading = ref}></Loading>
       </View>
     )
   }

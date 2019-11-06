@@ -1,19 +1,21 @@
 /*
- * @Description: loading组件
+ * @Description: Loading组件
  * @Company: yh
  * @Author: yuwen.liu
  * @Date: 2019-07-31 10:28:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-07 15:09:04
+ * @LastEditTime: 2019-11-06 15:52:36
  */
 
 import React from 'react'
-import {ActivityIndicator, StyleSheet, Text, View, Dimensions} from 'react-native'
+import {greenLoading} from '@const/resources'
+import {StyleSheet, View, Dimensions, Animated, Easing} from 'react-native'
 let width = Dimensions.get('window').width
 let height = Dimensions.get('window').height
 export default class Loading extends React.Component {
   constructor(props) {
     super(props)
+    this.rotateValue = new Animated.Value(0)
     this.minShowingTime = 200
     this.state = {
       isLoading: false,
@@ -43,6 +45,9 @@ export default class Loading extends React.Component {
       }
     }
   }
+  componentDidMount() {
+    this.rotate()
+  }
     /**
      * @description: 展示loading图标
      */
@@ -52,22 +57,37 @@ export default class Loading extends React.Component {
     /**
      * @description: 隐藏loading图标
      */
-    dismissLoading = () => {
+    hideLoading = () => {
       this.state.setIsLoading(false)
     }
-    render() {
-      if (!this.state.isLoading) {
-        return null
-      }
-      return (
-        <View style={styles.loadingContent}>
-          <View style={styles.loading}>
-            <ActivityIndicator color="white"/>
-            <Text style={styles.loadingTitle}>{this.props.title}...</Text>
-          </View>
-        </View>
-      )
-    }
+    /**
+     * @description:旋转方法
+     */
+     rotate = () => {
+       this.rotateValue.setValue(0)
+       Animated.timing(this.rotateValue, {
+         toValue: 1, // 最终值 为1，这里表示最大旋转 360度
+         duration: 1000,
+         easing: Easing.linear
+       }).start(() => this.rotate())
+     }
+     render() {
+       const rotate = this.rotateValue.interpolate({
+         inputRange: [0, 1], // 输入值
+         outputRange: ['0deg', '360deg'] // 输出值
+       })
+
+       if (!this.state.isLoading) {
+         return null
+       }
+       return (
+         <View style={styles.loadingContent}>
+           <View style={styles.loading}>
+             <Animated.Image style={[styles.circle, {transform: [{rotate}]}]} source={greenLoading}/>
+           </View>
+         </View>
+       )
+     }
 }
 /**
  * @description: loading组件样式
@@ -78,23 +98,18 @@ const styles = StyleSheet.create({
     width,
     height,
     position: 'absolute',
-    zIndex: 100,
-    backgroundColor: '#10101099'
+    zIndex: 10,
+    opacity: 1,
+    backgroundColor: '#ffffff'
   },
   loading: {
-    backgroundColor: '#10101099',
-    height: 80,
-    width: 100,
-    borderRadius: 10,
+    zIndex: 101,
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'absolute',
-    top: (height - 80) / 2,
-    left: (width - 100) / 2
+    top: (height - 80) / 2
   },
-  loadingTitle: {
-    marginTop: 10,
-    fontSize: 14,
-    color: 'white'
+  circle: {
+    width: 41,
+    height: 41
   }
 })
