@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-31 10:28:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-06 16:44:51
+ * @LastEditTime: 2019-11-06 20:35:03
  */
 import React from 'react'
 import PropTypes from 'prop-types'
@@ -120,7 +120,7 @@ export default class DetailCartAnimated extends React.Component {
     // 将减号在X轴向左偏移
     const translateX = this.state.animatedValue.interpolate({
       inputRange: [0, 1],
-      outputRange: [50, 0] // 线性插值，0对应50,1对应0
+      outputRange: [49, 0] // 线性插值，0对应49,1对应0
     })
     // 将数量文本在x轴向左偏移
     const cartNumberTranslateX = this.state.animatedValue.interpolate({

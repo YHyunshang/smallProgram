@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-05 10:43:08
+ * @LastEditTime: 2019-11-06 20:04:57
  */
 import React from 'react'
 import {ScrollView, View, Text, TouchableOpacity, NativeModules} from 'react-native'
@@ -172,7 +172,7 @@ export default class ProductDetailPage extends React.Component {
       this.loadingModal.showLoading()
       getPosterImgUrl(params)
         .then(({result: data, message, code}) => {
-          this.loadingModal.dismissLoading()
+          this.loadingModal.hideLoading()
           if (code === 200000 && data) {
             this.setState({imgUrl: data, isFirst: false})
           } else {
@@ -180,7 +180,7 @@ export default class ProductDetailPage extends React.Component {
           }
         }
         ).catch(({message}) => {
-          this.loadingModal.dismissLoading()
+          this.loadingModal.hideLoading()
           rnAppModule.showToast(message, '0')
         })
     }
@@ -377,14 +377,6 @@ export default class ProductDetailPage extends React.Component {
               <View style={styles.goodsDetail}>
                 <Text style={styles.goodsDetailTitle}>商品详情</Text>
               </View>
-              {/* <TouchableOpacity
-                style={styles.shareTouchableOpacity}
-                activeOpacity={0.95}
-                onPress={() => {
-                  this.handleMaota()
-                }} >
-                <Icon name='share' size={18} color="#4D4D4D" />
-              </TouchableOpacity> */}
               <View style={styles.imagesContent}>
                 {goodsImgList}
                 {shopImgList}
@@ -395,7 +387,6 @@ export default class ProductDetailPage extends React.Component {
           <PosterModal modalBoxHeight={534} imgUrl={imgUrl} ref={ref => this.posterModal = ref}/>
           {
             <Loading
-              title={'海报生成中'}
               ref={ref => this.loadingModal = ref}
             />
           }

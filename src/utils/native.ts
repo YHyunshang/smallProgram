@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-12 11:25:52
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-04 22:02:00
+ * @LastEditTime: 2019-11-06 19:49:43
  */
 import {
   NativeModules,
@@ -59,26 +59,26 @@ export async function navigateTo({ type, uri, params, title }: Navigation) {
     pageUri,
     JSON.stringify({ params: { ...params, title } })
   )
-if(uri==='RNPreviewPurchase'){//如果是茅台专售页面再需判断是否登录，登录成功才跳转至茅台购买页面，否则跳转至登录页面
-  NativeModules.RnAppModule.verifyIsOnlineCallback(
-    (errMsg, responseData) => {
-      if (responseData=='1') {//返回1表示已登录，0表示未登录
-        return navigate(
-          pageType,
-          pageUri,
-          JSON.stringify({ params: { ...params, title: title || '茅台专售' } })
-        )
+  if(uri==='RNPreviewPurchase'){//如果是茅台专售页面再需判断是否登录，登录成功才跳转至茅台购买页面，否则跳转至登录页面
+    NativeModules.RnAppModule.verifyIsOnlineCallback(
+      (errMsg, responseData) => {
+        if (responseData=='1') {//返回1表示已登录，0表示未登录
+          return navigate(
+            pageType,
+            pageUri,
+            JSON.stringify({ params: { ...params, title: title || '茅台专售' } })
+          )
+        }
       }
-    }
-  )
-}
-else{
-  return navigate(
-    pageType,
-    pageUri,
-    JSON.stringify({ params: { ...params, title: title || '永辉买菜' } })
-  )
-}
+    )
+  }
+  else{
+    return navigate(
+      pageType,
+      pageUri,
+      JSON.stringify({ params: { ...params, title: title || '永辉买菜' } })
+    )
+  }
 }
 
 /**

@@ -4,13 +4,12 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-21 21:03:14
+ * @LastEditTime: 2019-11-06 20:16:30
  */
 
 import React from 'react'
 import {Img} from '@utils'
 import {Text, View, FlatList, TouchableOpacity} from 'react-native'
-import PreloadingImage from '../../common/PreloadingImage'
 import DetailCartAnimated from '../../business/Animated/DetailCartAnimated'
 // import Icon from '../Icon'
 import Tag from './Tag'
@@ -26,11 +25,6 @@ export default class SimilarGoods extends React.Component {
       similarProduct: []
     }
   }
-
-  componentDidMount() {
-  }
-
-  componentWillUnmount() {}
   componentWillReceiveProps(nextProps) {
     this.setState({
       similarProduct: nextProps.similarProduct
