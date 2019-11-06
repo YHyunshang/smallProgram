@@ -7,7 +7,7 @@
  * @LastEditTime: 2019-11-05 10:43:08
  */
 import React from 'react'
-import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
+import {ScrollView, View, Text, TouchableOpacity, NativeModules} from 'react-native'
 import Icon from '../../components/Icon'
 import {transPenny} from '../../utils/FormatUtil'
 import ShareModal from '../../components/business/ShareModal'
@@ -24,8 +24,12 @@ import SimilarGoods from '../../components/business/GoodsDetail/SimilarGoods'
 import {productPlace, productSpecific} from '@const/resources'
 import Tag from '../../components/business/GoodsDetail/Tag'
 import BuyLimit from '../../components/business/GoodsDetail/BuyLimit'
+import {placeholderProduct} from '../../constants/resources'
+import FastImage from 'react-native-fast-image'
+
 const rnAppModule = NativeModules.RnAppModule// 原生模块
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
+
 export default class ProductDetailPage extends React.Component {
   constructor(props) {
     super(props)
@@ -44,9 +48,7 @@ export default class ProductDetailPage extends React.Component {
         {id: 1, name: '商品'},
         {id: 2, name: '详情'}
       ],
-      imgData: [{
-        url: 'https://static-yh.yonghui.cn/app/static/images/product-default.png'// 默认占位图
-      }],
+      imgData: [placeholderProduct], // 默认占位图
       productImgList: [], // 商品详情图文
       shopUrl: [], // 商家文描
       similarProduct: [],
@@ -291,10 +293,9 @@ export default class ProductDetailPage extends React.Component {
                     </View>
                   )
                 }
-                {
-                  imgData ? <GoodsDetailSwiper imgData={imgData}/>
-                    :
-                    <Image style={styles.defaultImage} source={{uri: 'https://static-yh.yonghui.cn/app/static/images/product-default.png'}} resizeMode="contain"/>
+                {imgData
+                  ? <GoodsDetailSwiper imgData={imgData}/>
+                  : <FastImage style={styles.defaultImage} source={placeholderProduct} resizeMode={FastImage.resizeMode.contain}/>
                 }
               </View>
             </View>
@@ -343,7 +344,7 @@ export default class ProductDetailPage extends React.Component {
                 {
                   goodsInfo.productSpecific ?
                     <View style={styles.goodsQualityItemFlex}>
-                      <Image source={productSpecific} style={{width: 14, height: 14}}></Image>
+                      <FastImage source={productSpecific} style={{width: 14, height: 14}} />
                       <Text style={styles.goodsQualityValue}>{goodsInfo.productSpecific}</Text>
                     </View>
                     : null
@@ -359,7 +360,7 @@ export default class ProductDetailPage extends React.Component {
                 {
                   goodsInfo.originPlace ?
                     <View style={styles.goodsQualityItemFlex}>
-                      <Image source={productPlace} style={{width: 14, height: 14}}></Image>
+                      <FastImage source={productPlace} style={{width: 14, height: 14}} />
                       <Text style={styles.goodsQualityValue}>{goodsInfo.originPlace}</Text>
                     </View>
                     : null
@@ -367,7 +368,7 @@ export default class ProductDetailPage extends React.Component {
               </View>
             </View>
             {
-              similarProduct ? <SimilarGoods similarProduct={similarProduct} jumpGoodsDetail={this.jumpGoodsDetail}> ></SimilarGoods>
+              similarProduct ? <SimilarGoods similarProduct={similarProduct} jumpGoodsDetail={this.jumpGoodsDetail} />
                 : null
             }
             <View onLayout={event => {

@@ -16,7 +16,7 @@ import DetailCartAnimated from '../../business/Animated/DetailCartAnimated'
 import Tag from './Tag'
 import {transPenny} from '../../../utils/FormatUtil'
 import styles from './SimilarGoods.styles'
-const cols = 2 // 列数
+import ProductImage from '../ProductImage'
 // const productActivityLabel = {activityBeginTime: '2019-09-29 00:00:00', activityEndTime: '2019-09-29 22:20:40', activityName: '限时抢购活动', discountPrice: 20, labels: ['特价', '满减', '限时抢购'], promotionCode: 'K001', promotionType: 0, promotionTypeName: '限时抢购', ruleType: 0, salesRatio: '45%'}
 // 商品购物车图标
 export default class SimilarGoods extends React.Component {
@@ -76,11 +76,7 @@ export default class SimilarGoods extends React.Component {
               </View>
             )
           }
-          <PreloadingImage
-            style={styles.similarGoodsImg}
-            sourceType={1}
-            uri={Img.loadRatioImage(item.mainUrl.url, 150)}
-          ></PreloadingImage>
+          <ProductImage source={{ uri: Img.loadRatioImage(item.mainUrl.url, 200) }} size={150} />
         </View>
         <View style={styles.goodsTags}>
           {
@@ -100,9 +96,9 @@ export default class SimilarGoods extends React.Component {
         <Text numberOfLines={1} style={styles.goodsDesc}>
           {item.productName}
         </Text>
-        {item.promotionPrice ? (
-          <Text style={styles.throughLinePrice}>¥{transPenny(item.price)}</Text>
-        ) : null}
+        <Text style={styles.throughLinePrice}>
+          {item.promotionPrice ? `¥${transPenny(item.price)}` : ''}
+        </Text>
       </TouchableOpacity>
       <View style={styles.goodsPriceFlex}>
         <View style={styles.goodsPriceWrap}>
@@ -128,10 +124,10 @@ export default class SimilarGoods extends React.Component {
         <FlatList
           data={similarProduct}
           numColumns={2}
-          numColumns={cols}
           horizontal={false}
           renderItem={this.renderData}
-        ></FlatList>
+          keyExtractor={item => item.productCode}
+        />
       </View>
     )
   }

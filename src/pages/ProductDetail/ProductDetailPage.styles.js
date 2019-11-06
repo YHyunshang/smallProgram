@@ -191,8 +191,8 @@ export default StyleSheet.create({
     marginLeft: 15
   },
   goodsDetailImage: {
-    width: '100%',
-    height: 375
+    // width: '100%',
+    // height: 375
   },
   imagesContent: {
     width: '100%',

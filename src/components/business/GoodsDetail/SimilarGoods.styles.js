@@ -39,7 +39,6 @@ export default StyleSheet.create({
   },
   similarGoodsList: {
     width: imageWidth,
-    maxHeight: 250,
     marginLeft: left,
     marginBottom: bottom,
     backgroundColor: '#FFFFFF',
@@ -48,7 +47,10 @@ export default StyleSheet.create({
   similarGoodsWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    paddingHorizontal: 10,
+    paddingTop: 10,
+    marginBottom: -3,
   },
   similarGoodsImg: {
     width: 150,
@@ -66,7 +68,8 @@ export default StyleSheet.create({
     marginLeft: 5,
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
+    minHeight: 16,
   },
   throughLinePrice: {
     marginLeft: 10,

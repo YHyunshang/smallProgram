@@ -10,8 +10,8 @@ export default StyleSheet.create({
   footerBox: {
     elevation: 1,
     backgroundColor: '#FFF',
-    shadowColor: 'rgba(0,0,0,0.1)',
-    shadowOpacity: 1,
-    shadowRadius: 10,
+    // shadowColor: 'rgba(0,0,0,0.1)',
+    // shadowOpacity: 1,
+    // shadowRadius: 10,
   },
 })
