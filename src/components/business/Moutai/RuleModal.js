@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-05 14:59:06
+ * @LastEditTime: 2019-11-06 11:14:09
  */
 import {Native} from '@utils'
 import {noStore} from '@const/resources'
@@ -20,11 +20,6 @@ export default class RuleModal extends Component {
     super(props)
     this.state = {
       show: false
-      // ruleList: [
-      //   '1. 如用户已参与营销活动或使用营销工具所获得的优惠权益进行营利或非法获利，或者永辉有合理理由怀疑用户存在不当使用优惠工具或优惠权益的，永辉将取消用户的参与资格，并有权撤销相关违规交易、收回优惠权益(含已使用及未使用)的，必要时将追究用户的法律责任。',
-      //   '2. 如用户曾经存在、出现或经永辉合理怀疑有违法违规或违背诚信信用原则的行为，用户将无法获取/使用全部或部分优惠权益，并且永辉有权追究用户的法律责任。',
-      //   '3.同一用户的认证标准：即同一登录账户、同一手机号、同一终端设备号、同一支付账户、同一收货地址、同一IP或其他合理显示同一用户的情况均视为同一用户。'
-      // ]
     }
   }
   /**
@@ -39,8 +34,6 @@ export default class RuleModal extends Component {
   handleCloseModal() {
     this.commonModal.hide()
     Native.setNavigationBarEventSwitch('navigationBarEventSwitch', JSON.stringify({swithTag: '1'}))
-  }
-  componentDidMount() {
   }
   render() {
     const {ruleList} = this.props
