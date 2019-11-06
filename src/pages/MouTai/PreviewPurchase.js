@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-06 11:20:24
+ * @LastEditTime: 2019-11-06 15:10:11
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -14,6 +14,7 @@ import styles from './PreviewPurchase.styles'
 import {transPenny} from '../../utils/FormatUtil'
 import {yellowWarn, soldOutDefault, noActivity} from '@const/resources'
 import TopBannerImage from '../../components/common/TopBannerImage'
+import Loading from '../../components/common/Loading'
 import ProgressBar from '../../components/business/Moutai/ProgressBar'
 import OperateNumber from '../../components/business/Moutai/OperateNumber'
 import StoreModal from '../../components/business/Moutai/StoreModal'
@@ -26,7 +27,7 @@ export default class PreviewPurchase extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isActivity: true, // 是否有茅台活动
+      isActivity: false, // 是否有茅台活动
       isRuleFirst: true, // 是否是第一次请求规则接口
       isStoreFirst: true, // 是否是第一次请求预约门店接口
       activityCode: '', // 活动code
@@ -38,7 +39,7 @@ export default class PreviewPurchase extends React.Component {
       storeList: [''], // 门店list
       percent: 0,
       exchangeInfoVO: {
-        integralExchangeUrl: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/head-banner.png'
+        integralExchangeUrl: ''
         // availableQuantity: 2, // 本月可预购的数量
         // monthTotalNumber: 3, // 当月最多购买数量
         // inventoryNumber: 98, // 当前库存剩余数量
@@ -73,6 +74,7 @@ export default class PreviewPurchase extends React.Component {
    * @msg:获取预购活动
    */
   getPurchaseActivity = (productCode, shopCode) => {
+    // this.loading.showLoading()
     getPurchaseActivity(productCode, shopCode)
       .then(({result: data, message, code}) => {
         if (code === 200000 && data) {
@@ -85,6 +87,7 @@ export default class PreviewPurchase extends React.Component {
               activityCode: data.activityCode
             }
           )
+          // this.loading.dismissLoading()
           this.animate()
           if (data.isActivity) {
             Native.setActivityPageTitle('setActivityPageTitle', JSON.stringify(params))
@@ -93,9 +96,11 @@ export default class PreviewPurchase extends React.Component {
           }
         } else {
           rnAppModule.showToast(message, '0')
+          // this.loading.dismissLoading()
         }
       }).catch(({message}) => {
         rnAppModule.showToast(message, '0')
+        // this.loading.dismissLoading()
       })
   }
   /**
@@ -400,24 +405,26 @@ export default class PreviewPurchase extends React.Component {
               <RuleModal ref={ref => this.ruleModal = ref} ruleList={ruleList}/>
             </LinearGradient>
             :
-            <View style={styles.noActivityWrapper}>
-              <View>
-                <Image style={styles.noActivityImage} source={noActivity} resizeMode="contain"/>
-              </View>
-              <Text style={styles.noActivityText}>活动正在筹备中…</Text>
-              <Text style={styles.noActivityOtherText}>看看其他的吧</Text>
-              <TouchableOpacity
-                style={styles.shareTouchableOpacity}
-                activeOpacity={0.95}
-                onPress={() => {
-                  this.handleGoHome()
-                }} >
-                <View style={styles.goSee}>
-                  <Text style={styles.goSeeText} >去逛逛</Text>
+            exchangeInfoVO.integralExchangeUrl ?
+              <View style={styles.noActivityWrapper}>
+                <View>
+                  <Image style={styles.noActivityImage} source={noActivity} resizeMode="contain"/>
                 </View>
-              </TouchableOpacity>
-            </View>
+                <Text style={styles.noActivityText}>活动正在筹备中…</Text>
+                <Text style={styles.noActivityOtherText}>看看其他的吧</Text>
+                <TouchableOpacity
+                  style={styles.shareTouchableOpacity}
+                  activeOpacity={0.95}
+                  onPress={() => {
+                    this.handleGoHome()
+                  }} >
+                  <View style={styles.goSee}>
+                    <Text style={styles.goSeeText} >去逛逛</Text>
+                  </View>
+                </TouchableOpacity>
+              </View> : null
         }
+        <Loading ref={ref => this.loading = ref}></Loading>
       </View>
     )
   }
