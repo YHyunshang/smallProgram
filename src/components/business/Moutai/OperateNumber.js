@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-07 15:02:09
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-06 00:31:21
+ * @LastEditTime: 2019-11-06 11:08:05
  */
 import React, {Component} from 'react'
 import {
@@ -79,7 +79,9 @@ export default class OperateNumber extends Component {
           }} >
           <Icon name='minus' size={15} color={Number(this.state.numberText) <= 1 ? '#CCCCCC' : minIconColor } />
         </TouchableOpacity>
-        <Text style={styles.numberText}>{numberText}</Text>
+        <View style={styles.numberWrapper}>
+          <Text style={styles.numberText}>{numberText}</Text>
+        </View>
         <TouchableOpacity
           style={styles.operateButton}
           activeOpacity={0.95}
@@ -101,7 +103,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
     borderRadius: 100,
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderColor: '#CCCCCC'
   },
   operateButton: {
@@ -115,6 +117,17 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#CCCCCC'
+  },
+  numberWrapper: {
+    width: 40,
+    height: 30,
+    borderLeftColor: '#CCCCCC',
+    borderRightColor: '#CCCCCC',
+    borderLeftWidth: 0.5,
+    borderRightWidth: 0.5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   numberText: {
     fontSize: 16.5,

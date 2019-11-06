@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-05 20:21:17
+ * @LastEditTime: 2019-11-06 11:13:44
  */
 import {Native} from '@utils'
 import {noStore} from '@const/resources'
@@ -20,15 +20,7 @@ export default class StoreModal extends Component {
     super(props)
     this.state = {
       show: false,
-      storeList: [
-        // {cityName: '重庆市', resActivityStoreVOList: [{storeName: '永辉超市-汉渝路店'},
-        //   {storeName: '永辉超市-石坪桥店'},
-        //   {storeName: '永辉超市-万盛区民盛店'},
-        //   {storeName: '永辉超市-泽胜广场店'},
-        //   {storeName: '永辉超市-梁平大众店'}
-        // ]},
-        // {cityName: '成都市', resActivityStoreVOList: [{storeName: '永辉超市-抚琴南路店'}, {storeName: '永辉超市-新城市广场店'}]}
-      ]
+      storeList: []
     }
   }
   /**
@@ -44,8 +36,6 @@ export default class StoreModal extends Component {
     this.commonModal.hide()
     Native.setNavigationBarEventSwitch('navigationBarEventSwitch', JSON.stringify({swithTag: '1'}))
   }
-  componentDidMount() {
-  }
   render() {
     const {storeList} = this.props
     // 预约门店列表
@@ -60,12 +50,11 @@ export default class StoreModal extends Component {
           }
         </View>
       </View>
-    )) : null
-    // )) : <View style={styles.noStoreWrapper}>
-    //   <Image style={styles.noStoreImage} source={noStore} resizeMode="contain"/>
-    //   <Text style={styles.noStoteText}>暂无可预约门店</Text>
-    //   <Text style={styles.seeOtherText}>看看其他的吧</Text>
-    // </View>
+    )) : <View style={styles.noStoreWrapper}>
+      <Image style={styles.noStoreImage} source={noStore} resizeMode="contain"/>
+      <Text style={styles.noStoteText}>暂无可预约门店</Text>
+      <Text style={styles.seeOtherText}>看看其他的吧</Text>
+    </View>
     return (
       <CommonModal ref={ref => this.commonModal = ref} modalBoxHeight={424} modalBoxWidth={325}>
         <ScrollView

@@ -4,17 +4,15 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-07 15:02:09
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-05 20:31:28
+ * @LastEditTime: 2019-11-06 11:14:59
  */
 import React, {Component} from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import {
   StyleSheet,
   Text,
-  View,
-  NativeModules
+  View
 } from 'react-native'
-const rnAppModule = NativeModules.RnAppModule// 原生模块
 export default class ProgressBar extends Component {
   constructor(props) {
     super(props)

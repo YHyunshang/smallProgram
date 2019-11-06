@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-06 00:39:53
+ * @LastEditTime: 2019-11-06 11:20:24
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -36,6 +36,7 @@ export default class PreviewPurchase extends React.Component {
       buyQuantity: 1, // 购买数量
       ruleList: [''], // 规则内容list
       storeList: [''], // 门店list
+      percent: 0,
       exchangeInfoVO: {
         integralExchangeUrl: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/head-banner.png'
         // availableQuantity: 2, // 本月可预购的数量
@@ -46,12 +47,7 @@ export default class PreviewPurchase extends React.Component {
         // productName: '53度 500ml 飞天茅台(2019款',
         // exchangeCondition: '1000积分+1499元即可换购1瓶53度500ml飞天茅台',
         // limitDesc: '每月限购3瓶,全年不超过12瓶,当月如有遗留份额,则不累计'
-      },
-      percent: 0,
-      // inventoryProgress: 10, // 当前库存数量
-      // isQualifications: true, // 是否有购买资格
-      // availableQuantity: 2, // 本月可预购的数量
-      totalQuantity: 3// 本月总预购的数量
+      }
     }
   }
 
@@ -65,7 +61,7 @@ export default class PreviewPurchase extends React.Component {
       this.onNativeRuleModalChange
     )
   }
-  // 初始化
+  // 初始化数据
   async init() {
     const [shopCode] = await Promise.all([
       Native.getConstant('storeCode')
@@ -146,7 +142,6 @@ export default class PreviewPurchase extends React.Component {
     const {exchangeInfoVO} = this.state
     let monthTotalNumber = exchangeInfoVO.monthTotalNumber ? exchangeInfoVO.monthTotalNumber : 3
     let availablePercent = exchangeInfoVO.availableQuantity / monthTotalNumber
-    // rnAppModule.showToast(exchangeInfoVO.availableQuantity, '0')
     availablePercent = Math.round(availablePercent * 100)
     if (availablePercent != 0) {
       let interval = setInterval(() => {
@@ -377,7 +372,7 @@ export default class PreviewPurchase extends React.Component {
                 { exchangeInfoVO && exchangeInfoVO.isQualifications && (
                   <View style={styles.buyButton}>
                     <View style={styles.leftWrapper}>
-                      <Text style={styles.leftText}>预定数量</Text>
+                      <Text style={styles.leftText}>购买数量</Text>
                       <OperateNumber availableQuantity={exchangeInfoVO.availableQuantity} onAdd={this.handleAddNumber} onMin={this.handleMinNumber}/>
                     </View>
                     <LinearGradient
