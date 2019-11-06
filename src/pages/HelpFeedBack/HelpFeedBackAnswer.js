@@ -4,11 +4,12 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-30 13:50:57
+ * @LastEditTime: 2019-11-06 16:14:01
  */
 import React from 'react'
 import {ScrollView, View, Text, NativeModules} from 'react-native'
 // import {helpFeedBackAnswer} from '../../utils/mock'
+import Loading from '../../components/common/Loading'
 import styles from './HelpFeedBackAnswer.styles'
 import {Native} from '@utils'
 import {getAnswerList} from '../../services/feedback'
@@ -30,18 +31,18 @@ export default class HelpFeedBackPage extends React.Component {
   getAnswerList = () => {
     const {activityCode} = this.props
     let questionTypeId = activityCode
+    this.loading.showLoading()
     getAnswerList({questionTypeId})
       .then(({result: data, message, code}) => {
         if (code === 200000 && data) {
-          this.setState(
-            {
-              answerList: data
-            }
-          )
+          this.setState({answerList: data})
+          this.loading.hideLoading()
         } else {
+          this.loading.hideLoading()
           rnAppModule.showToast(message, '0')
         }
       }).catch(({message}) => {
+        this.loading.hideLoading()
         rnAppModule.showToast(message, '0')
       })
   }
@@ -68,6 +69,7 @@ export default class HelpFeedBackPage extends React.Component {
         >
           {answerItems}
         </ScrollView>
+        <Loading ref={ref => this.loading = ref}></Loading>
       </View>
     )
   }
