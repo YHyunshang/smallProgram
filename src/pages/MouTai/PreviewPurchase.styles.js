@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-05 21:43:16
+ * @LastEditTime: 2019-11-07 16:42:16
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import theme from '@theme'
@@ -70,6 +70,13 @@ export default StyleSheet.create({
     fontSize: 64,
     color: '#333333',
     fontFamily: theme.priceFFPrimary
+  },
+  standardsBigText: {
+    position: 'absolute',
+    fontSize: 14,
+    color: '#333333',
+    right: 15,
+    bottom: 13
   },
   standardsText: {
     position: 'absolute',

@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-06 16:08:18
+ * @LastEditTime: 2019-11-07 17:00:38
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -40,7 +40,7 @@ export default class PreviewPurchase extends React.Component {
       percent: 0,
       exchangeInfoVO: {
         integralExchangeUrl: ''
-        // availableQuantity: 2, // 本月可预购的数量
+        // availableQuantity: 22, // 本月可预购的数量
         // monthTotalNumber: 3, // 当月最多购买数量
         // inventoryNumber: 98, // 当前库存剩余数量
         // inventoryProgressBar: 80, // 当前库存比
@@ -101,6 +101,9 @@ export default class PreviewPurchase extends React.Component {
       }).catch(({message}) => {
         rnAppModule.showToast(message, '0')
         this.loading.hideLoading()
+        if (message && message.indexOf('Token不存在') != -1) {
+          this.handleGoHome()
+        }
       })
   }
   /**
@@ -290,9 +293,9 @@ export default class PreviewPurchase extends React.Component {
                         <View>
                           <View style={styles.purchaseNumberWrapper}>
                             <Text style={styles.purchaseTips}>当前可购买数量</Text>
-                            <PercentageCircle radius={60} percent={this.state.percent} borderWidth={10} bgcolor={'#F0F0ED'} color={'#C1882C'}>
+                            <PercentageCircle radius={62} percent={this.state.percent} borderWidth={10} bgcolor={'#F0F0ED'} color={'#C1882C'}>
                               <Text style={styles.quantityText}>{exchangeInfoVO.availableQuantity}</Text>
-                              <Text style={styles.standardsText}>/瓶</Text>
+                              <Text style={exchangeInfoVO.availableQuantity >= 10 ? styles.standardsBigText : styles.standardsText}>/瓶</Text>
                             </PercentageCircle>
                             <View style={styles.purchaseProductPriceInfo}>
                               <Text style={styles.purchaseProductText}>专售价:</Text>

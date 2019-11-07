@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-08-29 11:25:46
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-05 21:20:40
+ * @LastEditTime: 2019-11-07 16:53:46
  */
 import React, {Component} from 'react'
 import {StyleSheet, View, NativeModules} from 'react-native'
@@ -60,7 +60,10 @@ export default class TopBannerImage extends Component {
               })
             }}
           />
-          {this.state.isLoadComplete ? null : <FastImage style={[styles.imgDefault]} source={defaultImage} resizeMode={FastImage.resizeMode.contain}/> }
+          {!this.state.isLoadComplete && (
+            <FastImage style={[styles.imgDefault, styles.imgPosition]} source={defaultImage} resizeMode={FastImage.resizeMode.contain}/>
+          )
+          }
         </View>
       )
     }

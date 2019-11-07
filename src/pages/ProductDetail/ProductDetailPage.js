@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-21 21:04:07
+ * @LastEditTime: 2019-11-07 17:47:24
  */
 import React from 'react'
 import {ScrollView, View, Text, TouchableOpacity, NativeModules} from 'react-native'
@@ -172,7 +172,7 @@ export default class ProductDetailPage extends React.Component {
       this.loadingModal.showLoading()
       getPosterImgUrl(params)
         .then(({result: data, message, code}) => {
-          this.loadingModal.dismissLoading()
+          this.loadingModal.hideLoading()
           if (code === 200000 && data) {
             this.setState({imgUrl: data, isFirst: false})
           } else {
@@ -180,7 +180,7 @@ export default class ProductDetailPage extends React.Component {
           }
         }
         ).catch(({message}) => {
-          this.loadingModal.dismissLoading()
+          this.loadingModal.hideLoading()
           rnAppModule.showToast(message, '0')
         })
     }
