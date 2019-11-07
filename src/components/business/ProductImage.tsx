@@ -29,8 +29,6 @@ const ProductImage: React.FunctionComponent<ProductImageProps> = ({ size, style,
     onLoad && onLoad(e)
   }
 
-  console.log('rendering pI', restProps.source)
-
   const dimStyle = size && { width: size, height: size }
 
   return (

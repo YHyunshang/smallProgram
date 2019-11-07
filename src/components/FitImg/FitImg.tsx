@@ -12,7 +12,6 @@ export interface FitImgProps extends FastImageProperties {
 const _FitImg_ : React.FunctionComponent<FitImgProps> = (props) => {
   const {
     style,
-    onLayout,
     ...restProps
   } = props
 
@@ -27,16 +26,18 @@ const _FitImg_ : React.FunctionComponent<FitImgProps> = (props) => {
     }
   }, [props.source])
 
-  const onImgLayout = (e: LayoutChangeEvent) => {
+  const onLayout = (e: LayoutChangeEvent) => {
     const { nativeEvent: { layout } } = e
     if (layout.width !== width) setWidth(layout.width)
-    onLayout && onLayout(e)
   }
 
   const dimStyle = (imgRatio && width) ? { width: width, height: width / imgRatio } : {}
 
-  // @ts-ignore: FlexStyle does not exist in @types/react-native, but was imported by react-native-fast-image
-  return <FastImage style={[ style, dimStyle ]} onLayout={onImgLayout} {...restProps} />
+  return (
+    <View style={{ width: '100%' }} onLayout={onLayout}>
+      <FastImage style={[ style, dimStyle ]} {...restProps} />
+    </View>
+  )
 }
 
 const FitImg: React.FunctionComponent<FitImgProps> = (props) => {
@@ -45,12 +46,15 @@ const FitImg: React.FunctionComponent<FitImgProps> = (props) => {
   } = props
 
   const style = StyleSheet.flatten(passedStyle)
-  // @ts-ignore: FlexStyle does not exist in @types/react-native, but was imported by react-native-fast-image
   if (style.width && style.height) {
     return <FastImage {...props} />
   } else {
     return <_FitImg_ {...props} />
   }
+}
+
+FitImg.defaultProps = {
+  style: {}
 }
 
 export default FitImg

@@ -19,9 +19,6 @@ export default StyleSheet.create({
     position: 'relative',
     backgroundColor: '#ffffff'
   },
-  subContainer: {
-    height: Number(height - isIPhoneXHeight())
-  },
   goodsWrapper: {
     flex: 1,
     flexDirection: 'column',

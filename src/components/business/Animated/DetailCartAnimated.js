@@ -120,12 +120,12 @@ export default class DetailCartAnimated extends React.Component {
     // 将减号在X轴向左偏移
     const translateX = this.state.animatedValue.interpolate({
       inputRange: [0, 1],
-      outputRange: [cartWidth * 2, 0] // 线性插值，0对应50,1对应0
+      outputRange: [cartWidth + 25, 0] // 线性插值，0对应50,1对应0
     })
     // 将数量文本在x轴向左偏移
     const cartNumberTranslateX = this.state.animatedValue.interpolate({
       inputRange: [0, 1],
-      outputRange: [cartWidth, 0]
+      outputRange: [25, 0]
     })
     // 将加号沿z轴逆时针旋转90度
     const rotatePlus = this.state.animatedValue.interpolate({
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
   },
   numberText: {
     fontSize: 14,
-    minWidth: 25,
+    width: 25,
     textAlign: 'center',
     paddingHorizontal: 2,
     color: '#331B00'
