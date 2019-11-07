@@ -253,127 +253,128 @@ export default class ProductDetailPage extends React.Component {
     }
     return (
       <View style={styles.container}>
-        <View style={styles.topTab}>
-          <TabBar ref={e => this.tabs = e}
-            index={this.state.currentIndex}
-            data={this.state.tablist}
-            clickScroll={this.clickScroll}
-          />
-          <TouchableOpacity
-            style={styles.shareTouchableOpacity}
-            activeOpacity={0.95}
-            onPress={() => {
-              this.handleShowModal()
-            }} >
-            <Icon name="share" size={18} color="#4D4D4D" />
-          </TouchableOpacity>
-        </View>
+        <View style={styles.subContainer}>
+          <View style={styles.topTab}>
+            <TabBar ref={e => this.tabs = e}
+              index={this.state.currentIndex}
+              data={this.state.tablist}
+              clickScroll={this.clickScroll}
+            />
+            <TouchableOpacity
+              style={styles.shareTouchableOpacity}
+              activeOpacity={0.95}
+              onPress={() => {
+                this.handleShowModal()
+              }} >
+              <Icon name="share" size={18} color="#4D4D4D" />
+            </TouchableOpacity>
+          </View>
 
-        <ScrollView
-          style={{ flex: 1 }}
-          ref={(view) => {
-            this.myScrollView = view
-          }}
-          showsVerticalScrollIndicator={false}
-          // 当一帧滚动完毕时调用
-          onMomentumScrollEnd={(event) => this.onMomentumScrollEnd(event)}
-        >
-          <View onLayout={event => {
-            this.goodsLayoutY = event.nativeEvent.layout.y
-          }}>
-            <View onLayout={this.goodsSwiperLayout.bind(this)}>
-              {
-                productActivityLabel && productActivityLabel.promotionType === 13 && (
-                  <View style={styles.newPerson}>
-                    <Text style={styles.newPersonText}>{productActivityLabel.promotionTypeName}</Text>
-                  </View>
-                )
-              }
-              {imgData
-                ? <GoodsDetailSwiper imgData={imgData}/>
-                : <FastImage style={styles.defaultImage} source={placeholderProduct} resizeMode={FastImage.resizeMode.contain}/>
-              }
+          <ScrollView
+            style={{ flex: 1 }}
+            ref={(view) => {
+              this.myScrollView = view
+            }}
+            showsVerticalScrollIndicator={false}
+            // 当一帧滚动完毕时调用
+            onMomentumScrollEnd={(event) => this.onMomentumScrollEnd(event)}
+          >
+            <View onLayout={event => {
+              this.goodsLayoutY = event.nativeEvent.layout.y
+            }}>
+              <View onLayout={this.goodsSwiperLayout.bind(this)}>
+                {
+                  productActivityLabel && productActivityLabel.promotionType === 13 && (
+                    <View style={styles.newPerson}>
+                      <Text style={styles.newPersonText}>{productActivityLabel.promotionTypeName}</Text>
+                    </View>
+                  )
+                }
+                {imgData
+                  ? <GoodsDetailSwiper imgData={imgData}/>
+                  : <FastImage style={styles.defaultImage} source={placeholderProduct} resizeMode={FastImage.resizeMode.contain}/>
+                }
+              </View>
             </View>
-          </View>
-          {
-            productActivityLabel && productActivityLabel.promotionType === 5 ?
-              <BuyLimit productActivityLabel={productActivityLabel}></BuyLimit>
-              : null
-          }
-          <View>
-            <View style={styles.goodsPromotionPriceRowFlex}>
-              <Text style={styles.goodsPriceSymbol}>¥</Text>
-              {
-                productActivityLabel && productActivityLabel.discountPrice ?
-                  <View style={styles.goodsPriceWrapper}>
-                    <Text style={styles.goodsPrice}>{transPenny(productActivityLabel.discountPrice ? productActivityLabel.discountPrice : goodsInfo.price)}</Text>
-                    {
-                      productActivityLabel.discountPrice && productActivityLabel.discountPrice != goodsInfo.price
-                        ? <Text style={styles.throughLine} >¥{transPenny(goodsInfo.price)}</Text>
-                        : null
-                    }
-                  </View>
-                  : <View style={styles.goodsPriceWrapper}>
-                    <Text style={styles.goodsPrice}>{transPenny(goodsInfo.promotionPrice ? goodsInfo.promotionPrice : goodsInfo.price)}</Text>
-                    {
-                      goodsInfo.promotionPrice
-                        ? <Text style={styles.throughLine} >¥{transPenny(goodsInfo.price)}</Text>
-                        : null
-                    }
-                  </View>
-              }
-            </View>
-            <View style={styles.goodsTags}>
-              {tags}
-              {productTags}
-              {orderTags}
-            </View>
-            <View style={styles.goodsWrapper}>
-              <Text numberOfLines={1} style={styles.goodsName}>{goodsInfo.productName}</Text>
-              {
-                goodsInfo.subTitle ?
-                  <Text style={styles.goodsTips}>{goodsInfo.subTitle}</Text>
-                  : null
-              }
-            </View>
-            <View style={styles.goodsQualityFlex}>
-              {
-                goodsInfo.productSpecific ?
-                  <View style={styles.goodsQualityItemFlex}>
-                    <FastImage source={productSpecific} style={{width: 14, height: 14}} />
-                    <Text style={styles.goodsQualityValue}>{goodsInfo.productSpecific}</Text>
-                  </View>
-                  : null
-              }
-              {/* {
-              goodsInfo.shelfLife ?
-                <View style={styles.goodsQualityItemFlex}>
-                  <Image source={productConditions} style={{width: 14, height: 14}}></Image>
-                  <Text style={styles.goodsQualityValue}>{goodsInfo.shelfLife}</Text>
-                </View>
+            {
+              productActivityLabel && productActivityLabel.promotionType === 5 ?
+                <BuyLimit productActivityLabel={productActivityLabel}></BuyLimit>
                 : null
-            } */}
-              {
-                goodsInfo.originPlace ?
+            }
+            <View>
+              <View style={styles.goodsPromotionPriceRowFlex}>
+                <Text style={styles.goodsPriceSymbol}>¥</Text>
+                {
+                  productActivityLabel && productActivityLabel.discountPrice ?
+                    <View style={styles.goodsPriceWrapper}>
+                      <Text style={styles.goodsPrice}>{transPenny(productActivityLabel.discountPrice ? productActivityLabel.discountPrice : goodsInfo.price)}</Text>
+                      {
+                        productActivityLabel.discountPrice && productActivityLabel.discountPrice != goodsInfo.price
+                          ? <Text style={styles.throughLine} >¥{transPenny(goodsInfo.price)}</Text>
+                          : null
+                      }
+                    </View>
+                    : <View style={styles.goodsPriceWrapper}>
+                      <Text style={styles.goodsPrice}>{transPenny(goodsInfo.promotionPrice ? goodsInfo.promotionPrice : goodsInfo.price)}</Text>
+                      {
+                        goodsInfo.promotionPrice
+                          ? <Text style={styles.throughLine} >¥{transPenny(goodsInfo.price)}</Text>
+                          : null
+                      }
+                    </View>
+                }
+              </View>
+              <View style={styles.goodsTags}>
+                {tags}
+                {productTags}
+                {orderTags}
+              </View>
+              <View style={styles.goodsWrapper}>
+                <Text numberOfLines={1} style={styles.goodsName}>{goodsInfo.productName}</Text>
+                {
+                  goodsInfo.subTitle ?
+                    <Text style={styles.goodsTips}>{goodsInfo.subTitle}</Text>
+                    : null
+                }
+              </View>
+              <View style={styles.goodsQualityFlex}>
+                {
+                  goodsInfo.productSpecific ?
+                    <View style={styles.goodsQualityItemFlex}>
+                      <FastImage source={productSpecific} style={{width: 14, height: 14}} />
+                      <Text style={styles.goodsQualityValue}>{goodsInfo.productSpecific}</Text>
+                    </View>
+                    : null
+                }
+                {/* {
+                goodsInfo.shelfLife ?
                   <View style={styles.goodsQualityItemFlex}>
-                    <FastImage source={productPlace} style={{width: 14, height: 14}} />
-                    <Text style={styles.goodsQualityValue}>{goodsInfo.originPlace}</Text>
+                    <Image source={productConditions} style={{width: 14, height: 14}}></Image>
+                    <Text style={styles.goodsQualityValue}>{goodsInfo.shelfLife}</Text>
                   </View>
                   : null
-              }
+              } */}
+                {
+                  goodsInfo.originPlace ?
+                    <View style={styles.goodsQualityItemFlex}>
+                      <FastImage source={productPlace} style={{width: 14, height: 14}} />
+                      <Text style={styles.goodsQualityValue}>{goodsInfo.originPlace}</Text>
+                    </View>
+                    : null
+                }
+              </View>
             </View>
-          </View>
-          {
-            similarProduct ? <SimilarGoods similarProduct={similarProduct} jumpGoodsDetail={this.jumpGoodsDetail} />
-              : null
-          }
-          <View onLayout={event => {
-            this.detailLayoutY = event.nativeEvent.layout.y
-          }}>
-            <View style={styles.goodsDetail}>
-              <Text style={styles.goodsDetailTitle}>商品详情</Text>
-            </View>
-            {/* <TouchableOpacity
+            {
+              similarProduct ? <SimilarGoods similarProduct={similarProduct} jumpGoodsDetail={this.jumpGoodsDetail} />
+                : null
+            }
+            <View onLayout={event => {
+              this.detailLayoutY = event.nativeEvent.layout.y
+            }}>
+              <View style={styles.goodsDetail}>
+                <Text style={styles.goodsDetailTitle}>商品详情</Text>
+              </View>
+              {/* <TouchableOpacity
                 style={styles.shareTouchableOpacity}
                 activeOpacity={0.95}
                 onPress={() => {
@@ -381,15 +382,16 @@ export default class ProductDetailPage extends React.Component {
                 }} >
                 <Icon name='share' size={18} color="#4D4D4D" />
               </TouchableOpacity> */}
-            <View style={styles.imagesContent}>
-              {goodsImgList}
-              {shopImgList}
+              <View style={styles.imagesContent}>
+                {goodsImgList}
+                {shopImgList}
+              </View>
             </View>
-          </View>
 
-          {/*底部 native 购物车栏占位*/}
-          <View style={{ height: 50 }} />
-        </ScrollView>
+            {/*底部 native 购物车栏占位*/}
+            <View style={{ height: 50 }} />
+          </ScrollView>
+        </View>
 
         <ShareModal modalBoxHeight={240} productParams={productParams} onShare={this.handlePosterModal} ref={ref => this.shareModal = ref}/>
         <PosterModal modalBoxHeight={534} imgUrl={imgUrl} ref={ref => this.posterModal = ref}/>
