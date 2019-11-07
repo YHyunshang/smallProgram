@@ -7,14 +7,13 @@
  * @LastEditTime: 2019-10-21 21:04:07
  */
 import React from 'react'
-import {ScrollView, View, Text, Image, TouchableOpacity, NativeModules} from 'react-native'
+import {ScrollView, View, Text, TouchableOpacity, NativeModules} from 'react-native'
 import Icon from '../../components/Icon'
 import {transPenny} from '../../utils/FormatUtil'
 import ShareModal from '../../components/business/ShareModal'
 import PosterModal from '../../components/business/PosterModal'
 import TabBar from '../../components/common/TabBar'
 import Loading from '../../components/common/Loading'
-import PreloadingImage from '../../components/common/PreloadingImage'
 import styles from './ProductDetailPage.styles'
 import {Native, Img} from '@utils'
 import {getGoodsDetailData, getPosterImgUrl, getSimilarProduct} from '../../services/goodsDetail'
@@ -24,8 +23,13 @@ import SimilarGoods from '../../components/business/GoodsDetail/SimilarGoods'
 import {productPlace, productSpecific} from '@const/resources'
 import Tag from '../../components/business/GoodsDetail/Tag'
 import BuyLimit from '../../components/business/GoodsDetail/BuyLimit'
+import {placeholderProduct} from '../../constants/resources'
+import FastImage from 'react-native-fast-image'
+import {FitImg} from '../../components'
+
 const rnAppModule = NativeModules.RnAppModule// 原生模块
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
+
 export default class ProductDetailPage extends React.Component {
   constructor(props) {
     super(props)
@@ -44,9 +48,7 @@ export default class ProductDetailPage extends React.Component {
         {id: 1, name: '商品'},
         {id: 2, name: '详情'}
       ],
-      imgData: [{
-        url: 'https://static-yh.yonghui.cn/app/static/images/product-default.png'// 默认占位图
-      }],
+      imgData: [placeholderProduct], // 默认占位图
       productImgList: [], // 商品详情图文
       shopUrl: [], // 商家文描
       similarProduct: [],
@@ -227,46 +229,43 @@ export default class ProductDetailPage extends React.Component {
     // favorableRate = favorableRate && parseFloat(favorableRate.toFixed(2))
     // 商品详情图文列表
     const goodsImgList = productImgList ? productImgList.map(({url, id}, index) => (
-      <PreloadingImage key={id} style={styles.goodsDetailImage} sourceType={0} uri={Img.loadRatioImage(url, Img.FullWidth)}></PreloadingImage>
+      <FitImg key={id} source={{ uri: Img.loadRatioImage(url, Img.FullWidth) }} resizeMode="contain" />
     )) : null
     // 商家文描图文列表
     const shopImgList = shopUrl ? shopUrl.map((item, index) => (
-      <PreloadingImage style={styles.goodsDetailImage} sourceType={0} uri={Img.loadRatioImage(item, Img.FullWidth)} ></PreloadingImage>
+      <FitImg key={index} source={{ uri: Img.loadRatioImage(item, Img.FullWidth) }} resizeMode="contain"/>
     )) : null
     if (productActivityLabel && productActivityLabel.promotionType === 5 && productActivityLabel.labels) { //  promotionType：5 限时抢购
-      tags = <Tag textValue={productActivityLabel.labels[0]} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
+      tags = <Tag textValue={productActivityLabel.labels[0]} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF' />
     } else {
       if (productActivityLabel && productActivityLabel.labels) { //  promotionType：1 直降促销， 4 第N件N折/N元
-        productTags = <Tag textValue={productActivityLabel.labels[0]} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
+        productTags = <Tag textValue={productActivityLabel.labels[0]} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF' />
       }
       if (orderActivityLabel && orderActivityLabel.labels) { //  promotionType：2 满减促销, 3 满件减满减折促销
-        orderTags = <Tag textValue={orderActivityLabel.labels[0]} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF'></Tag>
+        orderTags = <Tag textValue={orderActivityLabel.labels[0]} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF' />
       }
     }
     return (
       <View style={styles.container}>
         <View style={styles.subContainer}>
-          {
-            (
-              <View style={styles.topTab}>
-                <TabBar ref={e => this.tabs = e}
-                  index={this.state.currentIndex}
-                  data={this.state.tablist}
-                  clickScroll={this.clickScroll}
-                  onChange={index => {}} />
-                <TouchableOpacity
-                  style={styles.shareTouchableOpacity}
-                  activeOpacity={0.95}
-                  onPress={() => {
-                    this.handleShowModal()
-                  }} >
-                  <Icon name='share' size={18} color="#4D4D4D" />
-                </TouchableOpacity>
-              </View>
-            )
-          }
+          <View style={styles.topTab}>
+            <TabBar ref={e => this.tabs = e}
+              index={this.state.currentIndex}
+              data={this.state.tablist}
+              clickScroll={this.clickScroll}
+            />
+            <TouchableOpacity
+              style={styles.shareTouchableOpacity}
+              activeOpacity={0.95}
+              onPress={() => {
+                this.handleShowModal()
+              }} >
+              <Icon name="share" size={18} color="#4D4D4D" />
+            </TouchableOpacity>
+          </View>
+
           <ScrollView
-            style={styles.scrollView}
+            style={{ flex: 1 }}
             ref={(view) => {
               this.myScrollView = view
             }}
@@ -285,10 +284,9 @@ export default class ProductDetailPage extends React.Component {
                     </View>
                   )
                 }
-                {
-                  imgData ? <GoodsDetailSwiper imgData={imgData}/>
-                    :
-                    <Image style={styles.defaultImage} source={{uri: 'https://static-yh.yonghui.cn/app/static/images/product-default.png'}} resizeMode="contain"/>
+                {imgData
+                  ? <GoodsDetailSwiper imgData={imgData}/>
+                  : <FastImage style={styles.defaultImage} source={placeholderProduct} resizeMode={FastImage.resizeMode.contain}/>
                 }
               </View>
             </View>
@@ -337,7 +335,7 @@ export default class ProductDetailPage extends React.Component {
                 {
                   goodsInfo.productSpecific ?
                     <View style={styles.goodsQualityItemFlex}>
-                      <Image source={productSpecific} style={{width: 14, height: 14}}></Image>
+                      <FastImage source={productSpecific} style={{width: 14, height: 14}} />
                       <Text style={styles.goodsQualityValue}>{goodsInfo.productSpecific}</Text>
                     </View>
                     : null
@@ -353,7 +351,7 @@ export default class ProductDetailPage extends React.Component {
                 {
                   goodsInfo.originPlace ?
                     <View style={styles.goodsQualityItemFlex}>
-                      <Image source={productPlace} style={{width: 14, height: 14}}></Image>
+                      <FastImage source={productPlace} style={{width: 14, height: 14}} />
                       <Text style={styles.goodsQualityValue}>{goodsInfo.originPlace}</Text>
                     </View>
                     : null
@@ -361,7 +359,7 @@ export default class ProductDetailPage extends React.Component {
               </View>
             </View>
             {
-              similarProduct ? <SimilarGoods similarProduct={similarProduct} jumpGoodsDetail={this.jumpGoodsDetail}> ></SimilarGoods>
+              similarProduct ? <SimilarGoods similarProduct={similarProduct} jumpGoodsDetail={this.jumpGoodsDetail} />
                 : null
             }
             <View onLayout={event => {
@@ -376,15 +374,11 @@ export default class ProductDetailPage extends React.Component {
               </View>
             </View>
           </ScrollView>
-          <ShareModal modalBoxHeight={240} productParams={productParams} onShare={this.handlePosterModal} ref={ref => this.shareModal = ref}/>
-          <PosterModal modalBoxHeight={534} imgUrl={imgUrl} ref={ref => this.posterModal = ref}/>
-          {
-            <Loading
-              title={'海报生成中'}
-              ref={ref => this.loadingModal = ref}
-            />
-          }
         </View>
+
+        <ShareModal modalBoxHeight={240} productParams={productParams} onShare={this.handlePosterModal} ref={ref => this.shareModal = ref}/>
+        <PosterModal modalBoxHeight={534} imgUrl={imgUrl} ref={ref => this.posterModal = ref}/>
+        <Loading title="海报生成中" ref={ref => this.loadingModal = ref} />
       </View>
     )
   }

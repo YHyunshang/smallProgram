@@ -5621,6 +5621,13 @@ react-native-linear-gradient@^2.5.4:
   resolved "https://registry.npm.taobao.org/react-native-linear-gradient/download/react-native-linear-gradient-2.5.4.tgz#dce133526f5a5510a639af94544f1ed0c984bd1e"
   integrity sha1-3OEzUm9aVRCmOa+UVE8e0MmEvR4=
 
+react-native-percentage-circle@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.npm.taobao.org/react-native-percentage-circle/download/react-native-percentage-circle-1.0.7.tgz#5ae6b1fc0e288266a453a95543a437f5e4e81072"
+  integrity sha1-Wuax/A4ogmakU6lVQ6Q39eToEHI=
+  dependencies:
+    react "^16.3.2"
+
 react-native-reanimated@^1.2.0:
   version "1.2.0"
   resolved "https://registry.npm.taobao.org/react-native-reanimated/download/react-native-reanimated-1.2.0.tgz?cache=0&sync_timestamp=1565766081147&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Freact-native-reanimated%2Fdownload%2Freact-native-reanimated-1.2.0.tgz#9219227a52a5dfa4d34c324596d6726ccd874293"
@@ -5753,6 +5760,15 @@ react@16.8.3:
     object-assign "^4.1.1"
     prop-types "^15.6.2"
     scheduler "^0.13.3"
+
+react@^16.3.2:
+  version "16.11.0"
+  resolved "https://registry.npm.taobao.org/react/download/react-16.11.0.tgz#d294545fe62299ccee83363599bf904e4a07fdbb"
+  integrity sha1-0pRUX+YimczugzY1mb+QTkoH/bs=
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
 
 read-pkg-up@^2.0.0:
   version "2.0.0"

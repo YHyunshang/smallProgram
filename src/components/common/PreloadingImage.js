@@ -11,6 +11,8 @@ import {StyleSheet, View, Image} from 'react-native'
 import PropTypes from 'prop-types'
 import {placeholderProduct} from '@const/resources'
 import FitImage from 'react-native-fit-image'
+import FastImage from 'react-native-fast-image'
+import FitImg from '../FitImg'
 /**
  * 自定义图片
  */
@@ -43,35 +45,33 @@ export default class PreloadingImage extends Component {
       }
       return (
         <View style={[sourceType ? styles.imgDefault : styles.container]}>
-          <FitImage
-            // indicator={ sourceType ? true : false}
-            indicator={false}
+          <FitImg
             source={source}
-            resizeMode="cover"
+            resizeMode={FastImage.resizeMode.cover}
             style={[sourceType ? style : '']}
-            onError={(error) => {
-              this.setState({
-                type: 1
-              })
-            }}
-            onLoadEnd={() => {
-              this.setState({
-                isLoadComplete: true
-              })
-            }}
+            onError={() => this.setState({ type: 1 })}
+            onLoadEnd={() => this.setState({ isLoadComplete: true })}
           />
-          {this.state.isLoadComplete ? null : <Image style={[styles.imgDefault, style, styles.imgPosition]} source={defaultImage} resizeMode="contain"/> }
+          {!this.state.isLoadComplete && (
+            <FastImage
+              style={[styles.imgDefault, style, styles.imgPosition]}
+              source={defaultImage}
+              resizeMode={FastImage.resizeMode.contain}
+            />
+          )}
         </View>
       )
     }
 }
 const styles = StyleSheet.create({
   container: {
-    width: '100%'
+    width: '100%',
+    justifyContent: 'center',
   },
   imgDefault: {
     width: 150,
-    height: 150
+    height: 150,
+    justifyContent: 'center',
   },
   imgPosition: {
     overflow: 'hidden',

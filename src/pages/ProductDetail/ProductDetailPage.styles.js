@@ -7,13 +7,13 @@
  * @LastEditTime: 2019-10-18 13:52:17
  */
 import {StyleSheet, Dimensions} from 'react-native'
-import {isIPhoneXMarginTop, isIPhoneXHeight} from '../../utils/IsIphoneX'
+import {isIPhoneXHeight, isIPhoneXMarginTop} from '../../utils/IsIphoneX'
 import theme from '@theme'
 const {width, height} = Dimensions.get('window')
 export default StyleSheet.create({
   container: {
     flex: 1,
-    height,
+    height: height - 50,
     zIndex: 100,
     flexDirection: 'column',
     position: 'relative',
@@ -79,7 +79,7 @@ export default StyleSheet.create({
   goodsPriceWrapper: {
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'flex-end',
   },
   goodsPrice: {
     fontSize: 24,
@@ -114,7 +114,8 @@ export default StyleSheet.create({
     marginLeft: 10,
     color: '#B3B3B3',
     fontSize: 12,
-    textDecorationLine: 'line-through'
+    textDecorationLine: 'line-through',
+    paddingBottom: 3,
   },
   goodsMinBorder: {
     borderStyle: 'solid',
@@ -191,8 +192,8 @@ export default StyleSheet.create({
     marginLeft: 15
   },
   goodsDetailImage: {
-    width: '100%',
-    height: 375
+    // width: '100%',
+    // height: 375
   },
   imagesContent: {
     width: '100%',
@@ -232,5 +233,5 @@ export default StyleSheet.create({
     width,
     position: 'absolute',
     bottom: 0
-  }
+  },
 })

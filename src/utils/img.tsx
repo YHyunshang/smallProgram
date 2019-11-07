@@ -6,6 +6,7 @@
  */
 import {PixelRatio, Dimensions, Image, ImageURISource, ImageRequireSource} from 'react-native'
 import * as Log from './log'
+import {FastImageSource} from "react-native-fast-image";
 /**
  * 根据屏幕像素密度获取对应尺寸的图片
  * 仅支持 hotfile cdn，仅支持 按照宽度等比剪裁 或 按照固定宽高剪裁
@@ -59,11 +60,17 @@ export interface ImageSize {
 }
 
 /**
+ * 图片资源
+ */
+export type ImageSource = ImageURISource | ImageRequireSource | FastImageSource
+
+/**
  * 获取图片尺寸
  * @param img 图片资源
  */
-export function getSize(img: ImageURISource | ImageRequireSource):Promise<ImageSize> {
+export function getSize(img: ImageSource):Promise<ImageSize> {
   // resolve the source and use it instead
+  // @ts-ignore: FastImageSource includes uri
   const src = Image.resolveAssetSource(img)
 
   return new Promise((resolve, reject) => {
@@ -85,7 +92,7 @@ export function getSize(img: ImageURISource | ImageRequireSource):Promise<ImageS
  * 获取图片宽高比
  * @param img 图片资源
  */
-export function getRatio(img: ImageURISource | ImageRequireSource): Promise<number> {
+export function getRatio(img: ImageSource): Promise<number> {
   return getSize(img)
     .then(({ width, height }) => width / height)
 }

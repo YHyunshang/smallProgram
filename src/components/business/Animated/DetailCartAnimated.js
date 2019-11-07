@@ -78,7 +78,7 @@ export default class DetailCartAnimated extends React.Component {
   /**
    * @description 加购物车的操作
    */
-  handleAddCart() {
+  handleAddCart = () => {
     const {goodsItem} = this.props
     const {cartNumber} = this.state
     this.handleCart(goodsItem, '1')
@@ -98,7 +98,7 @@ export default class DetailCartAnimated extends React.Component {
   /**
    * @description 减购物车的操作
    */
-  handleMinCart() {
+  handleMinCart = () => {
     const {goodsItem, cartNumber} = this.state
     this.handleCart(goodsItem, '0')
     if (cartNumber == 1) {
@@ -120,7 +120,7 @@ export default class DetailCartAnimated extends React.Component {
     // 将减号在X轴向左偏移
     const translateX = this.state.animatedValue.interpolate({
       inputRange: [0, 1],
-      outputRange: [50, 0] // 线性插值，0对应50,1对应0
+      outputRange: [cartWidth + 25, 0] // 线性插值，0对应50,1对应0
     })
     // 将数量文本在x轴向左偏移
     const cartNumberTranslateX = this.state.animatedValue.interpolate({
@@ -140,15 +140,15 @@ export default class DetailCartAnimated extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.cartWrapper}>
-
           <TouchableOpacity
             activeOpacity={0.9}
-            onPress={() => {
-              this.handleMinCart()
-            }} >
+            onPress={this.handleMinCart}
+          >
             <Animated.View style={{transform: [{translateX}]}}>
-              <Animated.Image style={{width: cartWidth, height: cartHeight, transform: [{rotate: minPositiveZ}]}} source={minusCircle}>
-              </Animated.Image>
+              <Animated.Image
+                style={{width: cartWidth, height: cartHeight, transform: [{rotate: minPositiveZ}]}}
+                source={minusCircle}
+              />
             </Animated.View>
           </TouchableOpacity>
 
@@ -158,12 +158,15 @@ export default class DetailCartAnimated extends React.Component {
           >
             {cartNumber > 0 ? cartNumber : ''}
           </Animated.Text>
+
           <TouchableOpacity
             activeOpacity={0.9}
-            onPress={() => {
-              this.handleAddCart()
-            }} >
-            <Animated.Image style={[{width: cartWidth, height: cartHeight}, {transform: [{rotate: rotatePlus}]}]} source={ cartNumber >= goodsItem.stockQuantity ? plusCircleDisabled : plusCircle}></Animated.Image>
+            onPress={this.handleAddCart}
+          >
+            <Animated.Image
+              style={[{width: cartWidth, height: cartHeight}, {transform: [{rotate: rotatePlus}]}]}
+              source={ cartNumber >= goodsItem.stockQuantity ? plusCircleDisabled : plusCircle}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -209,7 +212,7 @@ const styles = StyleSheet.create({
   },
   numberText: {
     fontSize: 14,
-    minWidth: 25,
+    width: 25,
     textAlign: 'center',
     paddingHorizontal: 2,
     color: '#331B00'
