@@ -258,19 +258,19 @@ export default class ProductDetailPage extends React.Component {
             index={this.state.currentIndex}
             data={this.state.tablist}
             clickScroll={this.clickScroll}
-            onChange={index => {}} />
+          />
           <TouchableOpacity
             style={styles.shareTouchableOpacity}
             activeOpacity={0.95}
             onPress={() => {
               this.handleShowModal()
             }} >
-            <Icon name='share' size={18} color="#4D4D4D" />
+            <Icon name="share" size={18} color="#4D4D4D" />
           </TouchableOpacity>
         </View>
 
         <ScrollView
-          style={styles.scrollView}
+          style={{ flex: 1 }}
           ref={(view) => {
             this.myScrollView = view
           }}
