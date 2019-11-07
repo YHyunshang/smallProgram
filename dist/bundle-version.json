@@ -1,8 +1,10 @@
 {
-  "version": "1.0.1",
-  "iosDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/1.0.1/ios/dist-ios.zip",
-  "androidDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/1.0.1/android/index.jsbundle",
-  "iosNativeVersion": "1.0.9",
-  "androidNativeVersion": "1.1.1",
-  "versionDesc": ["U - 发现页商品跳转到商品详情"]
+  "version": "1.1.13",
+  "iosDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/1.1.13/ios/dist-ios.zip",
+  "androidDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/1.1.13/android/index.jsbundle",
+  "iosNativeVersion": "1.1.2",
+  "androidNativeVersion": "1.1.4",
+  "versionDesc": [
+    "F - 商品详情页相似商品购物车按钮"
+  ]
 }
