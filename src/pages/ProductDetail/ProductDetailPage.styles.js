@@ -7,7 +7,7 @@
  * @LastEditTime: 2019-10-18 13:52:17
  */
 import {StyleSheet, Dimensions} from 'react-native'
-import {isIPhoneXMarginTop} from '../../utils/IsIphoneX'
+import {isIPhoneXHeight, isIPhoneXMarginTop} from '../../utils/IsIphoneX'
 import theme from '@theme'
 const {width, height} = Dimensions.get('window')
 export default StyleSheet.create({
