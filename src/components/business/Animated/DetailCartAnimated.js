@@ -78,7 +78,7 @@ export default class DetailCartAnimated extends React.Component {
   /**
    * @description 加购物车的操作
    */
-  handleAddCart() {
+  handleAddCart = () => {
     const {goodsItem} = this.props
     const {cartNumber} = this.state
     this.handleCart(goodsItem, '1')
@@ -98,7 +98,7 @@ export default class DetailCartAnimated extends React.Component {
   /**
    * @description 减购物车的操作
    */
-  handleMinCart() {
+  handleMinCart = () => {
     const {goodsItem, cartNumber} = this.state
     this.handleCart(goodsItem, '0')
     if (cartNumber == 1) {
