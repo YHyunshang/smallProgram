@@ -1,7 +1,7 @@
 {
-  "version": "1.1.10",
-  "iosDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/1.1.10/ios/dist-ios.zip",
-  "androidDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/1.1.10/android/index.jsbundle",
+  "version": "1.1.13",
+  "iosDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/1.1.13/ios/dist-ios.zip",
+  "androidDownloadUrl": "http://static-yh.yonghui.cn/app/xsztRN-alpha/1.1.13/android/index.jsbundle",
   "iosNativeVersion": "1.1.2",
   "androidNativeVersion": "1.1.4",
   "versionDesc": [

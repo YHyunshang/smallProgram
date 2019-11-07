@@ -373,9 +373,6 @@ export default class ProductDetailPage extends React.Component {
                 {shopImgList}
               </View>
             </View>
-
-            {/*底部 native 购物车栏占位*/}
-            <View style={{ height: 50 }} />
           </ScrollView>
         </View>
 
