@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-06 16:08:18
+ * @LastEditTime: 2019-11-07 15:09:29
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -101,6 +101,9 @@ export default class PreviewPurchase extends React.Component {
       }).catch(({message}) => {
         rnAppModule.showToast(message, '0')
         this.loading.hideLoading()
+        if (message === 'Token不存在,不正确或已过期') {
+          this.handleGoHome()
+        }
       })
   }
   /**
@@ -290,7 +293,7 @@ export default class PreviewPurchase extends React.Component {
                         <View>
                           <View style={styles.purchaseNumberWrapper}>
                             <Text style={styles.purchaseTips}>当前可购买数量</Text>
-                            <PercentageCircle radius={60} percent={this.state.percent} borderWidth={10} bgcolor={'#F0F0ED'} color={'#C1882C'}>
+                            <PercentageCircle radius={62} percent={this.state.percent} borderWidth={10} bgcolor={'#F0F0ED'} color={'#C1882C'}>
                               <Text style={styles.quantityText}>{exchangeInfoVO.availableQuantity}</Text>
                               <Text style={styles.standardsText}>/瓶</Text>
                             </PercentageCircle>

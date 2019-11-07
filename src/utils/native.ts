@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-12 11:25:52
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-06 19:49:43
+ * @LastEditTime: 2019-11-07 13:34:21
  */
 import {
   NativeModules,
@@ -127,20 +127,6 @@ export function setNavigationBarEventSwitch(navigationBarEventSwitch: string, pa
   return NativeModules.RnAppModule.sendEventToNative(navigationBarEventSwitch, params)
 }
 
-/**
- * 根据回调结果查询用户是否登陆，未登录时跳转登录页
- * @param setActivityPageTitle 茅台活动页面设置右边的title的事件
- * @param params 参数
- */
-export function verifyIsOnlineCallback() {
-  return NativeModules.RnAppModule.verifyIsOnlineCallback(
-    (errMsg, responseData) => {
-      if (responseData) {
-        Log.error('add to cart failed')
-      }
-    }
-  )
-}
 /**
  * 展示 toast
  * @param message 消息文本
