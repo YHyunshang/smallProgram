@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-31 10:28:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-06 15:52:36
+ * @LastEditTime: 2019-11-08 13:53:14
  */
 
 import React from 'react'
@@ -98,12 +98,12 @@ const styles = StyleSheet.create({
     width,
     height,
     position: 'absolute',
-    zIndex: 10,
+    zIndex: -1,
     opacity: 1,
     backgroundColor: '#ffffff'
   },
   loading: {
-    zIndex: 101,
+    zIndex: 10,
     justifyContent: 'center',
     alignItems: 'center',
     top: (height - 80) / 2

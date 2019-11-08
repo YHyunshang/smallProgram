@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-08 11:24:46
+ * @LastEditTime: 2019-11-08 15:10:40
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -294,7 +294,7 @@ export default class PreviewPurchase extends React.Component {
                         <View>
                           <View style={styles.purchaseNumberWrapper}>
                             <Text style={styles.purchaseTips}>当前可购买数量</Text>
-                            <PercentageCircle radius={62} percent={this.state.percent} borderWidth={10} bgcolor={'#F0F0ED'} color={'#C1882C'}>
+                            <PercentageCircle radius={61} percent={this.state.percent} borderWidth={10} bgcolor={'#F0F0ED'} color={'#C1882C'}>
                               <Text style={styles.quantityText}>{exchangeInfoVO.availableQuantity}</Text>
                               <Text style={exchangeInfoVO.availableQuantity >= 10 ? styles.standardsBigText : styles.standardsText}>/瓶</Text>
                             </PercentageCircle>
@@ -420,7 +420,7 @@ export default class PreviewPurchase extends React.Component {
               <RuleModal ref={ref => this.ruleModal = ref} ruleList={ruleList}/>
             </LinearGradient>
             :
-            exchangeInfoVO.integralExchangeUrl ?
+            exchangeInfoVO.integralExchangeUrl || exchangeInfoVO.integralExchangeUrl == null ?
               <View style={styles.noActivityWrapper}>
                 <View>
                   <FastImage style={styles.noActivityImage} source={noActivity} resizeMode={FastImage.resizeMode.contain}/>
