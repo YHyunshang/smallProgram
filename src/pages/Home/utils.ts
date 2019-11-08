@@ -66,7 +66,7 @@ export function formatFloorData(
           data: floor.templateDetailVOList.map(ele => ({
             key: ele.id,
             image: ele.imgUrl,
-            link: ele.name && ele.name.indexOf("茅台") != -1  ? CMSServices.mouTaiActivityLink(ele.name) : CMSServices.formatLink(ele),
+            link: ele.name && ele.name.indexOf("茅台") != -1  ? CMSServices.mouTaiActivityLink(ele.name,shopCode) : CMSServices.formatLink(ele),
           })),
         },
       })
@@ -128,7 +128,7 @@ export function formatFloorData(
           ],
           props: {
             image: imgObj.imgUrl,
-            link: imgObj.name && imgObj.name.indexOf("茅台") != -1  ? CMSServices.mouTaiActivityLink(imgObj.name) : CMSServices.formatLink(imgObj),
+            link: imgObj.name && imgObj.name.indexOf("茅台") != -1  ? CMSServices.mouTaiActivityLink(imgObj.name,shopCode) : CMSServices.formatLink(imgObj),
           },
         })
       } else if (floor.subType === 2) {

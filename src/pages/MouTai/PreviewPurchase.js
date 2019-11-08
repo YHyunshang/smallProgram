@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-08 17:22:09
+ * @LastEditTime: 2019-11-08 18:18:52
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -54,22 +54,19 @@ export default class PreviewPurchase extends React.Component {
   }
 
   componentDidMount() {
-    const {activityCode} = this.props
+    const {activityCode, shopCode} = this.props
     let productCode = activityCode && activityCode.split('-')[1]
-    this.setState({productCode})
-    this.init()
+    this.setState({productCode, shopCode})
+    this.init(productCode, shopCode)
     // 规则说明弹窗事件监听
     this.nativeSubscription = subscriptRuleModalChange(
       this.onNativeRuleModalChange
     )
   }
-  // 初始化数据
-  async init() {
-    const [shopCode] = await Promise.all([
-      Native.getConstant('storeCode')
-    ])
-    this.setState({shopCode})
-    this.getPurchaseActivity(this.state.productCode, shopCode)
+  // 初始化茅台专售数据
+  async init(productCode, shopCode) {
+    // rnAppModule.showToast(`shopCode::${String(shopCode)}`, '0')
+    this.getPurchaseActivity(productCode, shopCode)
   }
   /**
    * @msg:获取预购活动
@@ -83,7 +80,7 @@ export default class PreviewPurchase extends React.Component {
           this.setState(
             {
               exchangeInfoVO: data,
-              buyQuantity: data.availableQuantity,
+              buyQuantity: Number(data.inventoryNumber) >= Number(data.availableQuantity) ? data.availableQuantity : data.inventoryNumber,
               isActivity: data.isActivity,
               activityCode: data.activityCode
             }

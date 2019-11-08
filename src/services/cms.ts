@@ -3,9 +3,9 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-12 11:25:52
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-04 16:36:17
+ * @LastEditTime: 2019-11-08 18:20:54
  */
-import { NativeEventEmitter, NativeModules, Alert } from 'react-native'
+import { NativeEventEmitter, NativeModules } from 'react-native'
 import { Http, Log, Native } from '@utils'
 
 /**
@@ -189,11 +189,11 @@ export function formatLink({
 /**
  * 跳转到茅台专售活动的专用链接
  */
-export function mouTaiActivityLink(link: string) {
+export function mouTaiActivityLink(productCode: string,shopCode: string) {
   return {
     type: Native.NavPageType.RN,
     uri: 'RNPreviewPurchase',
-    params:{ activityCode: link},
+    params:{ activityCode: productCode, shopCode},
   }
 }
 
