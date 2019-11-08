@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-08 15:10:40
+ * @LastEditTime: 2019-11-08 15:26:28
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -143,6 +143,9 @@ export default class PreviewPurchase extends React.Component {
       }).catch(({message}) => {
         this.loading.hideLoading()
         rnAppModule.showToast(message, '0')
+        if (message && message.indexOf('Token不存在') != -1) {
+          this.handleGoHome()
+        }
       })
   }
   componentWillUnmount() {
