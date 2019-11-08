@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-08 15:26:28
+ * @LastEditTime: 2019-11-08 17:22:09
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -79,7 +79,7 @@ export default class PreviewPurchase extends React.Component {
     getPurchaseActivity(productCode, shopCode)
       .then(({result: data, message, code}) => {
         if (code === 200000 && data) {
-          let params = {middleTitle: '茅台专售', rightTitle: '规则说明', rightEventName: 'notifyRulePopup'}
+          let params = {middleTitle: data && data.title, rightTitle: '规则说明', rightEventName: 'notifyRulePopup'}
           this.setState(
             {
               exchangeInfoVO: data,
@@ -93,7 +93,7 @@ export default class PreviewPurchase extends React.Component {
           if (data.isActivity) {
             Native.setActivityPageTitle('setActivityPageTitle', JSON.stringify(params))
           } else {
-            Native.setTitle('茅台专售')
+            Native.setTitle(data && data.title)
           }
         } else {
           rnAppModule.showToast(message, '0')
