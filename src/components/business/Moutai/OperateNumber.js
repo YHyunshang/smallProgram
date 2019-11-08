@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-07 15:02:09
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-06 11:08:05
+ * @LastEditTime: 2019-11-08 10:49:34
  */
 import React, {Component} from 'react'
 import {
@@ -26,23 +26,26 @@ export default class OperateNumber extends Component {
     }
   }
   componentDidMount() {
-    const {availableQuantity} = this.props
-    this.setState({numberText: availableQuantity})
+    const {availableQuantity, inventoryNumber} = this.props
+    let currentQuantity = Number(inventoryNumber) >= Number(availableQuantity) ? availableQuantity : inventoryNumber
+    this.setState({numberText: currentQuantity})
   }
   /**
    * @msg: 加操作
    */
   handleAdd() {
     let {numberText} = this.state
-    const {availableQuantity, onAdd} = this.props
+    let {availableQuantity, inventoryNumber, onAdd} = this.props
+    let tips = Number(inventoryNumber) >= Number(availableQuantity) ? '您已超出可购买数量' : '库存不足'
+    availableQuantity = Number(inventoryNumber) >= Number(availableQuantity) ? availableQuantity : inventoryNumber
     if (Number(numberText) >= Number(availableQuantity)) {
       this.setState({addIconColor: '#CCCCCC'})
-      rnAppModule.showToast('您已超出可购买数量', '0')
+      rnAppModule.showToast(tips, '0')
       return false
     } else {
       numberText++
       if (Number(numberText) >= Number(availableQuantity)) {
-        this.setState({numberText, addIconColor: '#CCCCCC'})
+        this.setState({numberText, addIconColor: '#CCCCCC', minIconColor: '#666666'})
       } else {
         this.setState({numberText, addIconColor: '#666666', minIconColor: '#666666'})
       }
@@ -69,6 +72,8 @@ export default class OperateNumber extends Component {
   }
   render() {
     const {numberText, addIconColor, minIconColor} = this.state
+    let {availableQuantity, inventoryNumber} = this.props
+    availableQuantity = Number(inventoryNumber) >= Number(availableQuantity) ? availableQuantity : inventoryNumber
     return (
       <View style={styles.container}>
         <TouchableOpacity
@@ -88,7 +93,7 @@ export default class OperateNumber extends Component {
           onPress={() => {
             this.handleAdd()
           }} >
-          <Icon name='plus' size={15} color={Number(this.state.numberText) >= Number(this.props.availableQuantity) ? '#CCCCCC' : addIconColor} />
+          <Icon name='plus' size={15} color={Number(this.state.numberText) >= Number(availableQuantity) ? '#CCCCCC' : addIconColor} />
         </TouchableOpacity>
       </View>
     )

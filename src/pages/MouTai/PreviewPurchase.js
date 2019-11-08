@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-07 17:00:38
+ * @LastEditTime: 2019-11-08 11:24:46
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -20,6 +20,7 @@ import OperateNumber from '../../components/business/Moutai/OperateNumber'
 import StoreModal from '../../components/business/Moutai/StoreModal'
 import RuleModal from '../../components/business/Moutai/RuleModal'
 import PercentageCircle from 'react-native-percentage-circle'
+import FastImage from 'react-native-fast-image'
 import {subscriptRuleModalChange, getPurchaseActivity, getRuleDescription, getReservationShopList, handleOrderAmount} from '../../services/mouTaiActivity'
 const rnAppModule = NativeModules.RnAppModule// 原生模块
 
@@ -128,20 +129,20 @@ export default class PreviewPurchase extends React.Component {
     handleOrderAmount(params)
       .then(({result: data, message, code}) => {
         if (code === 200000 && data) {
+          this.loading.hideLoading()
           this.setState({preOrderNo: data.preOrderNo})
           Native.navigateTo({
             type: Native.NavPageType.NATIVE,
             uri: 'D001,D001',
             params: {preOrderNo: data.preOrderNo}
           })
-          this.loading.hideLoading()
         } else {
-          rnAppModule.showToast(message, '0')
           this.loading.hideLoading()
+          rnAppModule.showToast(message, '0')
         }
       }).catch(({message}) => {
-        rnAppModule.showToast(message, '0')
         this.loading.hideLoading()
+        rnAppModule.showToast(message, '0')
       })
   }
   componentWillUnmount() {
@@ -330,7 +331,7 @@ export default class PreviewPurchase extends React.Component {
                       )
                         :
                         <View style={styles.emptyWrapper}>
-                          <Image style={styles.defaultImage} source={soldOutDefault} resizeMode="contain"/>
+                          <FastImage style={styles.defaultImage} source={soldOutDefault} resizeMode={FastImage.resizeMode.contain}/>
                           <Text style={styles.defaultText}>当前已抢完，敬请期待</Text>
                         </View>
                     }
@@ -392,7 +393,7 @@ export default class PreviewPurchase extends React.Component {
                   <View style={styles.buyButton}>
                     <View style={styles.leftWrapper}>
                       <Text style={styles.leftText}>购买数量</Text>
-                      <OperateNumber availableQuantity={exchangeInfoVO.availableQuantity} onAdd={this.handleAddNumber} onMin={this.handleMinNumber}/>
+                      <OperateNumber availableQuantity={exchangeInfoVO.availableQuantity} inventoryNumber={exchangeInfoVO.inventoryNumber} onAdd={this.handleAddNumber} onMin={this.handleMinNumber}/>
                     </View>
                     <LinearGradient
                       style={[styles.rightWrapper]}
@@ -422,7 +423,7 @@ export default class PreviewPurchase extends React.Component {
             exchangeInfoVO.integralExchangeUrl ?
               <View style={styles.noActivityWrapper}>
                 <View>
-                  <Image style={styles.noActivityImage} source={noActivity} resizeMode="contain"/>
+                  <FastImage style={styles.noActivityImage} source={noActivity} resizeMode={FastImage.resizeMode.contain}/>
                 </View>
                 <Text style={styles.noActivityText}>活动正在筹备中…</Text>
                 <Text style={styles.noActivityOtherText}>看看其他的吧</Text>

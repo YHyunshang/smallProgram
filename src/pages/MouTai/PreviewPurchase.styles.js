@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-07 16:42:16
+ * @LastEditTime: 2019-11-07 19:51:48
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import theme from '@theme'
@@ -172,8 +172,8 @@ export default StyleSheet.create({
     color: '#9ED7C7'
   },
   purchaseQualification: {
-    marginTop: 10
-    // marginLeft: 12
+    marginTop: 10,
+    marginHorizontal: 12
   },
   qualificationBoldText: {
     fontSize: 13,
