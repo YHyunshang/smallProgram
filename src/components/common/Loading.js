@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-31 10:28:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-09 14:41:12
+ * @LastEditTime: 2019-11-09 18:25:19
  */
 
 import React from 'react'
@@ -99,8 +99,7 @@ const styles = StyleSheet.create({
     height,
     position: 'absolute',
     zIndex: 1,
-    opacity: 1,
-    backgroundColor: '#ffffff'
+    backgroundColor: 'rgba(0, 0, 0, 0)'
   },
   loading: {
     zIndex: 10,

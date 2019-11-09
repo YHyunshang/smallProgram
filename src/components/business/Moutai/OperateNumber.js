@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-07 15:02:09
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-08 10:49:34
+ * @LastEditTime: 2019-11-09 17:49:48
  */
 import React, {Component} from 'react'
 import {
@@ -25,6 +25,25 @@ export default class OperateNumber extends Component {
       minIconColor: '#666666'
     }
   }
+  componentWillReceiveProps(props, nextProps) {
+    if (props.availableQuantity != this.props.availableQuantity) {
+      const {availableQuantity, inventoryNumber} = props
+      let currentQuantity = Number(inventoryNumber) >= Number(availableQuantity) ? availableQuantity : inventoryNumber
+      this.setState({numberText: currentQuantity})
+    }
+  }
+  // 纯函数，无副作用
+  // static getDerivedStateFromProps(props, state) {
+  //   const {availableQuantity, inventoryNumber} = props
+  //   if (props.availableQuantity !== state.numberText) {
+  //     let currentQuantity = Number(inventoryNumber) >= Number(availableQuantity) ? availableQuantity : inventoryNumber
+  //     // this.setState({numberText: currentQuantity})
+  //     return {
+  //       numberText: currentQuantity
+  //     }
+  //   }
+  //   return null
+  // }
   componentDidMount() {
     const {availableQuantity, inventoryNumber} = this.props
     let currentQuantity = Number(inventoryNumber) >= Number(availableQuantity) ? availableQuantity : inventoryNumber

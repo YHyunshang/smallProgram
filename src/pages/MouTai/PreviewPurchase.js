@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-09 15:25:47
+ * @LastEditTime: 2019-11-09 18:25:44
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -80,7 +80,6 @@ export default class PreviewPurchase extends React.Component {
 
   // 初始化茅台专售数据
   async init(productCode, shopCode) {
-    // rnAppModule.showToast(`shopCode::${String(shopCode)}`, '0')
     this.getPurchaseActivity(productCode, shopCode)
   }
   /**
@@ -137,11 +136,11 @@ export default class PreviewPurchase extends React.Component {
       shopCode: this.state.shopCode,
       wantDistributionTime: ''
     }
-    // this.loading.showLoading()
+    this.loading.showLoading()
     handleOrderAmount(params)
       .then(({result: data, message, code}) => {
         if (code === 200000 && data) {
-          // this.loading.hideLoading()
+          this.loading.hideLoading()
           this.setState({preOrderNo: data.preOrderNo})
           Native.navigateTo({
             type: Native.NavPageType.NATIVE,
@@ -149,11 +148,11 @@ export default class PreviewPurchase extends React.Component {
             params: {preOrderNo: data.preOrderNo}
           })
         } else {
-          // this.loading.hideLoading()
+          this.loading.hideLoading()
           rnAppModule.showToast(message, '0')
         }
       }).catch(({message}) => {
-        // this.loading.hideLoading()
+        this.loading.hideLoading()
         rnAppModule.showToast(message, '0')
         if (message && message.indexOf('Token不存在') != -1) {
           this.handleGoHome()
