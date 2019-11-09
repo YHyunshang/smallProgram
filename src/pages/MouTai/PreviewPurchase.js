@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-09 20:10:15
+ * @LastEditTime: 2019-11-09 23:10:54
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -371,17 +371,17 @@ export default class PreviewPurchase extends React.Component {
                       <View style={styles.purchaseQualification}>
                         <Text style={styles.qualificationBoldText}>※ 购买资格</Text>
                         {
-                          exchangeInfoVO && exchangeInfoVO.exchangeCondition && (
+                          exchangeInfoVO && exchangeInfoVO.exchangeCondition ?
                             <Text style={styles.qualificationText}>{exchangeInfoVO.exchangeCondition}</Text>
-                          )
+                            : null
                         }
                       </View>
                       <View style={styles.purchaseQualification}>
                         <Text style={styles.qualificationBoldText}>※ 限购条件</Text>
                         {
-                          exchangeInfoVO && exchangeInfoVO.limitDesc && (
+                          exchangeInfoVO && exchangeInfoVO.limitDesc ?
                             <Text style={styles.qualificationText}>{exchangeInfoVO.limitDesc}</Text>
-                          )
+                            : null
                         }
                       </View>
                     </View>
