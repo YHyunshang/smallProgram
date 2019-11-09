@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-12 11:25:52
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-09 15:20:00
+ * @LastEditTime: 2019-11-09 20:24:48
  */
 import { NativeEventEmitter, NativeModules } from 'react-native'
 import { Http, Log, Native } from '@utils'
@@ -14,7 +14,7 @@ import { Http, Log, Native } from '@utils'
  * @return {Promise} Http request instance
  */
 export function getHomeTabs(shopCode) {
-  return Http.get('productCenter', `/v2/cms/mobile/${shopCode}/getHomePage`)
+  return Http.get('productCenter', `/v2/cms/mobile/${shopCode}/getHomePage?version=1`)
 }
 
 /**
@@ -37,7 +37,7 @@ export function getNewPersonBanner() {
 export function getFloorDataByTab(tabId, shopCode) {
   return Http.get(
     'productCenter',
-    `/cms/mobile/${tabId}/getDetailPage/${shopCode}`
+    `/cms/mobile/${tabId}/getDetailPage/${shopCode}?version=1`
   )
 }
 
