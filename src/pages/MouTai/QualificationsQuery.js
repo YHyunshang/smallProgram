@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-06 16:07:32
+ * @LastEditTime: 2019-11-09 14:40:50
  */
 import React from 'react'
 import {View, ScrollView, Text, Image, NativeModules, TouchableOpacity} from 'react-native'

@@ -4,18 +4,19 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-07 19:51:48
+ * @LastEditTime: 2019-11-09 15:11:34
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import theme from '@theme'
-const {height} = Dimensions.get('window')
+const {width, height} = Dimensions.get('window')
 export default StyleSheet.create({
   container: {
+    width,
     height,
     flex: 1
   },
   headBannerImage: {
-    width: '100%',
+    width,
     height: 320
   },
   headBanner: {
@@ -144,6 +145,13 @@ export default StyleSheet.create({
     borderTopWidth: 0.5,
     borderTopColor: '#E8E8E5'
   },
+  queryButton: {
+    width: 175,
+    height: 47,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   splitLine: {
     width: 0.5,
     height: 47,
@@ -155,13 +163,13 @@ export default StyleSheet.create({
     color: '#06B288'
   },
   explainWrapper: {
-    marginTop: 48,
-    marginBottom: 40
+    paddingTop: 48,
+    paddingBottom: 40
   },
   explainTextWrapper: {
     // width: 336,
     // marginBottom: 6,
-    // marginLeft: 20,
+    paddingHorizontal: 20,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center'
@@ -169,11 +177,18 @@ export default StyleSheet.create({
   explainText: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#9ED7C7'
+    color: '#9ED7C7',
+    paddingHorizontal: 8
   },
   purchaseQualification: {
-    marginTop: 10,
-    marginHorizontal: 12
+    paddingTop: 10,
+    paddingLeft: 12
+  },
+  qualificationLine: {
+    width: 115,
+    height: 2,
+    borderTopWidth: 1,
+    borderTopColor: '#9ED7C7'
   },
   qualificationBoldText: {
     fontSize: 13,

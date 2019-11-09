@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-08-16 09:54:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-04 11:49:40
+ * @LastEditTime: 2019-11-09 15:20:30
  */
 import {Http} from '@utils'
 import {NativeModules, NativeEventEmitter} from 'react-native'
@@ -42,4 +42,13 @@ export const handleOrderAmount = (orderParams) => Http.post('cart', '/repurchase
 export function subscriptRuleModalChange(handler) {
   const eventEmitter = new NativeEventEmitter(NativeModules.SendRNEventManager)
   return eventEmitter.addListener('notifyRulePopup', handler)
+}
+
+/**
+ * 添加 refreshMouTaiActivity 刷新茅台活动页面事件监听
+ * @param handler 事件处理函数
+ */
+export function subscriptRefreshMouTaiActivity(handler) {
+  const eventEmitter = new NativeEventEmitter(NativeModules.SendRNEventManager)
+  return eventEmitter.addListener('refreshMouTaiActivity', handler)
 }

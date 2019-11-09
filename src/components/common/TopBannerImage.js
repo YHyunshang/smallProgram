@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-08-29 11:25:46
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-08 09:58:19
+ * @LastEditTime: 2019-11-09 10:36:12
  */
 import React, {Component} from 'react'
 import {StyleSheet, View, NativeModules} from 'react-native'
@@ -48,7 +48,7 @@ export default class TopBannerImage extends Component {
             indicator={false}
             style={[style]}
             source={{uri: headImg}}
-            resizeMode={FastImage.resizeMode.contain}
+            resizeMode={FastImage.resizeMode.stretch}
             onError={(error) => {
               this.setState({
                 type: 1

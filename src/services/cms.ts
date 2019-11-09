@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-12 11:25:52
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-08 18:20:54
+ * @LastEditTime: 2019-11-09 15:20:00
  */
 import { NativeEventEmitter, NativeModules } from 'react-native'
 import { Http, Log, Native } from '@utils'

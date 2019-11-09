@@ -4,12 +4,13 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-08 18:18:52
+ * @LastEditTime: 2019-11-09 15:25:47
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import {Native, Img} from '@utils'
+import throttle from 'lodash/throttle'
 import styles from './PreviewPurchase.styles'
 import {transPenny} from '../../utils/FormatUtil'
 import {yellowWarn, soldOutDefault, noActivity} from '@const/resources'
@@ -21,12 +22,20 @@ import StoreModal from '../../components/business/Moutai/StoreModal'
 import RuleModal from '../../components/business/Moutai/RuleModal'
 import PercentageCircle from 'react-native-percentage-circle'
 import FastImage from 'react-native-fast-image'
-import {subscriptRuleModalChange, getPurchaseActivity, getRuleDescription, getReservationShopList, handleOrderAmount} from '../../services/mouTaiActivity'
+import {
+  subscriptRuleModalChange,
+  getPurchaseActivity,
+  getRuleDescription,
+  getReservationShopList,
+  handleOrderAmount,
+  subscriptRefreshMouTaiActivity
+} from '../../services/mouTaiActivity'
 const rnAppModule = NativeModules.RnAppModule// 原生模块
 
 export default class PreviewPurchase extends React.Component {
   constructor(props) {
     super(props)
+    this.handleThrottledOrderAmount = throttle(this.handleThrottledOrderAmount, 500)
     this.state = {
       isActivity: false, // 是否有茅台活动
       isRuleFirst: true, // 是否是第一次请求规则接口
@@ -62,7 +71,13 @@ export default class PreviewPurchase extends React.Component {
     this.nativeSubscription = subscriptRuleModalChange(
       this.onNativeRuleModalChange
     )
+
+    // 刷新茅台活动页面事件监听
+    this.nativeSubscription = subscriptRefreshMouTaiActivity(
+      this.onNativeRefreshMouTaiActivity
+    )
   }
+
   // 初始化茅台专售数据
   async init(productCode, shopCode) {
     // rnAppModule.showToast(`shopCode::${String(shopCode)}`, '0')
@@ -107,7 +122,7 @@ export default class PreviewPurchase extends React.Component {
   /**
    * @msg:【立即购买】按钮（去结算)
    */
-  handleOrderAmount() {
+  handleThrottledOrderAmount = () => {
     let params = {
       activityCode: this.state.activityCode,
       billFeeType: 2,
@@ -122,11 +137,11 @@ export default class PreviewPurchase extends React.Component {
       shopCode: this.state.shopCode,
       wantDistributionTime: ''
     }
-    this.loading.showLoading()
+    // this.loading.showLoading()
     handleOrderAmount(params)
       .then(({result: data, message, code}) => {
         if (code === 200000 && data) {
-          this.loading.hideLoading()
+          // this.loading.hideLoading()
           this.setState({preOrderNo: data.preOrderNo})
           Native.navigateTo({
             type: Native.NavPageType.NATIVE,
@@ -134,11 +149,11 @@ export default class PreviewPurchase extends React.Component {
             params: {preOrderNo: data.preOrderNo}
           })
         } else {
-          this.loading.hideLoading()
+          // this.loading.hideLoading()
           rnAppModule.showToast(message, '0')
         }
       }).catch(({message}) => {
-        this.loading.hideLoading()
+        // this.loading.hideLoading()
         rnAppModule.showToast(message, '0')
         if (message && message.indexOf('Token不存在') != -1) {
           this.handleGoHome()
@@ -175,6 +190,14 @@ export default class PreviewPurchase extends React.Component {
   onNativeRuleModalChange = () => {
     Native.setNavigationBarEventSwitch('navigationBarEventSwitch', JSON.stringify({swithTag: '0'}))
     this.getRuleDescription()
+  }
+
+  /**
+   * @msg:刷新茅台活动页面
+   */
+  onNativeRefreshMouTaiActivity = (data) => {
+    const {productCode, shopCode} = data
+    this.getPurchaseActivity(productCode, shopCode)
   }
   /**
    * @msg:查询可预约名店列表
@@ -219,13 +242,13 @@ export default class PreviewPurchase extends React.Component {
         })
     }
   }
+
   /**
    * @description: 立即购买,跳转原生的订单确认页面
    */
-  handleGoBuy() {
-    this.handleOrderAmount()
+  handleGoBuy= () => {
+    this.handleThrottledOrderAmount()
   }
-
   /**
    * @description: 增加预定数量
    */
@@ -257,7 +280,7 @@ export default class PreviewPurchase extends React.Component {
     Native.navigateTo({
       type: Native.NavPageType.RN,
       uri: 'RNQualificationQuery',
-      params: {activityCode: this.state.activityCode}
+      params: {activityCode: this.state.activityCode, title: '资格查询'}
     })
   }
   /**
@@ -314,7 +337,9 @@ export default class PreviewPurchase extends React.Component {
                                 onPress={() => {
                                   this.handleQualificationsQuery()
                                 }} >
-                                <Text style={styles.buttonText}>预购资格查询</Text>
+                                <View style={styles.queryButton}>
+                                  <Text style={styles.buttonText}>预购资格查询</Text>
+                                </View>
                               </TouchableOpacity>
                               <View style={styles.splitLine}></View>
                               <TouchableOpacity
@@ -323,7 +348,9 @@ export default class PreviewPurchase extends React.Component {
                                 onPress={() => {
                                   this.handleStoreModal()
                                 }} >
-                                <Text style={styles.buttonText}>可预约门店</Text>
+                                <View style={styles.queryButton}>
+                                  <Text style={styles.buttonText}>可预约门店</Text>
+                                </View>
                               </TouchableOpacity>
                             </View>
                           </View>
@@ -337,9 +364,9 @@ export default class PreviewPurchase extends React.Component {
                     }
                     <View style={styles.explainWrapper}>
                       <View style={styles.explainTextWrapper}>
-                        <View>
-                          <Text style={styles.qualificationText}>————————   / / <Text style={styles.explainText}> 预购说明 </Text>  / /   ————————</Text>
-                        </View>
+                        <View style={styles.qualificationLine}></View>
+                        <Text style={styles.explainText}>/ / 预购说明 / /</Text>
+                        <View style={styles.qualificationLine}></View>
                       </View>
                       <View style={styles.purchaseQualification}>
                         <Text style={styles.qualificationBoldText}>※ 购买资格</Text>
@@ -404,9 +431,7 @@ export default class PreviewPurchase extends React.Component {
                       <TouchableOpacity
                         style={styles.shareTouchableOpacity}
                         activeOpacity={0.95}
-                        onPress={() => {
-                          this.handleGoBuy()
-                        }} >
+                        onPress={this.handleGoBuy}>
                         <View>
                           <Text style={styles.buyText}>立即购买</Text>
                         </View>
