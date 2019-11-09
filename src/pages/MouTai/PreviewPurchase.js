@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-09 18:25:44
+ * @LastEditTime: 2019-11-09 20:10:15
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -187,8 +187,8 @@ export default class PreviewPurchase extends React.Component {
    * @msg:监听规则弹窗
    */
   onNativeRuleModalChange = () => {
+    this.handleRuleDescription()
     Native.setNavigationBarEventSwitch('navigationBarEventSwitch', JSON.stringify({swithTag: '0'}))
-    this.getRuleDescription()
   }
 
   /**
@@ -222,7 +222,7 @@ export default class PreviewPurchase extends React.Component {
   /**
    * @msg:查询积分兑换活动规则
    */
-  getRuleDescription = () => {
+  handleRuleDescription = () => {
     this.ruleModal.showModal()
     if (this.state.isRuleFirst) {
       this.loading.showLoading()
@@ -279,7 +279,8 @@ export default class PreviewPurchase extends React.Component {
     Native.navigateTo({
       type: Native.NavPageType.RN,
       uri: 'RNQualificationQuery',
-      params: {activityCode: this.state.activityCode, title: '资格查询'}
+      params: {activityCode: this.state.activityCode},
+      title: '资格查询'
     })
   }
   /**
