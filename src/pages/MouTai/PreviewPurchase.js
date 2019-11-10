@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-09 23:10:54
+ * @LastEditTime: 2019-11-10 10:02:44
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -388,7 +388,6 @@ export default class PreviewPurchase extends React.Component {
                     {
                       exchangeInfoVO && !exchangeInfoVO.isQualifications && (
                         <TouchableOpacity
-                          style={styles.shareTouchableOpacity}
                           activeOpacity={0.95}
                           onPress={() => {
                             this.handleGoHome()

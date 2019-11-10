@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-09 15:11:34
+ * @LastEditTime: 2019-11-10 10:06:14
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import theme from '@theme'
@@ -163,8 +163,8 @@ export default StyleSheet.create({
     color: '#06B288'
   },
   explainWrapper: {
-    paddingTop: 48,
-    paddingBottom: 40
+    marginTop: 48,
+    marginBottom: 40
   },
   explainTextWrapper: {
     // width: 336,
@@ -198,7 +198,7 @@ export default StyleSheet.create({
   },
   qualificationText: {
     fontSize: 13,
-    paddingBottom: 4,
+    // paddingBottom: 4,
     color: '#9ED7C7'
   },
   goHomeButton: {
