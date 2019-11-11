@@ -9,11 +9,13 @@ export default StyleSheet.create({
     borderRadius: 7,
     borderWidth: 1,
     borderColor: '#FF9D8B',
+    overflow: 'hidden',
   },
 
   filled: {
     height: 14,
-    borderRadius: 7,
+    borderTopRightRadius: 8,
+    borderBottomRightRadius: 8,
     backgroundColor: '#FFEEEB',
   },
 
