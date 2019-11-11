@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-12 11:25:52
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-09 20:24:48
+ * @LastEditTime: 2019-11-11 15:15:12
  */
 import { NativeEventEmitter, NativeModules } from 'react-native'
 import { Http, Log, Native } from '@utils'
@@ -14,7 +14,7 @@ import { Http, Log, Native } from '@utils'
  * @return {Promise} Http request instance
  */
 export function getHomeTabs(shopCode) {
-  return Http.get('productCenter', `/v2/cms/mobile/${shopCode}/getHomePage?version=1`)
+  return Http.get('productCenter', `/v2/cms/mobile/${shopCode}/getHomePage?version=2`)
 }
 
 /**
@@ -37,7 +37,7 @@ export function getNewPersonBanner() {
 export function getFloorDataByTab(tabId, shopCode) {
   return Http.get(
     'productCenter',
-    `/cms/mobile/${tabId}/getDetailPage/${shopCode}?version=1`
+    `/cms/mobile/${tabId}/getDetailPage/${shopCode}?version=2`
   )
 }
 
@@ -102,7 +102,7 @@ export function subscriptNewcomerChange(handler: (...args: any[]) => any) {
 export function getActivity(activityCode: string, shopCode: string) {
   return Http.get(
     'productCenter',
-    `/cms/mobile/${activityCode}/getActivePage/${shopCode}`
+    `/cms/mobile/${activityCode}/getActivePage/${shopCode}?version=2`
   )
 }
 
@@ -156,7 +156,7 @@ export function updateProductCountInCart(
  * @param shopCode 门店编码
  */
 export function getFoundPageData(shopCode: string) {
-  return Http.get('productCenter', `/cms/mobile/${shopCode}/getDiscoveryPage?version=1`)
+  return Http.get('productCenter', `/cms/mobile/${shopCode}/getDiscoveryPage?version=2`)
 }
 
 /**
