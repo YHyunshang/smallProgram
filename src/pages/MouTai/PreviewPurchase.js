@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-10 10:02:44
+ * @LastEditTime: 2019-11-12 15:00:50
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -189,6 +189,10 @@ export default class PreviewPurchase extends React.Component {
   onNativeRuleModalChange = () => {
     this.handleRuleDescription()
     Native.setNavigationBarEventSwitch('navigationBarEventSwitch', JSON.stringify({swithTag: '0'}))
+  }
+
+  onRef = (ref) => {
+    this.ruleModal = ref
   }
 
   /**
@@ -441,7 +445,7 @@ export default class PreviewPurchase extends React.Component {
                 }
               </View>
               <StoreModal ref={ref => this.storeModal = ref} storeList={storeList}/>
-              <RuleModal ref={ref => this.ruleModal = ref} ruleList={ruleList}/>
+              <RuleModal onRef={this.onRef} ruleList={ruleList}/>
             </LinearGradient>
             :
             exchangeInfoVO.integralExchangeUrl || exchangeInfoVO.integralExchangeUrl == null ?
