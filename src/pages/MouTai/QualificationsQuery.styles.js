@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-30 17:45:24
+ * @LastEditTime: 2019-11-12 16:57:18
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import theme from '@theme'
@@ -12,6 +12,7 @@ const {height} = Dimensions.get('window')
 export default StyleSheet.create({
   container: {
     flex: 1,
+    height,
     backgroundColor: '#FAFAFA'
   },
   topBanner: {
@@ -64,7 +65,8 @@ export default StyleSheet.create({
   monthCountHeight: {
     width: '100%',
     height: 44,
-    borderRadius: 5,
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
     backgroundColor: '#FFFFFF',
     borderBottomWidth: 0.5,
     borderBottomColor: '#E8E8E5',
