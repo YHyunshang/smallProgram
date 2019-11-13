@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-08-26 09:41:18
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-29 21:05:23
+ * @LastEditTime: 2019-11-13 17:40:12
  */
 import { AppRegistry } from 'react-native'
 import Home from './src/pages/Home'
@@ -17,6 +17,7 @@ import HelpFeedBackAnswer from './src/pages/HelpFeedBack/HelpFeedBackAnswer'
 import LimitTimeBuy from './src/pages/LimitTimeBuy'
 import PreviewPurchase from './src/pages/MouTai/PreviewPurchase'
 import QualificationsQuery from './src/pages/MouTai/QualificationsQuery'
+import TideManActivity from './src/pages/TideManActivity/Activity'
 // 隐藏 RN yellowBox warning 提示
 console.disableYellowBox = true
 
@@ -30,3 +31,4 @@ AppRegistry.registerComponent('RNHelpFeedBackAnswer', () => HelpFeedBackAnswer)
 AppRegistry.registerComponent('LimitTimeBuy', () => LimitTimeBuy)
 AppRegistry.registerComponent('RNPreviewPurchase', () => PreviewPurchase)
 AppRegistry.registerComponent('RNQualificationQuery', () => QualificationsQuery)
+AppRegistry.registerComponent('RNTideActivity', () => TideManActivity)
