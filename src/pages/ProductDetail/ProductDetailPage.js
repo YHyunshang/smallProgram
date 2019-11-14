@@ -52,7 +52,7 @@ class ProductDetailPage extends React.Component {
       productDetailImagesResponseVOList: [],
       currentIndex: 0, // 当前索引
       storeCode: '', // 门店code
-      imgData: [placeholderProduct], // 默认占位图
+      imgData: [], // 默认占位图
       productImgList: [], // 商品详情图文
       shopUrl: [], // 商家文描
       similarProduct: [],
@@ -247,19 +247,15 @@ class ProductDetailPage extends React.Component {
   }
 
   onCarouselLoadEnd = () => {
-    const startAnimate = () =>
-      Animated.timing(this.state.thumbnailOpacity, {
-        toValue: 0,
-        duration: 200,
-        easing: Easing.linear,
-        useNativeDriver: true,
-      })
-        .start(
-          () => this.setState({ thumbnailVis: false })
-        )
-
-    if (isiOS) setTimeout(startAnimate, 500)
-    else startAnimate()
+    Animated.timing(this.state.thumbnailOpacity, {
+      toValue: 0,
+      duration: 350,
+      easing: Easing.linear,
+      useNativeDriver: true,
+    })
+      .start(
+        () => this.setState({ thumbnailVis: false })
+      )
   }
 
   render() {
@@ -309,6 +305,19 @@ class ProductDetailPage extends React.Component {
     const slashedPrice = loading ? initialData.slashedPrice : goodsInfo.price
     const name = loading ? initialData.name : goodsInfo.productName
     const subTitle = loading ? initialData.subTitle : goodsInfo.subTitle
+    // 规格
+    const specNode = loading && initialData.spec
+      ? (
+        <View style={styles.goodsQualityItemFlex}>
+          <FastImage source={productSpecific} style={{width: 14, height: 14}} />
+          <Text style={styles.goodsQualityValue}>{initialData.spec}</Text>
+        </View>
+      ) : (!loading && !!goodsInfo.productSpecific) ? (
+        <View style={styles.goodsQualityItemFlex}>
+          <FastImage source={productSpecific} style={{width: 14, height: 14}} />
+          <Text style={styles.goodsQualityValue}>{goodsInfo.productSpecific}</Text>
+        </View>
+      ) : null
 
     return (
       <View style={styles.container}>
@@ -387,12 +396,7 @@ class ProductDetailPage extends React.Component {
                 )}
               </View>
               <View style={styles.goodsQualityFlex}>
-                {!!goodsInfo.productSpecific && (
-                  <View style={styles.goodsQualityItemFlex}>
-                    <FastImage source={productSpecific} style={{width: 14, height: 14}} />
-                    <Text style={styles.goodsQualityValue}>{goodsInfo.productSpecific}</Text>
-                  </View>
-                )}
+                {specNode}
                 {/* {
                 goodsInfo.shelfLife ?
                   <View style={styles.goodsQualityItemFlex}>
