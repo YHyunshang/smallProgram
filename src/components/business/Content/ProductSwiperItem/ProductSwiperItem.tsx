@@ -16,6 +16,8 @@ function ProductSwiperItem({
   code,
   thumbnail,
   name,
+  desc,
+  spec,
   productTags = [],
   priceTags = [],
   price,
@@ -26,15 +28,28 @@ function ProductSwiperItem({
   onModifyCount,
   disableAdd,
 }: Props) {
+  const fitThumbnail = Img.loadRatioImage(thumbnail, 100)
+
   const navigateToProductDetail = () => {
     Native.navigateTo({
       type: Native.NavPageType.NATIVE,
       uri: 'A003,A003',
-      params: { productCode: code, storeCode: shopCode },
+      params: {
+        productCode: code,
+        storeCode: shopCode,
+        directTransmitParams: JSON.stringify({
+          name,
+          subTitle: desc,
+          price: price,
+          slashedPrice: slashedPrice || price,
+          spec,
+          count,
+          thumbnail: fitThumbnail,
+        })
+      },
     })
   }
   const tag = priceTags.find(ele => /满.+减/.test(ele))
-  const fitThumbnail = Img.loadRatioImage(thumbnail, 100)
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={navigateToProductDetail}>

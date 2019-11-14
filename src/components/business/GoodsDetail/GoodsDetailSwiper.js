@@ -8,6 +8,7 @@
  */
 
 import React from 'react'
+import PropTypes from 'prop-types'
 import { View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import {Img, Global} from '@utils'
@@ -15,37 +16,43 @@ import Swiper from 'react-native-swiper'
 import styles from './GoodsDetailSwiper.styles'
 import memorize from 'memoize-one'
 
-export default class GoodsDetailSwiper extends React.Component {
-  constructor(props) {
-    super(props)
+const loadFitImg = memorize(imgSrc => Img.loadRatioImage(imgSrc, Img.FullWidth))
+
+export default function GoodsDetailSwiper({ imgData, onAllLoadEnd }) {
+  let loadCount = 0
+  const onImgLoadEnd = () => {
+    loadCount += 1
+    loadCount === imgData.length && onAllLoadEnd && onAllLoadEnd()
   }
 
-  loadFitImg = memorize(imgSrc => Img.loadRatioImage(imgSrc, Img.FullWidth))
+  return (
+    <View style={styles.container}>
+      <Swiper
+        height={Global.WindowWidth}
+        loop
+        autoplay
+        autoplayTimeout={2}
+        dotStyle={styles.dot}
+        activeDotStyle={[ styles.dot, styles.activeDot ]}
+        paginationStyle={styles.paginationStyle}
+        key={imgData.length}
+        removeClippedSubviews={false}
+      >
+        {imgData.map(({ url, id }, index) => (
+          <FastImage
+            key={id || index}
+            style={styles.image}
+            source={{ uri: loadFitImg(url) }}
+            resizeMode="contain"
+            onLoadEnd={onImgLoadEnd}
+          />
+        ))}
+      </Swiper>
+    </View>
+  )
+}
 
-  render() {
-    const {imgData} = this.props
-    return (
-      <View style={styles.container}>
-        <Swiper
-          height={Global.WindowWidth}
-          loop
-          autoplay
-          autoplayTimeout={2}
-          dotStyle={styles.dot}
-          activeDotStyle={[ styles.dot, styles.activeDot ]}
-          paginationStyle={styles.paginationStyle}
-          key={imgData.length}
-        >
-          {imgData.map(({ url, id='default' }) => (
-            <FastImage
-              key={id}
-              style={styles.image}
-              source={{ uri: this.loadFitImg(url) }}
-              resizeMode={FastImage.resizeMode.contain}
-            />
-          ))}
-        </Swiper>
-      </View>
-    )
-  }
+GoodsDetailSwiper.propTypes = {
+  imgData: PropTypes.array,
+  onAllLoadEnd: PropTypes.func,
 }

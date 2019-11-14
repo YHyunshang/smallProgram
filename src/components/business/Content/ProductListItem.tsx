@@ -38,15 +38,27 @@ function ProductListItem({
   shopCode,
   disableAdd,
 }: Props) {
+  const fitThumbnail = Img.loadRatioImage(thumbnail, 100)
   const navigateToProductDetail = () => {
     Native.navigateTo({
       type: Native.NavPageType.NATIVE,
       uri: 'A003,A003',
-      params: {productCode: code, storeCode: shopCode},
+      params: {
+        productCode: code,
+        storeCode: shopCode,
+        directTransmitParams: JSON.stringify({
+          name,
+          subTitle: desc,
+          price: price,
+          slashedPrice: slashedPrice || price,
+          spec,
+          count,
+          thumbnail: fitThumbnail,
+        })
+      },
     })
   }
-  const fitThumbnail = Img.loadRatioImage(thumbnail, 100)
-  if (name === '鲜伊品肋排') console.log('rendering 鲜伊品肋排')
+
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={navigateToProductDetail}>

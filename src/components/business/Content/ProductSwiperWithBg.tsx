@@ -20,27 +20,39 @@ export default function ProductSwiperWithBg({
   backgroundImage,
   products,
 }: Props) {
-  const navigateToProductDetail = (productCode, storeCode) => {
+  const navigateToProductDetail = ({ code, shopCode, name, desc, thumbnail, price, slashedPrice, count, spec }: Product) => {
     Native.navigateTo({
       type: Native.NavPageType.NATIVE,
       uri: 'A003,A003',
-      params: { productCode, storeCode },
+      params: {
+        productCode: code,
+        storeCode: shopCode,
+        directTransmitParams: JSON.stringify({
+          name,
+          subTitle: desc,
+          price: price,
+          slashedPrice: slashedPrice || price,
+          spec,
+          count,
+          thumbnail,
+        })
+      },
     })
   }
 
-  const productRenderer = ({
-    code,
-    thumbnail,
-    name,
-    price,
-    shopCode,
-  }: Product) => {
+  const productRenderer = (product: Product) => {
+    const {
+      code,
+      thumbnail,
+      name,
+      price,
+    } = product
     const fitThumbnail = Img.loadRatioImage(thumbnail, 100)
 
     return (
       <TouchableWithoutFeedback
         key={code}
-        onPress={() => navigateToProductDetail(code, shopCode)}
+        onPress={() => navigateToProductDetail({ ...product, thumbnail: fitThumbnail })}
       >
         <View style={styles.productBox}>
           <Image style={styles.thumbnail} source={{ uri: fitThumbnail }} />

@@ -73,8 +73,13 @@ export default StyleSheet.create({
     fontSize: 12
   },
   defaultImage: {
-    width: '100%',
-    height: 375
+    width: width,
+    height: width,
+    backgroundColor: '#FFF',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 1,
   },
   goodsPriceWrapper: {
     flexDirection: 'row',

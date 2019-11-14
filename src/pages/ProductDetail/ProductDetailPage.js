@@ -7,7 +7,8 @@
  * @LastEditTime: 2019-11-07 17:47:24
  */
 import React from 'react'
-import {ScrollView, View, Text, TouchableOpacity, NativeModules} from 'react-native'
+import PropTypes from 'prop-types'
+import {ScrollView, View, Text, TouchableOpacity, NativeModules, Animated, Easing} from 'react-native'
 import Icon from '../../components/Icon'
 import {transPenny} from '../../utils/FormatUtil'
 import ShareModal from '../../components/business/ShareModal'
@@ -26,14 +27,21 @@ import BuyLimit from '../../components/business/GoodsDetail/BuyLimit'
 import {placeholderProduct} from '../../constants/resources'
 import FastImage from 'react-native-fast-image'
 import {FitImg} from '../../components'
+import withInitialProductData from '../../components/business/Content/HOC/withInitialProductData'
+import {isiOS} from '../../utils/native'
 
 const rnAppModule = NativeModules.RnAppModule// 原生模块
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
 
-export default class ProductDetailPage extends React.Component {
+const AnimatedFastImage = Animated.createAnimatedComponent(FastImage)
+
+class ProductDetailPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      loading: false, // 是否在请求商品详情数据
+      thumbnailOpacity: new Animated.Value(1),
+      thumbnailVis: true,
       cartNumber: 0,
       isFirst: true, // 是否是第一次请求生成海报接口
       goodsDetail: {}, // 商品详情
@@ -44,16 +52,12 @@ export default class ProductDetailPage extends React.Component {
       productDetailImagesResponseVOList: [],
       currentIndex: 0, // 当前索引
       storeCode: '', // 门店code
-      tablist: [
-        {id: 1, name: '商品'},
-        {id: 2, name: '详情'}
-      ],
       imgData: [placeholderProduct], // 默认占位图
       productImgList: [], // 商品详情图文
       shopUrl: [], // 商家文描
       similarProduct: [],
       productActivityLabel: {}, //  1 直降促销,4 第N件N折/N元,5 限时抢 --活动标签
-      orderActivityLabel: {}// 2 满减促销, 3 满件减满减折促销 --活动标签
+      orderActivityLabel: {} // 2 满减促销, 3 满件减满减折促销 --活动标签
     }
     this.shareIconHeight = 0// 分享按钮到高度
     this.goodsSwiperHeight = 0// 图文滚动组件到高度
@@ -61,16 +65,17 @@ export default class ProductDetailPage extends React.Component {
   }
 
   componentDidMount() {
-    let productInfo = goodsDetailManager.productInfo
-    productInfo = productInfo ? JSON.parse(productInfo) : {}
-    this.setState({storeCode: productInfo.storeCode})
-    this.getProductInfo(productInfo.productCode, productInfo.storeCode)
-    this.getSimilarProductList(productInfo.productCode, productInfo.storeCode)
+    const { productCode, storeCode } = this.props
+
+    this.getProductInfo(productCode, storeCode)
+    this.getSimilarProductList(productCode, storeCode)
   }
+
   /**
    * @description: 获取原生返回的商品详情数据
    */
   getProductInfo = (productCode, storeCode) => {
+    this.setState({ loading: true })
     getGoodsDetailData(storeCode, productCode)
       .then(({result: data, message, code}) => {
         if (code === 200000 && data) {
@@ -87,7 +92,7 @@ export default class ProductDetailPage extends React.Component {
               goodsInfo: data.resChannelStoreProductVO,
               evaluation: data.resProductEvaluationVO,
               imgData: data.productSliderImagesResponseVOList,
-              productImgList: data.productDetailImagesResponseVOList,
+              productImgList: data.productDetailImagesResponseVOList || [],
               shopUrl,
               productParams: object,
               orderActivityLabel: data.resChannelStoreProductVO ? data.resChannelStoreProductVO.orderActivityLabel : {},
@@ -99,9 +104,11 @@ export default class ProductDetailPage extends React.Component {
         } else {
           rnAppModule.showToast(message, '0')
         }
-      }).catch(({message}) => {
+      })
+      .catch(({message}) => {
         rnAppModule.showToast(message, '0')
       })
+      .finally(() => this.setState({ loading: false }))
   }
   /**
    * @description: 根据商品编码、门店编码获取相似商品列表
@@ -151,7 +158,17 @@ export default class ProductDetailPage extends React.Component {
     Native.navigateTo({
       type: Native.NavPageType.NATIVE,
       uri: 'A003,A003',
-      params: {productCode: item.productCode}
+      params: {
+        productCode: item.productCode,
+        directTransmitParams: JSON.stringify({
+          name: item.productName,
+          subTitle: item.subTitle,
+          price: item.promotionPrice || item.price,
+          slashedPrice: item.price,
+          spec: item.productSpecific,
+          thumbnail: Img.loadRatioImage(item.mainUrl.url, 200),
+        })
+      }
     })
   }
   /**
@@ -228,19 +245,51 @@ export default class ProductDetailPage extends React.Component {
   jumpToNativeEvaluteList=() => {
     goodsDetailManager.pushToEvaluationList()
   }
+
+  onCarouselLoadEnd = () => {
+    const startAnimate = () =>
+      Animated.timing(this.state.thumbnailOpacity, {
+        toValue: 0,
+        duration: 200,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      })
+        .start(
+          () => this.setState({ thumbnailVis: false })
+        )
+
+    if (isiOS) setTimeout(startAnimate, 500)
+    else startAnimate()
+  }
+
   render() {
     let tags, productTags, orderTags// 促销类型 1 直降促销, 2 满减促销, 3 满件减满减折促销 ,4 第N件N折/N元,5 限时抢购
-    const {imgData, goodsInfo, productImgList, shopUrl, imgUrl, productParams, similarProduct, productActivityLabel, orderActivityLabel} = this.state
+    const { initialData } = this.props
+    const {
+      loading,
+      imgData,
+      goodsInfo,
+      productImgList,
+      shopUrl,
+      imgUrl,
+      productParams,
+      similarProduct,
+      productActivityLabel,
+      orderActivityLabel,
+      thumbnailOpacity,
+      thumbnailVis,
+    } = this.state
+
     // let favorableRate = goodsInfo.favorableRate ? goodsInfo.favorableRate * 100 : 0
     // favorableRate = favorableRate && parseFloat(favorableRate.toFixed(2))
     // 商品详情图文列表
-    const goodsImgList = productImgList ? productImgList.map(({url, id}, index) => (
+    const goodsImgList = productImgList.map(({url, id}) => (
       <FitImg key={id} source={{ uri: Img.loadRatioImage(url, Img.FullWidth) }} resizeMode="contain" />
-    )) : null
+    ))
     // 商家文描图文列表
-    const shopImgList = shopUrl ? shopUrl.map((item, index) => (
+    const shopImgList = shopUrl.map((item, index) => (
       <FitImg key={index} source={{ uri: Img.loadRatioImage(item, Img.FullWidth) }} resizeMode="contain"/>
-    )) : null
+    ))
     if (productActivityLabel && productActivityLabel.promotionType === 5 && productActivityLabel.labels) { //  promotionType：5 限时抢购
       tags = <Tag textValue={productActivityLabel.labels[0]} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF' />
     } else {
@@ -251,13 +300,26 @@ export default class ProductDetailPage extends React.Component {
         orderTags = <Tag textValue={orderActivityLabel.labels[0]} marginLeft={5} minWidth={30} backgroundColor="#FF816A" color='#FFFFFF' />
       }
     }
+
+    const price = loading
+      ? initialData.price
+      : (productActivityLabel && productActivityLabel.discountPrice && productActivityLabel.discountPrice < goodsInfo.price)
+        ? productActivityLabel.discountPrice
+        : goodsInfo.price
+    const slashedPrice = loading ? initialData.slashedPrice : goodsInfo.price
+    const name = loading ? initialData.name : goodsInfo.productName
+    const subTitle = loading ? initialData.subTitle : goodsInfo.subTitle
+
     return (
       <View style={styles.container}>
         <View style={styles.subContainer}>
           <View style={styles.topTab}>
             <TabBar ref={e => this.tabs = e}
               index={this.state.currentIndex}
-              data={this.state.tablist}
+              data={[
+                {id: 1, name: '商品'},
+                {id: 2, name: '详情'}
+              ]}
               clickScroll={this.clickScroll}
             />
             <TouchableOpacity
@@ -283,46 +345,35 @@ export default class ProductDetailPage extends React.Component {
               this.goodsLayoutY = event.nativeEvent.layout.y
             }}>
               <View onLayout={this.goodsSwiperLayout.bind(this)}>
-                {
-                  productActivityLabel && productActivityLabel.promotionType === 13 && (
-                    <View style={styles.newPerson}>
-                      <Text style={styles.newPersonText}>{productActivityLabel.promotionTypeName}</Text>
-                    </View>
-                  )
-                }
-                {imgData
-                  ? <GoodsDetailSwiper imgData={imgData}/>
-                  : <FastImage style={styles.defaultImage} source={placeholderProduct} resizeMode={FastImage.resizeMode.contain}/>
-                }
+                {productActivityLabel && productActivityLabel.promotionType === 13 && (
+                  <View style={styles.newPerson}>
+                    <Text style={styles.newPersonText}>{productActivityLabel.promotionTypeName}</Text>
+                  </View>
+                )}
+                <View style={{ position: 'relative' }}>
+                  <GoodsDetailSwiper imgData={imgData} onAllLoadEnd={this.onCarouselLoadEnd} />
+                  {thumbnailVis && (
+                    <AnimatedFastImage
+                      style={[ styles.defaultImage, { opacity: thumbnailOpacity } ]}
+                      source={initialData.thumbnail ? { uri: initialData.thumbnail } : placeholderProduct}
+                      resizeMode="contain"
+                    />
+                  )}
+                </View>
               </View>
             </View>
-            {
-              productActivityLabel && productActivityLabel.promotionType === 5 ?
-                <BuyLimit productActivityLabel={productActivityLabel}></BuyLimit>
-                : null
-            }
+            {productActivityLabel && productActivityLabel.promotionType === 5 && (
+              <BuyLimit productActivityLabel={productActivityLabel} />
+            )}
             <View>
               <View style={styles.goodsPromotionPriceRowFlex}>
                 <Text style={styles.goodsPriceSymbol}>¥</Text>
-                {
-                  productActivityLabel && productActivityLabel.discountPrice ?
-                    <View style={styles.goodsPriceWrapper}>
-                      <Text style={styles.goodsPrice}>{transPenny(productActivityLabel.discountPrice ? productActivityLabel.discountPrice : goodsInfo.price)}</Text>
-                      {
-                        productActivityLabel.discountPrice && productActivityLabel.discountPrice != goodsInfo.price
-                          ? <Text style={styles.throughLine} >¥{transPenny(goodsInfo.price)}</Text>
-                          : null
-                      }
-                    </View>
-                    : <View style={styles.goodsPriceWrapper}>
-                      <Text style={styles.goodsPrice}>{transPenny(goodsInfo.promotionPrice ? goodsInfo.promotionPrice : goodsInfo.price)}</Text>
-                      {
-                        goodsInfo.promotionPrice
-                          ? <Text style={styles.throughLine} >¥{transPenny(goodsInfo.price)}</Text>
-                          : null
-                      }
-                    </View>
-                }
+                <View style={styles.goodsPriceWrapper}>
+                  <Text style={styles.goodsPrice}>{transPenny(price)}</Text>
+                  {slashedPrice > price && (
+                    <Text style={styles.throughLine}>¥{transPenny(slashedPrice)}</Text>
+                  )}
+                </View>
               </View>
               <View style={styles.goodsTags}>
                 {tags}
@@ -330,22 +381,18 @@ export default class ProductDetailPage extends React.Component {
                 {orderTags}
               </View>
               <View style={styles.goodsWrapper}>
-                <Text numberOfLines={1} style={styles.goodsName}>{goodsInfo.productName}</Text>
-                {
-                  goodsInfo.subTitle ?
-                    <Text style={styles.goodsTips}>{goodsInfo.subTitle}</Text>
-                    : null
-                }
+                <Text numberOfLines={1} style={styles.goodsName}>{name}</Text>
+                {!!subTitle && (
+                  <Text style={styles.goodsTips}>{subTitle}</Text>
+                )}
               </View>
               <View style={styles.goodsQualityFlex}>
-                {
-                  goodsInfo.productSpecific ?
-                    <View style={styles.goodsQualityItemFlex}>
-                      <FastImage source={productSpecific} style={{width: 14, height: 14}} />
-                      <Text style={styles.goodsQualityValue}>{goodsInfo.productSpecific}</Text>
-                    </View>
-                    : null
-                }
+                {!!goodsInfo.productSpecific && (
+                  <View style={styles.goodsQualityItemFlex}>
+                    <FastImage source={productSpecific} style={{width: 14, height: 14}} />
+                    <Text style={styles.goodsQualityValue}>{goodsInfo.productSpecific}</Text>
+                  </View>
+                )}
                 {/* {
                 goodsInfo.shelfLife ?
                   <View style={styles.goodsQualityItemFlex}>
@@ -354,20 +401,17 @@ export default class ProductDetailPage extends React.Component {
                   </View>
                   : null
               } */}
-                {
-                  goodsInfo.originPlace ?
-                    <View style={styles.goodsQualityItemFlex}>
-                      <FastImage source={productPlace} style={{width: 14, height: 14}} />
-                      <Text style={styles.goodsQualityValue}>{goodsInfo.originPlace}</Text>
-                    </View>
-                    : null
-                }
+                {!!goodsInfo.originPlace && (
+                  <View style={styles.goodsQualityItemFlex}>
+                    <FastImage source={productPlace} style={{width: 14, height: 14}} />
+                    <Text style={styles.goodsQualityValue}>{goodsInfo.originPlace}</Text>
+                  </View>
+                )}
               </View>
             </View>
-            {
-              similarProduct ? <SimilarGoods similarProduct={similarProduct} jumpGoodsDetail={this.jumpGoodsDetail} />
-                : null
-            }
+            {similarProduct.length > 0 && (
+              <SimilarGoods similarProduct={similarProduct} jumpGoodsDetail={this.jumpGoodsDetail} />
+            )}
             <View onLayout={event => {
               this.detailLayoutY = event.nativeEvent.layout.y
             }}>
@@ -397,3 +441,16 @@ export default class ProductDetailPage extends React.Component {
     )
   }
 }
+
+ProductDetailPage.propTypes = {
+  productCode: PropTypes.string.isRequired,
+  storeCode: PropTypes.string.isRequired,
+  initialData: PropTypes.object,
+}
+
+ProductDetailPage.defaultProps = {
+  initialData: {}
+}
+
+
+export default withInitialProductData(ProductDetailPage)

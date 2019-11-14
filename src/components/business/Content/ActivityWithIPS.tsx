@@ -84,14 +84,26 @@ export default function ActivityWithIPS({
   )
 }
 
-const ProductItem = React.memo(({ thumbnail, name, price, code, shopCode }: Product) => {
+const ProductItem = React.memo(({ thumbnail, name, desc, spec, price, slashedPrice, count, code, shopCode }: Product) => {
   const fitThumbnail = Img.loadRatioImage(thumbnail, 80)
 
   const navigateToProductDetail = () => {
     Native.navigateTo({
       type: Native.NavPageType.NATIVE,
       uri: 'A003,A003',
-      params: {productCode: code, storeCode: shopCode},
+      params: {
+        productCode: code,
+        storeCode: shopCode,
+        directTransmitParams: JSON.stringify({
+          name,
+          subTitle: desc,
+          price: price,
+          slashedPrice: slashedPrice || price,
+          spec,
+          count,
+          thumbnail: fitThumbnail,
+        })
+      },
     })
   }
 

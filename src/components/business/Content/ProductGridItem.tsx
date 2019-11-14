@@ -23,6 +23,8 @@ export interface Props extends Product {
 function ProductGridItem({
   thumbnail,
   name,
+  desc,
+  spec,
   code,
   productTags = [],
   priceTags = [],
@@ -35,16 +37,28 @@ function ProductGridItem({
   onModifyCount = (count: number) => null,
 }) {
   const styles = useTheme(theme)
+  const fitThumbnail = Img.loadRatioImage(thumbnail, 200)
   const navigateToProductDetail = () => {
     Native.navigateTo({
       type: Native.NavPageType.NATIVE,
       uri: 'A003,A003',
-      params: { productCode: code, storeCode: shopCode },
+      params: {
+        productCode: code,
+        storeCode: shopCode,
+        directTransmitParams: JSON.stringify({
+          name,
+          subTitle: desc,
+          price: price,
+          slashedPrice: slashedPrice || price,
+          spec,
+          count,
+          thumbnail: fitThumbnail,
+        })
+      },
     })
   }
   const [thumbnailWidth, setThumbnailWidth] = React.useState()
   const tag = [...priceTags, ...productTags][0]
-  const fitThumbnail = Img.loadRatioImage(thumbnail, 200)
   const onCountChange = c => {
     if (inventoryLabel) {
       Native.showToast('商品补货中')
