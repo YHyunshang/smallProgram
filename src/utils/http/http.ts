@@ -88,7 +88,7 @@ async function request(
  */
 export function formatUrl(hostKey: string, path: string, query:{[idx:string]: string} = {}) {
   const nativeEnv = NativeModules.HttpNativeManager.envPathType
-  const env = { 0: 'test', 1: 'dev', 2: 'prod' }[nativeEnv]
+  const env = { 0: 'test', 1: 'dev', 2: 'prod', 3: 'preProd' }[nativeEnv]
   if (!env)
     throw new RequestErr(
       'RN',

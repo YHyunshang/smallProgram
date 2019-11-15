@@ -25,9 +25,10 @@ export default {
     feedback:'http://xszt-sit.2c-order.sitapis.yonghui.cn',
   },
   preProd: {
-    cart: 'http://xszt-sit.2c-order.sitgw.yonghui.cn',
-    productCenter: 'http://xszt-dev.yh-soi-2c-productcenter.devgw.yonghui.cn',
-    feedback:'http://xszt-sit.2c-order.sitgw.yonghui.cn'
+    cart: 'http://xszt-pre.yh-soi-2c-order.xszt-001.sitapis.yonghui.cn',
+    goodsDetail: 'http://xszt-pre.yh-soi-2c-productcenter.xszt-001.sitgw.yonghui.cn',
+    productCenter: 'http://xszt-pre.yh-soi-2c-productcenter.xszt-001.sitgw.yonghui.cn',
+    feedback:'http://xszt-pre.yh-soi-2c-order.xszt-001.sitapis.yonghui.cn'
   },
   prod: {
     cart: 'https://yh-soi-2c-order.yonghui.cn',
