@@ -115,8 +115,8 @@ export const iconArrowRight = isAndroid
   : require('@img/icon-arrow-right.png')
 
 export const bannerLimitTimeBuy = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/banner-limit-time-buy.png'}
-  : require('@img/banner-limit-time-buy.png')
+  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/banner-limit-time-buy.jpg'}
+  : require('@img/banner-limit-time-buy.jpg')
 
 export const iconPlusCircleRed = isAndroid
   ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/icon-plus-circle-red.png'}
