@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-12 20:30:43
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-13 18:28:20
+ * @LastEditTime: 2019-11-13 18:47:03
  */
 import * as React from 'react'
 import styles from './Activity.styles'
@@ -34,6 +34,7 @@ interface Props {
 interface State {
   loading: boolean
   shopCode: string
+  total: number,
   currentTabKey: string
   tabList: {
     key: string
@@ -62,6 +63,7 @@ export default class Activity extends React.Component<Props, State> {
     super(props)
     this.state = {
       loading: false,
+      total:0,
       shopCode: props.shopCode,
       currentTabKey: '402',
       tabList: [],
@@ -104,26 +106,26 @@ export default class Activity extends React.Component<Props, State> {
           afterModifyCount={this.requestCartInfo}
       />
   )
-
+  _keyExtractor = (item, index) => index
   /**
    * @msg: FlatList渲染的数据项
    */
-  renderItemData = ({item}) => (
-    <View style={styles.productBox}>
-        <View style={styles.productWrapper} key={item.code}>
-          <ProductListItem {...item} afterModifyCount={this.requestCartInfo} />
-          {/* {id < total - 1 && <View style={styles.fakeBorder}></View>} */}
+  renderItemData = ({item, index}) => (
+    // <View style={styles.productBox}>
+    //     <View style={styles.productWrapper} key={item.code}>
+    //       <ProductListItem {...item} afterModifyCount={this.requestCartInfo} />
+    //       {index < this.state.total - 1 && <View style={styles.fakeBorder}></View>}
+    //     </View>
+    //  </View>
+        <View style={styles.productBox}>
+           <FlatList
+              data={this.state.products}
+              numColumns={3}
+              horizontal={false}
+              renderItem={this.renderGridItemData}
+              keyExtractor={item => item.code}
+            />
         </View>
-     </View>
-        // <View style={styles.productBox}>
-        //    <FlatList
-        //       data={this.state.products}
-        //       numColumns={1}
-        //       horizontal={false}
-        //       renderItem={this.renderGridItemData}
-        //       keyExtractor={item => item.code}
-        //     />
-        // </View>
 
   )
   componentDidMount() {
@@ -180,7 +182,7 @@ export default class Activity extends React.Component<Props, State> {
       shopCode:'9010'
     }))
     const total = products.length
-    this.setState({products})
+    this.setState({products,total})
   }
 
   render() {
@@ -190,12 +192,12 @@ export default class Activity extends React.Component<Props, State> {
       <View style={styles.container}>
         <TopTab currentActive={currentActive} data={topTabList} onTabChange={this.onTabChange}></TopTab>
         <View style={styles.centerWrapper}>
-            <LeftTab currentActive={currentActive} data={leftTabList} onTabChange={this.onTabChange}></LeftTab>        
+            {/* <LeftTab currentActive={currentActive} data={leftTabList} onTabChange={this.onTabChange}></LeftTab>         */}
             <FlatList
               style={styles.flatList}
               data={products}
               renderItem={this.renderItemData}
-              keyExtractor={item => `${item.code}`}
+              keyExtractor={this._keyExtractor}
               showsVerticalScrollIndicator={false}
               removeClippedSubviews={false}
               refreshing={false}
