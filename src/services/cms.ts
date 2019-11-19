@@ -121,6 +121,13 @@ export function updateProductCountInCart(
   remark = '',
   shopCode: string
 ) {
+  Log.debug('addToCart:', JSON.stringify({
+    productCode,
+    productNum,
+    productPrice,
+    remark,
+    shopCode,
+  }))
   return new Promise((resolve, reject) => {
     NativeModules.HomeNativeManager.addToCart(
       'post',
