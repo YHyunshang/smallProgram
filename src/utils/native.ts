@@ -221,17 +221,17 @@ export function showRemarkPickerBeforeAddToCart(
     )
     eventEmitter.addListener(
       'setItemNumberByProductcode',
-      ({ productCode, productNumber, responseData = '{}' }) => {
-        Log.debug('[show remark result]', productCode, productNumber, responseData)
+      ({ responseData }) => {
+        Log.debug('setItemNumberByProductcode', responseData)
         let extraData = {}
         try {
           extraData = JSON.parse(responseData)
         } catch (e) {
           Log.warn('parse responseData failed:', e)
         }
-        return productNumber == 1
-          ? resolve({ count: productNumber, extraData })
-          : reject(new Error('add to cart failed'))
+        return extraData.code === 200000
+          ? resolve({ count: extraData.result.productNum, extraData })
+          : reject(new Error(extraData.message))
       }
     )
   })
