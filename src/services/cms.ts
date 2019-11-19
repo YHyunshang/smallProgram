@@ -145,7 +145,7 @@ export function updateProductCountInCart(
           Native.showToast(res.message || '系统异常')
           return reject(res.message)
         }
-        return resolve(responseData)
+        return resolve(res)
       }
     )
   })
