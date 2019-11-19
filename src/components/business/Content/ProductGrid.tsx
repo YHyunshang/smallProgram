@@ -26,8 +26,10 @@ export default function ProductGrid({
   const styles = useTheme(theme || '2x')
   const rowTotal = gridProducts.length
 
-  const afterCountChange = count => {
-    Native.showToast('添加成功', '1')
+  const afterCountChange = (count, { result }) => {
+    if (!(result && result.toast)) {
+      Native.showToast('添加成功', '1')
+    }
     afterModifyCount && afterModifyCount(count)
   }
 

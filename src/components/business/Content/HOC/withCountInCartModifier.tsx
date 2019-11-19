@@ -51,10 +51,10 @@ export default function withCartCountModify(WrappedComponent) {
     requestUpdateCount = debounce(count => {
       const { code, price, shopCode, afterModifyCount } = this.props
       CMSServices.updateProductCountInCart(code, count, price, '', shopCode)
-        .then(() => {
-          Log.debug(`change count success: current is ${count}`)
+        .then(res => {
+          Log.debug(`change count success: current is ${count}`, res)
           this.setState({ count, disableAdd: false })
-          afterModifyCount && afterModifyCount(count)
+          afterModifyCount && afterModifyCount(count, res)
         })
         .catch(err => {
           this.setState(({ count: preCount }) => ({ modifiedCount: preCount, disableAdd: err === '无法购买更多了' }))
@@ -65,10 +65,10 @@ export default function withCartCountModify(WrappedComponent) {
     showRemarksBeforeAddToCart = () => {
       const { afterModifyCount } = this.props
       Native.showRemarkPickerBeforeAddToCart(this.props).then(
-        count => {
+        ({ count, extraData }) => {
           this.setState(
             { count, modifiedCount: count },
-            () => afterModifyCount && afterModifyCount(count)
+            () => afterModifyCount && afterModifyCount(count, extraData)
           )
         },
         () => this.setState({ count: 0, modifiedCount: 0 })
