@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-12 11:25:52
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-11 15:15:12
+ * @LastEditTime: 2019-11-19 18:34:54
  */
 import { NativeEventEmitter, NativeModules } from 'react-native'
 import { Http, Log, Native } from '@utils'
@@ -166,9 +166,11 @@ export function getFoundPageData(shopCode: string) {
 export function formatLink({
   link,
   linkType,
+  categoryCode
 }: {
   link: string
-  linkType: string
+  linkType: string,
+  categoryCode?: string
 }) {
   const apiType2NativeType = {
     1: Native.NavPageType.NATIVE,
@@ -178,7 +180,7 @@ export function formatLink({
   const type = apiType2NativeType[linkType]
   return {
     type: type,
-    uri: type === Native.NavPageType.RN ? 'RNActivity' : link,
+    uri: type === Native.NavPageType.RN && categoryCode ? 'RNTideActivity' : type === Native.NavPageType.RN ? 'RNActivity' : link,
     params:
       type === Native.NavPageType.RN
         ? { activityCode: link, type: 'activity' }
