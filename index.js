@@ -6,7 +6,7 @@
  * @LastEditors: yuwen.liu
  * @LastEditTime: 2019-10-29 21:05:23
  */
-import { AppRegistry } from 'react-native'
+import { AppRegistry, Text } from 'react-native'
 import Home from './src/pages/Home'
 import ProductDetailPage from './src/pages/ProductDetail/ProductDetailPage'
 import HotSaleBoard from './src/pages/HotSaleBoard'
@@ -17,8 +17,13 @@ import HelpFeedBackAnswer from './src/pages/HelpFeedBack/HelpFeedBackAnswer'
 import LimitTimeBuy from './src/pages/LimitTimeBuy'
 import PreviewPurchase from './src/pages/MouTai/PreviewPurchase'
 import QualificationsQuery from './src/pages/MouTai/QualificationsQuery'
+
 // 隐藏 RN yellowBox warning 提示
 console.disableYellowBox = true
+
+// 默认字体不随系统设置变化
+// TextInput.defaultProps = Object.assign({}, TextInput.defaultProps, {defaultProps: false})
+Text.defaultProps = Object.assign({}, Text.defaultProps, {allowFontScaling: false})
 
 AppRegistry.registerComponent('RNProductDetail', () => ProductDetailPage)
 AppRegistry.registerComponent('RNHome', () => Home)
