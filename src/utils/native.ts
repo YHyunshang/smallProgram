@@ -196,7 +196,7 @@ export function onCartChange(handler: (...args: any) => any) {
  */
 export function showRemarkPickerBeforeAddToCart(
   product: Product
-): Promise<number> {
+): Promise<{ count: number, extraData: object}> {
   console.log(product)
   const price =
     product.price < product.slashedPrice ? product.slashedPrice : product.price
@@ -221,10 +221,16 @@ export function showRemarkPickerBeforeAddToCart(
     )
     eventEmitter.addListener(
       'setItemNumberByProductcode',
-      ({ productCode, productNumber }) => {
-        Log.debug('[show remark result]', productCode, productNumber)
+      ({ productCode, productNumber, responseData = '{}' }) => {
+        Log.debug('[show remark result]', productCode, productNumber, responseData)
+        let extraData = {}
+        try {
+          extraData = JSON.parse(responseData)
+        } catch (e) {
+          Log.warn('parse responseData failed:', e)
+        }
         return productNumber == 1
-          ? resolve(Number(productNumber))
+          ? resolve({ count: productNumber, extraData })
           : reject(new Error('add to cart failed'))
       }
     )
