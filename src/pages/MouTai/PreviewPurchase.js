@@ -4,10 +4,10 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-12 15:00:50
+ * @LastEditTime: 2019-11-20 14:26:46
  */
 import React from 'react'
-import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
+import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity, Alert} from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import {Native, Img} from '@utils'
 import throttle from 'lodash/throttle'
@@ -94,7 +94,7 @@ export default class PreviewPurchase extends React.Component {
           this.setState(
             {
               exchangeInfoVO: data,
-              buyQuantity: Number(data.inventoryNumber) >= Number(data.availableQuantity) ? data.availableQuantity : data.inventoryNumber,
+              // buyQuantity: Number(data.inventoryNumber) >= Number(data.availableQuantity) ? data.availableQuantity : data.inventoryNumber,
               isActivity: data.isActivity,
               activityCode: data.activityCode
             }

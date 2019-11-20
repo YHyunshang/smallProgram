@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-07 15:02:09
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-12 17:27:55
+ * @LastEditTime: 2019-11-20 14:03:36
  */
 import React, {Component} from 'react'
 import {
@@ -25,18 +25,18 @@ export default class OperateNumber extends Component {
       minIconColor: '#666666'
     }
   }
-  componentWillReceiveProps(props) {
-    if (props.availableQuantity != this.props.availableQuantity) {
-      const {availableQuantity, inventoryNumber} = props
-      let currentQuantity = Number(inventoryNumber) >= Number(availableQuantity) ? availableQuantity : inventoryNumber
-      this.setState({numberText: currentQuantity})
-    }
-  }
-  componentDidMount() {
-    const {availableQuantity, inventoryNumber} = this.props
-    let currentQuantity = Number(inventoryNumber) >= Number(availableQuantity) ? availableQuantity : inventoryNumber
-    this.setState({numberText: currentQuantity})
-  }
+  // componentWillReceiveProps(props) {
+  //   if (props.availableQuantity != this.props.availableQuantity) {
+  //     const {availableQuantity, inventoryNumber} = props
+  //     let currentQuantity = Number(inventoryNumber) >= Number(availableQuantity) ? availableQuantity : inventoryNumber
+  //     this.setState({numberText: currentQuantity})
+  //   }
+  // }
+  // componentDidMount() {
+  //   const {availableQuantity, inventoryNumber} = this.props
+  //   let currentQuantity = Number(inventoryNumber) >= Number(availableQuantity) ? availableQuantity : inventoryNumber
+  //   this.setState({numberText: currentQuantity})
+  // }
   /**
    * @msg: 加操作
    */
