@@ -5,6 +5,7 @@ import { CMSServices } from '@services'
 import ActivityWithIPSC from '@components/business/Content/ActivityWithIPS'
 import {RefreshControl, View, FlatList} from 'react-native'
 import theme from '@theme'
+import Loading from "@components/Loading";
 
 const ActivityWithIPS = React.memo(ActivityWithIPSC)
 
@@ -12,7 +13,6 @@ interface State {
   loading: boolean
   floorData: {}[]
   shopCode: string
-  enablePageScroll: boolean
 }
 
 export default class Page extends React.PureComponent<Object, State> {
@@ -20,7 +20,6 @@ export default class Page extends React.PureComponent<Object, State> {
     loading: false,
     floorData: [],
     shopCode: '',
-    enablePageScroll: true
   }
 
   nativeSubscription: { remove: Function }
@@ -117,9 +116,15 @@ export default class Page extends React.PureComponent<Object, State> {
   )
 
   render() {
-    const { floorData, loading, shopCode, enablePageScroll } = this.state
+    const { floorData, loading, shopCode } = this.state
     return (
       <View style={styles.container}>
+        {loading && floorData.length === 0 && (
+          <View style={styles.loadingContainer}>
+            <Loading/>
+          </View>
+        )}
+
         <FlatList
           data={floorData}
           keyExtractor={item => `${item.key}`}
@@ -127,13 +132,12 @@ export default class Page extends React.PureComponent<Object, State> {
           showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl
-              refreshing={loading}
+              refreshing={loading && floorData.length > 0}
               onRefresh={() => this.requestPageData(shopCode)}
               colors={[theme.refreshColor]}
               tintColor={theme.refreshColor}
             />
           }
-          scrollEnabled={enablePageScroll}
         />
       </View>
     )

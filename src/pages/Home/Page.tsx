@@ -17,6 +17,7 @@ import { StorageChoices, Sort } from './components/ProductFilter'
 import {LimitTimeBuyStatus, Product} from '@components/business/Content/typings'
 import {formatFloorData, PlaceholderForNativeHeight} from './utils'
 import {LimitTimeBuy as LimitTimeBuyScene} from "@components/Scene";
+import Loading from "@components/Loading";
 
 const WindowWidth = Dimensions.get('window').width
 const WindowHeight = Dimensions.get('window').height
@@ -86,7 +87,7 @@ export default class Page extends React.Component<object, State> {
   removeCartChangeListener: Function
   removeNewcomerChangeListener: Function
 
-  async componentDidMount() {
+  componentDidMount() {
     Native.setHomeFirstTabActiveStatus(true)
     this.syncScrollToNative({ nativeEvent: { contentOffset: { x: 0, y: 0 } } })
 
@@ -106,12 +107,7 @@ export default class Page extends React.Component<object, State> {
       this.newcomerChange
     )
 
-    Native.toggleLoading()
-    try {
-      await this.init()
-    } finally {
-      Native.toggleLoading(false)
-    }
+    this.init()
   }
 
   componentWillUnmount(): void {
@@ -572,7 +568,7 @@ export default class Page extends React.Component<object, State> {
   }
 
   render() {
-    const { currentTabIdx, tabList } = this.state
+    const { loading, currentTabIdx, tabList } = this.state
     const navigationState = {
       index: currentTabIdx,
       routes: tabList,
@@ -580,6 +576,11 @@ export default class Page extends React.Component<object, State> {
 
     return (
       <View style={styles.container}>
+        {loading && tabList.length === 0 && (
+          <View style={styles.loadingContainer}>
+            <Loading />
+          </View>
+        )}
         <TabView
           navigationState={navigationState}
           renderTabBar={this.renderTabBar}

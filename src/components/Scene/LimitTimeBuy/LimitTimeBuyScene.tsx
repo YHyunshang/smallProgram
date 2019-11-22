@@ -16,6 +16,7 @@ import {Global, Native} from "@utils";
 import ProductLimitTimeBuy from "@components/business/ProductLimitTimeBuy";
 import isEqual from 'lodash/isEqual'
 import { Tab } from "./Typings";
+import Loading from "@components/Loading";
 
 const WindowWidth = Global.WindowWidth
 const BannerHeight = WindowWidth * 150 / 375
@@ -300,7 +301,7 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
       <View style={[ styles.container, { paddingTop } ]}>
         {loading && tabs.length === 0 && (
           <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color={theme.primary} />
+            <Loading/>
           </View>
         )}
 
