@@ -32,3 +32,7 @@ export const darkGreen = '#5E882E'
 export const priceFFPrimary = isAndroid
   ? 'Alte_Din_1451_Mittelschrift'
   : 'Alte Din 1451 Mittelschrift'
+
+
+
+export const slashedPrice = gray1
