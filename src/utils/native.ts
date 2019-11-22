@@ -16,6 +16,7 @@ import {
 } from 'react-native'
 import * as Log from './log'
 import { Product } from '@components/business/Content/typings'
+import {exp} from "react-native-reanimated";
 const rnAppModule = NativeModules.RnAppModule// 原生模块
 export enum NavPageType {
   NATIVE = '0',
@@ -269,3 +270,14 @@ export const onNativeEvent = (function() {
     }
   }
 })()
+
+/**
+ * 展示 / 隐藏 native loading
+ * @param loading
+ */
+export function toggleLoading(loading = true) {
+  return NativeModules.RnAppModule.sendEventToNative(
+    'toggleLoading',
+    JSON.stringify({ loadingTag: loading ? '1' : '0' })
+  )
+}

@@ -5,21 +5,19 @@
  * @Last Modified time: 2019-09-26 18:06:50
  */
 import * as React from 'react'
-import { View, Animated, ActivityIndicator, Dimensions } from 'react-native'
+import { View, Animated, Dimensions } from 'react-native'
 import { Native, Log } from '@utils'
 import { CMSServices, ProductServices } from '@services'
 import styles from './Page.styles'
 import { TabView } from 'react-native-tab-view'
-import TabBar, { TabHeight } from './components/TabBar'
+import TabBar from './components/TabBar'
 import CMSScene from './components/CMSScene'
 import CategoryScene from './components/CategroryScene'
 import { StorageChoices, Sort } from './components/ProductFilter'
 import {LimitTimeBuyStatus, Product} from '@components/business/Content/typings'
-import theme from '@theme'
-import { formatFloorData } from './utils'
+import {formatFloorData, PlaceholderForNativeHeight} from './utils'
 import {LimitTimeBuy as LimitTimeBuyScene} from "@components/Scene";
 
-const PlaceholderForNativeHeight = Native.getStatusBarHeight() + 86 + TabHeight
 const WindowWidth = Dimensions.get('window').width
 const WindowHeight = Dimensions.get('window').height
 
@@ -68,7 +66,7 @@ interface State {
   shouldRefreshTab: boolean
 }
 
-export default class Page extends React.Component<Props, State> {
+export default class Page extends React.Component<object, State> {
   state = {
     shop: { code: '', type: '' },
 
@@ -87,10 +85,38 @@ export default class Page extends React.Component<Props, State> {
   removeShopChangeListener: Function
   removeCartChangeListener: Function
   removeNewcomerChangeListener: Function
-  componentDidMount() {
+
+  async componentDidMount() {
     Native.setHomeFirstTabActiveStatus(true)
     this.syncScrollToNative({ nativeEvent: { contentOffset: { x: 0, y: 0 } } })
-    this.init()
+
+    // 注册 native 门店变更回调
+    this.removeShopChangeListener = Native.onNativeEvent(
+      'storeChange',
+      this.onShopChange
+    )
+    // 注册购物车变化回调
+    this.removeCartChangeListener = Native.onNativeEvent(
+      'notifyRefreshCartNum',
+      this.onCartChange
+    )
+    // 注册是否是新人身份变更回调
+    this.removeNewcomerChangeListener = Native.onNativeEvent(
+      'newcomerChange',
+      this.newcomerChange
+    )
+
+    Native.toggleLoading()
+    try {
+      await this.init()
+    } finally {
+      Native.toggleLoading(false)
+    }
+  }
+
+  componentWillUnmount(): void {
+    const { animatedValRefCmsScrollY } = this.state
+    animatedValRefCmsScrollY.removeAllListeners()
   }
 
   componentDidUpdate() {
@@ -108,24 +134,8 @@ export default class Page extends React.Component<Props, State> {
 
     if (shopCode && shopTypeCode) {
       this.setState({ shop: { code: shopCode, type: shopTypeCode } })
-      this.requestTabData(shopCode, shopTypeCode)
+      await this.requestTabData(shopCode, shopTypeCode)
     }
-
-    // 注册 native 门店变更回调
-    this.removeShopChangeListener = Native.onNativeEvent(
-      'storeChange',
-      this.onShopChange
-    )
-    // 注册购物车变化回调
-    this.removeCartChangeListener = Native.onNativeEvent(
-      'notifyRefreshCartNum',
-      this.onCartChange
-    )
-    // 注册是否是新人身份变更回调
-    this.removeNewcomerChangeListener = Native.onNativeEvent(
-      'newcomerChange',
-      this.newcomerChange
-    )
   }
 
   onShopChange = ({ storeCode, storeTypeCode }) => {
@@ -138,8 +148,6 @@ export default class Page extends React.Component<Props, State> {
 
   onCartChange = () => {
     const { currentTabIdx } = this.state
-
-    console.log('------')
     this.onTabIndexChange(currentTabIdx, true)
   }
   
@@ -539,9 +547,7 @@ export default class Page extends React.Component<Props, State> {
           <CMSScene
             loading={contentLoading}
             data={content || []}
-            contentOffset={
-              currentRouteIdx === 0 ? 0 : PlaceholderForNativeHeight
-            }
+            isFullscreen={currentRouteIdx === 0}
             animatedVal={animatedValRefCmsScrollY}
             onScroll={onPageScroll}
             onRefresh={this.onRefresh}
@@ -566,7 +572,7 @@ export default class Page extends React.Component<Props, State> {
   }
 
   render() {
-    const { loading, currentTabIdx, tabList } = this.state
+    const { currentTabIdx, tabList } = this.state
     const navigationState = {
       index: currentTabIdx,
       routes: tabList,
@@ -574,12 +580,6 @@ export default class Page extends React.Component<Props, State> {
 
     return (
       <View style={styles.container}>
-        {loading && tabList.length === 0 && (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color={theme.primary} />
-          </View>
-        )}
-
         <TabView
           navigationState={navigationState}
           renderTabBar={this.renderTabBar}

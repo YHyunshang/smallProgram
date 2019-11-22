@@ -312,8 +312,8 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
                 <RefreshControl
                   refreshing={loading && tabs.length > 0}
                   onRefresh={() => this.init(shopCode)}
-                  colors={[theme.primary, theme.white]}
-                  tintColor={theme.primary}
+                  colors={[theme.refreshColor]}
+                  tintColor={theme.refreshColor}
                 />
               )
             }}

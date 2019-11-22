@@ -129,8 +129,8 @@ export default class Page extends React.PureComponent<Object, State> {
             <RefreshControl
               refreshing={loading}
               onRefresh={() => this.requestPageData(shopCode)}
-              colors={[theme.primary, theme.white]}
-              tintColor={theme.primary}
+              colors={[theme.refreshColor]}
+              tintColor={theme.refreshColor}
             />
           }
           scrollEnabled={enablePageScroll}

@@ -28,6 +28,8 @@ export const red10 = '#FFDED9'
 
 export const darkGreen = '#5E882E'
 
+export const refreshColor = '#4ECC6D'
+
 // 价格字体
 export const priceFFPrimary = isAndroid
   ? 'Alte_Din_1451_Mittelschrift'

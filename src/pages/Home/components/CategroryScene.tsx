@@ -9,8 +9,7 @@ import {
   RefreshControl, Platform,
 } from 'react-native'
 import ProductListItem from '@components/business/Content/ProductListItem'
-import { Native } from '@utils'
-import { TabHeight } from './TabBar'
+import { PlaceholderForNativeHeight } from '../utils'
 import theme from '@theme'
 import isEqual from 'lodash/isEqual'
 import ProductLimitTimeBuy from "@components/business/ProductLimitTimeBuy";
@@ -18,7 +17,6 @@ import SceneFooter from "./SceneFooter";
 import memorize from 'memoize-one'
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
-const PlaceholderForNativeHeight = Native.getStatusBarHeight() + 86 + TabHeight
 
 const CategoryFloor = React.memo(
   props => (
@@ -178,8 +176,8 @@ export default class CategoryScene extends React.PureComponent<Props> {
             <RefreshControl
               refreshing={!!loading}
               onRefresh={onRefresh}
-              colors={[theme.primary, theme.white]}
-              tintColor={theme.primary}
+              colors={[theme.refreshColor]}
+              tintColor={theme.refreshColor}
             />
           }
           ItemSeparatorComponent={this.renderSeparator}
@@ -200,8 +198,8 @@ export default class CategoryScene extends React.PureComponent<Props> {
           <RefreshControl
             refreshing={!!loading}
             onRefresh={onRefresh}
-            colors={[theme.primary, theme.white]}
-            tintColor={theme.primary}
+            colors={[theme.refreshColor]}
+            tintColor={theme.refreshColor}
             progressViewOffset={PlaceholderForNativeHeight}
           />
         }
