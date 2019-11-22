@@ -31,7 +31,7 @@ export default function GoodsDetailSwiper({ imgData, onAllLoadEnd }) {
         height={Global.WindowWidth}
         loop
         autoplay
-        autoplayTimeout={2}
+        autoplayTimeout={10}
         dotStyle={styles.dot}
         activeDotStyle={[ styles.dot, styles.activeDot ]}
         paginationStyle={styles.paginationStyle}
