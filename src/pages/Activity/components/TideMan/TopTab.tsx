@@ -3,19 +3,19 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-12 21:18:25
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-12 23:55:01
+ * @LastEditTime: 2019-11-26 10:19:24
  */
 import * as React from 'react'
 import styles from './TopTab.styles'
 import { ScrollView, View, Text, TouchableOpacity } from 'react-native'
 
 interface Props {
-  currentActive: string
+  currentActive: number
   data: {
-    key: string
+    key: number
     label: string
   }[]
-  onTabChange: (key: string) => void
+  onTabChange: (key: number) => void
 }
 
 export default function TopTab({ currentActive, data, onTabChange }: Props) {
@@ -33,17 +33,19 @@ export default function TopTab({ currentActive, data, onTabChange }: Props) {
               style={[
                 styles.tabItemBox,
                 index === 0 && styles.tabItemBoxFirst,
-                index === total - 1 && styles.tabItemBoxLast,
+                index === total - 1 && styles.tabItemBoxLast
               ]}
             >
-              <Text
-                style={[
-                  styles.tabLabel,
-                  key === currentActive && styles.tabLabelActive,
-                ]}
-              >
-                {label}
-              </Text>
+                <Text
+                  style={[
+                    styles.tabLabel,
+                    key === currentActive && styles.tabLabelActive
+                  ]}
+                >
+                  {label}
+                </Text>
+                <View style={index !== total - 1 && styles.heightLine}></View>
+                <View style={key === currentActive && styles.tabActiveItemBox}></View>
             </View>
           </TouchableOpacity>
         ))}

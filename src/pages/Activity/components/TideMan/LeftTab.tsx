@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-12 23:52:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-13 16:26:58
+ * @LastEditTime: 2019-11-22 15:30:00
  */
 import * as React from 'react'
 import styles from './LeftTab.styles'
@@ -12,10 +12,10 @@ import { ScrollView, View, Text, TouchableOpacity } from 'react-native'
 interface Props {
   currentActive: string
   data: {
-    key: string
-    label: string
+    categoryCode: string
+    categoryName: string
   }[]
-  onTabChange: (key: string) => void
+  onTabChange: (key: string, index: number) => void
 }
 
 export default function LeftTab({ currentActive, data, onTabChange }: Props) {
@@ -23,26 +23,26 @@ export default function LeftTab({ currentActive, data, onTabChange }: Props) {
   return (
     <View style={styles.container}>
       <ScrollView  showsHorizontalScrollIndicator={false}>
-        {data.map(({ key, label }, index) => (
+        {data.map(({ categoryCode, categoryName }, index) => (
           <TouchableOpacity
             activeOpacity={0.95}
-            key={key}
-            onPress={() => onTabChange(key)}
+            key={categoryCode}
+            onPress={() => onTabChange(categoryCode,index)}
           >  
             <View
               style={[
                 styles.tabItemBox,
-                key === currentActive && styles.tabItemBoxActive,
+                categoryCode === currentActive && styles.tabItemBoxActive,
               ]}
             >
-              <View style={ key === currentActive && styles.heightLine}></View>
+              <View style={ categoryCode === currentActive && styles.heightLine}></View>
               <Text
                 style={[
                   styles.tabLabel,
-                  key === currentActive && styles.tabLabelActive,
+                  categoryCode === currentActive && styles.tabLabelActive,
                 ]}
               >
-                {label}
+                {categoryName}
               </Text>
             </View>
           </TouchableOpacity>

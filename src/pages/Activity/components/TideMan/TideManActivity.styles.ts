@@ -1,36 +1,27 @@
 /*
- * @Descripttion: 潮物达人活动页面样式
+ * @Descripttion: 潮物达人活动组件页面样式
  * @Author: yuwen.liu
  * @Date: 2019-11-12 20:31:29
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-19 19:30:05
+ * @LastEditTime: 2019-11-26 10:27:55
  */
 import { StyleSheet ,Dimensions} from 'react-native'
 const {width, height} = Dimensions.get('window')
-// 一些常量设置
-const cols = 2 // 列数
-const left = 10 // 左右边距
-const bottom = 10 // 上下边距
-const imageWidth = (width - (cols + 1) * left) / cols // 图片大小
-
-
 export default StyleSheet.create({
-  container: {
+  tideMancontainer: {
     flex: 1,
   },
-  flatList: {
+  tideManList: {
     flex: 1,
     paddingTop: 10,
-    backgroundColor: '#FAFAFA'
+    backgroundColor: '#FFFFFF'
   },
   centerWrapper:{
     flex: 1,
-    height ,
-    flexDirection: 'row',
-    alignItems: 'flex-start'
+    flexDirection: 'row'
   },
   productBox:{
-    flex: 1
+    // flex: 1
   },
   productWrapper:{
     position: 'relative',
@@ -57,5 +48,8 @@ export default StyleSheet.create({
   noBar: {
     width: (width - 90) / 2,
     paddingHorizontal: 5
+  },
+  gridWrapper: {
+   // backgroundColor: '#FAFAFA'
   }
 })
