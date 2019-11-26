@@ -30,6 +30,7 @@ export default StyleSheet.create({
   priceRow: {
     flexDirection: 'row',
     alignItems: 'flex-end',
+    overflow: 'hidden',
   },
   waiting: {
     color: '#E74646',
@@ -38,17 +39,19 @@ export default StyleSheet.create({
   },
   price: {
     color: '#E74646',
-    fontSize: 20,
+    fontSize: 18,
     textAlignVertical: 'bottom',
     fontFamily: theme.priceFFPrimary,
-    paddingRight: 5,
+    paddingRight: 3,
   },
   pricePrefix: {
     fontSize: 11,
   },
   slashedPrice: {
-    fontSize: 12,
-    color: '#999',
-    textDecorationLine: 'line-through'
+    fontSize: 10,
+    color: theme.slashedPrice,
+    textDecorationLine: 'line-through',
+    textAlignVertical: 'bottom',
+    paddingBottom: 1.5,
   }
 })

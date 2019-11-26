@@ -53,7 +53,8 @@ const styles = StyleSheet.create({
     height: 13,
     borderRadius: 7,
     backgroundColor: '#FFACBA',
-    textAlign: 'center'
+    textAlign: 'center',
+    overflow: 'hidden'
   },
   child: {
     height: '100%',

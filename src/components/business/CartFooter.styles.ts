@@ -18,9 +18,11 @@ export default StyleSheet.create({
     flexShrink: 0,
     flexDirection: 'row',
     alignItems: 'center',
-    shadowColor: '#000000',
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
+    borderTopColor: 'rgba(0,0,0, 0.03)',
+    borderTopWidth: 0.5,
+    // shadowColor: '#000000',
+    // shadowOpacity: 0.1,
+    // shadowRadius: 10,
   },
 
   cartBox: {

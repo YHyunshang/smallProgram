@@ -37,14 +37,27 @@ function ProductLimitTimeBuy({
   activityStatus,
   disableAdd,
 }: Props) {
+  const fitThumbnail = Img.loadRatioImage(thumbnail, thumbnailSize)
+
   const navigateToProductDetail = () => {
     Native.navigateTo({
       type: Native.NavPageType.NATIVE,
       uri: 'A003,A003',
-      params: {productCode: code, storeCode: shopCode},
+      params: {
+        productCode: code,
+        storeCode: shopCode,
+        directTransmitParams: JSON.stringify({
+          name,
+          subTitle: desc,
+          price: price,
+          slashedPrice: slashedPrice || price,
+          spec,
+          count,
+          thumbnail: fitThumbnail,
+        })
+      },
     })
   }
-  const fitThumbnail = Img.loadRatioImage(thumbnail, thumbnailSize)
 
   const thumbnailDim = {width: thumbnailSize, height: thumbnailSize}
   const isCartDisabled = inventoryPercentage <= 0 ||
