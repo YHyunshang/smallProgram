@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-20 14:26:46
+ * @LastEditTime: 2019-11-26 16:22:46
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity, Alert} from 'react-native'
@@ -13,7 +13,7 @@ import {Native, Img} from '@utils'
 import throttle from 'lodash/throttle'
 import styles from './PreviewPurchase.styles'
 import {transPenny} from '../../utils/FormatUtil'
-import {yellowWarn, soldOutDefault, noActivity} from '@const/resources'
+import {yellowWarn, soldOutDefault, noActivity, defaultPoint} from '@const/resources'
 import TopBannerImage from '../../components/common/TopBannerImage'
 import Loading from '../../components/common/Loading'
 import ProgressBar from '../../components/business/Moutai/ProgressBar'
@@ -50,11 +50,12 @@ export default class PreviewPurchase extends React.Component {
       percent: 0,
       exchangeInfoVO: {
         integralExchangeUrl: ''
-        // availableQuantity: 22, // 本月可预购的数量
+        // unqualifiedDesc: '抱歉，您的积分不足，暂时没有购买资格，在线购物可以增加用户积分噢， 消费1元即可获取1积分～',
+        // availableQuantity: 10, // 本月可预购的数量
         // monthTotalNumber: 3, // 当月最多购买数量
-        // inventoryNumber: 98, // 当前库存剩余数量
+        // inventoryNumber: 0, // 当前库存剩余数量
         // inventoryProgressBar: 80, // 当前库存比
-        // isQualifications: true, // 是否有购买资格
+        // isQualifications: false, // 是否有购买资格
         // productName: '53度 500ml 飞天茅台(2019款',
         // exchangeCondition: '1000积分+1499元即可换购1瓶53度500ml飞天茅台',
         // limitDesc: '每月限购3瓶,全年不超过12瓶,当月如有遗留份额,则不累计'
@@ -94,7 +95,7 @@ export default class PreviewPurchase extends React.Component {
           this.setState(
             {
               exchangeInfoVO: data,
-              // buyQuantity: Number(data.inventoryNumber) >= Number(data.availableQuantity) ? data.availableQuantity : data.inventoryNumber,
+              buyQuantity: Number(data.inventoryNumber) >= Number(data.availableQuantity) ? data.availableQuantity : data.inventoryNumber,
               isActivity: data.isActivity,
               activityCode: data.activityCode
             }
@@ -319,18 +320,44 @@ export default class PreviewPurchase extends React.Component {
                     {
                       exchangeInfoVO && exchangeInfoVO.inventoryNumber > 0 ? (
                         <View>
-                          <View style={styles.purchaseNumberWrapper}>
-                            <Text style={styles.purchaseTips}>当前可购买数量</Text>
-                            <PercentageCircle radius={61} percent={this.state.percent} borderWidth={10} bgcolor={'#F0F0ED'} color={'#C1882C'}>
-                              <Text style={styles.quantityText}>{exchangeInfoVO.availableQuantity}</Text>
-                              <Text style={exchangeInfoVO.availableQuantity >= 10 ? styles.standardsBigText : styles.standardsText}>/瓶</Text>
-                            </PercentageCircle>
-                            <View style={styles.purchaseProductPriceInfo}>
-                              <Text style={styles.purchaseProductText}>专售价:</Text>
-                              <Text style={styles.purchaseProductPrice}><Text style={styles.purchaseProductSymbol}>￥</Text>{transPenny(exchangeInfoVO.price ? exchangeInfoVO.price : 0)}</Text>
-                            </View>
-                            <Text style={styles.purchaseProductName}>{exchangeInfoVO.productName}</Text>
-                          </View>
+                          {
+                            exchangeInfoVO.unqualifiedDesc ?
+                              <View>
+                                <View style={styles.purchaseNumberWrapper}>
+                                  <FastImage style={styles.defaultImage} source={defaultPoint} resizeMode={FastImage.resizeMode.contain}/>
+                                  <Text style={styles.unqualifiedDesc}>{exchangeInfoVO.unqualifiedDesc}</Text>
+                                </View>
+                                <TouchableOpacity
+                                  activeOpacity={0.95}
+                                  onPress={() => {
+                                    this.handleGoHome()
+                                  }} >
+                                  <View style={[styles.goHomeShadow, {marginTop: 20, marginBottom: 20}]}>
+                                    <LinearGradient
+                                      style={[styles.goHomeButton]}
+                                      colors={['#F2E08C', '#FEF8CC']}
+                                      start={{x: 0, y: 1}}
+                                      end={{x: 0, y: 0}}
+                                    >
+                                      <Text style={styles.goHomeButtonText}>去首页逛逛</Text>
+                                    </LinearGradient>
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                              :
+                              <View style={styles.purchaseNumberWrapper}>
+                                <Text style={styles.purchaseTips}>当前可购买数量</Text>
+                                <PercentageCircle radius={61} percent={this.state.percent} borderWidth={10} bgcolor={'#F0F0ED'} color={'#C1882C'}>
+                                  <Text style={styles.quantityText}>{exchangeInfoVO.availableQuantity}</Text>
+                                  <Text style={exchangeInfoVO.availableQuantity >= 10 ? styles.standardsBigText : styles.standardsText}>/瓶</Text>
+                                </PercentageCircle>
+                                <View style={styles.purchaseProductPriceInfo}>
+                                  <Text style={styles.purchaseProductText}>专售价:</Text>
+                                  <Text style={styles.purchaseProductPrice}><Text style={styles.purchaseProductSymbol}>￥</Text>{transPenny(exchangeInfoVO.price ? exchangeInfoVO.price : 0)}</Text>
+                                </View>
+                                <Text style={styles.purchaseProductName}>{exchangeInfoVO.productName}</Text>
+                              </View>
+                          }
                           <View style={styles.stockNumberWrapper}>
                             <Text style={styles.stockNumberTips}>门店茅台库存</Text>
                             <ProgressBar width={180} height={10} stockNumber={exchangeInfoVO.inventoryNumber} saleNum={exchangeInfoVO.inventoryProgressBar} startColor={'#C1882C'} endColor={'#EFDCA6'} backgroundColor={'#F0F0ED'}></ProgressBar>
@@ -364,6 +391,29 @@ export default class PreviewPurchase extends React.Component {
                         <View style={styles.emptyWrapper}>
                           <FastImage style={styles.defaultImage} source={soldOutDefault} resizeMode={FastImage.resizeMode.contain}/>
                           <Text style={styles.defaultText}>当前已抢完，敬请期待</Text>
+                          <View style={styles.operateButton}>
+                            <TouchableOpacity
+                              style={styles.shareTouchableOpacity}
+                              activeOpacity={0.95}
+                              onPress={() => {
+                                this.handleQualificationsQuery()
+                              }} >
+                              <View style={styles.queryButton}>
+                                <Text style={styles.buttonText}>预购资格查询</Text>
+                              </View>
+                            </TouchableOpacity>
+                            <View style={styles.splitLine}></View>
+                            <TouchableOpacity
+                              style={styles.shareTouchableOpacity}
+                              activeOpacity={0.95}
+                              onPress={() => {
+                                this.handleStoreModal()
+                              }} >
+                              <View style={styles.queryButton}>
+                                <Text style={styles.buttonText}>可预约门店</Text>
+                              </View>
+                            </TouchableOpacity>
+                          </View>
                         </View>
                     }
                     <View style={styles.explainWrapper}>
@@ -390,7 +440,7 @@ export default class PreviewPurchase extends React.Component {
                       </View>
                     </View>
                     {
-                      exchangeInfoVO && !exchangeInfoVO.isQualifications && (
+                      exchangeInfoVO && !exchangeInfoVO.isQualifications && !exchangeInfoVO.unqualifiedDesc && (
                         <TouchableOpacity
                           activeOpacity={0.95}
                           onPress={() => {

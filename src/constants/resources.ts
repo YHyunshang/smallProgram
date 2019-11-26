@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-09-06 13:54:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-06 15:16:27
+ * @LastEditTime: 2019-11-26 15:21:10
  */
 import {Platform} from 'react-native'
 
@@ -146,3 +146,6 @@ export const noStore =isAndroid
 export const greenLoading =isAndroid
     ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/green-loading.png' }
     : require('@img/green-loading.png')
+export const defaultPoint =isAndroid
+    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/default-point.png' }
+    : require('@img/default-point.png')

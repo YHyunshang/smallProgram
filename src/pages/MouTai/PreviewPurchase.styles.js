@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-10 10:06:14
+ * @LastEditTime: 2019-11-26 16:09:10
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import theme from '@theme'
@@ -44,7 +44,7 @@ export default StyleSheet.create({
     borderRadius: 5,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     shadowColor: 'rgba(0, 0, 0, 0.1)',
     shadowOffset: {h: 10, w: 10},
     shadowRadius: 5,
@@ -307,5 +307,12 @@ export default StyleSheet.create({
   goSeeText: {
     fontSize: 14,
     color: '#FFFFFF'
+  },
+  unqualifiedDesc: {
+    width: 300,
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#38A295'
   }
 })
