@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-26 16:22:46
+ * @LastEditTime: 2019-11-26 17:35:08
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity, Alert} from 'react-native'
@@ -95,7 +95,6 @@ export default class PreviewPurchase extends React.Component {
           this.setState(
             {
               exchangeInfoVO: data,
-              buyQuantity: Number(data.inventoryNumber) >= Number(data.availableQuantity) ? data.availableQuantity : data.inventoryNumber,
               isActivity: data.isActivity,
               activityCode: data.activityCode
             }
@@ -440,7 +439,7 @@ export default class PreviewPurchase extends React.Component {
                       </View>
                     </View>
                     {
-                      exchangeInfoVO && !exchangeInfoVO.isQualifications && !exchangeInfoVO.unqualifiedDesc && (
+                      (exchangeInfoVO && !exchangeInfoVO.isQualifications) && ((!exchangeInfoVO.unqualifiedDesc) || (exchangeInfoVO.inventoryNumber === 0)) ? (
                         <TouchableOpacity
                           activeOpacity={0.95}
                           onPress={() => {
@@ -457,7 +456,7 @@ export default class PreviewPurchase extends React.Component {
                             </LinearGradient>
                           </View>
                         </TouchableOpacity>
-                      )
+                      ) : null
                     }
                   </View>
                   {
