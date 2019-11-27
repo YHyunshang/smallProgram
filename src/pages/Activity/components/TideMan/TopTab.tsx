@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-12 21:18:25
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-26 10:19:24
+ * @LastEditTime: 2019-11-27 11:18:57
  */
 import * as React from 'react'
 import styles from './TopTab.styles'
@@ -33,19 +33,21 @@ export default function TopTab({ currentActive, data, onTabChange }: Props) {
               style={[
                 styles.tabItemBox,
                 index === 0 && styles.tabItemBoxFirst,
-                index === total - 1 && styles.tabItemBoxLast
+                index === total - 1 && styles.tabItemBoxLast,
               ]}
             >
-                <Text
-                  style={[
-                    styles.tabLabel,
-                    key === currentActive && styles.tabLabelActive
-                  ]}
-                >
-                  {label}
-                </Text>
-                <View style={index !== total - 1 && styles.heightLine}></View>
-                <View style={key === currentActive && styles.tabActiveItemBox}></View>
+              <Text
+                style={[
+                  styles.tabLabel,
+                  key === currentActive && styles.tabLabelActive,
+                ]}
+              >
+                {label}
+              </Text>
+              <View style={index !== total - 1 && styles.heightLine}></View>
+              <View
+                style={key === currentActive && styles.tabActiveItemBox}
+              ></View>
             </View>
           </TouchableOpacity>
         ))}
