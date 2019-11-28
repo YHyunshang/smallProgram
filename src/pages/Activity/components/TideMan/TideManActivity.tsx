@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-21 11:23:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-28 12:22:43
+ * @LastEditTime: 2019-11-28 19:10:42
  */
 import * as React from 'react'
 import { FlatList, View } from 'react-native'
@@ -15,8 +15,6 @@ import ProductGridItem from '@components/business/Content/ProductGridItem'
 import chunk from 'lodash/chunk'
 import TopTab from './TopTab'
 import LeftTab from './LeftTab'
-import Empty from '../Empty'
-
 interface Props {
   tabVos: {
     id: number
@@ -80,7 +78,10 @@ export default function TideManActivity({
    */
   const productsFilter = categoryCode =>
     tabDetailVOList
-      .filter(item => item.categoryCode && item.categoryCode.indexOf(categoryCode)!= -1)
+      .filter(
+        item =>
+          item.categoryCode && item.categoryCode.indexOf(categoryCode) != -1
+      )
       .map(ele => ({
         ...CMSServices.formatProduct(ele),
         disableSync: true,
@@ -196,7 +197,7 @@ export default function TideManActivity({
           renderItem={renderItemData}
           keyExtractor={_keyExtractor}
           initialNumToRender={5}
-          ListEmptyComponent={ Empty}
+          // ListEmptyComponent={ Empty}
           // onRefresh={componentDidMount.bind(this)}
           showsVerticalScrollIndicator={false}
           removeClippedSubviews={false}
