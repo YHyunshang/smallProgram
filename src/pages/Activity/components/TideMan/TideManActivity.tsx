@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-21 11:23:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-27 16:06:00
+ * @LastEditTime: 2019-11-28 12:22:43
  */
 import * as React from 'react'
 import { FlatList, View } from 'react-native'
@@ -80,7 +80,7 @@ export default function TideManActivity({
    */
   const productsFilter = categoryCode =>
     tabDetailVOList
-      .filter(item => item.categoryCode === categoryCode)
+      .filter(item => item.categoryCode && item.categoryCode.indexOf(categoryCode)!= -1)
       .map(ele => ({
         ...CMSServices.formatProduct(ele),
         disableSync: true,
@@ -113,6 +113,7 @@ export default function TideManActivity({
   const onLeftTabChange = (code, index) => {
     setCurrentLeftTabKey(code)
     const newCurrentProducts = productsFilter(code)
+    console.log(newCurrentProducts)
     if (index === 0) {
       setCurrentProducts(initProducts)
     } else {
