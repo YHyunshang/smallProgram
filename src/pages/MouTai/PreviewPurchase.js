@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-26 17:35:08
+ * @LastEditTime: 2019-11-28 15:48:44
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity, Alert} from 'react-native'
@@ -53,7 +53,7 @@ export default class PreviewPurchase extends React.Component {
         // unqualifiedDesc: '抱歉，您的积分不足，暂时没有购买资格，在线购物可以增加用户积分噢， 消费1元即可获取1积分～',
         // availableQuantity: 10, // 本月可预购的数量
         // monthTotalNumber: 3, // 当月最多购买数量
-        // inventoryNumber: 0, // 当前库存剩余数量
+        // inventoryNumber: 20, // 当前库存剩余数量
         // inventoryProgressBar: 80, // 当前库存比
         // isQualifications: false, // 是否有购买资格
         // productName: '53度 500ml 飞天茅台(2019款',
@@ -322,7 +322,7 @@ export default class PreviewPurchase extends React.Component {
                           {
                             exchangeInfoVO.unqualifiedDesc ?
                               <View>
-                                <View style={styles.purchaseNumberWrapper}>
+                                <View style={[styles.purchaseNumberWrapper, {height: 289}]}>
                                   <FastImage style={styles.defaultImage} source={defaultPoint} resizeMode={FastImage.resizeMode.contain}/>
                                   <Text style={styles.unqualifiedDesc}>{exchangeInfoVO.unqualifiedDesc}</Text>
                                 </View>

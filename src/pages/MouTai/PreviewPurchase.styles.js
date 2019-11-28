@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-26 16:09:10
+ * @LastEditTime: 2019-11-28 15:46:21
  */
 import {StyleSheet, Dimensions} from 'react-native'
 import theme from '@theme'
@@ -310,6 +310,7 @@ export default StyleSheet.create({
   },
   unqualifiedDesc: {
     width: 300,
+    height: 80,
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
