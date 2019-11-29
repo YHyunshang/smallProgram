@@ -3,5 +3,6 @@
  */
 import Icon from "./Icon"
 import FitImg from "./FitImg"
+import PopUp from "./PopUp"
 
-export { Icon, FitImg }
+export { Icon, FitImg, PopUp }

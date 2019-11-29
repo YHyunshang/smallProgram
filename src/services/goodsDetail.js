@@ -8,6 +8,11 @@
  */
 import {Http} from '@utils'
 import {NativeModules, NativeEventEmitter} from 'react-native'
+import * as WeChat from 'react-native-wechat'
+import {WeChatMP} from '@common/config'
+import {showToast} from '@utils/native'
+import {transPenny} from '../utils/FormatUtil'
+
 /**
  * 根据storeCode，productCode获取商品详情的数据
  * @param storeCode {string} 门店编码,
@@ -61,3 +66,59 @@ export function subscriptApplyPermissionChange(handler) {
   const eventEmitter = new NativeEventEmitter(NativeModules.SendRNEventManager)
   return eventEmitter.addListener('applyResult', handler)
 }
+
+/**
+ * 获取预售商品详情信息
+ * @param productCode 商品编码
+ * @param storeCode 门店编码
+ * @param activityCode 预售活动编码
+ * @return {*|void|Promise<AxiosResponse<T>>}
+ */
+export const getPreSaleProduct = (productCode, storeCode, activityCode) =>
+  Http.post('goodsDetail', '/app/product/queryAdvanceSaleDetail', { productCode, storeCode, activityCode })
+
+/**
+ * 获取商品海报
+ * @return {*|void|Promise<AxiosResponse<T>>}
+ */
+export const getPoster = ({ name, price, code, storeCode, thumbnail }) =>
+  Http.post('goodsDetail', '/share/product', {}, {
+    appId: WeChatMP.appId,
+    productName: name,
+    pageUrl: WeChatMP.pages.productDetail,
+    productPrice: price,
+    productImgUrl: thumbnail,
+    sceneValue: `${code},${storeCode}`,
+    width: 246,
+  })
+
+/**
+ * 通过小程序分享商品给微信好友
+ * @type {function({name: *, code: *, storeCode: *, thumbnail?: *, desc?: *}): Promise<T | never>}
+ */
+export const shareToWxFriends = (function () {
+  WeChat.registerApp(WeChatMP.appId)
+
+  return ({
+    name,
+    code,
+    storeCode,
+    thumbnail,
+    desc,
+  }) => WeChat.isWXAppInstalled()
+    .then(installed => {
+      if (!installed) {
+        showToast('没有安装微信软件，请您安装微信之后再试', '0')
+        return new Error('wechat is not installed')
+      }
+      return WeChat.shareToSession({
+        type: 'miniProgram',
+        title: name,
+        thumbImage: thumbnail,
+        description: desc,
+        miniProgramType: 0, // 分享小程序版本 正式版:0，测试版:1，体验版:
+        userName: WeChatMP.id, // 小程序原生id非appid
+        path: `/pages/product-detail/product-detail?productCode=${code}&storeCode=${storeCode}`// 小程序商品详情页面路径
+      })
+    })
+})()

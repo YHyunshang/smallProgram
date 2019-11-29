@@ -4,38 +4,43 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-29 16:18:11
+ * @LastEditTime: 2019-11-07 17:47:24
  */
 import React from 'react'
 import PropTypes from 'prop-types'
 import {ScrollView, View, Text, TouchableOpacity, NativeModules, Animated, Easing} from 'react-native'
-import Icon from '../../components/Icon'
-import {transPenny} from '../../utils/FormatUtil'
-import ShareModal from '../../components/business/ShareModal'
-import PosterModal from '../../components/business/PosterModal'
-import TabBar from '../../components/common/TabBar'
-import Loading from '../../components/common/Loading'
-import styles from './ProductDetailPage.styles'
+import Icon from '../../../components/Icon'
+import {transPenny} from '../../../utils/FormatUtil'
+import ShareModal from '../../../components/business/ShareModal'
+import PosterModal from '../../../components/business/PosterModal'
+import TabBar from '../../../components/common/TabBar'
+import Loading from '../../../components/common/Loading'
+import styles from './Normal.styles'
 import {Native, Img} from '@utils'
-import {getGoodsDetailData, getPosterImgUrl, getSimilarProduct} from '../../services/goodsDetail'
-import GoodsDetailSwiper from '../../components/business/GoodsDetail/GoodsDetailSwiper'
-import SimilarGoods from '../../components/business/GoodsDetail/SimilarGoods'
+import GoodsDetailSwiper from '../../../components/business/GoodsDetail/GoodsDetailSwiper'
+import SimilarGoods from '../../../components/business/GoodsDetail/SimilarGoods'
 // 商品产地图标 // 商品规格图标 //商品条件图标
 import {productPlace, productSpecific} from '@const/resources'
-import Tag from '../../components/business/GoodsDetail/Tag'
-import BuyLimit from '../../components/business/GoodsDetail/BuyLimit'
-import {placeholderProduct} from '../../constants/resources'
-import FastImage from 'react-native-fast-image'
-import {FitImg} from '../../components'
-import withInitialProductData from '../../components/business/Content/HOC/withInitialProductData'
-import {isiOS} from '../../utils/native'
+import Tag from '../../../components/business/GoodsDetail/Tag'
+import BuyLimit from '../../../components/business/GoodsDetail/BuyLimit'
+import {placeholderProduct} from '../../../constants/resources'
+import FastImage from 'react-native-fast-image/src/index'
+import {FitImg} from '../../../components'
+import memorize from "memoize-one";
+import {ProductThumbnail} from '../../../common/config'
 
-const rnAppModule = NativeModules.RnAppModule// 原生模块
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
 
 const AnimatedFastImage = Animated.createAnimatedComponent(FastImage)
 
 class ProductDetailPage extends React.Component {
+  static propTypes = {
+    product: PropTypes.object,
+    poster: PropTypes.string,
+    similarProducts: PropTypes.arrayOf(PropTypes.object),
+    initialData: PropTypes.object,
+  }
+
   constructor(props) {
     super(props)
     this.state = {
@@ -64,85 +69,33 @@ class ProductDetailPage extends React.Component {
     this.topTabY = 0// 页面滚动到距离
   }
 
-  componentDidMount() {
-    const { productCode, storeCode } = this.props
+  tabRef = React.createRef()
+  scrollViewRef = React.createRef()
+  shareModalRef = React.createRef()
+  posterModalRef = React.createRef()
+  loadingRef = React.createRef()
 
-    this.getProductInfo(productCode, storeCode)
-    this.getSimilarProductList(productCode, storeCode)
-  }
-
-  /**
-   * @description: 获取原生返回的商品详情数据
-   */
-  getProductInfo = (productCode, storeCode) => {
-    this.setState({ loading: true })
-    getGoodsDetailData(storeCode, productCode)
-      .then(({result: data, message, code}) => {
-        if (code === 200000 && data) {
-          let object = {}
-          let shopUrl = data.resChannelStoreProductVO.shopUrl ? JSON.parse(data.resChannelStoreProductVO.shopUrl) : []
-          object.productDesc = data.resChannelStoreProductVO.productName
-          object.productPrice = data.resChannelStoreProductVO.promotionPrice ? data.resChannelStoreProductVO.promotionPrice : data.resChannelStoreProductVO.price
-          object.productUrl = data.productSliderImagesResponseVOList ? data.productSliderImagesResponseVOList[0].url : ''
-          object.productCode = data.resChannelStoreProductVO.productCode
-          object.storeCode = storeCode
-          this.setState(
-            {
-              goodsDetail: data,
-              goodsInfo: data.resChannelStoreProductVO,
-              evaluation: data.resProductEvaluationVO,
-              imgData: data.productSliderImagesResponseVOList,
-              productImgList: data.productDetailImagesResponseVOList || [],
-              shopUrl,
-              productParams: object,
-              orderActivityLabel: data.resChannelStoreProductVO ? data.resChannelStoreProductVO.orderActivityLabel : {},
-              // orderActivityLabel: {activityBeginTime: '2019-10-09 16:23:00', activityEndTime: '2019-10-11 17:20:00', activityName: '第N件N折/N元', discountPrice: 899, labels: ['满100减10元'], promotionCode: 'K001', promotionType: 2, promotionTypeName: '阶梯满减', ruleType: 0, salesRatio: '100%'},
-              // productActivityLabel: {activityBeginTime: '2019-10-09 16:23:00', activityEndTime: '2019-10-11 17:20:00', activityName: '第N件N折/N元', discountPrice: 899, labels: ['第N件N折/N元'], promotionCode: 'K001', promotionType: 4, promotionTypeName: '第N件N折/N元', ruleType: 0, salesRatio: '100%'}
-              productActivityLabel: data.resChannelStoreProductVO ? data.resChannelStoreProductVO.productActivityLabel : {}
-            }
-          )
-        } else {
-          rnAppModule.showToast(message, '0')
-        }
-      })
-      .catch(({message}) => {
-        rnAppModule.showToast(message, '0')
-      })
-      .finally(() => this.setState({ loading: false }))
-  }
-  /**
-   * @description: 根据商品编码、门店编码获取相似商品列表
-   */
-  getSimilarProductList = (productCode, storeCode) => {
-    getSimilarProduct(productCode, storeCode)
-      .then(({result: data, message, code}) => {
-        if (code === 200000 && data) {
-          this.setState(
-            {
-              similarProduct: data
-            }
-          )
-        } else {
-          rnAppModule.showToast(message, '0')
-        }
-      }).catch(({message}) => {
-        rnAppModule.showToast(message, '0')
-      })
-  }
   /**
    * @description: 显示分享朋友圈弹层
    */
-  handleShowModal() {
+  handleShowModal = () => {
     goodsDetailManager.hideBottomViews()// 隐藏底部购物车模块
-    this.shareModal.showShareModal()
+    this.shareModalRef.current.showShareModal()
   }
   /**
    * @description: 显示生成海报弹层
    */
-  handlePosterModal=(productParams) => {
+  handlePosterModal=() => {
     goodsDetailManager.hideBottomViews()// 隐藏底部购物车模块
-    this.posterModal.showPosterModal()
-    this.sharePoster(productParams)
+    this.posterModalRef.current.showPosterModal()
+  }
+
+  handleMaota() {
+    Native.navigateTo({
+      type: Native.NavPageType.RN,
+      uri: 'RNPreviewPurchase',
+      params: {activityCode: '茅台-NS7419983'}
+    })
   }
   /**
    * @description: 点击相似商品列表跳转至商品详情
@@ -165,46 +118,16 @@ class ProductDetailPage extends React.Component {
     })
   }
   /**
-  * @description:生成海报方法
-  */
-  sharePoster(productParams) {
-    let params = {
-      appId: 'wx6e85fc07ec7a02f3',
-      productName: productParams.productDesc,
-      pageUrl: 'pages/product-detail/product-detail',
-      productPrice: `¥${transPenny(productParams.productPrice)}`,
-      productImgUrl: productParams.productUrl,
-      sceneValue: `${productParams.productCode},${this.state.storeCode}`,
-      width: 246
-
-    }
-    if (this.state.isFirst) {
-      this.loadingModal.showLoading()
-      getPosterImgUrl(params)
-        .then(({result: data, message, code}) => {
-          this.loadingModal.hideLoading()
-          if (code === 200000 && data) {
-            this.setState({imgUrl: data, isFirst: false})
-          } else {
-            rnAppModule.showToast(message, '0')
-          }
-        }
-        ).catch(({message}) => {
-          this.loadingModal.hideLoading()
-          rnAppModule.showToast(message, '0')
-        })
-    }
-  }
-  /**
+   * @description: 根据点击tab选项跳转至指定区域
    * @description: 根据点击tab选项跳转至指定区域
    */
-  clickScroll=(index) => {
+  clickScroll = (index) => {
     if (index === 0) {
       // 其中this.layouot.y就是距离现在的高度位置
-      this.myScrollView.scrollTo({x: 0, y: this.goodsLayoutY, animated: true})
+      this.scrollViewRef.current.scrollTo({x: 0, y: this.goodsLayoutY, animated: true})
     } else {
       // 其中this.layouot.y就是距离现在的高度位置
-      this.myScrollView.scrollTo({x: 0, y: this.detailLayoutY, animated: true})
+      this.scrollViewRef.current.scrollTo({x: 0, y: this.detailLayoutY, animated: true})
     }
   }
   /**
@@ -216,20 +139,20 @@ class ProductDetailPage extends React.Component {
   /**
    * @description: 获取轮播组件内容区域到高度
    */
-  goodsSwiperLayout=(event) => {
+  goodsSwiperLayout = (event) => {
     this.goodsSwiperHeight = event.nativeEvent.layout.height
   }
   /**
    * @description: 页面滚动结束时回调函数
    */
-  onMomentumScrollEnd(event) {
+  onMomentumScrollEnd = (event) => {
     let topTabY = event.nativeEvent.contentOffset.y
     if (topTabY === 0) {
-      this.tabs.resetIndex(0)
+      this.tabRef.current.resetIndex(0)
     } else if (topTabY && topTabY >= this.goodsLayoutY && topTabY < this.detailLayoutY) {
-      this.tabs.resetIndex(0)
+      this.tabRef.current.resetIndex(0)
     } else if (topTabY && topTabY >= this.detailLayoutY) {
-      this.tabs.resetIndex(1)
+      this.tabRef.current.resetIndex(1)
     }
   }
   /**
@@ -251,28 +174,110 @@ class ProductDetailPage extends React.Component {
       )
   }
 
+  renderHeader = () => {
+    const { currentIndex } = this.state
+    return (
+      <View style={styles.topTab}>
+        <TabBar
+          ref={this.tabRef}
+          index={currentIndex}
+          data={[
+            {id: 1, name: '商品'},
+            {id: 2, name: '详情'}
+          ]}
+          clickScroll={this.clickScroll}
+        />
+        <TouchableOpacity
+          style={styles.shareTouchableOpacity}
+          activeOpacity={0.95}
+          onPress={this.handleShowModal}
+        >
+          <Icon name="share" size={18} color="#4D4D4D" />
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
+  renderSwiper = () => {
+    const { initialData, product } = this.props
+    const { thumbnailVis, thumbnailOpacity } = this.state
+
+    const productActivityLabel = (product.resChannelStoreProductVO || {}).productActivityLabel || {}
+    const imgData = product.productSliderImagesResponseVOList || []
+
+    return (
+      <View onLayout={event => {
+        this.goodsLayoutY = event.nativeEvent.layout.y
+      }}>
+        <View onLayout={this.goodsSwiperLayout}>
+          {productActivityLabel && productActivityLabel.promotionType === 13 && (
+            <View style={styles.newPerson}>
+              <Text style={styles.newPersonText}>{productActivityLabel.promotionTypeName}</Text>
+            </View>
+          )}
+          <View style={{ position: 'relative' }}>
+            <GoodsDetailSwiper imgData={imgData} onAllLoadEnd={this.onCarouselLoadEnd} />
+            {thumbnailVis && (
+              <AnimatedFastImage
+                style={[ styles.defaultImage, { opacity: thumbnailOpacity } ]}
+                source={initialData.thumbnail ? { uri: initialData.thumbnail } : placeholderProduct}
+                resizeMode="contain"
+              />
+            )}
+          </View>
+        </View>
+      </View>
+    )
+  }
+
+  getShopUrl = memorize(str => {
+    let result = []
+    try {
+      result = JSON.parse(str || '[]')
+    } catch (e) {
+      console.error(e)
+    }
+    return result
+  })
+
+  getProductParams = memorize(
+    ({resChannelStoreProductVO: detail = {}, productSliderImagesResponseVOList: sliders = [] }) => {
+      let thumbnail = detail.mainUrl
+      if (!thumbnail) {
+        const firstSlider = sliders.find(ele => ele.fileType === 0 && ele.url)
+        thumbnail = firstSlider ? firstSlider.url : ProductThumbnail
+      }
+      return {
+        productDesc: detail.productName,
+        productPrice: detail.promotionPrice || detail.price,
+        productUrl: thumbnail,
+        productCode: detail.productCode,
+        storeCode: detail.storeCode,
+      }
+    }
+  )
+
   render() {
     let tags, productTags, orderTags// 促销类型 1 直降促销, 2 满减促销, 3 满件减满减折促销 ,4 第N件N折/N元,5 限时抢购
-    const { initialData } = this.props
+    const { initialData = {}, product = {}, poster, similarProducts = [] } = this.props
+
     const {
-      loading,
-      imgData,
-      goodsInfo,
-      productImgList,
-      shopUrl,
-      imgUrl,
-      productParams,
-      similarProduct,
-      productActivityLabel,
-      orderActivityLabel,
-      thumbnailOpacity,
-      thumbnailVis,
-    } = this.state
+      resChannelStoreProductVO: goodsInfo = {},
+      productDetailImagesResponseVOList: productImgList = [],
+    } = product
+
+    const loading = !!goodsInfo.productCode
+    const shopUrl = this.getShopUrl(goodsInfo.shopUrl)
+    const productActivityLabel = goodsInfo.productActivityLabel || {}
+    const orderActivityLabel = goodsInfo.orderActivityLabel || {}
+    const productParams = this.getProductParams(product)
+
+    const isLimitTimeBuy = productActivityLabel && productActivityLabel.promotionType === 5
 
     // let favorableRate = goodsInfo.favorableRate ? goodsInfo.favorableRate * 100 : 0
     // favorableRate = favorableRate && parseFloat(favorableRate.toFixed(2))
     // 商品详情图文列表
-    const goodsImgList = productImgList.map(({url, id}) => (
+    const goodsImgList = (productImgList || []).map(({url, id}) => (
       <FitImg key={id} source={{ uri: Img.loadRatioImage(url, Img.FullWidth) }} resizeMode="contain" />
     ))
     // 商家文描图文列表
@@ -315,58 +320,21 @@ class ProductDetailPage extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.subContainer}>
-          <View style={styles.topTab}>
-            <TabBar ref={e => this.tabs = e}
-              index={this.state.currentIndex}
-              data={[
-                {id: 1, name: '商品'},
-                {id: 2, name: '详情'}
-              ]}
-              clickScroll={this.clickScroll}
-            />
-            <TouchableOpacity
-              style={styles.shareTouchableOpacity}
-              activeOpacity={0.95}
-              onPress={() => {
-                this.handleShowModal()
-              }} >
-              <Icon name="share" size={18} color="#4D4D4D" />
-            </TouchableOpacity>
-          </View>
+          {this.renderHeader()}
 
           <ScrollView
             style={{ flex: 1 }}
-            ref={(view) => {
-              this.myScrollView = view
-            }}
+            ref={this.scrollViewRef}
             showsVerticalScrollIndicator={false}
             // 当一帧滚动完毕时调用
-            onMomentumScrollEnd={(event) => this.onMomentumScrollEnd(event)}
+            onMomentumScrollEnd={this.onMomentumScrollEnd}
           >
-            <View onLayout={event => {
-              this.goodsLayoutY = event.nativeEvent.layout.y
-            }}>
-              <View onLayout={this.goodsSwiperLayout.bind(this)}>
-                {productActivityLabel && productActivityLabel.promotionType === 13 && (
-                  <View style={styles.newPerson}>
-                    <Text style={styles.newPersonText}>{productActivityLabel.promotionTypeName}</Text>
-                  </View>
-                )}
-                <View style={{ position: 'relative' }}>
-                  <GoodsDetailSwiper imgData={imgData} onAllLoadEnd={this.onCarouselLoadEnd} />
-                  {thumbnailVis && (
-                    <AnimatedFastImage
-                      style={[ styles.defaultImage, { opacity: thumbnailOpacity } ]}
-                      source={initialData.thumbnail ? { uri: initialData.thumbnail } : placeholderProduct}
-                      resizeMode="contain"
-                    />
-                  )}
-                </View>
-              </View>
-            </View>
-            {productActivityLabel && productActivityLabel.promotionType === 5 && (
+            {this.renderSwiper()}
+
+            {isLimitTimeBuy && (
               <BuyLimit productActivityLabel={productActivityLabel} />
             )}
+
             <View>
               <View style={styles.goodsPromotionPriceRowFlex}>
                 <Text style={styles.goodsPriceSymbol}>¥</Text>
@@ -406,8 +374,8 @@ class ProductDetailPage extends React.Component {
                 )}
               </View>
             </View>
-            {similarProduct.length > 0 && (
-              <SimilarGoods similarProduct={similarProduct} jumpGoodsDetail={this.jumpGoodsDetail} />
+            {similarProducts.length > 0 && (
+              <SimilarGoods similarProduct={similarProducts} jumpGoodsDetail={this.jumpGoodsDetail} />
             )}
             <View onLayout={event => {
               this.detailLayoutY = event.nativeEvent.layout.y
@@ -415,6 +383,14 @@ class ProductDetailPage extends React.Component {
               <View style={styles.goodsDetail}>
                 <Text style={styles.goodsDetailTitle}>商品详情</Text>
               </View>
+              {/* <TouchableOpacity
+                style={styles.shareTouchableOpacity}
+                activeOpacity={0.95}
+                onPress={() => {
+                  this.handleMaota()
+                }} >
+                <Icon name='share' size={18} color="#4D4D4D" />
+              </TouchableOpacity> */}
               <View style={styles.imagesContent}>
                 {goodsImgList}
                 {shopImgList}
@@ -422,23 +398,13 @@ class ProductDetailPage extends React.Component {
             </View>
           </ScrollView>
         </View>
-        <Loading ref={ref => this.loadingModal = ref} />
-        <ShareModal modalBoxHeight={240} productParams={productParams} onShare={this.handlePosterModal} ref={ref => this.shareModal = ref}/>
-        <PosterModal modalBoxHeight={534} imgUrl={imgUrl} ref={ref => this.posterModal = ref}/>
+
+        <ShareModal modalBoxHeight={240} productParams={productParams} onShare={this.handlePosterModal} ref={this.shareModalRef}/>
+        <PosterModal modalBoxHeight={534} imgUrl={poster} ref={this.posterModalRef}/>
+        <Loading title="海报生成中" ref={this.loadingRef} />
       </View>
     )
   }
 }
 
-ProductDetailPage.propTypes = {
-  productCode: PropTypes.string.isRequired,
-  storeCode: PropTypes.string.isRequired,
-  initialData: PropTypes.object,
-}
-
-ProductDetailPage.defaultProps = {
-  initialData: {}
-}
-
-
-export default withInitialProductData(ProductDetailPage)
+export default ProductDetailPage

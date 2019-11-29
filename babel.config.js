@@ -21,6 +21,7 @@ module.exports = {
           '@img': './src/assets/imgs',
           '@const': './src/constants',
           '@theme': './src/theme',
+          '@common': './src/common',
         },
       },
     ],

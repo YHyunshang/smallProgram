@@ -4,9 +4,11 @@
  * @Last Modified by: 李华良
  * @Last Modified time: 2019-09-20 15:49:51
  */
-import {PixelRatio, Dimensions, Image, ImageURISource, ImageRequireSource} from 'react-native'
+import {PixelRatio, Dimensions, Image, ImageURISource, ImageRequireSource, Platform, CameraRoll} from 'react-native'
 import * as Log from './log'
 import {FastImageSource} from "react-native-fast-image";
+import {applyPhotosPermission, isiOS, onNativeEvent} from "@utils/native";
+import RNFS from "react-native-fs";
 /**
  * 根据屏幕像素密度获取对应尺寸的图片
  * 仅支持 hotfile cdn，仅支持 按照宽度等比剪裁 或 按照固定宽高剪裁
@@ -95,4 +97,40 @@ export function getSize(img: ImageSource):Promise<ImageSize> {
 export function getRatio(img: ImageSource): Promise<number> {
   return getSize(img)
     .then(({ width, height }) => width / height)
+}
+
+/**
+ * 下载网络图片到相册
+ * @param uri 图片 uri
+ */
+export function download(uri) {
+  if (isiOS) {
+    return _download_(uri)
+  } else {
+    return new Promise((resolve, reject) => {
+      const removeListener = onNativeEvent('applyResult', () => {
+        removeListener()
+        _download_(uri)
+          .then(resolve, reject)
+      })
+      applyPhotosPermission()
+    })
+  }
+}
+async function _download_(url:string) {
+  if (!url) return new Error('图片不能为空')
+
+  const timestamp = new Date().getTime() // 获取当前时间错
+  const random = String((Math.random() * 1000000) | 0) // 六位随机数
+  const dirs = isiOS ? RNFS.LibraryDirectoryPath : RNFS.ExternalDirectoryPath // 外部文件，共享目录的绝对路径（仅限android）
+  const downloadDest = `${dirs}/${timestamp + random}.jpg`
+
+  const request = RNFS.downloadFile({
+    fromUrl: url,
+    toFile: downloadDest,
+    background: true,
+  })
+
+  return request.promise
+    .then(() => CameraRoll.saveToCameraRoll(downloadDest))
 }

@@ -15,6 +15,7 @@ export const white = '#FFFFFF'
 export const black = '#333333'
 export const black1 = '#666666'
 
+export const lightGray = '#FBFBFB'
 export const gray = '#A3A3A3'
 export const gray1 = '#B3B3B3'
 export const gray10 = '#F6F6F6'
@@ -36,3 +37,4 @@ export const priceFFPrimary = isAndroid
 
 
 export const slashedPrice = gray1
+export const generalPageBG = lightGray

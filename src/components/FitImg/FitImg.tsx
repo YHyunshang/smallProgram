@@ -57,4 +57,4 @@ FitImg.defaultProps = {
   style: {}
 }
 
-export default FitImg
+export default React.memo(FitImg)

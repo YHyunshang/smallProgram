@@ -90,3 +90,16 @@ export const Map = function() {
   this.size = size
   this.isEmpty = isEmpty
 }
+
+/**
+ * 将毫秒转化为 [hours, minutes, seconds, milliseconds] 结构
+ * @param milliseconds 毫秒时长
+ */
+export function transMilliseconds(milliseconds) {
+  return [
+    Math.floor(milliseconds / (1000 * 60 * 60)),
+    Math.floor( milliseconds % (1000 * 60 * 60) / (1000 * 60)),
+    Math.floor(milliseconds % (1000 * 60) / 1000),
+    milliseconds % 1000,
+  ]
+}

@@ -11,7 +11,6 @@ export default <P extends object>(
   ProductComponent: React.ComponentType<P>
 ): React.FunctionComponent<P & InjectedProps> =>
   ({initialData, ...restProps}: InjectedProps) => {
-    console.log('initialData:', initialData)
     let productBriefInfo = {}
     try {
       productBriefInfo = JSON.parse(initialData)

@@ -12,11 +12,10 @@ import {
   StatusBar,
   DeviceEventEmitter,
   NativeEventEmitter,
-  Alert,
 } from 'react-native'
 import * as Log from './log'
 import { Product } from '@components/business/Content/typings'
-const rnAppModule = NativeModules.RnAppModule// 原生模块
+
 export enum NavPageType {
   NATIVE = '0',
   RN = '1',
@@ -269,3 +268,27 @@ export const onNativeEvent = (function() {
     }
   }
 })()
+
+/**
+ * 切换商详页底部购物车栏的展示
+ * @param visible 展示 / 隐藏
+ */
+export function toggleGoodsDetailCartBarVis(visible: boolean) {
+  const nativeModule = NativeModules.GoodsDetailsNativeManager
+  const fn = visible ? nativeModule.showBottomViews : nativeModule.hideBottomViews
+  fn()
+}
+
+export function applyPhotosPermission() {
+  NativeModules.GoodsDetailsNativeManager.applyPermission()
+}
+
+/**
+ * 切换商详页购物车 disabled 状态
+ * @param disabled
+ */
+export function toggleCartDisabled(disabled: boolean) {
+  NativeModules.RnAppModule.sendEventToNative(
+    'setBottomAddTextStatus',
+    JSON.stringify({ status: disabled ? '1' : '0', text: '加入购物车' }))
+}

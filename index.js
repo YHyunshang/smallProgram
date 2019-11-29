@@ -6,9 +6,9 @@
  * @LastEditors: yuwen.liu
  * @LastEditTime: 2019-11-26 10:45:46
  */
-import { AppRegistry, Text } from 'react-native'
+import { AppRegistry, Text, TouchableOpacity } from 'react-native'
 import Home from './src/pages/Home'
-import ProductDetailPage from './src/pages/ProductDetail/ProductDetailPage'
+import ProductDetail from './src/pages/ProductDetail'
 import HotSaleBoard from './src/pages/HotSaleBoard'
 import Found from './src/pages/Found'
 import Activity from './src/pages/Activity'
@@ -23,9 +23,16 @@ console.disableYellowBox = true
 
 // 默认字体不随系统设置变化
 // TextInput.defaultProps = Object.assign({}, TextInput.defaultProps, {defaultProps: false})
-Text.defaultProps = Object.assign({}, Text.defaultProps, {allowFontScaling: false})
+Text.defaultProps = {
+  ...Text.defaultProps,
+  allowFontScaling: false,
+}
+TouchableOpacity.defaultProps = {
+  ...TouchableOpacity.defaultProps,
+  activeOpacity: 0.95,
+}
 
-AppRegistry.registerComponent('RNProductDetail', () => ProductDetailPage)
+AppRegistry.registerComponent('RNProductDetail', () => ProductDetail)
 AppRegistry.registerComponent('RNHome', () => Home)
 AppRegistry.registerComponent('RNFound', () => Found)
 AppRegistry.registerComponent('RNActivity', () => Activity)

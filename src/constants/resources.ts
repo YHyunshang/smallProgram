@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-09-06 13:54:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-26 15:21:10
+ * @LastEditTime: 2019-11-06 15:16:27
  */
 import {Platform} from 'react-native'
 
@@ -149,3 +149,17 @@ export const greenLoading =isAndroid
 export const defaultPoint =isAndroid
     ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/default-point.png' }
     : require('@img/default-point.png')
+
+export const activityPending = require('@img/icon-activity-pending.png')
+export const activityProcessing = require('@img/icon-fire.png')
+export const activityExpired = require('@img/icon-caution-circle.png')
+
+export const iconOrderCircle = require('@img/icon-order-circle.png')
+export const iconBagCircle = require('@img/icon-bag-circle.png')
+export const iconClose = require('@img/icon-close.png')
+
+export const preSaleBarBlock = require('@img/pre-sale-bar-block.png')
+
+export const iconShare = require('@img/icon-share.png')
+
+export const iconWeChatMoment = require('@img/icon-wechat-moment.png')

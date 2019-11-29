@@ -8,6 +8,7 @@
  */
 
 import React from 'react'
+import PropTypes from 'prop-types'
 import {
   Text,
   View,
@@ -20,6 +21,7 @@ import PopUp from '../common/PopUp'
 import Icon from '../../components/Icon'
 import styles from './ShareModal.styles'
 import {wechatFriend, wechatMoments} from '../../constants/resources'
+import {WeChatMP} from '@common/config'
 const rnAppModule = NativeModules.RnAppModule// 原生商品详情模块
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
 export default class ShareModal extends React.Component {
@@ -27,8 +29,21 @@ export default class ShareModal extends React.Component {
     super(props)
   }
 
+  static propTypes = {
+    modalBoxHeight: PropTypes.number,
+    productParams: PropTypes.shape({
+      name: PropTypes.string, // 商品名称
+      code: PropTypes.string, // 商品编码
+      thumbnail: PropTypes.string, // 商品缩略图
+      desc: PropTypes.string, // 商品描述
+      storeCode: PropTypes.string, // 门店编码
+      extra: PropTypes.object, // 额外信息
+    }),
+    onShare: PropTypes.func,
+  }
+
   componentDidMount() {
-    WeChat.registerApp('wx3e5bc65c8d751e70')
+    WeChat.registerApp(WeChatMP.appId)
   }
 
   componentWillUnmount() {
@@ -90,7 +105,7 @@ export default class ShareModal extends React.Component {
   /**
   * @description: 分享朋友圈
   */
-  showPosterMoal() {
+  showPosterModal() {
     // WeChat.isWXAppInstalled().then((isInstalled) => {
     //   if (isInstalled) {
     //     WeChat.shareToTimeline({
@@ -133,7 +148,7 @@ export default class ShareModal extends React.Component {
             <Text style={styles.shareText} >微信好友</Text>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.95} onPress={() => {
-            this.showPosterMoal()
+            this.showPosterModal()
           }}>
             <Image style={styles.shareImage} source={wechatMoments} resizeMode="cover"></Image>
             <Text style={styles.shareText} >微信朋友圈</Text>
