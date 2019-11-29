@@ -17,7 +17,7 @@ import Footer from './components/Footer'
 import Empty from './components/Empty'
 import TideManActivity from './components/TideMan/TideManActivity'
 import AdTitle from '@components/business/Content/AdTitle'
-
+import Loading from '../../components/common/Loading'
 interface Props {
   activityCode: string // 活动编码
   shopCode?: string
@@ -41,6 +41,7 @@ interface State {
 }
 
 export default class Page extends React.Component<Props, State> {
+  loading: any
   constructor(props) {
     super(props)
 
@@ -77,11 +78,13 @@ export default class Page extends React.Component<Props, State> {
     const { activityCode: code } = this.props
     const { shopCode } = this.state
     this.setState({ loading: true })
+    this.loading.showLoading()
     let res
     try {
       res = await CMSServices.getActivity(code, shopCode)
     } finally {
       this.setState({ loading: false })
+      this.loading.hideLoading()
     }
 
     const { result } = res
@@ -122,255 +125,6 @@ export default class Page extends React.Component<Props, State> {
   }
 
   floorDataFormatter = data => {
-    //   const tabVos= [{
-    //     id: 401,
-    //     tabName: '日韩馆',
-    //     showBar: true,
-    //     subType: 1,
-    //     categoryList:[
-    //       {categoryCode:'all',categoryName:'全部'}
-    //       ,{categoryCode:1001,categoryName:'水果'}
-    //       ,{categoryCode:1002,categoryName:'蔬菜'}
-    //       ,{categoryCode:1003,categoryName:'肉禽类'}
-    //       ,{categoryCode:1004,categoryName:'海鲜水产'}
-    //       ,{categoryCode:1005,categoryName:'粮油调味'}
-    //       ,{categoryCode:1006,categoryName:'熟食卤味'}
-    //     ],
-    //     tabDetailVOList:[
-    //       {
-    //         cartId: null,
-    //         code: '1125124',
-    //         id: 213245,
-    //         categoryCode:1006,
-    //         imgUrl:
-    //           'http://hotfile.yonghui.cn/files/|cephdata|filecache|YHYS|YHYS|2019-09-30|6337307132483866624',
-    //         inventoryLabel: null,
-    //         label: '',
-    //         labelList: ['9.5折'],
-    //         link: null,
-    //         linkType: null,
-    //         name: '海天下凤尾南美虾仁',
-    //         pos: 5,
-    //         price: 3750,
-    //         productDesc: '',
-    //         productNum: null,
-    //         productSpecific: '180g',
-    //         productUnit: '包',
-    //         promotionPrice: 3580,
-    //         remark: null,
-    //         resProdcutNoteNewVO: null,
-    //         templateId: 20495,
-    //       },
-    //       {
-    //         cartId: null,
-    //         code: '744759',
-    //         id: 213240,
-    //         categoryCode:1001,
-    //         imgUrl:
-    //           'http://hotfile.yonghui.cn/files/|cephdata|filecache|YHYS|YHYS|2019-10-28|5814040396707143680',
-    //         inventoryLabel: null,
-    //         label: '',
-    //         labelList: ['7.0折'],
-    //         link: null,
-    //         linkType: null,
-    //         name: '安井台湾风味葱香味手抓饼',
-    //         pos: 6,
-    //         price: 2080,
-    //         productDesc: '酥酥软软 三分钟搞定早餐',
-    //         productNum: null,
-    //         productSpecific: '900g',
-    //         productUnit: '袋',
-    //         promotionPrice: 1460,
-    //         remark: null,
-    //         resProdcutNoteNewVO: null,
-    //         templateId: 20495,
-    //       },
-    //       {
-    //         cartId: null,
-    //         code: '317001',
-    //         id: 243077,
-    //         categoryCode:1002,
-    //         imgUrl:
-    //           'http://hotfile.yonghui.cn/files/|cephdata|filecache|YHYS|YHYS|2019-08-27|7083850274447552512',
-    //         inventoryLabel: null,
-    //         label: '',
-    //         labelList: ['5.9折'],
-    //         link: null,
-    //         linkType: null,
-    //         name: '金龙鱼葵花油',
-    //         pos: 4,
-    //         price: 2990,
-    //         productDesc: '',
-    //         productNum: null,
-    //         productSpecific: '1.8L',
-    //         productUnit: '瓶',
-    //         promotionPrice: 1790,
-    //         remark: null,
-    //         resProdcutNoteNewVO: null,
-    //         templateId: 23854,
-    //       },
-    //       {
-    //         cartId: null,
-    //         code: '453376',
-    //         id: 243081,
-    //         categoryCode:1003,
-    //         imgUrl:
-    //           'http://hotfile-cdn.yonghui.cn/files/|cephdata|filecache|YHYS|YHYS|2019-06-28|1953323563805052928',
-    //         inventoryLabel: null,
-    //         label: '',
-    //         labelList: ['6.3折'],
-    //         link: null,
-    //         linkType: null,
-    //         name: '哈尔滨小麦王啤酒听装',
-    //         pos: 8,
-    //         price: 1880,
-    //         productDesc: '泡沫丰富  口感醇厚',
-    //         productNum: null,
-    //         productSpecific: '330ml*6',
-    //         productUnit: '组',
-    //         promotionPrice: 1190,
-    //         remark: null,
-    //         resProdcutNoteNewVO: null,
-    //         templateId: 23854,
-    //       },
-    //       {
-    //         cartId: null,
-    //         code: '1042792',
-    //         id: 243083,
-    //         categoryCode:1004,
-    //         imgUrl:
-    //           'http://hotfile.yonghui.cn/files/|cephdata|filecache|YHYS|YHYS|2019-09-20|7917069566465806336',
-    //         inventoryLabel: null,
-    //         label: '',
-    //         labelList: ['5.0折'],
-    //         link: null,
-    //         linkType: null,
-    //         name: '优颂竹纤维3层软抽纸',
-    //         pos: 10,
-    //         price: 1980,
-    //         productDesc: '自然舒适 细腻柔软',
-    //         productNum: null,
-    //         productSpecific: '120抽X6包',
-    //         productUnit: '提',
-    //         promotionPrice: 1000,
-    //         remark: null,
-    //         resProdcutNoteNewVO: null,
-    //         templateId: 23854,
-    //       }
-    //     ]
-    //   },
-    //   {
-    //     id: 402,
-    //     tabName: '特色小吃',
-    //     showBar: true,
-    //     subType: 2,
-    //     categoryList:[
-    //       {categoryCode:'all',categoryName:'全部'}
-    //       ,{categoryCode:2001,categoryName:'清洗护理'}
-    //       ,{categoryCode:2002,categoryName:'运动时尚'}
-    //       ,{categoryCode:2003,categoryName:'休闲娱乐'}
-    //       ,{categoryCode:2004,categoryName:'海鲜水产'}
-    //     ],
-    //     tabDetailVOList:[
-    //       {
-    //         cartId: null,
-    //         code: '1125124',
-    //         id: 213245,
-    //         categoryCode:2001,
-    //         imgUrl:
-    //           'http://hotfile.yonghui.cn/files/|cephdata|filecache|YHYS|YHYS|2019-09-30|6337307132483866624',
-    //         inventoryLabel: null,
-    //         label: '',
-    //         labelList: ['9.5折'],
-    //         link: null,
-    //         linkType: null,
-    //         name: '海天下凤尾南美虾仁',
-    //         pos: 5,
-    //         price: 3750,
-    //         productDesc: '',
-    //         productNum: null,
-    //         productSpecific: '180g',
-    //         productUnit: '包',
-    //         promotionPrice: 3580,
-    //         remark: null,
-    //         resProdcutNoteNewVO: null,
-    //         templateId: 20495,
-    //       },
-    //       {
-    //         cartId: null,
-    //         code: '744759',
-    //         categoryCode:2002,
-    //         id: 213240,
-    //         imgUrl:
-    //           'http://hotfile.yonghui.cn/files/|cephdata|filecache|YHYS|YHYS|2019-10-28|5814040396707143680',
-    //         inventoryLabel: null,
-    //         label: '',
-    //         labelList: ['7.0折'],
-    //         link: null,
-    //         linkType: null,
-    //         name: '安井台湾风味葱香味手抓饼',
-    //         pos: 6,
-    //         price: 2080,
-    //         productDesc: '酥酥软软 三分钟搞定早餐',
-    //         productNum: null,
-    //         productSpecific: '900g',
-    //         productUnit: '袋',
-    //         promotionPrice: 1460,
-    //         remark: null,
-    //         resProdcutNoteNewVO: null,
-    //         templateId: 20495,
-    //       },
-    //       {
-    //         cartId: null,
-    //         code: '317001',
-    //         categoryCode:2003,
-    //         id: 243077,
-    //         imgUrl:
-    //           'http://hotfile.yonghui.cn/files/|cephdata|filecache|YHYS|YHYS|2019-08-27|7083850274447552512',
-    //         inventoryLabel: null,
-    //         label: '',
-    //         labelList: ['5.9折'],
-    //         link: null,
-    //         linkType: null,
-    //         name: '金龙鱼葵花油',
-    //         pos: 4,
-    //         price: 2990,
-    //         productDesc: '',
-    //         productNum: null,
-    //         productSpecific: '1.8L',
-    //         productUnit: '瓶',
-    //         promotionPrice: 1790,
-    //         remark: null,
-    //         resProdcutNoteNewVO: null,
-    //         templateId: 23854,
-    //       },
-    //       {
-    //         cartId: null,
-    //         code: '453376',
-    //         categoryCode:2003,
-    //         id: 243081,
-    //         imgUrl:
-    //           'http://hotfile-cdn.yonghui.cn/files/|cephdata|filecache|YHYS|YHYS|2019-06-28|1953323563805052928',
-    //         inventoryLabel: null,
-    //         label: '',
-    //         labelList: ['6.3折'],
-    //         link: null,
-    //         linkType: null,
-    //         name: '哈尔滨小麦王啤酒听装',
-    //         pos: 8,
-    //         price: 1880,
-    //         productDesc: '泡沫丰富  口感醇厚',
-    //         productNum: null,
-    //         productSpecific: '330ml*6',
-    //         productUnit: '组',
-    //         promotionPrice: 1190,
-    //         remark: null,
-    //         resProdcutNoteNewVO: null,
-    //         templateId: 23854,
-    //       }
-    //     ]
-    //   }
-    // ]
     let sortedData = data
       .sort((a, b) => a.pos - b.pos) // step 1: 排序
       .filter(
@@ -507,7 +261,7 @@ export default class Page extends React.Component<Props, State> {
           key: floor.id,
           component: TideManActivity,
           props: {
-            tabVos:floor.tabVos,
+            tabVos: floor.tabVos,
             shopCode,
             componentDidMount: this.componentDidMount,
             afterModifyCount: this.requestCartInfo,
@@ -576,6 +330,7 @@ export default class Page extends React.Component<Props, State> {
         <View style={styles.footerBox}>
           <Footer amount={amount} cartCount={count} />
         </View>
+        <Loading ref={ref => (this.loading = ref)}></Loading>
       </View>
     )
   }

@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-21 11:23:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-28 19:10:42
+ * @LastEditTime: 2019-11-29 10:46:59
  */
 import * as React from 'react'
 import { FlatList, View } from 'react-native'
@@ -51,7 +51,7 @@ export default function TideManActivity({
   const initLeftTabList = tabVos[0].categoryList //初始化左边tab栏的数据
   const [currentTopTabKey, setCurrentTopTabKey] = React.useState(tabVos[0].id) //初始化顶部tab栏的当前选中的项，以及设置选中项的方法
   const [currentLeftTabKey, setCurrentLeftTabKey] = React.useState(
-    initLeftTabList[0].categoryCode
+    initLeftTabList[0] ? initLeftTabList[0].categoryCode : 'all'
   ) //初始化右边tab栏的当前选中的项，以及设置选中项的方法
   const [leftTabList, setLeftTabList] = React.useState(initLeftTabList) //初始化左侧tab栏的数据列表
   const [currentShowBar, setCurrentShowBar] = React.useState(showBar) //初始化是否展示左侧分栏
@@ -95,7 +95,11 @@ export default function TideManActivity({
     const newLeftTabList = leftTabListFilter(key)
     setCurrentTopTabKey(key)
     setLeftTabList(newLeftTabList[0].categoryList)
-    setCurrentLeftTabKey(newLeftTabList[0].categoryList[0].categoryCode)
+    setCurrentLeftTabKey(
+      newLeftTabList[0].categoryList[0]
+        ? newLeftTabList[0].categoryList[0].categoryCode
+        : 'all'
+    )
     setCurrentShowBar(newLeftTabList[0].showBar)
     setCurrentColumnNumber(newLeftTabList[0].subType)
     setTabDetailVOList(newLeftTabList[0].tabDetailVOList)
@@ -197,8 +201,6 @@ export default function TideManActivity({
           renderItem={renderItemData}
           keyExtractor={_keyExtractor}
           initialNumToRender={5}
-          // ListEmptyComponent={ Empty}
-          // onRefresh={componentDidMount.bind(this)}
           showsVerticalScrollIndicator={false}
           removeClippedSubviews={false}
           refreshing={false}
