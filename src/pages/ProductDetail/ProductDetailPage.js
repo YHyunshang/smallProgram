@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-12 22:28:34
+ * @LastEditTime: 2019-11-29 16:18:11
  */
 import React from 'react'
 import {ScrollView, View, Text, TouchableOpacity, NativeModules} from 'react-native'
@@ -136,13 +136,6 @@ export default class ProductDetailPage extends React.Component {
     goodsDetailManager.hideBottomViews()// 隐藏底部购物车模块
     this.posterModal.showPosterModal()
     this.sharePoster(productParams)
-  }
-  handleTideActivity() {
-    Native.navigateTo({
-      type: Native.NavPageType.RN,
-      uri: 'RNTideActivity',
-      params: {}
-    })
   }
   /**
    * @description: 点击相似商品列表跳转至商品详情
@@ -374,14 +367,6 @@ export default class ProductDetailPage extends React.Component {
               <View style={styles.goodsDetail}>
                 <Text style={styles.goodsDetailTitle}>商品详情</Text>
               </View>
-              <TouchableOpacity
-                style={styles.shareTouchableOpacity}
-                activeOpacity={0.95}
-                onPress={() => {
-                  this.handleTideActivity()
-                }} >
-                <Icon name='share' size={18} color="#4D4D4D" />
-              </TouchableOpacity>
               <View style={styles.imagesContent}>
                 {goodsImgList}
                 {shopImgList}
@@ -389,10 +374,9 @@ export default class ProductDetailPage extends React.Component {
             </View>
           </ScrollView>
         </View>
-
+        <Loading ref={ref => this.loadingModal = ref} />
         <ShareModal modalBoxHeight={240} productParams={productParams} onShare={this.handlePosterModal} ref={ref => this.shareModal = ref}/>
         <PosterModal modalBoxHeight={534} imgUrl={imgUrl} ref={ref => this.posterModal = ref}/>
-        <Loading title="海报生成中" ref={ref => this.loadingModal = ref} />
       </View>
     )
   }

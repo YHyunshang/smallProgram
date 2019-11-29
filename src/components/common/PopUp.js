@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-02 14:14:35
+ * @LastEditTime: 2019-11-29 16:16:27
  */
 import React, {Component} from 'react'
 import {StyleSheet, View, TouchableOpacity, Animated, Easing, Dimensions, NativeModules} from 'react-native'
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
     position: 'absolute',
     top: 0,
-    zIndex: 9
+    zIndex: 0
   },
   modalBox: {
     position: 'absolute',
