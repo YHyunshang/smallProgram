@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-08-26 09:41:18
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-29 21:05:23
+ * @LastEditTime: 2019-11-26 10:45:46
  */
 import { AppRegistry, Text } from 'react-native'
 import Home from './src/pages/Home'

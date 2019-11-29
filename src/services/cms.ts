@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-12 11:25:52
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-11 15:15:12
+ * @LastEditTime: 2019-11-25 13:54:26
  */
 import { NativeEventEmitter, NativeModules } from 'react-native'
 import { Http, Log, Native } from '@utils'
@@ -172,7 +172,7 @@ export function getFoundPageData(shopCode: string) {
  */
 export function formatLink({
   link,
-  linkType,
+  linkType
 }: {
   link: string
   linkType: string
@@ -224,6 +224,7 @@ export function formatProduct(data: { [index: string]: any }) {
   return {
     cartId: data.cartId,
     code: data.code,
+    categoryCode: data.categoryCode,
     thumbnail: data.imgUrl,
     name: data.name,
     desc: data.productDesc,

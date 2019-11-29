@@ -15,8 +15,9 @@ import { Native } from '@utils'
 import Tab from './components/Tab'
 import Footer from './components/Footer'
 import Empty from './components/Empty'
+import TideManActivity from './components/TideMan/TideManActivity'
 import AdTitle from '@components/business/Content/AdTitle'
-
+import Loading from '../../components/common/Loading'
 interface Props {
   activityCode: string // 活动编码
   shopCode?: string
@@ -40,6 +41,7 @@ interface State {
 }
 
 export default class Page extends React.Component<Props, State> {
+  loading: any
   constructor(props) {
     super(props)
 
@@ -76,11 +78,13 @@ export default class Page extends React.Component<Props, State> {
     const { activityCode: code } = this.props
     const { shopCode } = this.state
     this.setState({ loading: true })
+    this.loading.showLoading()
     let res
     try {
       res = await CMSServices.getActivity(code, shopCode)
     } finally {
       this.setState({ loading: false })
+      this.loading.hideLoading()
     }
 
     const { result } = res
@@ -127,6 +131,7 @@ export default class Page extends React.Component<Props, State> {
         // step 2: 过滤掉空数据
         ele =>
           ele.img ||
+          (ele.tabVos && ele.tabVos.length > 0) ||
           (ele.templateDetailVOList && ele.templateDetailVOList.length > 0)
       )
 
@@ -250,6 +255,18 @@ export default class Page extends React.Component<Props, State> {
             image: floor.img,
           },
         })
+      } else if (floor.type === 8) {
+        // 潮物达人组件
+        result.push({
+          key: floor.id,
+          component: TideManActivity,
+          props: {
+            tabVos: floor.tabVos,
+            shopCode,
+            componentDidMount: this.componentDidMount,
+            afterModifyCount: this.requestCartInfo,
+          },
+        })
       }
       i++
     }
@@ -313,6 +330,7 @@ export default class Page extends React.Component<Props, State> {
         <View style={styles.footerBox}>
           <Footer amount={amount} cartCount={count} />
         </View>
+        <Loading ref={ref => (this.loading = ref)}></Loading>
       </View>
     )
   }

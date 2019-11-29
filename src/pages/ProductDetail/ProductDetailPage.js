@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-07 17:47:24
+ * @LastEditTime: 2019-11-12 22:28:34
  */
 import React from 'react'
 import PropTypes from 'prop-types'
@@ -144,11 +144,11 @@ class ProductDetailPage extends React.Component {
     this.posterModal.showPosterModal()
     this.sharePoster(productParams)
   }
-  handleMaota() {
+  handleTideActivity() {
     Native.navigateTo({
       type: Native.NavPageType.RN,
-      uri: 'RNPreviewPurchase',
-      params: {activityCode: '茅台-NS7419983'}
+      uri: 'RNTideActivity',
+      params: {}
     })
   }
   /**
@@ -422,14 +422,14 @@ class ProductDetailPage extends React.Component {
               <View style={styles.goodsDetail}>
                 <Text style={styles.goodsDetailTitle}>商品详情</Text>
               </View>
-              {/* <TouchableOpacity
+              <TouchableOpacity
                 style={styles.shareTouchableOpacity}
                 activeOpacity={0.95}
                 onPress={() => {
-                  this.handleMaota()
+                  this.handleTideActivity()
                 }} >
                 <Icon name='share' size={18} color="#4D4D4D" />
-              </TouchableOpacity> */}
+              </TouchableOpacity>
               <View style={styles.imagesContent}>
                 {goodsImgList}
                 {shopImgList}
