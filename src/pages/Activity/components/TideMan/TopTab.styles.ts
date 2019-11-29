@@ -1,9 +1,9 @@
 /*
- * @Descripttion: 
+ * @Descripttion: 潮物达人顶部tab栏组件
  * @Author: yuwen.liu
  * @Date: 2019-11-12 21:18:25
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-26 10:26:54
+ * @LastEditTime: 2019-11-29 15:46:32
  */
 import { StyleSheet } from 'react-native'
 import theme from '@theme'

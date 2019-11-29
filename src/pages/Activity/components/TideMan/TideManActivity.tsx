@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-21 11:23:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-29 10:46:59
+ * @LastEditTime: 2019-11-29 15:24:28
  */
 import * as React from 'react'
 import { FlatList, View } from 'react-native'
@@ -31,13 +31,11 @@ interface Props {
   }[]
   shopCode: string
   afterModifyCount: Function
-  componentDidMount: Function
 }
 
 export default function TideManActivity({
   tabVos,
   afterModifyCount,
-  componentDidMount,
   shopCode,
 }: Props) {
   const products = tabVos[0].tabDetailVOList.map(ele => ({
