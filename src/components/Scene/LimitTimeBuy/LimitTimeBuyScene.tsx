@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import {ActivityIndicator, Image, RefreshControl, View} from "react-native";
-import { RecyclerListView, DataProvider, LayoutProvider } from 'recyclerlistview'
+import {DataProvider, LayoutProvider, RecyclerListView} from 'recyclerlistview'
 import StickyContainer from 'recyclerlistview/sticky';
 import {CMSServices, LimitTimeBuyServices} from "@services";
 import {bannerLimitTimeBuy} from "@const/resources";
@@ -11,11 +11,11 @@ import TabBar from "./TabBar";
 import Timer from "./Timer";
 import styles from "./LimitTimeBuyScene.styles";
 import theme from "@theme";
-import {LimitTimeBuyStatus, Product} from "@components/business/Content/typings";
+import {LimitTimeBuyStatus, Product} from "@common/typings";
 import {Global, Native} from "@utils";
 import ProductLimitTimeBuy from "@components/business/ProductLimitTimeBuy";
 import isEqual from 'lodash/isEqual'
-import { Tab } from "./Typings";
+import {Tab} from "./Typings";
 
 const WindowWidth = Global.WindowWidth
 const BannerHeight = WindowWidth * 150 / 375
@@ -165,7 +165,7 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
       const end = Number(cur.activityEndTime)
       const status =
         now < start ? LimitTimeBuyStatus.Pending
-        : now < end ? LimitTimeBuyStatus.Progressing
+        : now < end ? LimitTimeBuyStatus.Processing
         : LimitTimeBuyStatus.Expired
 
       return [
@@ -209,7 +209,7 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
         ...ele,
         status:
           now < ele.start ? LimitTimeBuyStatus.Pending
-          : now < ele.end ? LimitTimeBuyStatus.Progressing
+          : now < ele.end ? LimitTimeBuyStatus.Processing
           : LimitTimeBuyStatus.Expired,
       }))
       if (!isEqual(tabs, nextTabs)) {

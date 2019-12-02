@@ -3,17 +3,12 @@
  * Created by 李华良 on 2019-08-19
  */
 import * as React from 'react'
-import {
-  View,
-  Text,
-  Image,
-  TouchableWithoutFeedback,
-} from 'react-native'
+import {Text, TouchableWithoutFeedback, View,} from 'react-native'
 import styles from './ProductListItem.styles'
 import ProductCountOperator from '../ProductCountOperator'
-import {Native, Img} from '@utils'
+import {Img, Native} from '@utils'
 import withCartCountModify from './HOC/withCountInCartModifier'
-import { Product } from './typings'
+import {Product} from '@common/typings'
 import Tag from './Tag'
 import PromotionTag from './PromotionTag'
 import FastImage from 'react-native-fast-image'

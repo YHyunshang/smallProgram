@@ -5,18 +5,18 @@
  * @Last Modified time: 2019-09-26 18:06:50
  */
 import * as React from 'react'
-import { View, Animated, ActivityIndicator, Dimensions } from 'react-native'
-import { Native, Log } from '@utils'
-import { CMSServices, ProductServices } from '@services'
+import {ActivityIndicator, Animated, Dimensions, View} from 'react-native'
+import {Log, Native} from '@utils'
+import {CMSServices, ProductServices} from '@services'
 import styles from './Page.styles'
-import { TabView } from 'react-native-tab-view'
-import TabBar, { TabHeight } from './components/TabBar'
+import {TabView} from 'react-native-tab-view'
+import TabBar, {TabHeight} from './components/TabBar'
 import CMSScene from './components/CMSScene'
 import CategoryScene from './components/CategroryScene'
-import { StorageChoices, Sort } from './components/ProductFilter'
-import {LimitTimeBuyStatus, Product} from '@components/business/Content/typings'
+import {Sort, StorageChoices} from './components/ProductFilter'
+import {LimitTimeBuyStatus, Product} from '@common/typings'
 import theme from '@theme'
-import { formatFloorData } from './utils'
+import {formatFloorData} from './utils'
 import {LimitTimeBuy as LimitTimeBuyScene} from "@components/Scene";
 
 const PlaceholderForNativeHeight = Native.getStatusBarHeight() + 86 + TabHeight
@@ -294,9 +294,9 @@ export default class Page extends React.Component<Props, State> {
 
       const status =
         now < start ? LimitTimeBuyStatus.Pending
-          : now < end ? LimitTimeBuyStatus.Progressing
+          : now < end ? LimitTimeBuyStatus.Processing
           : LimitTimeBuyStatus.Expired
-      if (status === LimitTimeBuyStatus.Progressing) {
+      if (status === LimitTimeBuyStatus.Processing) {
         result = {
           ...result,
           isLimitTimeBuy: true,

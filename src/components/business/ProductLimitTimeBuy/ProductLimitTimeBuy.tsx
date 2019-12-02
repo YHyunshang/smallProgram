@@ -7,10 +7,11 @@ import {Image, Text, TouchableWithoutFeedback, View,} from 'react-native'
 import styles from './ProductLimitTimeBuy.styles'
 import {Img, Native} from '@utils'
 import withCartCountModify from '../Content/HOC/withCountInCartModifier'
-import {LimitTimeBuyStatus, Product} from '../Content/typings'
+import {LimitTimeBuyStatus} from '../../../common/typings'
 import Tag from '../Content/Tag'
 import ProgressBar from "@components/Scene/LimitTimeBuy/ProgressBar";
 import ProductCountOperatorLTB from "@components/business/ProductLimitTimeBuy/ProductCountOperatorLTB";
+import {Product} from "@common/typings";
 
 interface Props extends Product {
   thumbnailSize: number // 商品图片大小

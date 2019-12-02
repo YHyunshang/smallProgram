@@ -3,12 +3,12 @@
  * Created by 李华良 on 2019-08-19
  */
 import * as React from 'react'
-import { View, Text, TouchableWithoutFeedback, Image } from 'react-native'
+import {Text, TouchableWithoutFeedback, View} from 'react-native'
 import useTheme from './ProductGridItem.styles'
 import ProductCart from '../ProductCart'
-import { Product } from './typings'
+import {Product} from '@common/typings'
 import withCartCountModify from './HOC/withCountInCartModifier'
-import { Native, Img } from '@utils'
+import {Img, Native} from '@utils'
 import FastImage from 'react-native-fast-image'
 
 enum ThemeChoices {

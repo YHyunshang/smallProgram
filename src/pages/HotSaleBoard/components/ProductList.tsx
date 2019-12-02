@@ -5,11 +5,11 @@
  * @Last Modified time: 2019-08-29 21:23:38
  */
 import * as React from 'react'
-import { View, Text } from 'react-native'
+import {Text, View} from 'react-native'
 import ProductListItem from '@components/business/Content/ProductListItem'
 import styles from './ProductList.styles'
 import LinearGradient from 'react-native-linear-gradient'
-import { Product } from '@components/business/Content/typings'
+import {Product} from '@common/typings'
 
 interface Props {
   products: Product[]

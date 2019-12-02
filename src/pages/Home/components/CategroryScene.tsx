@@ -1,16 +1,11 @@
 import * as React from 'react'
 import ProductFilter from './ProductFilter'
-import { Product } from '@components/business/Content/typings'
-import Box, { Column as BoxColumn } from '@components/business/Content/Box'
-import {
-  View,
-  FlatList,
-  Animated,
-  RefreshControl, Platform,
-} from 'react-native'
+import {Product} from '@common/typings'
+import Box, {Column as BoxColumn} from '@components/business/Content/Box'
+import {Animated, FlatList, Platform, RefreshControl, View,} from 'react-native'
 import ProductListItem from '@components/business/Content/ProductListItem'
-import { Native } from '@utils'
-import { TabHeight } from './TabBar'
+import {Native} from '@utils'
+import {TabHeight} from './TabBar'
 import theme from '@theme'
 import isEqual from 'lodash/isEqual'
 import ProductLimitTimeBuy from "@components/business/ProductLimitTimeBuy";

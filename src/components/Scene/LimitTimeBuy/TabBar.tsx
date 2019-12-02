@@ -2,11 +2,12 @@
  * Created by 李华良 on 2019-09-29
  */
 import * as React from 'react'
-import {View, Text, TouchableWithoutFeedback} from "react-native";
+import {Text, TouchableWithoutFeedback, View} from "react-native";
 import styles from './TabBar.styles'
 import {Global} from "@utils";
-import { Tab } from './typings'
-import {LimitTimeBuyStatus} from "@components/business/Content/typings";
+import {Tab} from './typings'
+import {LimitTimeBuyStatus} from "@common/typings";
+
 const dayjs = require('dayjs')
 
 interface Props {
@@ -31,7 +32,7 @@ function day(date) {
 function statusToText(status: LimitTimeBuyStatus):string {
   return {
     [LimitTimeBuyStatus.Pending]: '即将开始',
-    [LimitTimeBuyStatus.Progressing]: '正在抢购',
+    [LimitTimeBuyStatus.Processing]: '正在抢购',
     [LimitTimeBuyStatus.Expired]: '已结束',
   }[status]
 }

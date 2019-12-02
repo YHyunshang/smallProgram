@@ -5,16 +5,9 @@
  * @LastEditors: yuwen.liu
  * @LastEditTime: 2019-11-07 13:34:21
  */
-import {
-  NativeModules,
-  Platform,
-  Dimensions,
-  StatusBar,
-  DeviceEventEmitter,
-  NativeEventEmitter,
-} from 'react-native'
+import {DeviceEventEmitter, Dimensions, NativeEventEmitter, NativeModules, Platform, StatusBar,} from 'react-native'
 import * as Log from './log'
-import { Product } from '@components/business/Content/typings'
+import {Product} from '@common/typings'
 
 export enum NavPageType {
   NATIVE = '0',

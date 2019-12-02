@@ -235,6 +235,7 @@ export function formatProduct(data: { [index: string]: any }) {
     : remarkOptions.map(ele => ele.name)
 
   return {
+    type: data,
     cartId: data.cartId,
     code: data.code,
     categoryCode: data.categoryCode,

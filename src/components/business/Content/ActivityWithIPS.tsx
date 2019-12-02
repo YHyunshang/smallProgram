@@ -8,9 +8,9 @@
  */
 import * as React from 'react'
 import styles from './ActivityWithIPS.styles'
-import { Product } from './typings'
-import {View, TouchableOpacity, Text, FlatList} from 'react-native'
-import {Formatter, Global, Img, Native} from '@utils'
+import {Product} from '@common/typings'
+import {FlatList, Text, TouchableOpacity, View} from 'react-native'
+import {Formatter, Img, Native} from '@utils'
 import FastImage from 'react-native-fast-image'
 import memorize from 'memoize-one'
 

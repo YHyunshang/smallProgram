@@ -2,8 +2,8 @@
  * Created by 李华良 on 2019-09-29
  */
 import * as React from 'react'
-import {View, Image, Text} from "react-native";
-import {LimitTimeBuyStatus, Product} from "@components/business/Content/typings";
+import {Image, Text, View} from "react-native";
+import {LimitTimeBuyStatus, Product} from "@common/typings";
 import styles from './ProductItem.styles'
 import {Formatter, Img} from "@utils";
 import {placeholderProduct} from "@const/resources";

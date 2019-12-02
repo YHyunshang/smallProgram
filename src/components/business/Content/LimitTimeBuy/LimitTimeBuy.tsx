@@ -3,7 +3,7 @@
  * Created by 李华良 on 2019-09-29
  */
 import * as React from 'react'
-import {LimitTimeBuyStatus, Product} from "@components/business/Content/typings"
+import {LimitTimeBuyStatus, Product} from "@common/typings"
 import {Image, Text, TouchableWithoutFeedback, View} from "react-native";
 import styles from './LimitTimeBuy.styles'
 import Timer from "./Timer";
@@ -21,7 +21,7 @@ interface Props {
 function getActivityDurationAndStatus({start, end}: {start: number, end: number}):[ number, LimitTimeBuyStatus ] {
   const now = Date.now()
   return now < start ? [ start - now, LimitTimeBuyStatus.Pending ]
-    : now < end ? [ end - now, LimitTimeBuyStatus.Progressing ]
+    : now < end ? [ end - now, LimitTimeBuyStatus.Processing ]
     : [ 0, LimitTimeBuyStatus.Expired ]
 }
 
@@ -29,7 +29,7 @@ function statusToTitle(status: LimitTimeBuyStatus) {
   switch (status) {
     case LimitTimeBuyStatus.Pending:
       return '离本场开始'
-    case LimitTimeBuyStatus.Progressing:
+    case LimitTimeBuyStatus.Processing:
       return '离本场结束'
     case LimitTimeBuyStatus.Expired:
       return '本场已结束'

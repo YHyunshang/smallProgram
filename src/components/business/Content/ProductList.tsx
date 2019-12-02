@@ -2,10 +2,10 @@
  * Created by 李华良 on 2019-08-22
  */
 import * as React from 'react'
-import { View } from 'react-native'
+import {View} from 'react-native'
 import styles from './ProductList.styles'
 import ProductListItem from '@components/business/Content/ProductListItem'
-import { Product } from './typings'
+import {Product} from '@common/typings'
 
 interface Props {
   products: Product[]

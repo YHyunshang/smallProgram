@@ -1,5 +1,5 @@
-import { Http } from '@utils'
-import {Product} from "@components/business/Content/typings";
+import {Http} from '@utils'
+import {Product} from "@common/typings";
 
 /**
  * 获取热销商品 tab 列表

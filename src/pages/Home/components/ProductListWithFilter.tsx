@@ -5,7 +5,7 @@ import {FlatList, View} from 'react-native'
 import ProductFilter, {Sort, StorageChoices,} from './ProductFilter'
 import ProductListItem from '@components/business/Content/ProductListItem'
 import ProductLimitTimeBuy from "@components/business/ProductLimitTimeBuy";
-import {LimitTimeBuyStatus} from "@components/business/Content/typings";
+import {LimitTimeBuyStatus} from "@common/typings";
 
 interface Props {
   shopCode: string
@@ -88,9 +88,9 @@ export default class ProductListWithFilter extends React.Component<
 
       const status =
         now < start ? LimitTimeBuyStatus.Pending
-          : now < end ? LimitTimeBuyStatus.Progressing
+          : now < end ? LimitTimeBuyStatus.Processing
           : LimitTimeBuyStatus.Expired
-      if (status === LimitTimeBuyStatus.Progressing) {
+      if (status === LimitTimeBuyStatus.Processing) {
         result = {
           ...result,
           isLimitTimeBuy: true,

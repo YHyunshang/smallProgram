@@ -3,9 +3,9 @@
  */
 import * as React from 'react'
 import styles from './ProductSwiper.styles'
-import { ScrollView, View } from 'react-native'
+import {ScrollView, View} from 'react-native'
 import ProductSwiperItem from './ProductSwiperItem/ProductSwiperItem'
-import { Product } from './typings'
+import {Product} from '@common/typings'
 
 interface Props {
   products: Product[]

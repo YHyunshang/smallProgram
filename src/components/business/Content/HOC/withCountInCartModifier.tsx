@@ -5,11 +5,11 @@
  * @Last Modified time: 2019-09-20 18:19:13
  */
 import * as React from 'react'
-import { Product } from '../typings'
+import {Product} from '../../../../common/typings'
 import debounce from 'lodash/debounce'
-import { CMSServices } from '@services'
-import { Log, Native } from '@utils'
-import { Alert } from 'react-native'
+import {CMSServices} from '@services'
+import {Log, Native} from '@utils'
+
 interface Props extends Product {
   shopCode: string // 门店编码
   afterModifyCount?: Function

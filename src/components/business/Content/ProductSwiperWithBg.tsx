@@ -1,15 +1,9 @@
 import * as React from 'react'
-import {
-  ScrollView,
-  View,
-  Image,
-  Text,
-  TouchableWithoutFeedback,
-} from 'react-native'
+import {Image, ScrollView, Text, TouchableWithoutFeedback, View,} from 'react-native'
 import styles from './ProductSwiperWithBg.styles'
 import FitImage from 'react-native-fit-image'
-import { Native, Img } from '@utils'
-import { Product } from './typings'
+import {Img, Native} from '@utils'
+import {Product} from '@common/typings'
 
 interface Props {
   backgroundImage: string
