@@ -3,13 +3,13 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-12 20:31:29
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-26 10:27:55
+ * @LastEditTime: 2019-12-02 18:17:29
  */
 import { StyleSheet ,Dimensions} from 'react-native'
 const {width, height} = Dimensions.get('window')
 export default StyleSheet.create({
   tideMancontainer: {
-    flex: 1,
+    flex: 1
   },
   tideManList: {
     flex: 1,

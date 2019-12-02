@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-12 23:52:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-27 11:19:14
+ * @LastEditTime: 2019-12-02 18:13:28
  */
 import * as React from 'react'
 import styles from './LeftTab.styles'
@@ -19,10 +19,9 @@ interface Props {
 }
 
 export default function LeftTab({ currentActive, data, onTabChange }: Props) {
-  const total = data.length
   return (
     <View style={styles.container}>
-      <ScrollView showsHorizontalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         {data.map(({ categoryCode, categoryName }, index) => (
           <TouchableOpacity
             activeOpacity={0.95}

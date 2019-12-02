@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-21 11:23:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-29 15:24:28
+ * @LastEditTime: 2019-12-02 18:22:11
  */
 import * as React from 'react'
 import { FlatList, View } from 'react-native'
@@ -52,7 +52,9 @@ export default function TideManActivity({
     initLeftTabList[0] ? initLeftTabList[0].categoryCode : 'all'
   ) //初始化右边tab栏的当前选中的项，以及设置选中项的方法
   const [leftTabList, setLeftTabList] = React.useState(initLeftTabList) //初始化左侧tab栏的数据列表
-  const [currentShowBar, setCurrentShowBar] = React.useState(showBar) //初始化是否展示左侧分栏
+  const [currentShowBar, setCurrentShowBar] = React.useState(
+    tabVos[0].subType === 3 ? false : showBar
+  ) //初始化是否展示左侧分栏
   const [currentColumnNumber, setCurrentColumnNumber] = React.useState(
     tabVos[0].subType
   ) //初始化一行展示的列数
@@ -72,7 +74,7 @@ export default function TideManActivity({
   const leftTabListFilter = id =>
     tabVos && tabVos.filter(item => item.id === id)
   /** @msg: 过滤左边tab栏对应的商品数据
-   * @param {id}
+   * @param {categoryCode}
    */
   const productsFilter = categoryCode =>
     tabDetailVOList
@@ -98,7 +100,9 @@ export default function TideManActivity({
         ? newLeftTabList[0].categoryList[0].categoryCode
         : 'all'
     )
-    setCurrentShowBar(newLeftTabList[0].showBar)
+    setCurrentShowBar(
+      newLeftTabList[0].subType === 3 ? false : newLeftTabList[0].showBar
+    )
     setCurrentColumnNumber(newLeftTabList[0].subType)
     setTabDetailVOList(newLeftTabList[0].tabDetailVOList)
     const newInitProducts = newLeftTabList[0].tabDetailVOList.map(ele => ({
@@ -111,7 +115,7 @@ export default function TideManActivity({
   }
 
   /** @msg: 左边tab栏item改变触发的事件
-   * @param {key}
+   * @param {code,index}
    */
   const onLeftTabChange = (code, index) => {
     setCurrentLeftTabKey(code)
