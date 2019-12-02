@@ -11,11 +11,14 @@ import Normal from "./containers/Normal";
 import {showToast} from "@utils/native";
 import withInitialProductData from "@components/business/Content/HOC/withInitialProductData";
 
+interface InitialProductData extends BaseObj {
+  type?: ProductType  // 商品类型
+}
+
 export interface PageProps {
-  type: ProductType
-  productCode: string
-  storeCode: string
-  initialData?: BaseObj
+  productCode: string  // 商品编码
+  storeCode: string  // 门店编码
+  initialData?: InitialProductData  // 初始数据，上级页面透传过来的简单商品数据
 }
 
 interface PageState {
@@ -26,7 +29,9 @@ interface PageState {
 
 class Page extends React.Component<PageProps, PageState> {
   static defaultProps = {
-    type: ProductType.Normal
+    initialData: {
+      type: ProductType.Normal
+    }
   }
 
   constructor(props: PageProps) {
@@ -43,10 +48,7 @@ class Page extends React.Component<PageProps, PageState> {
   }
 
   init = async () => {
-    // const { productCode, storeCode, type } = this.props
-    const type = ProductType.PreSale
-    const productCode = '251440'
-    const storeCode = '9010'
+    const { productCode, storeCode, initialData: { type } } = this.props
 
     // request similar products
     if (type !== ProductType.PreSale) {
@@ -84,8 +86,9 @@ class Page extends React.Component<PageProps, PageState> {
   }
 
   render() {
-    const { type, initialData } = this.props
+    const { initialData } = this.props
     const { productDetail, poster, similarProducts } = this.state
+    const { type } = initialData
 
     return (type === ProductType.PreSale || (productDetail.resChannelStoreProductVO || {}).isAdvanceSale === 1)
       ? (
