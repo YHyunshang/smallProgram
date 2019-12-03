@@ -23,7 +23,7 @@ import SimilarGoods from '../../../components/business/GoodsDetail/SimilarGoods'
 import {productPlace, productSpecific} from '@const/resources'
 import Tag from '../../../components/business/GoodsDetail/Tag'
 import BuyLimit from '../../../components/business/GoodsDetail/BuyLimit'
-import {placeholderProduct} from '../../../constants/resources'
+import {iconDeliveryNextDay, placeholderProduct} from '../../../constants/resources'
 import FastImage from 'react-native-fast-image/src/index'
 import {FitImg} from '../../../components'
 import memorize from "memoize-one";
@@ -349,6 +349,9 @@ class Normal extends React.Component {
                 {tags}
                 {productTags}
                 {orderTags}
+                {product.deliveryType === 2 && (
+                  <FastImage source={iconDeliveryNextDay} style={{ width: 38, height: 16 }} />
+                )}
               </View>
               <View style={styles.goodsWrapper}>
                 <Text numberOfLines={1} style={styles.goodsName}>{name}</Text>
