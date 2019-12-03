@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-21 11:23:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-12-02 18:22:11
+ * @LastEditTime: 2019-12-03 11:16:26
  */
 import * as React from 'react'
 import { FlatList, View } from 'react-native'
@@ -165,7 +165,7 @@ export default function TideManActivity({
         </View>
       </View>
     ) : (
-      <View style={[themeStyles.container, styles.gridWrapper]}>
+      <View style={[themeStyles.container,currentColumnNumber === 2 && styles.gridWrapper]}>
         <View
           style={[
             themeStyles.row,
@@ -198,7 +198,7 @@ export default function TideManActivity({
             />
           )}
         <FlatList
-          style={styles.tideManList}
+          style={[styles.tideManList, currentColumnNumber === 2 && styles.gridWrapper]}
           data={currentColumnNumber === 1 ? currentProducts : gridProducts}
           renderItem={renderItemData}
           keyExtractor={_keyExtractor}
