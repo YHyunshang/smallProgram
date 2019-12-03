@@ -163,3 +163,5 @@ export const preSaleBarBlock = require('@img/pre-sale-bar-block.png')
 export const iconShare = require('@img/icon-share.png')
 
 export const iconWeChatMoment = require('@img/icon-wechat-moment.png')
+
+export const iconDeliveryNextDay = require('@img/icon-delivery-next-day.png')

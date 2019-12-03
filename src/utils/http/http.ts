@@ -8,6 +8,7 @@ import HostMapper from './host-mapper'
 import * as Log from '../log'
 import { showToast } from '../native'
 import * as HttpModel from './http.model'
+import {BaseObj} from "@common/typings";
 
 /**
  * send http request based on native
@@ -23,7 +24,7 @@ async function request(
 ): Promise<{
   code: number
   message: string
-  result?: { [index: string]: any } | []
+  result?: BaseObj | []
   page?: { result: [] }
 }> {
   let request: Function

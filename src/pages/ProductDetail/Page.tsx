@@ -9,7 +9,7 @@ import {transPenny} from "@utils/FormatUtil";
 import PreSale from "./containers/PreSale";
 import Normal from "./containers/Normal";
 import {showToast} from "@utils/native";
-import withInitialProductData from "@components/business/Content/HOC/withInitialProductData";
+import withInitialData from "@HOC/withInitialData";
 
 interface InitialProductData extends BaseObj {
   type?: ProductType  // 商品类型
@@ -51,10 +51,8 @@ class Page extends React.Component<PageProps, PageState> {
     const { productCode, storeCode, initialData: { type } } = this.props
 
     // request similar products
-    if (type !== ProductType.PreSale) {
-      getSimilarProduct(productCode, storeCode)
-        .then(({result: similarProducts}) => this.setState({similarProducts}))
-    }
+    getSimilarProduct(productCode, storeCode)
+      .then(({result: similarProducts}) => this.setState({similarProducts}))
 
     // request detail data
     const { result: product } = await getGoodsDetailData(storeCode, productCode)
@@ -108,4 +106,4 @@ class Page extends React.Component<PageProps, PageState> {
   }
 }
 
-export default withInitialProductData(Page)
+export default withInitialData(Page)

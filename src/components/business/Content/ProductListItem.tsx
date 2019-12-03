@@ -6,53 +6,39 @@ import * as React from 'react'
 import {Text, TouchableWithoutFeedback, View,} from 'react-native'
 import styles from './ProductListItem.styles'
 import ProductCountOperator from '../ProductCountOperator'
-import {Img, Native} from '@utils'
+import {Img} from '@utils'
 import withCartCountModify from './HOC/withCountInCartModifier'
-import {Product} from '@common/typings'
+import withProductDetailNav from "./HOC/withProductDetailNav";
+import {Product, ProductDeliveryType} from '@common/typings'
 import Tag from './Tag'
 import PromotionTag from './PromotionTag'
 import FastImage from 'react-native-fast-image'
+import theme from '@theme'
+import {iconDeliveryNextDay} from "@const/resources";
 
 interface Props extends Product {
   disableAdd?: boolean
+  getDetailNavigator: (thumbnail: string) => () => void
 }
 
 function ProductListItem({
   thumbnail,
-  code,
   name,
   desc,
-  productTags = [],
-  priceTags = [],
   spec,
   price,
   slashedPrice,
   count,
   inventoryLabel,
   onModifyCount,
-  shopCode,
   disableAdd,
+  getDetailNavigator,
+  isPreSale,
+  deliveryType,
+  labels=[],
 }: Props) {
   const fitThumbnail = Img.loadRatioImage(thumbnail, 100)
-  const navigateToProductDetail = () => {
-    Native.navigateTo({
-      type: Native.NavPageType.NATIVE,
-      uri: 'A003,A003',
-      params: {
-        productCode: code,
-        storeCode: shopCode,
-        directTransmitParams: JSON.stringify({
-          name,
-          subTitle: desc,
-          price: price,
-          slashedPrice: slashedPrice || price,
-          spec,
-          count,
-          thumbnail: fitThumbnail,
-        })
-      },
-    })
-  }
+  const navigateToProductDetail = getDetailNavigator(fitThumbnail)
 
   return (
     <View style={styles.container}>
@@ -65,11 +51,11 @@ function ProductListItem({
               resizeMode={FastImage.resizeMode.contain}
             />
             <View style={styles.productTagRow}>
-              {productTags.slice(0, 2).map((tag, idx) => (
-                <Tag color={['#EF2F41', '#208DDC'][idx]} key={idx}>
-                  {tag}
-                </Tag>
-              ))}
+              {isPreSale ? (
+                <Tag color={theme.white} backgroundColor={theme.preSaleTagBg}>预售</Tag>
+              ) : deliveryType === ProductDeliveryType.NextDay ? (
+                <FastImage source={iconDeliveryNextDay} style={{ width: 38, height: 16 }} />
+              ) : null}
             </View>
 
             {!!inventoryLabel && (
@@ -88,16 +74,12 @@ function ProductListItem({
               {desc}
             </Text>
             <View style={styles.tagRow}>
-              {priceTags.map((tag, idx) =>
-                /满.+减/.test(tag) ? (
-                  <PromotionTag title="满减" content={tag} key={idx} />
-                ) : (
-                  <Text style={styles.tag} key={idx}>
-                    {tag}
-                  </Text>
-                )
-              )}
               {!!spec && <Text style={styles.spec}>{spec}</Text>}
+            </View>
+            <View style={styles.tagRow}>
+              {labels.slice(0,2).map((tag, idx) =>
+                <Tag key={idx}>{tag}</Tag>
+              )}
             </View>
             <View style={styles.priceRow}>
               <Text style={styles.currentPrice}>
@@ -128,4 +110,6 @@ function ProductListItem({
   )
 }
 
-export default withCartCountModify(ProductListItem)
+export default withCartCountModify(
+  withProductDetailNav(ProductListItem)
+)

@@ -38,3 +38,7 @@ export const priceFFPrimary = isAndroid
 
 export const slashedPrice = gray1
 export const generalPageBG = lightGray
+
+export const preSaleTagBg = '#8A6BFD'
+export const tagDefaultColor = '#F73131'
+export const tagDefaultBg = '#FFEBED'

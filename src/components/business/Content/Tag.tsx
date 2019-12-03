@@ -5,18 +5,19 @@
  * @Last Modified time: 2019-09-05 10:24:51
  */
 import * as React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { Text, StyleSheet } from 'react-native'
 import theme from '@theme'
 
 interface Props {
-  color: string
+  color?: string
+  backgroundColor?: string
   children: React.ReactNode
 }
 
-export default function Tag({ color, children }: Props) {
+export default function Tag({ color, backgroundColor, children }: Props) {
   return (
     <Text
-      style={[styles.container, { backgroundColor: color }]}
+      style={[styles.container, { color, backgroundColor, }]}
       numberOfLines={1}
     >
       {children}
@@ -24,15 +25,19 @@ export default function Tag({ color, children }: Props) {
   )
 }
 
+Tag.defaultProps = {
+  color: theme.tagDefaultColor,
+  backgroundColor: theme.tagDefaultBg,
+}
+
 const styles = StyleSheet.create({
   container: {
     borderRadius: 1,
     overflow: 'hidden',
-    lineHeight: 17,
+    lineHeight: 16,
     textAlignVertical: 'center',
-    paddingHorizontal: 3,
+    paddingHorizontal: 5,
     fontSize: 10,
-    color: theme.white,
     marginRight: 5,
   },
 })

@@ -3,13 +3,13 @@
  */
 import * as React from 'react'
 import {Image, Text, View} from "react-native";
-import {LimitTimeBuyStatus, Product} from "@common/typings";
+import {ActivityStatus, Product} from "@common/typings";
 import styles from './ProductItem.styles'
 import {Formatter, Img} from "@utils";
 import {placeholderProduct} from "@const/resources";
 
 interface Props extends Product {
-  status: LimitTimeBuyStatus
+  status: ActivityStatus
 }
 
 export default function ProductItem ({ name, spec, price, slashedPrice, status, thumbnail }: Props) {
@@ -21,7 +21,7 @@ export default function ProductItem ({ name, spec, price, slashedPrice, status, 
         <Text style={styles.name} numberOfLines={1}>{name}</Text>
         <Text style={styles.spec} numberOfLines={1}>{spec}</Text>
         <View style={styles.priceRow}>
-          {status === LimitTimeBuyStatus.Pending ? (
+          {status === ActivityStatus.Pending ? (
             <Text style={styles.waiting} numberOfLines={1}>敬请期待</Text>
           ) : (
             <Text style={styles.price}>

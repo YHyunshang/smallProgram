@@ -3,29 +3,29 @@
  */
 import * as React from 'react'
 import TimerDisplay from "@components/business/Content/LimitTimeBuy/Timer"
-import {LimitTimeBuyStatus} from "@common/typings";
+import {ActivityStatus} from "@common/typings";
 
 interface Props {
   start: number
   end: number
-  onStatusChange?: (preStatus: LimitTimeBuyStatus, status: LimitTimeBuyStatus) => void
+  onStatusChange?: (preStatus: ActivityStatus, status: ActivityStatus) => void
 }
 
 
-function getActivityDurationAndStatus({start, end}: {start: number, end: number}):[ number, LimitTimeBuyStatus ] {
+function getActivityDurationAndStatus({start, end}: {start: number, end: number}):[ number, ActivityStatus ] {
   const now = Date.now()
-  return now < start ? [ start - now, LimitTimeBuyStatus.Pending ]
-    : now < end ? [ end - now, LimitTimeBuyStatus.Processing ]
-      : [ 0, LimitTimeBuyStatus.Expired ]
+  return now < start ? [ start - now, ActivityStatus.Pending ]
+    : now < end ? [ end - now, ActivityStatus.Processing ]
+      : [ 0, ActivityStatus.Expired ]
 }
 
-function statusToTitle(status: LimitTimeBuyStatus) {
+function statusToTitle(status: ActivityStatus) {
   switch (status) {
-    case LimitTimeBuyStatus.Pending:
+    case ActivityStatus.Pending:
       return '离本场开始'
-    case LimitTimeBuyStatus.Processing:
+    case ActivityStatus.Processing:
       return '离本场结束'
-    case LimitTimeBuyStatus.Expired:
+    case ActivityStatus.Expired:
       return '本场已结束'
     default:
       return '本场已结束.'

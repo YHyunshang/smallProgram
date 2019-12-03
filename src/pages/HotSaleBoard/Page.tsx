@@ -15,6 +15,7 @@ import ProductGrid from '@components/business/Content/ProductGrid'
 import Empty from './components/Empty'
 import { hotSaleBanner } from '@const/resources'
 import FitImage from 'react-native-fit-image'
+import {ProductDeliveryType, ProductType} from "@common/typings";
 
 interface State {
   tabList: {
@@ -94,7 +95,7 @@ export default class Page extends React.Component<Object, State> {
         tabContentMap: {
           ...preTabContentMap,
           [tabId]: (page.result || []).map(ele => ({
-            ...this.formateProductData(ele),
+            ...this.formatProductData(ele),
             shopCode: code,
           })),
         },
@@ -105,7 +106,7 @@ export default class Page extends React.Component<Object, State> {
       }))
     }
   }
-  formateProductData = data => {
+  formatProductData = data => {
     const currentPrice = Math.min(
       Math.min(data.price || 0, data.promotionPrice || Infinity)
     )
@@ -114,18 +115,23 @@ export default class Page extends React.Component<Object, State> {
     const remarks = data.noteContentList || []
 
     return {
+      type: data.isAdvanceSale === 1 ? ProductType.PreSale : ProductType.Normal,
       code: data.productCode,
       thumbnail: data.mainUrl.url,
       name: data.productName,
       desc: data.subTitle,
-      priceTags: [],
-      productTags: [],
       spec: data.productSpecific,
       price: currentPrice,
       slashedPrice,
       count: data.productNum,
       inventoryLabel: '',
       remarks,
+      labels: (data.productActivityLabel || {labels: []}).labels,
+      deliveryType: {
+        1: ProductDeliveryType.InTime,
+        2: ProductDeliveryType.NextDay,
+      }[data.deliveryType] || ProductDeliveryType.Other,
+      isPreSale: data.isAdvanceSale === 1,
     }
   }
 

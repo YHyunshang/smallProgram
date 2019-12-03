@@ -3,7 +3,7 @@
  * Created by 李华良 on 2019-09-29
  */
 import * as React from 'react'
-import {LimitTimeBuyStatus, Product} from "@common/typings"
+import {ActivityStatus, Product} from "@common/typings"
 import {Image, Text, TouchableWithoutFeedback, View} from "react-native";
 import styles from './LimitTimeBuy.styles'
 import Timer from "./Timer";
@@ -18,20 +18,20 @@ interface Props {
   onExpired?: () => void // 过期回调
 }
 
-function getActivityDurationAndStatus({start, end}: {start: number, end: number}):[ number, LimitTimeBuyStatus ] {
+function getActivityDurationAndStatus({start, end}: {start: number, end: number}):[ number, ActivityStatus ] {
   const now = Date.now()
-  return now < start ? [ start - now, LimitTimeBuyStatus.Pending ]
-    : now < end ? [ end - now, LimitTimeBuyStatus.Processing ]
-    : [ 0, LimitTimeBuyStatus.Expired ]
+  return now < start ? [ start - now, ActivityStatus.Pending ]
+    : now < end ? [ end - now, ActivityStatus.Processing ]
+    : [ 0, ActivityStatus.Expired ]
 }
 
-function statusToTitle(status: LimitTimeBuyStatus) {
+function statusToTitle(status: ActivityStatus) {
   switch (status) {
-    case LimitTimeBuyStatus.Pending:
+    case ActivityStatus.Pending:
       return '离本场开始'
-    case LimitTimeBuyStatus.Processing:
+    case ActivityStatus.Processing:
       return '离本场结束'
-    case LimitTimeBuyStatus.Expired:
+    case ActivityStatus.Expired:
       return '本场已结束'
     default:
       return '本场已结束.'
@@ -54,7 +54,7 @@ export default function LimitTimeBuy({startTime, endTime, products, onExpired}: 
       const [ nextDuration, nextStatus ] = getActivityDurationAndStatus({ start: startTime, end: endTime })
       setDuration(nextDuration)
       setStatus(preStatus => {
-        if (preStatus !== nextStatus && nextStatus === LimitTimeBuyStatus.Expired) { // 状态变化回调
+        if (preStatus !== nextStatus && nextStatus === ActivityStatus.Expired) { // 状态变化回调
           onExpired && onExpired()
         }
         return nextStatus

@@ -22,6 +22,7 @@ module.exports = {
           '@const': './src/constants',
           '@theme': './src/theme',
           '@common': './src/common',
+          '@HOC': './src/HOC',
         },
       },
     ],

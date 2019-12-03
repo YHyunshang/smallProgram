@@ -33,7 +33,7 @@ const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商�
 
 const AnimatedFastImage = Animated.createAnimatedComponent(FastImage)
 
-class ProductDetailPage extends React.Component {
+class Normal extends React.Component {
   static propTypes = {
     product: PropTypes.object,
     poster: PropTypes.string,
@@ -407,4 +407,4 @@ class ProductDetailPage extends React.Component {
   }
 }
 
-export default ProductDetailPage
+export default Normal

@@ -1,55 +1,37 @@
 import * as React from 'react'
 import styles from './ProductSwiperItem.styles'
 import {Text, TouchableWithoutFeedback, View} from 'react-native'
-import {Img, Native} from '@utils'
+import {Img} from '@utils'
 import withCartCountModify from '../HOC/withCountInCartModifier'
-import {Product} from '../../../../common/typings'
+import {Product, ProductDeliveryType} from '@common/typings'
 import Tag from '../Tag'
 import CountOperator from './CountOperator'
 import FastImage from 'react-native-fast-image'
+import withProductDetailNav from "../HOC/withProductDetailNav";
+import GlobalTheme from "@theme";
+import {iconDeliveryNextDay} from "@const/resources";
 
 interface Props extends Product {
   disableAdd: boolean
+  getDetailNavigator: (thumbnail: string) => () => void
 }
 
 function ProductSwiperItem({
-  code,
   thumbnail,
   name,
-  desc,
-  spec,
-  productTags = [],
-  priceTags = [],
   price,
   slashedPrice,
   count,
   inventoryLabel,
-  shopCode,
   onModifyCount,
+  isPreSale,
+  deliveryType,
+  labels = [],
   disableAdd,
+  getDetailNavigator,
 }: Props) {
   const fitThumbnail = Img.loadRatioImage(thumbnail, 100)
-
-  const navigateToProductDetail = () => {
-    Native.navigateTo({
-      type: Native.NavPageType.NATIVE,
-      uri: 'A003,A003',
-      params: {
-        productCode: code,
-        storeCode: shopCode,
-        directTransmitParams: JSON.stringify({
-          name,
-          subTitle: desc,
-          price: price,
-          slashedPrice: slashedPrice || price,
-          spec,
-          count,
-          thumbnail: fitThumbnail,
-        })
-      },
-    })
-  }
-  const tag = priceTags.find(ele => /满.+减/.test(ele))
+  const navigateToProductDetail = getDetailNavigator(fitThumbnail)
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={navigateToProductDetail}>
@@ -61,13 +43,15 @@ function ProductSwiperItem({
               resizeMode={FastImage.resizeMode.contain}
             />
 
-            {!!tag && (
-              <View style={styles.tagRow}>
-                <Tag color="#FFE5E0">
-                  <Text style={styles.tag}>{tag}</Text>
-                </Tag>
-              </View>
-            )}
+            <View style={styles.tagRow}>
+              {isPreSale ? (
+                <Tag color={GlobalTheme.white} backgroundColor={GlobalTheme.preSaleTagBg}>预售</Tag>
+              ) : deliveryType === ProductDeliveryType.NextDay ? (
+                <FastImage source={iconDeliveryNextDay} style={{width: 38, height: 16}}/>
+              ) : labels.slice(0, 1).map(ele => (
+                <Tag>{ele}</Tag>
+              ))}
+            </View>
 
             {!!inventoryLabel && (
               <View style={styles.inventoryBox}>
@@ -108,4 +92,6 @@ function ProductSwiperItem({
     </View>
   )
 }
-export default withCartCountModify(ProductSwiperItem)
+export default withCartCountModify(
+  withProductDetailNav(ProductSwiperItem)
+)

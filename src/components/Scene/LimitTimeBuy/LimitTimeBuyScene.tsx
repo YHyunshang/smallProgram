@@ -4,6 +4,7 @@
 import * as React from 'react'
 import {ActivityIndicator, Image, RefreshControl, View} from "react-native";
 import {DataProvider, LayoutProvider, RecyclerListView} from 'recyclerlistview'
+// @ts-ignore
 import StickyContainer from 'recyclerlistview/sticky';
 import {CMSServices, LimitTimeBuyServices} from "@services";
 import {bannerLimitTimeBuy} from "@const/resources";
@@ -11,7 +12,7 @@ import TabBar from "./TabBar";
 import Timer from "./Timer";
 import styles from "./LimitTimeBuyScene.styles";
 import theme from "@theme";
-import {LimitTimeBuyStatus, Product} from "@common/typings";
+import {ActivityStatus, Product} from "@common/typings";
 import {Global, Native} from "@utils";
 import ProductLimitTimeBuy from "@components/business/ProductLimitTimeBuy";
 import isEqual from 'lodash/isEqual'
@@ -141,7 +142,7 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
       productCountInCart,
     }))
 
-    if (tabs.findIndex(ele => ele.status !== LimitTimeBuyStatus.Expired) > -1) {
+    if (tabs.findIndex(ele => ele.status !== ActivityStatus.Expired) > -1) {
       this.startTimer()
     } else {
       this.props.onAllExpired && this.props.onAllExpired()
@@ -164,16 +165,15 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
       const start = Number(cur.activityBeginTime)
       const end = Number(cur.activityEndTime)
       const status =
-        now < start ? LimitTimeBuyStatus.Pending
-        : now < end ? LimitTimeBuyStatus.Processing
-        : LimitTimeBuyStatus.Expired
+        now < start ? ActivityStatus.Pending
+        : now < end ? ActivityStatus.Processing
+        : ActivityStatus.Expired
 
       return [
         [...tabs, { start, end, status, }],
         [...productsUnderTab, cur.products.map(product => {
           const remarkOptions = (product.resProdcutNoteNewVO || { noteContentName: [] }).noteContentName
           const remarks = remarkOptions.sort((a, b) => a.isDefault ? -1 : 1).map(ele => ele.name)
-          const [priceTags, productTags] = CMSServices.groupTags(product.labelList || [])
 
           return {
             cartId: product.cartId,
@@ -181,8 +181,6 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
             thumbnail: product.productPic,
             name: product.productName,
             desc: product.subTitle,
-            productTags,
-            priceTags,
             spec: product.unit,
             price: product.discountPrice,
             slashedPrice: product.productPrice,
@@ -208,9 +206,9 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
       const nextTabs = tabs.map(ele => ({
         ...ele,
         status:
-          now < ele.start ? LimitTimeBuyStatus.Pending
-          : now < ele.end ? LimitTimeBuyStatus.Processing
-          : LimitTimeBuyStatus.Expired,
+          now < ele.start ? ActivityStatus.Pending
+          : now < ele.end ? ActivityStatus.Processing
+          : ActivityStatus.Expired,
       }))
       if (!isEqual(tabs, nextTabs)) {
         this.setState(({currentTabIndex, products, dataProvider}) => ({
@@ -222,7 +220,7 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
           ]),
         }))
       }
-      if (!nextTabs.find(ele => ele.status !== LimitTimeBuyStatus.Expired)) {
+      if (!nextTabs.find(ele => ele.status !== ActivityStatus.Expired)) {
         this.props.onAllExpired && this.props.onAllExpired()
         clearInterval(this.timer)
       }
@@ -243,7 +241,7 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
 
   // 当前活动状态变化
   onCurrentActivityStatusChange = (preStatus, status) => {
-    if (status === LimitTimeBuyStatus.Expired) {
+    if (status === ActivityStatus.Expired) {
       this.init(this.props.shopCode)
     }
   }

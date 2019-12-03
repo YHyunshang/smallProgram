@@ -14,7 +14,7 @@ import TabBar, {TabHeight} from './components/TabBar'
 import CMSScene from './components/CMSScene'
 import CategoryScene from './components/CategroryScene'
 import {Sort, StorageChoices} from './components/ProductFilter'
-import {LimitTimeBuyStatus, Product} from '@common/typings'
+import {ActivityStatus, BaseObj, Product, ProductDeliveryType, ProductLabels, ProductType} from '@common/typings'
 import theme from '@theme'
 import {formatFloorData} from './utils'
 import {LimitTimeBuy as LimitTimeBuyScene} from "@components/Scene";
@@ -68,7 +68,7 @@ interface State {
   shouldRefreshTab: boolean
 }
 
-export default class Page extends React.Component<Props, State> {
+export default class Page extends React.Component<{}, State> {
   state = {
     shop: { code: '', type: '' },
 
@@ -139,7 +139,6 @@ export default class Page extends React.Component<Props, State> {
   onCartChange = () => {
     const { currentTabIdx } = this.state
 
-    console.log('------')
     this.onTabIndexChange(currentTabIdx, true)
   }
   
@@ -250,7 +249,7 @@ export default class Page extends React.Component<Props, State> {
       filter.pageSize
     )
       .then(
-        ({ page = {} }) => page.result || [],
+        ({ page }) => page.result || [],
         err => {
           Log.error('query product list failed:', err)
           Native.showToast('获取商品失败')
@@ -261,7 +260,7 @@ export default class Page extends React.Component<Props, State> {
   }
 
   // 格式化分类下的商品数据
-  formatProductData = data => {
+  formatProductData = (data: BaseObj) => {
     const currentPrice = Math.min(
       Math.min(data.price || 0, data.promotionPrice || Infinity)
     )
@@ -270,13 +269,12 @@ export default class Page extends React.Component<Props, State> {
 
     const { shop } = this.state
 
-    let result = {
+    let result: BaseObj = {
+      type: data.isAdvanceSale === 1 ? ProductType.PreSale : ProductType.Normal,
       code: data.productCode,
       thumbnail: data.mainUrl.url,
       name: data.productName,
       desc: data.subTitle,
-      priceTags: [],
-      productTags: [],
       spec: data.productSpecific,
       price: currentPrice,
       slashedPrice,
@@ -284,6 +282,12 @@ export default class Page extends React.Component<Props, State> {
       shopCode: shop.code,
       inventoryLabel: data.inventoryLabel,
       remarks,
+      deliveryType: {
+        1: ProductDeliveryType.InTime,
+        2: ProductDeliveryType.NextDay,
+      }[data.deliveryType] || ProductDeliveryType.Other,
+      isPreSale: data.isAdvanceSale === 1,
+      labels: (data.productActivityLabel || { labels: [] }).labels
     }
     if (data.productActivityLabel && data.productActivityLabel.promotionType === 5) {
       const {activityBeginTime, activityEndTime, salesRatio} = data.productActivityLabel
@@ -293,10 +297,10 @@ export default class Page extends React.Component<Props, State> {
       const price = Math.min(currentPrice, data.discountPrice || Infinity)
 
       const status =
-        now < start ? LimitTimeBuyStatus.Pending
-          : now < end ? LimitTimeBuyStatus.Processing
-          : LimitTimeBuyStatus.Expired
-      if (status === LimitTimeBuyStatus.Processing) {
+        now < start ? ActivityStatus.Pending
+          : now < end ? ActivityStatus.Processing
+          : ActivityStatus.Expired
+      if (status === ActivityStatus.Processing) {
         result = {
           ...result,
           isLimitTimeBuy: true,

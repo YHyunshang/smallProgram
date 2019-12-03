@@ -7,23 +7,24 @@ import {Image, Text, TouchableWithoutFeedback, View,} from 'react-native'
 import styles from './ProductLimitTimeBuy.styles'
 import {Img, Native} from '@utils'
 import withCartCountModify from '../Content/HOC/withCountInCartModifier'
-import {LimitTimeBuyStatus} from '../../../common/typings'
+import {ActivityStatus} from "@common/typings"
 import Tag from '../Content/Tag'
 import ProgressBar from "@components/Scene/LimitTimeBuy/ProgressBar";
 import ProductCountOperatorLTB from "@components/business/ProductLimitTimeBuy/ProductCountOperatorLTB";
 import {Product} from "@common/typings";
+import withProductDetailNav from "@components/business/Content/HOC/withProductDetailNav";
 
 interface Props extends Product {
   thumbnailSize: number // 商品图片大小
   inventoryPercentage?: number // 剩余库存比
   disableAdd?: boolean
-  activityStatus?: LimitTimeBuyStatus // 限时抢购活动状态
+  activityStatus?: ActivityStatus // 限时抢购活动状态
+  getDetailNavigator: (thumbnail: string) => () => void
 }
 
 function ProductLimitTimeBuy({
   thumbnailSize,
   thumbnail,
-  code,
   name,
   desc,
   productTags = [],
@@ -34,36 +35,17 @@ function ProductLimitTimeBuy({
   inventoryLabel,
   inventoryPercentage = 100,
   onModifyCount,
-  shopCode,
   activityStatus,
   disableAdd,
+  getDetailNavigator,
 }: Props) {
   const fitThumbnail = Img.loadRatioImage(thumbnail, thumbnailSize)
-
-  const navigateToProductDetail = () => {
-    Native.navigateTo({
-      type: Native.NavPageType.NATIVE,
-      uri: 'A003,A003',
-      params: {
-        productCode: code,
-        storeCode: shopCode,
-        directTransmitParams: JSON.stringify({
-          name,
-          subTitle: desc,
-          price: price,
-          slashedPrice: slashedPrice || price,
-          spec,
-          count,
-          thumbnail: fitThumbnail,
-        })
-      },
-    })
-  }
+  const navigateToProductDetail = getDetailNavigator(fitThumbnail)
 
   const thumbnailDim = {width: thumbnailSize, height: thumbnailSize}
   const isCartDisabled = inventoryPercentage <= 0 ||
-    activityStatus === LimitTimeBuyStatus.Pending ||
-    activityStatus === LimitTimeBuyStatus.Expired
+    activityStatus === ActivityStatus.Pending ||
+    activityStatus === ActivityStatus.Expired
 
   return (
     <View style={styles.container}>
@@ -105,7 +87,7 @@ function ProductLimitTimeBuy({
               {!!spec && <Text style={styles.spec}>{spec}</Text>}
             </View>
             <View style={styles.priceRow}>
-              {activityStatus !== LimitTimeBuyStatus.Pending ? (
+              {activityStatus !== ActivityStatus.Pending ? (
                 <Text style={styles.currentPrice}>
                   <Text style={styles.pricePrefix}>¥ </Text>
                   {price / 100}
@@ -135,4 +117,6 @@ function ProductLimitTimeBuy({
   )
 }
 
-export default withCartCountModify(ProductLimitTimeBuy)
+export default withCartCountModify(
+  withProductDetailNav(ProductLimitTimeBuy)
+)

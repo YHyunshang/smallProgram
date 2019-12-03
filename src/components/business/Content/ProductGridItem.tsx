@@ -6,10 +6,14 @@ import * as React from 'react'
 import {Text, TouchableWithoutFeedback, View} from 'react-native'
 import useTheme from './ProductGridItem.styles'
 import ProductCart from '../ProductCart'
-import {Product} from '@common/typings'
+import {Product, ProductDeliveryType} from '@common/typings'
 import withCartCountModify from './HOC/withCountInCartModifier'
 import {Img, Native} from '@utils'
 import FastImage from 'react-native-fast-image'
+import withProductDetailNav from "./HOC/withProductDetailNav";
+import Tag from "@components/business/Content/Tag";
+import GlobalTheme from "@theme";
+import {iconDeliveryNextDay} from "@const/resources";
 
 enum ThemeChoices {
   TWO_PER_ROW = '2x',
@@ -18,47 +22,27 @@ enum ThemeChoices {
 
 export interface Props extends Product {
   theme: ThemeChoices
+  getDetailNavigator: (thumbnail: string) => () => void
 }
 
 function ProductGridItem({
   thumbnail,
   name,
-  desc,
-  spec,
-  code,
-  productTags = [],
-  priceTags = [],
   price,
   slashedPrice,
   theme,
   count,
   inventoryLabel,
-  shopCode,
   onModifyCount = (count: number) => null,
-}) {
+  isPreSale,
+  deliveryType,
+  labels = [],
+  getDetailNavigator,
+}: Props) {
   const styles = useTheme(theme)
   const fitThumbnail = Img.loadRatioImage(thumbnail, 200)
-  const navigateToProductDetail = () => {
-    Native.navigateTo({
-      type: Native.NavPageType.NATIVE,
-      uri: 'A003,A003',
-      params: {
-        productCode: code,
-        storeCode: shopCode,
-        directTransmitParams: JSON.stringify({
-          name,
-          subTitle: desc,
-          price: price,
-          slashedPrice: slashedPrice || price,
-          spec,
-          count,
-          thumbnail: fitThumbnail,
-        })
-      },
-    })
-  }
+  const navigateToProductDetail = getDetailNavigator(fitThumbnail)
   const [thumbnailWidth, setThumbnailWidth] = React.useState()
-  const tag = [...priceTags, ...productTags][0]
   const onCountChange = c => {
     if (inventoryLabel) {
       Native.showToast('商品补货中')
@@ -87,7 +71,13 @@ function ProductGridItem({
               resizeMode={FastImage.resizeMode.cover}
             />
             <View style={styles.tagRow}>
-              {!!tag && <Text style={styles.tag}>{tag}</Text>}
+              {isPreSale ? (
+                <Tag color={GlobalTheme.white} backgroundColor={GlobalTheme.preSaleTagBg}>预售</Tag>
+              ) : deliveryType === ProductDeliveryType.NextDay ? (
+                <FastImage source={iconDeliveryNextDay} style={{width: 38, height: 16}}/>
+              ) : labels.slice(0, 1).map(ele => (
+                <Tag>{ele}</Tag>
+              ))}
             </View>
 
             {!!inventoryLabel && (
@@ -123,4 +113,6 @@ function ProductGridItem({
     </View>
   )
 }
-export default withCartCountModify(ProductGridItem)
+export default withCartCountModify(
+  withProductDetailNav(ProductGridItem)
+)

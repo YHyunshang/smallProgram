@@ -6,7 +6,7 @@ import {Text, TouchableWithoutFeedback, View} from "react-native";
 import styles from './TabBar.styles'
 import {Global} from "@utils";
 import {Tab} from './typings'
-import {LimitTimeBuyStatus} from "@common/typings";
+import {ActivityStatus} from "@common/typings";
 
 const dayjs = require('dayjs')
 
@@ -29,11 +29,11 @@ function day(date) {
     : srcDate.format('MM-DD HH:mm')
 }
 
-function statusToText(status: LimitTimeBuyStatus):string {
+function statusToText(status: ActivityStatus):string {
   return {
-    [LimitTimeBuyStatus.Pending]: '即将开始',
-    [LimitTimeBuyStatus.Processing]: '正在抢购',
-    [LimitTimeBuyStatus.Expired]: '已结束',
+    [ActivityStatus.Pending]: '即将开始',
+    [ActivityStatus.Processing]: '正在抢购',
+    [ActivityStatus.Expired]: '已结束',
   }[status]
 }
 

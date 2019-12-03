@@ -1,27 +1,10 @@
-import { StyleSheet } from 'react-native'
-import theme from '@theme'
-import {Global} from "@utils";
+/**
+ * Created by 李华良 on 2019-12-03
+ */
+import {StyleSheet} from "react-native";
+import theme from "@theme";
 
 export default StyleSheet.create({
-  container: {
-    position: 'relative',
-  },
-  bgImg: {
-    width: '100%',
-    height: Global.WindowWidth * 264 / 375,
-    paddingBottom: 56,
-  },
-  swiper: {
-    position: 'absolute',
-    bottom: 0,
-    left: 7,
-    right: 7,
-    borderRadius: 5,
-    overflow: 'hidden',
-    backgroundColor: '#fff',
-    shadowColor: 'rgba(0,0,0,0.06)',
-    shadowRadius: 11,
-  },
   productBox: {
     alignItems: 'center',
     paddingHorizontal: 7.5,

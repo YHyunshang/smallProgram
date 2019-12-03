@@ -5,8 +5,9 @@
  * @LastEditors: yuwen.liu
  * @LastEditTime: 2019-12-05 15:30:33
  */
-import { NativeEventEmitter, NativeModules } from 'react-native'
-import { Http, Log, Native } from '@utils'
+import {NativeEventEmitter, NativeModules} from 'react-native'
+import {Http, Log, Native} from '@utils'
+import {Product, ProductDeliveryType, ProductLabels, ProductType} from "@common/typings";
 
 /**
  * 获取 CMS 初始数据
@@ -220,10 +221,9 @@ export function mouTaiActivityLink(productCode: string,shopCode: string) {
 /**
  * 格式化 CMS 商品数据
  * @param data CMS 商品数据
+ * @param shopCode 门店编码
  */
-export function formatProduct(data: { [index: string]: any }) {
-  const [priceTags, productTags] = groupTags(data.labelList || [])
-
+export function formatProduct(data: { [index: string]: any }, shopCode: string = ''):Product {
   const remarkOptions = (data.resProdcutNoteNewVO || { noteContentName: [] })
     .noteContentName
   const defaultRemark = remarkOptions.find(r => r.isDefault)
@@ -234,16 +234,18 @@ export function formatProduct(data: { [index: string]: any }) {
       ]
     : remarkOptions.map(ele => ele.name)
 
+  const type = (data.advanceSaleProduct || { isAdvanceSale: 0 }).isAdvanceSale === 1
+    ? ProductType.PreSale
+    : ProductType.Normal
+
   return {
-    type: data,
+    type,
     cartId: data.cartId,
     code: data.code,
     categoryCode: data.categoryCode,
     thumbnail: data.imgUrl,
     name: data.name,
     desc: data.productDesc,
-    priceTags,
-    productTags,
     spec: data.productSpecific || '',
     price: data.promotionPrice < data.price ? data.promotionPrice : data.price,
     slashedPrice: data.promotionPrice < data.price ? data.price : undefined,
@@ -251,6 +253,13 @@ export function formatProduct(data: { [index: string]: any }) {
     inventoryLabel: data.inventoryLabel,
     remark: data.remark,
     remarks,
+    labels: data.labelList || [],
+    deliveryType: {
+      1: ProductDeliveryType.InTime,
+      2: ProductDeliveryType.NextDay,
+    }[data.deliveryType] || ProductDeliveryType.Other,
+    isPreSale: type === ProductType.PreSale,
+    shopCode,
   }
 }
 
@@ -272,15 +281,14 @@ export function getCartInfo(shopCode: string) {
  * @param tags 标签列表
  * @returns [ 价格标签列表，商品标签列表 ]
  */
-export function groupTags(tags: string[]): [string[], string[]] {
-  return tags.reduce(
-    ([priceTagLst, productTagLst], cur) => {
-      return /\d+(\.\d+)?折/.test(cur) ||
-        /满\d/.test(cur) ||
-        /第\d+件/.test(cur)
-        ? [[...priceTagLst, cur], productTagLst]
-        : [priceTagLst, [...productTagLst, cur]]
-    },
-    [[], []]
-  )
+export function groupTags(tags: string[]): ProductLabels {
+  let result: ProductLabels = {}
+  tags.forEach(ele => {
+    if (/\d+(\.\d+)?折/.test(ele) || /满\d/.test(ele) || /第\d+件/.test(ele)) {
+      result.activity = result.activity ? [ ele ] : [...result.activity, ele]
+    } else {
+      result.product = result.product ? [ ele ] : [...result.product, ele]
+    }
+  })
+  return result
 }
