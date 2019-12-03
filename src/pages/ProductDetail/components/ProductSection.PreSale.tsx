@@ -27,12 +27,13 @@ export interface ProductSectionProps {
 const ProductSection: React.FunctionComponent<ProductSectionProps> =
   ({ productData, initialData, onActivityStatusChange }) => {
   const detailData = productData.resChannelStoreProductVO || {}
-  const carouselData = productData.productSliderImagesResponseVOList || []
   const preSaleData = productData.resProductAdvanceSaleVO || {}
-  const carouselImages = carouselData.filter(ele => ele.fileType === 0).map(ele => ele.url)
+  const carouselData = preSaleData.resProductPicVOList || []
+  const carouselImages = carouselData.sort((a, b) => a.sort - b.sort)
+    .map(ele => ele.picUrl)
 
   return (
-    <View style={styles.container}>
+    <View>
       <Carousel placeholder={initialData.thumbnail} images={carouselImages}/>
       <PreSaleBar
         price={detailData.promotionPrice || detailData.price}

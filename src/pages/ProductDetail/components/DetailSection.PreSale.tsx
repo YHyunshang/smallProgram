@@ -17,7 +17,7 @@ export interface DetailSectionProps {
 
 const DetailSection: React.FunctionComponent<DetailSectionProps> = ({ productData }) => {
   const {
-    productDetailImagesResponseVOList: imagesData = [],
+    resProductAdvanceSaleVO: preSaleData = {},
     resChannelStoreProductVO: detailData = {},
   } = productData
 
@@ -28,7 +28,8 @@ const DetailSection: React.FunctionComponent<DetailSectionProps> = ({ productDat
     console.error('parse shopUrl error', e)
   }
   const images = [
-    ...imagesData.filter(ele => ele.fileType === 0).map(ele => ele.url),
+    ...(preSaleData.resProductDescPicVOList || [])
+      .sort((a, b) => a.sort - b.sort).map(ele => ele.descPicUrl),
     ...shopImages
   ]
 
