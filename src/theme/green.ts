@@ -33,7 +33,10 @@ export const darkGreen = '#5E882E'
 export const priceFFPrimary = isAndroid
   ? 'Alte_Din_1451_Mittelschrift'
   : 'Alte Din 1451 Mittelschrift'
-
+// 等宽字体
+export const monospacedFont = isAndroid
+  ? 'monospaced'
+  : 'Helvetica Neue'
 
 
 export const slashedPrice = gray1

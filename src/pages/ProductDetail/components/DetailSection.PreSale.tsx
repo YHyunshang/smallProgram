@@ -16,10 +16,8 @@ export interface DetailSectionProps {
 }
 
 const DetailSection: React.FunctionComponent<DetailSectionProps> = ({ productData }) => {
-  const {
-    resProductAdvanceSaleVO: preSaleData = {},
-    resChannelStoreProductVO: detailData = {},
-  } = productData
+  const preSaleData = productData.resProductAdvanceSaleVO || {}
+  const detailData = productData.resChannelStoreProductVO || {}
 
   let shopImages = []
   try {

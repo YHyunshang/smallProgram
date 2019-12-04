@@ -42,14 +42,16 @@ export default StyleSheet.create({
   },
   textBoxFirst: {
     justifyContent: 'flex-start',
+    alignItems: 'flex-end',
     paddingLeft: 10,
   },
   pricePrefix: {
     color: theme.white,
     fontSize: 12,
-    lineHeight: 28,
+    fontFamily: theme.priceFFPrimary,
     alignSelf: 'flex-end',
     textAlignVertical: 'bottom',
+    paddingBottom: 3,
   },
   price: {
     color: theme.white,
@@ -70,25 +72,35 @@ export default StyleSheet.create({
   processingText: {
     fontSize: 12,
     color: theme.white,
+    marginRight: -2,
   },
-  processingTimer: {
-    paddingHorizontal: 3,
-    minWidth: 22,
+
+  timerPadBox: {
+    width: 22,
+    height: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 2,
+  },
+  timerPadText: {
+    fontSize: 14,
+    fontFamily: theme.monospacedFont,
     fontWeight: '600',
-    lineHeight: 22,
-    textAlign: 'center',
-    textAlignVertical: 'center',
     color: theme.white,
-    backgroundColor: '#706EF9',
-  },
-  processingTimerSeparator: {
-    width: 11,
-    color: '#9796FC',
-    fontSize: 12,
-    fontWeight: '600',
     textAlign: 'center',
   },
-  processingSeconds: {
-    backgroundColor: '#8A6BFD',
-  }
+
+  timerSeparatorBox: {
+    width: 11,
+    height: 22,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 6,
+  },
+  timerSeparatorDot: {
+    width: 3,
+    height: 3,
+    backgroundColor: '#9796FC',
+    borderRadius: 3,
+  },
 })

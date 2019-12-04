@@ -29,6 +29,19 @@ export interface PreSaleBarProps {
   onStatusChange: (status: ActivityStatus) => void
 }
 
+const TimerSeparator:React.FunctionComponent<object> = () => (
+  <View style={styles.timerSeparatorBox}>
+    <View style={styles.timerSeparatorDot} />
+    <View style={styles.timerSeparatorDot} />
+  </View>
+)
+const TimerPad:React.FunctionComponent<{ backgroundColor?: string, children: number }> =
+  ({ backgroundColor = '#706EF9', children }) => (
+  <View style={[ styles.timerPadBox, { backgroundColor } ]}>
+    <Text style={styles.timerPadText}>{`${children}`.padStart(2, '0')}</Text>
+  </View>
+)
+
 const PreSaleBar: React.FunctionComponent<PreSaleBarProps> = ({ price, startTs, endTs, onStatusChange }) => {
   const { status, milliseconds } = useActivityStatus(startTs, endTs, onStatusChange)
 
@@ -37,12 +50,12 @@ const PreSaleBar: React.FunctionComponent<PreSaleBarProps> = ({ price, startTs, 
     const [ hours, minutes, seconds ] = transMilliseconds(milliseconds)
     activityStatusComp = (
       <>
-        <Text style={styles.processingText}>距离活动结束仅剩：</Text>
-        <Text style={styles.processingTimer}>{hours}</Text>
-        <Text style={styles.processingTimerSeparator}>:</Text>
-        <Text style={styles.processingTimer}>{minutes}</Text>
-        <Text style={styles.processingTimerSeparator}>:</Text>
-        <Text style={[ styles.processingTimer, styles.processingSeconds ]}>{seconds}</Text>
+        <Text style={styles.processingText}>距离结束仅剩：</Text>
+        <TimerPad>{hours}</TimerPad>
+        <TimerSeparator />
+        <TimerPad>{minutes}</TimerPad>
+        <TimerSeparator />
+        <TimerPad backgroundColor="#8A6BFD">{seconds}</TimerPad>
       </>
     )
   } else {
