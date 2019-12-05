@@ -31,7 +31,7 @@ const Wrapper: React.FunctionComponent<WrapperProps> = ({ visible, onClose, afte
   }, [visible])
 
   return (
-    <Animated.View style={[ styles.container, { opacity }, !isDisplayed && { display: 'none' } ]}>
+    <Animated.View style={[ styles.container, { opacity }, !isDisplayed && { display: 'none', position: 'relative' } ]}>
       <TouchableWithoutFeedback onPress={onClose}>
         <View style={styles.closeArea} />
       </TouchableWithoutFeedback>
