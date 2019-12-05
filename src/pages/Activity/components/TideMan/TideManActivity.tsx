@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-21 11:23:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-12-05 10:05:23
+ * @LastEditTime: 2019-12-05 15:49:33
  */
 import * as React from 'react'
 import { FlatList, View, Alert } from 'react-native'
@@ -15,6 +15,7 @@ import ProductGridItem from '@components/business/Content/ProductGridItem'
 import chunk from 'lodash/chunk'
 import TopTab from './TopTab'
 import LeftTab from './LeftTab'
+import { getDataByCategory } from '../../../../services/cms';
 interface Props {
   tabVos: {
     id: number
@@ -71,6 +72,16 @@ export default function TideManActivity({
   const themeStyles = useTheme(theme || '2x')
   const gridTotal = gridProducts.length
 
+
+  const getDataByCategory = async (categoryCode,tabId) => {
+    let res
+    try {
+      res = await CMSServices.getDataByCategory(categoryCode,tabId, shopCode)
+    } finally {
+      // this.loading.hideLoading()
+    }
+    const { result } = res
+  }
   /** @msg: 过滤左边tab栏的数据
    * @param {id}
    */
@@ -116,6 +127,7 @@ export default function TideManActivity({
     }))
     setInitProducts(newInitProducts)
     setCurrentProducts(newInitProducts)
+    requestTabList()
   }
 
   /** @msg: 左边tab栏item改变触发的事件
@@ -130,10 +142,10 @@ export default function TideManActivity({
       setCurrentProducts(newCurrentProducts)
     }
   }
-
-  React.useEffect(() => {
-    requestTabList()
-  }, [currentTopTabKey])
+  
+  // React.useEffect(() => {
+  //   requestTabList()
+  // }, [currentTopTabKey])
   /**
    * @msg: 渲染每行的数据
    */
@@ -166,7 +178,7 @@ export default function TideManActivity({
     currentColumnNumber === 1 ? (
       <View style={styles.productBox}>
         <View style={styles.productWrapper} key={item.code}>
-          <ProductListItem {...item} afterModifyCount={afterModifyCount} />
+          <ProductListItem {...item} afterModifyCount={afterModifyCount}/>
           {index < total - 1 && <View style={styles.fakeBorder}></View>}
         </View>
       </View>

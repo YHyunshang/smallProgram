@@ -78,13 +78,13 @@ export default class Page extends React.Component<Props, State> {
     const { activityCode: code } = this.props
     const { shopCode } = this.state
     this.setState({ loading: true })
-    this.loading.showLoading()
+    // this.loading.showLoading()
     let res
     try {
       res = await CMSServices.getActivity(code, shopCode)
     } finally {
       this.setState({ loading: false })
-      this.loading.hideLoading()
+      // this.loading.hideLoading()
     }
 
     const { result } = res

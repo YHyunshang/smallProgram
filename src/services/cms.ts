@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-12 11:25:52
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-25 13:54:26
+ * @LastEditTime: 2019-12-05 15:30:33
  */
 import { NativeEventEmitter, NativeModules } from 'react-native'
 import { Http, Log, Native } from '@utils'
@@ -103,6 +103,19 @@ export function getActivity(activityCode: string, shopCode: string) {
   return Http.get(
     'productCenter',
     `/cms/mobile/${activityCode}/getActivePage/${shopCode}?version=2`
+  )
+}
+
+/**
+ * 根据tabId和categoryCode获取左侧分类下的商品数据
+ * @param tabId  tabId
+ * @param categoryCode 分类 categoryCode
+ * @param shopCode 门店 code
+ */
+export function getDataByCategory(categoryCode: string, tabId: string, shopCode: string) {
+  return Http.get(
+    'productCenter',
+    `/cms/mobile/${shopCode}/tabBar?tabId=${tabId}&categoryCode=${categoryCode}`
   )
 }
 
