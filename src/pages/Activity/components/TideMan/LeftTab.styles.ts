@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-12 21:18:25
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-13 16:29:58
+ * @LastEditTime: 2019-12-05 10:29:30
  */
 import { StyleSheet } from 'react-native'
 import theme from '@theme'
@@ -21,7 +21,13 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  tabItemBoxActive:{
+  tabBoxActive:{
+    backgroundColor:'#FFFFFF',
+    borderWidth: 0.5,
+    borderColor: '#E6E6E6',
+    borderRightWidth: 0
+  },
+  tabBottomBoxActive:{
     backgroundColor:'#FFFFFF',
     borderBottomWidth: 0.5,
     borderBottomColor: '#E6E6E6',

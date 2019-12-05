@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-12 21:18:25
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-29 15:46:32
+ * @LastEditTime: 2019-12-05 10:32:31
  */
 import { StyleSheet } from 'react-native'
 import theme from '@theme'
@@ -15,11 +15,11 @@ export default StyleSheet.create({
     shadowOpacity: 0.06,
     shadowRadius: 11,
     elevation: 0.8,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#EBEBEB',
   },
   tabItemBox: {
     padding: 15,
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#EBEBEB',
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',

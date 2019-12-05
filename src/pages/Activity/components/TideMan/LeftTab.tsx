@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-12 23:52:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-12-02 18:13:28
+ * @LastEditTime: 2019-12-05 10:30:48
  */
 import * as React from 'react'
 import styles from './LeftTab.styles'
@@ -31,7 +31,12 @@ export default function LeftTab({ currentActive, data, onTabChange }: Props) {
             <View
               style={[
                 styles.tabItemBox,
-                categoryCode === currentActive && styles.tabItemBoxActive,
+                categoryCode === currentActive &&
+                  index !== 0 &&
+                  styles.tabBoxActive,
+                categoryCode === currentActive &&
+                  index === 0 &&
+                  styles.tabBottomBoxActive,
               ]}
             >
               <View
