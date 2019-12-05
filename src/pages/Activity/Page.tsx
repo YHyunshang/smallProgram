@@ -264,6 +264,7 @@ export default class Page extends React.Component<Props, State> {
             tabVos: floor.tabVos,
             shopCode,
             afterModifyCount: this.requestCartInfo,
+            requestTabList: this.requestTabList
           },
         })
       }

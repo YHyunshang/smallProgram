@@ -3,10 +3,10 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-21 11:23:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-12-03 11:16:26
+ * @LastEditTime: 2019-12-05 10:05:23
  */
 import * as React from 'react'
-import { FlatList, View } from 'react-native'
+import { FlatList, View, Alert } from 'react-native'
 import styles from './TideManActivity.styles'
 import { CMSServices } from '@services'
 import useTheme from '@components/business/Content/ProductGrid.styles'
@@ -31,11 +31,13 @@ interface Props {
   }[]
   shopCode: string
   afterModifyCount: Function
+  requestTabList: Function
 }
 
 export default function TideManActivity({
   tabVos,
   afterModifyCount,
+  requestTabList,
   shopCode,
 }: Props) {
   const products = tabVos[0].tabDetailVOList.map(ele => ({
@@ -68,6 +70,7 @@ export default function TideManActivity({
   const theme = { 2: '2x', 3: '3x' }[currentColumnNumber]
   const themeStyles = useTheme(theme || '2x')
   const gridTotal = gridProducts.length
+
   /** @msg: 过滤左边tab栏的数据
    * @param {id}
    */
@@ -93,6 +96,7 @@ export default function TideManActivity({
    */
   const onTopTabChange = key => {
     const newLeftTabList = leftTabListFilter(key)
+    console.log(newLeftTabList)
     setCurrentTopTabKey(key)
     setLeftTabList(newLeftTabList[0].categoryList)
     setCurrentLeftTabKey(
@@ -120,7 +124,6 @@ export default function TideManActivity({
   const onLeftTabChange = (code, index) => {
     setCurrentLeftTabKey(code)
     const newCurrentProducts = productsFilter(code)
-    console.log(newCurrentProducts)
     if (index === 0) {
       setCurrentProducts(initProducts)
     } else {
@@ -128,6 +131,9 @@ export default function TideManActivity({
     }
   }
 
+  React.useEffect(() => {
+    requestTabList()
+  }, [currentTopTabKey])
   /**
    * @msg: 渲染每行的数据
    */
@@ -165,7 +171,12 @@ export default function TideManActivity({
         </View>
       </View>
     ) : (
-      <View style={[themeStyles.container,currentColumnNumber === 2 && styles.gridWrapper]}>
+      <View
+        style={[
+          themeStyles.container,
+          currentColumnNumber === 2 && styles.gridWrapper,
+        ]}
+      >
         <View
           style={[
             themeStyles.row,
@@ -198,7 +209,10 @@ export default function TideManActivity({
             />
           )}
         <FlatList
-          style={[styles.tideManList, currentColumnNumber === 2 && styles.gridWrapper]}
+          style={[
+            styles.tideManList,
+            currentColumnNumber === 2 && styles.gridWrapper,
+          ]}
           data={currentColumnNumber === 1 ? currentProducts : gridProducts}
           renderItem={renderItemData}
           keyExtractor={_keyExtractor}
