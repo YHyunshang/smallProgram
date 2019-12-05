@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-21 11:23:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-12-05 15:49:33
+ * @LastEditTime: 2019-12-05 17:08:04
  */
 import * as React from 'react'
 import { FlatList, View, Alert } from 'react-native'
@@ -15,7 +15,7 @@ import ProductGridItem from '@components/business/Content/ProductGridItem'
 import chunk from 'lodash/chunk'
 import TopTab from './TopTab'
 import LeftTab from './LeftTab'
-import { getDataByCategory } from '../../../../services/cms';
+import Loading from '@components/common/Loading'
 interface Props {
   tabVos: {
     id: number
@@ -72,15 +72,26 @@ export default function TideManActivity({
   const themeStyles = useTheme(theme || '2x')
   const gridTotal = gridProducts.length
 
-
-  const getDataByCategory = async (categoryCode,tabId) => {
+  /** @msg: 根据tabId和categoryCode来查找左侧分栏的商品数据
+   * @param {categoryCode,tabId}
+   */
+  const getDataByCategory = async (categoryCode, tabId) => {
+    this.loading.showLoading()
     let res
     try {
-      res = await CMSServices.getDataByCategory(categoryCode,tabId, shopCode)
+      res = await CMSServices.getDataByCategory(categoryCode, tabId, shopCode)
     } finally {
-      // this.loading.hideLoading()
+      this.loading.hideLoading()
     }
     const { result } = res
+    const products =
+      result &&
+      result.map(ele => ({
+        ...CMSServices.formatProduct(ele),
+        disableSync: true,
+        shopCode,
+      }))
+    setCurrentProducts(products)
   }
   /** @msg: 过滤左边tab栏的数据
    * @param {id}
@@ -107,7 +118,6 @@ export default function TideManActivity({
    */
   const onTopTabChange = key => {
     const newLeftTabList = leftTabListFilter(key)
-    console.log(newLeftTabList)
     setCurrentTopTabKey(key)
     setLeftTabList(newLeftTabList[0].categoryList)
     setCurrentLeftTabKey(
@@ -135,17 +145,15 @@ export default function TideManActivity({
    */
   const onLeftTabChange = (code, index) => {
     setCurrentLeftTabKey(code)
-    const newCurrentProducts = productsFilter(code)
-    if (index === 0) {
-      setCurrentProducts(initProducts)
-    } else {
-      setCurrentProducts(newCurrentProducts)
-    }
+    getDataByCategory(code, currentTopTabKey)
+    // const newCurrentProducts = productsFilter(code)
+    // if (index === 0) {
+    //   setCurrentProducts(initProducts)
+    // } else {
+    //   setCurrentProducts(newCurrentProducts)
+    // }
   }
-  
-  // React.useEffect(() => {
-  //   requestTabList()
-  // }, [currentTopTabKey])
+
   /**
    * @msg: 渲染每行的数据
    */
@@ -178,7 +186,7 @@ export default function TideManActivity({
     currentColumnNumber === 1 ? (
       <View style={styles.productBox}>
         <View style={styles.productWrapper} key={item.code}>
-          <ProductListItem {...item} afterModifyCount={afterModifyCount}/>
+          <ProductListItem {...item} afterModifyCount={afterModifyCount} />
           {index < total - 1 && <View style={styles.fakeBorder}></View>}
         </View>
       </View>
@@ -234,6 +242,7 @@ export default function TideManActivity({
           refreshing={false}
         />
       </View>
+      <Loading ref={ref => (this.loading = ref)}></Loading>
     </View>
   )
 }

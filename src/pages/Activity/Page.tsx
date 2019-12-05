@@ -25,6 +25,7 @@ interface Props {
 
 interface State {
   loading: boolean
+  isFirst: boolean
   shopCode: string
   currentTabKey: string
   tabList: {
@@ -47,6 +48,7 @@ export default class Page extends React.Component<Props, State> {
 
     this.state = {
       loading: false,
+      isFirst: true,
       shopCode: props.shopCode,
       currentTabKey: '',
       tabList: [],
@@ -76,15 +78,15 @@ export default class Page extends React.Component<Props, State> {
 
   requestTabList = async () => {
     const { activityCode: code } = this.props
-    const { shopCode } = this.state
-    this.setState({ loading: true })
-    // this.loading.showLoading()
+    const { shopCode, isFirst } = this.state
+    this.setState({ loading: true})
+    isFirst ? this.loading.showLoading() : ''
     let res
     try {
       res = await CMSServices.getActivity(code, shopCode)
     } finally {
-      this.setState({ loading: false })
-      // this.loading.hideLoading()
+      this.setState({ loading: false, isFirst: false })
+      this.loading.hideLoading()
     }
 
     const { result } = res
