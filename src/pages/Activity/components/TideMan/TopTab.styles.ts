@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-12 21:18:25
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-12-06 16:48:14
+ * @LastEditTime: 2019-12-06 17:13:23
  */
 import { StyleSheet } from 'react-native'
 import theme from '@theme'
@@ -19,8 +19,8 @@ export default StyleSheet.create({
     borderBottomColor: '#EBEBEB',
   },
   tabItemBox: {
-    marginHorizontal:10,
-    height:40,
+    marginHorizontal: 10,
+    paddingVertical: 13,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -40,6 +40,8 @@ export default StyleSheet.create({
     // position: 'absolute',
     // left: 13,
     // bottom: 0,
+    paddingTop: 13,
+    paddingBottom: 10,
     borderBottomWidth: 2,
     borderBottomColor: theme.primary
   },
