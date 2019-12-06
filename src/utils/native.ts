@@ -314,7 +314,7 @@ export function withLoading(func: Function) {
       throw e
     }
     return result instanceof Promise
-      ? result.finally(() => toggleLoading(true))
+      ? result.finally(() => toggleLoading(false))
       : result
   }
 }
