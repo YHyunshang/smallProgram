@@ -47,7 +47,7 @@ class Page extends React.Component<PageProps, PageState> {
     this.init()
   }
 
-  init = withLoading(async () => {
+  init = async () => {
     const { productCode, storeCode, initialData: { type } } = this.props
 
     // request similar products
@@ -81,7 +81,7 @@ class Page extends React.Component<PageProps, PageState> {
       thumbnail,
     })
     this.setState({ poster })
-  })
+  }
 
   render() {
     const { initialData } = this.props
