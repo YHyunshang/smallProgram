@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-12 21:18:25
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-12-05 10:32:31
+ * @LastEditTime: 2019-12-06 16:48:14
  */
 import { StyleSheet } from 'react-native'
 import theme from '@theme'
@@ -19,9 +19,10 @@ export default StyleSheet.create({
     borderBottomColor: '#EBEBEB',
   },
   tabItemBox: {
-    padding: 15,
+    marginHorizontal:10,
+    height:40,
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   tabItemBoxFirst: {
@@ -36,10 +37,9 @@ export default StyleSheet.create({
     fontWeight: '600',
   },
   tabActiveItemBox: {
-    position: 'absolute',
-    width: 60,
-    left: 13,
-    bottom: 0,
+    // position: 'absolute',
+    // left: 13,
+    // bottom: 0,
     borderBottomWidth: 2,
     borderBottomColor: theme.primary
   },
@@ -55,6 +55,7 @@ export default StyleSheet.create({
   heightLine:{
     position: 'absolute',
     right: 0,
+    bottom: 13,
     height: 14,
     borderRightWidth: 1,
     borderRightColor: '#F2F2F2'
