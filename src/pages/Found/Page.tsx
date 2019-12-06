@@ -55,7 +55,8 @@ export default class Page extends React.PureComponent<Object, State> {
     }
     const { result } = res
     const validData = result.templateVOList
-      .filter(floor => floor.type === 2 || floor.type === 3)
+      .filter(floor => (floor.type === 2 || floor.type === 3)
+        && (floor.templateDetailVOList && floor.templateDetailVOList.length > 0) )
       .sort((a, b) => a.pos - b.pos)
 
     let floorData = []
@@ -66,7 +67,7 @@ export default class Page extends React.PureComponent<Object, State> {
       const nextFloor = validData[i + 1]
 
       if (curFloor.type === 2 && nextFloor && nextFloor.type === 3) {
-        const imgObj = (curFloor.templateDetailVOList || [{ imgUrl: null }])[0]
+        const imgObj = curFloor.templateDetailVOList[0]
         floorData.push({
           key: curFloor.id,
           image: imgObj.imgUrl,
@@ -76,7 +77,7 @@ export default class Page extends React.PureComponent<Object, State> {
         i += 2
         continue
       } else if (curFloor.type === 2) {
-        const imgObj = (curFloor.templateDetailVOList || [{ imgUrl: '' }])[0]
+        const imgObj = curFloor.templateDetailVOList[0]
         floorData.push({
           key: curFloor.id,
           image: imgObj.imgUrl,
