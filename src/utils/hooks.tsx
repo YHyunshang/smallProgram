@@ -32,6 +32,7 @@ export function useActivityStatus(
   const [ status, setStatus ] = React.useState(statusCalculator)
 
   React.useEffect(() => {
+    setStatus(statusCalculator())
     const timer = setInterval(() => {
       const nextStatus = statusCalculator()
       setStatus((status: ActivityStatusWithMilliseconds) => {

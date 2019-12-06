@@ -58,7 +58,7 @@ const PreSaleBar: React.FunctionComponent<PreSaleBarProps> = ({ price, startTs, 
         <TimerPad backgroundColor="#8A6BFD">{seconds}</TimerPad>
       </>
     )
-  } else {
+  } else if (startTs && endTs) {
     const icon = StatusIconMapper[status]
     const text = StatusTextMapper[status]
 

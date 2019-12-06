@@ -16,7 +16,7 @@ const ts2Str = (ts: number) => dayjs(ts).format('MM月DD日HH:mm')
 // 日期字符串转换为中文字符串
 const dateStr2CNStr = (date: string) => dayjs(date).format('MM月DD日HH:mm')
 // 日期字符串转换为时间戳（毫秒）
-const dateStr2Ts = (date: string) => dayjs(date).valueOf()
+const dateStr2Ts = (date: string) => date ? dayjs(date).valueOf() : null
 
 export interface ProductSectionProps {
   productData: BaseObj
