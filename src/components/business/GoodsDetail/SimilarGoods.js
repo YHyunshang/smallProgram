@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-06 20:16:30
+ * @LastEditTime: 2019-12-06 10:44:07
  */
 
 import React from 'react'
@@ -36,7 +36,7 @@ export default class SimilarGoods extends React.Component {
   refreshGoodsList=(productCode, productNumber) => {
     let newArray = new Array()
     this.state.similarProduct.map((item) => {
-      if (item.productCode == productCode) {
+      if (productNumber && item.productCode == productCode) {
         item.productNum = productNumber
       }
       newArray.push(item)
