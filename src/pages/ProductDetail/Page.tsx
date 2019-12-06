@@ -8,7 +8,7 @@ import {ProductThumbnail} from "@common/config";
 import {transPenny} from "@utils/FormatUtil";
 import PreSale from "./containers/PreSale";
 import Normal from "./containers/Normal";
-import {showToast} from "@utils/native";
+import {showToast, withLoading} from "@utils/native";
 import withInitialData from "@HOC/withInitialData";
 
 interface InitialProductData extends BaseObj {
@@ -47,7 +47,7 @@ class Page extends React.Component<PageProps, PageState> {
     this.init()
   }
 
-  init = async () => {
+  init = withLoading(async () => {
     const { productCode, storeCode, initialData: { type } } = this.props
 
     // request similar products
@@ -81,7 +81,7 @@ class Page extends React.Component<PageProps, PageState> {
       thumbnail,
     })
     this.setState({ poster })
-  }
+  })
 
   render() {
     const { initialData } = this.props

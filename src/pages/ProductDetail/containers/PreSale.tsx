@@ -5,7 +5,7 @@ import * as React from 'react'
 import memoized from "memoize-one";
 import {ActivityStatus, BaseObj} from "@common/typings";
 import {ProductThumbnail} from "@common/config";
-import {toggleCartDisabled, toggleGoodsDetailCartBarVis} from "@utils/native";
+import {setNativeBtmCart, toggleGoodsDetailCartBarVis} from "@utils/native";
 import PageContainer from "../components/PageContainer";
 import ProductSection from "../components/ProductSection.PreSale";
 import DetailSection from "../components/DetailSection.PreSale";
@@ -48,7 +48,7 @@ class PreSale extends React.Component<PreSaleProps, PreSaleState> {
   }
 
   onActivityStatusChange = (status: ActivityStatus) => {
-    toggleCartDisabled(status === ActivityStatus.Processing)
+    setNativeBtmCart(status !== ActivityStatus.Processing)
   }
 
   renderTabContent = (tabContent, index) => {

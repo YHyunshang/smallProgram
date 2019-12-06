@@ -7,7 +7,7 @@
  */
 import {DeviceEventEmitter, Dimensions, NativeEventEmitter, NativeModules, Platform, StatusBar,} from 'react-native'
 import * as Log from './log'
-import {Product} from '@common/typings'
+import {BaseObj, Product} from '@common/typings'
 
 export enum NavPageType {
   NATIVE = '0',
@@ -215,7 +215,7 @@ export function showRemarkPickerBeforeAddToCart(
       'setItemNumberByProductcode',
       ({ responseData }) => {
         Log.debug('setItemNumberByProductcode', responseData)
-        let extraData = {}
+        let extraData:BaseObj = {}
         try {
           extraData = JSON.parse(responseData)
         } catch (e) {
@@ -277,11 +277,44 @@ export function applyPhotosPermission() {
 }
 
 /**
- * 切换商详页购物车 disabled 状态
- * @param disabled
+ * 设置商详页底部购物车
+ * @param enabled 状态
+ * @param text btn 文本
  */
-export function toggleCartDisabled(disabled: boolean) {
+export function setNativeBtmCart(enabled: boolean, text: string = '加入购物车') {
   NativeModules.RnAppModule.sendEventToNative(
     'setBottomAddTextStatus',
-    JSON.stringify({ status: disabled ? '1' : '0', text: '加入购物车' }))
+    JSON.stringify({ status: enabled ? '1' : '0', text })
+  )
+}
+
+/**
+ * 切换 native loading 展示
+ * @param loading 是否展示 loading
+ */
+export function toggleLoading(loading: boolean) {
+  NativeModules.RnAppModule.sendEventToNative(
+    'toggleLoading',
+    JSON.stringify({ loadingTag: loading ? '1' : '0' })
+  )
+}
+
+/**
+ * loading 装饰器
+ * @param func 要在首尾展示/隐藏 loading 的 function
+ */
+export function withLoading(func: Function) {
+  return function () {
+    toggleLoading(true)
+    let result: any
+    try {
+      result = func(...arguments)
+    } catch (e) {
+      toggleLoading(false)
+      throw e
+    }
+    return result instanceof Promise
+      ? result.finally(() => toggleLoading(true))
+      : result
+  }
 }

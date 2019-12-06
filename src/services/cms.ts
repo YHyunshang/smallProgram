@@ -145,8 +145,9 @@ export function updateProductCountInCart(
   return new Promise((resolve, reject) => {
     NativeModules.HomeNativeManager.addToCart(
       'post',
-      Http.formatUrl('cart', '/app/shoppingCart/product'),
+      Http.formatUrl('cart', '/app/v2/shoppingCart/product'),
       JSON.stringify({
+        isNewVersion: true,
         productCode,
         productNum,
         productPrice,

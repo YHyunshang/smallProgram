@@ -199,7 +199,7 @@ class Normal extends React.Component {
   }
 
   renderSwiper = () => {
-    const { initialData, product } = this.props
+    const { initialData = {}, product } = this.props
     const { thumbnailVis, thumbnailOpacity } = this.state
 
     const productActivityLabel = (product.resChannelStoreProductVO || {}).productActivityLabel || {}
