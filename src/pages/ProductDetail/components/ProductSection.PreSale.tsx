@@ -12,11 +12,17 @@ import {ActivityStatus, BaseObj} from "@common/typings";
 import {transPenny} from "@utils/FormatUtil";
 const dayjs = require('dayjs')
 
-const ts2Str = (ts: number) => dayjs(ts).format('MM月DD日HH:mm')
+const ts2Str = (ts: number) => ts ? dayjs(ts).format('MM月DD日HH:mm') : ''
 // 日期字符串转换为中文字符串
-const dateStr2CNStr = (date: string) => dayjs(date).format('MM月DD日HH:mm')
+const datetimeStr2CNStr = (date: string) => date ? dayjs(date).format('MM月DD日HH:mm') : ''
 // 日期字符串转换为时间戳（毫秒）
-const dateStr2Ts = (date: string) => date ? dayjs(date).valueOf() : null
+const datetimeStr2Ts = (date: string) => date ? dayjs(date).valueOf() : null
+// 日期字符串转中文
+const dateStr2CNStr = (date: string) => date ? dayjs(date).format('MM月DD日') : ''
+// 时间字符串转时:分
+const timeStr2Hm = (time:string) => time
+  ? time.split(':').slice(0, 2).map(ele => ele.padStart(2, '0')).join(':')
+  : ''
 
 export interface ProductSectionProps {
   productData: BaseObj
@@ -37,8 +43,8 @@ const ProductSection: React.FunctionComponent<ProductSectionProps> =
       <Carousel placeholder={initialData.thumbnail} images={carouselImages}/>
       <PreSaleBar
         price={detailData.promotionPrice || detailData.price}
-        startTs={dateStr2Ts(preSaleData.activityBeginDate)}
-        endTs={dateStr2Ts(preSaleData.activityEndDate)}
+        startTs={datetimeStr2Ts(preSaleData.activityBeginDate)}
+        endTs={datetimeStr2Ts(preSaleData.activityEndDate)}
         onStatusChange={onActivityStatusChange}
       />
 
@@ -81,7 +87,7 @@ const ProductSection: React.FunctionComponent<ProductSectionProps> =
             <View style={styles.orderInfoTextBox}>
               <Text style={styles.orderInfoTitle}>预售下单</Text>
               <Text style={styles.orderInfoText}>
-                {dateStr2CNStr(preSaleData.activityBeginDate)}至{dateStr2CNStr(preSaleData.activityEndDate)}
+                {datetimeStr2CNStr(preSaleData.activityBeginDate)}至{datetimeStr2CNStr(preSaleData.activityEndDate)}
               </Text>
             </View>
           </View>
@@ -92,6 +98,9 @@ const ProductSection: React.FunctionComponent<ProductSectionProps> =
               <Text style={styles.orderInfoTitle}>配送/自提</Text>
               <Text style={styles.orderInfoText}>
                 {dateStr2CNStr(preSaleData.selfDeliveryBeginTime)}至{dateStr2CNStr(preSaleData.selfDeliveryEndTime)}
+              </Text>
+              <Text style={styles.orderInfoText}>
+                每天{timeStr2Hm(preSaleData.selfDeliveryBeginTimeSlot)}~{timeStr2Hm(preSaleData.selfDeliveryEndTimeSlot)}
               </Text>
             </View>
           </View>
