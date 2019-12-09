@@ -4,11 +4,12 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-06 11:13:44
+ * @LastEditTime: 2019-12-09 16:57:42
  */
 import {Native} from '@utils'
 import {noStore} from '@const/resources'
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import LinearGradient from 'react-native-linear-gradient'
 import CommonModal from '../../common/CommonModal'
 import {StyleSheet, View, Text, Image, ScrollView, TouchableOpacity} from 'react-native'
@@ -22,6 +23,9 @@ export default class StoreModal extends Component {
       show: false,
       storeList: []
     }
+  }
+  static propTypes = {
+    storeList: PropTypes.array.isRequired // 门店列表
   }
   /**
   * @description: 显示弹层

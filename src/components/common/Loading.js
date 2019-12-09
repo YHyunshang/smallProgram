@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-31 10:28:53
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-29 15:32:01
+ * @LastEditTime: 2019-12-09 11:09:09
  */
 
 import React from 'react'
@@ -48,46 +48,46 @@ export default class Loading extends React.Component {
   componentDidMount() {
     this.rotate()
   }
-    /**
-     * @description: 展示loading图标
-     */
-    showLoading = () => {
-      this.state.setIsLoading(true)
+  /**
+   * @description: 展示loading图标
+   */
+  showLoading = () => {
+    this.state.setIsLoading(true)
+  }
+  /**
+   * @description: 隐藏loading图标
+   */
+  hideLoading = () => {
+    this.state.setIsLoading(false)
+  }
+  /**
+   * @description:旋转方法
+   */
+    rotate = () => {
+      this.rotateValue.setValue(0)
+      Animated.timing(this.rotateValue, {
+        toValue: 1, // 最终值 为1，这里表示最大旋转 360度
+        duration: 1000,
+        easing: Easing.linear
+      }).start(() => this.rotate())
     }
-    /**
-     * @description: 隐藏loading图标
-     */
-    hideLoading = () => {
-      this.state.setIsLoading(false)
-    }
-    /**
-     * @description:旋转方法
-     */
-     rotate = () => {
-       this.rotateValue.setValue(0)
-       Animated.timing(this.rotateValue, {
-         toValue: 1, // 最终值 为1，这里表示最大旋转 360度
-         duration: 1000,
-         easing: Easing.linear
-       }).start(() => this.rotate())
-     }
-     render() {
-       const rotate = this.rotateValue.interpolate({
-         inputRange: [0, 1], // 输入值
-         outputRange: ['0deg', '360deg'] // 输出值
-       })
+    render() {
+      const rotate = this.rotateValue.interpolate({
+        inputRange: [0, 1], // 输入值
+        outputRange: ['0deg', '360deg'] // 输出值
+      })
 
-       if (!this.state.isLoading) {
-         return null
-       }
-       return (
-         <View style={styles.loadingContent}>
-           <View style={styles.loading}>
-             <Animated.Image style={[styles.circle, {transform: [{rotate}]}]} source={greenLoading}/>
-           </View>
-         </View>
-       )
-     }
+      if (!this.state.isLoading) {
+        return null
+      }
+      return (
+        <View style={styles.loadingContent}>
+          <View style={styles.loading}>
+            <Animated.Image style={[styles.circle, {transform: [{rotate}]}]} source={greenLoading}/>
+          </View>
+        </View>
+      )
+    }
 }
 /**
  * @description: loading组件样式

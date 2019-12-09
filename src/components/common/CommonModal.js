@@ -4,9 +4,10 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-31 11:34:51
+ * @LastEditTime: 2019-12-09 11:07:50
  */
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import {StyleSheet, View, Dimensions} from 'react-native'
 /**
  * 弹出层
@@ -18,6 +19,10 @@ export default class CommonModal extends Component {
     this.state = {
       show: false
     }
+  }
+  static propTypes = {
+    modalBoxWidth: PropTypes.number.isRequired, // 模态窗口的宽度
+    modalBoxHeight: PropTypes.number.isRequired // 模态窗口的高度
   }
   /**
    * @description: 展示弹层方法

@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-28 15:48:44
+ * @LastEditTime: 2019-12-09 17:06:17
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity, Alert} from 'react-native'
@@ -13,6 +13,7 @@ import {Native, Img} from '@utils'
 import throttle from 'lodash/throttle'
 import styles from './PreviewPurchase.styles'
 import {transPenny} from '../../utils/FormatUtil'
+import PropTypes from 'prop-types'
 import {yellowWarn, soldOutDefault, noActivity, defaultPoint} from '@const/resources'
 import TopBannerImage from '../../components/common/TopBannerImage'
 import Loading from '../../components/common/Loading'
@@ -62,7 +63,10 @@ export default class PreviewPurchase extends React.Component {
       }
     }
   }
-
+  static propTypes = {
+    activityCode: PropTypes.string, // 活动编码
+    shopCode: PropTypes.string // 门店编码
+  }
   componentDidMount() {
     const {activityCode, shopCode} = this.props
     let productCode = activityCode && activityCode.split('-')[1]

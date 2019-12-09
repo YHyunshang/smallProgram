@@ -4,9 +4,10 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-07 15:02:09
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-07 14:44:18
+ * @LastEditTime: 2019-12-09 11:38:19
  */
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import LinearGradient from 'react-native-linear-gradient'
 import {
   StyleSheet,
@@ -17,7 +18,14 @@ export default class ProgressBar extends Component {
   constructor(props) {
     super(props)
   }
-  componentDidMount() {
+  static propTypes = {
+    stockNumber: PropTypes.number.isRequired, // 库存数量
+    saleNum: PropTypes.number.isRequired, // 销售数量
+    width: PropTypes.number, // 宽度
+    height: PropTypes.number, // 高度
+    startColor: PropTypes.string, // 渐变开始颜色值
+    endColor: PropTypes.string, // 渐变结束颜色值
+    backgroundColor: PropTypes.string // 背景色
   }
   render() {
     const {saleNum, stockNumber} = this.props

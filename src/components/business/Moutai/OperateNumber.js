@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-07 15:02:09
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-20 14:03:36
+ * @LastEditTime: 2019-12-09 11:34:06
  */
 import React, {Component} from 'react'
 import {
@@ -14,6 +14,7 @@ import {
   NativeModules,
   TouchableOpacity
 } from 'react-native'
+import PropTypes from 'prop-types'
 import Icon from '../../Icon'
 const rnAppModule = NativeModules.RnAppModule// 原生模块
 export default class OperateNumber extends Component {
@@ -24,6 +25,12 @@ export default class OperateNumber extends Component {
       addIconColor: '#666666',
       minIconColor: '#666666'
     }
+  }
+  static propTypes = {
+    availableQuantity: PropTypes.number.isRequired, // 当前用户可购买的茅台数量
+    inventoryNumber: PropTypes.number.isRequired, // 茅台总库存量
+    onAdd: PropTypes.func, // 加操作
+    onMin: PropTypes.func // 减操作
   }
   // componentWillReceiveProps(props) {
   //   if (props.availableQuantity != this.props.availableQuantity) {

@@ -4,11 +4,12 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-09 17:55:20
+ * @LastEditTime: 2019-12-09 17:07:22
  */
 import React from 'react'
 import {View, ScrollView, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
 import {Native} from '@utils'
+import PropTypes from 'prop-types'
 import styles from './QualificationsQuery.styles'
 import {greenWarn} from '@const/resources'
 import Loading from '../../components/common/Loading'
@@ -40,6 +41,9 @@ export default class QualificationsQuery extends React.Component {
         // ]
       }
     }
+  }
+  static propTypes = {
+    activityCode: PropTypes.string // 活动编码
   }
   /**
    * @msg: 跳转至首页

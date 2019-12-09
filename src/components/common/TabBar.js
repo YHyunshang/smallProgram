@@ -4,10 +4,11 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-23 18:21:32
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-27 10:07:12
+ * @LastEditTime: 2019-12-09 11:14:31
  */
 
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import {
   StyleSheet,
   View,
@@ -27,6 +28,12 @@ export default class TabBar extends Component {
       data: [],
       index: -1,
       onChange: () => { }
+    }
+    static propTypes = {
+      data: PropTypes.array, // 数据来源
+      style: PropTypes.object, // 样式
+      index: PropTypes.number, // 索引
+      onChange: PropTypes.func // 选中tab的函数
     }
     constructor(props) {
       super(props)

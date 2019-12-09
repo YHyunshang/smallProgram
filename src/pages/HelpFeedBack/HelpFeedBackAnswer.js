@@ -4,11 +4,12 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-06 16:14:01
+ * @LastEditTime: 2019-12-09 17:04:18
  */
 import React from 'react'
 import {ScrollView, View, Text, NativeModules} from 'react-native'
 // import {helpFeedBackAnswer} from '../../utils/mock'
+import PropTypes from 'prop-types'
 import Loading from '../../components/common/Loading'
 import styles from './HelpFeedBackAnswer.styles'
 import {Native} from '@utils'
@@ -21,7 +22,10 @@ export default class HelpFeedBackPage extends React.Component {
       answerList: []
     }
   }
-
+  static propTypes = {
+    activityCode: PropTypes.string, // 活动编码
+    type: PropTypes.string // 标题类型
+  }
   componentDidMount() {
     this.getAnswerList()
   }
@@ -51,7 +55,7 @@ export default class HelpFeedBackPage extends React.Component {
     const {answerList} = this.state
     Native.setTitle(type)
     const answerItems = answerList ? answerList.map(({question, answer}, index) => (
-      <View style={[styles.questionItemFlex, index == answerList.length - 1 ? {borderBottomWidth: 0, paddingBottom: 30} : {borderBottomWidth: 1}]}>
+      <View key={index} style={[styles.questionItemFlex, index == answerList.length - 1 ? {borderBottomWidth: 0, paddingBottom: 30} : {borderBottomWidth: 1}]}>
         <View style={styles.questionTitleFlex}>
           <Text style={styles.questionIndex}>Q{Number(index + 1)}:</Text>
           <Text style={styles.questionTitle}>{question}</Text>

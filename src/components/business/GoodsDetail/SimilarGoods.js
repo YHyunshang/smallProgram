@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-12-06 10:44:07
+ * @LastEditTime: 2019-12-09 11:26:58
  */
 
 import React from 'react'
@@ -12,6 +12,7 @@ import {Img} from '@utils'
 import {Text, View, FlatList, TouchableOpacity} from 'react-native'
 import DetailCartAnimated from '../../business/Animated/DetailCartAnimated'
 // import Icon from '../Icon'
+import PropTypes from 'prop-types'
 import Tag from './Tag'
 import {transPenny} from '../../../utils/FormatUtil'
 import styles from './SimilarGoods.styles'
@@ -24,6 +25,9 @@ export default class SimilarGoods extends React.Component {
     this.state = {
       similarProduct: []
     }
+  }
+  static propTypes = {
+    jumpGoodsDetail: PropTypes.func// 跳转至商品详情的方法
   }
   componentWillReceiveProps(nextProps) {
     this.setState({

@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-16 16:18:48
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-10 18:25:14
+ * @LastEditTime: 2019-12-09 11:16:31
  */
 
 import React from 'react'
@@ -14,6 +14,7 @@ import {
   ImageBackground,
   NativeModules
 } from 'react-native'
+import PropTypes from 'prop-types'
 import Progress from '../../common/Progress'
 import styles from './BuyLimit.styles '
 // 限时抢购背景图片
@@ -32,6 +33,9 @@ export default class BuyLimit extends React.Component {
       activityEndTime: '', // 活动结束时间
       activityBeginTime: ''// 活动开始时间
     }
+  }
+  static propTypes = {
+    productActivityLabel: PropTypes.object.isRequired // 商品活动标签
   }
  countTime = () => {
    let date = new Date()
@@ -92,9 +96,6 @@ export default class BuyLimit extends React.Component {
      clearTimeout(timer)
    }
  }
- componentWillReceiveProps(nextProps) {
- }
-
  render() {
    const {hour, minute, seconds, isShow} = this.state
    const {productActivityLabel} = this.props

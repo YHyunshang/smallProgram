@@ -4,9 +4,10 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-29 16:16:27
+ * @LastEditTime: 2019-12-09 11:09:41
  */
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import {StyleSheet, View, TouchableOpacity, Animated, Easing, Dimensions, NativeModules} from 'react-native'
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
 /**
@@ -20,6 +21,11 @@ export default class PopUp extends Component {
       offset: new Animated.Value(0),
       show: false
     }
+  }
+  static propTypes = {
+    modalBoxBg: PropTypes.string, // 背景色
+    modalBoxHeight: PropTypes.number.isRequired, // 模态窗口的高度
+    transparentIsClick: PropTypes.bool // 透明区域是否可以点击
   }
   /**
    * @description: 淡进动画效果

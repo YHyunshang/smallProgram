@@ -4,11 +4,12 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-12 16:07:18
+ * @LastEditTime: 2019-12-09 16:56:30
  */
 import {Native} from '@utils'
 import {noStore} from '@const/resources'
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import LinearGradient from 'react-native-linear-gradient'
 // import CommonModal from '../../common/CommonModal'
 import {StyleSheet, View, Text, ScrollView, Image, TouchableOpacity, Dimensions} from 'react-native'
@@ -22,6 +23,10 @@ export default class RuleModal extends Component {
     this.state = {
       show: false
     }
+  }
+  static propTypes = {
+    ruleList: PropTypes.array.isRequired, // 规则列表
+    onRef: PropTypes.func
   }
   /**
    * @description: 展示弹层方法

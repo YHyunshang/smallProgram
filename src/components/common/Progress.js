@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-07 15:02:09
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-10-23 19:36:09
+ * @LastEditTime: 2019-12-09 11:12:22
  */
 import React, {Component} from 'react'
 import {
@@ -12,11 +12,13 @@ import {
   Text,
   View
 } from 'react-native'
+import PropTypes from 'prop-types'
 export default class Progress extends Component {
   constructor(props) {
     super(props)
   }
-  componentDidMount() {
+  static propTypes = {
+    saleNum: PropTypes.string // 销售百分比
   }
   render() {
     let {saleNum} = this.props
