@@ -59,7 +59,7 @@ export async function navigateTo({ type, uri, params={}, title }: Navigation) {
     'calling HomeNativeManager.pushToNewPage with arguments',
     pageType,
     pageUri,
-    JSON.stringify({ params: { ...params, title } })
+    JSON.stringify({ params: navParams })
   )
 
   const preCheck = uri === 'RNPreviewPurchase'  // 茅台跳转先检查是否已登陆
