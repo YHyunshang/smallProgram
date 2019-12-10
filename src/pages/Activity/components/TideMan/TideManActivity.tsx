@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-21 11:23:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-12-05 17:08:04
+ * @LastEditTime: 2019-12-10 10:25:06
  */
 import * as React from 'react'
 import { FlatList, View, Alert } from 'react-native'
@@ -15,6 +15,7 @@ import ProductGridItem from '@components/business/Content/ProductGridItem'
 import chunk from 'lodash/chunk'
 import TopTab from './TopTab'
 import LeftTab from './LeftTab'
+import Empty from '../Empty'
 import Loading from '@components/common/Loading'
 interface Props {
   tabVos: {
@@ -46,7 +47,7 @@ export default function TideManActivity({
     disableSync: true,
     shopCode,
   }))
-  const showBar = tabVos[0].showBar //是否展示左边侧栏
+  const showBar = tabVos[0].showBar || false //是否展示左边侧栏
   const topTabList =
     tabVos && tabVos.map(tab => ({ key: tab.id, label: tab.tabName })) //顶部tab栏数据
   const initLeftTabList = tabVos[0].categoryList //初始化左边tab栏的数据
@@ -59,7 +60,7 @@ export default function TideManActivity({
     tabVos[0].subType === 3 ? false : showBar
   ) //初始化是否展示左侧分栏
   const [currentColumnNumber, setCurrentColumnNumber] = React.useState(
-    tabVos[0].subType
+    tabVos[0].subType || 1
   ) //初始化一行展示的列数
   const [tabDetailVOList, setTabDetailVOList] = React.useState(
     tabVos[0].tabDetailVOList
@@ -240,8 +241,12 @@ export default function TideManActivity({
           showsVerticalScrollIndicator={false}
           removeClippedSubviews={false}
           refreshing={false}
+          ListEmptyComponent={
+            <Empty type={2} textColor1="#4A4A4A" textColor2="#A4A4B4" />
+          }
         />
       </View>
+
       <Loading ref={ref => (this.loading = ref)}></Loading>
     </View>
   )

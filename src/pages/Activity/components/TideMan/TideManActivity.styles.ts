@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-12 20:31:29
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-12-03 11:15:31
+ * @LastEditTime: 2019-12-10 14:09:09
  */
 import { StyleSheet ,Dimensions} from 'react-native'
 const {width, height} = Dimensions.get('window')
@@ -18,6 +18,7 @@ export default StyleSheet.create({
   },
   centerWrapper:{
     flex: 1,
+    // height:height-40,
     backgroundColor: '#FFFFFF',
     flexDirection: 'row'
   },

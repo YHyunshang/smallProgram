@@ -79,7 +79,7 @@ export default class Page extends React.Component<Props, State> {
   requestTabList = async () => {
     const { activityCode: code } = this.props
     const { shopCode, isFirst } = this.state
-    this.setState({ loading: true})
+    this.setState({ loading: true })
     isFirst ? this.loading.showLoading() : ''
     let res
     try {
@@ -92,7 +92,9 @@ export default class Page extends React.Component<Props, State> {
     const { result } = res
     let nextState = {
       currentTabKey: '',
-      tabList: result.map(ele => ({ key: ele.id, label: ele.showName })),
+      tabList: result
+        .filter(ele => ele.templateVOList && ele.templateVOList.length)
+        .map(item => ({ key: item.id, label: item.showName })),
       tabContentMap: {},
     }
     if (result.length > 0) {
@@ -266,7 +268,7 @@ export default class Page extends React.Component<Props, State> {
             tabVos: floor.tabVos,
             shopCode,
             afterModifyCount: this.requestCartInfo,
-            requestTabList: this.requestTabList
+            requestTabList: this.requestTabList,
           },
         })
       }
@@ -327,7 +329,11 @@ export default class Page extends React.Component<Props, State> {
           removeClippedSubviews={false}
           refreshing={false}
           onRefresh={this.componentDidMount.bind(this)}
-          ListEmptyComponent={loading ? null : Empty}
+          ListEmptyComponent={
+            loading ? null : (
+              <Empty type={1} textColor1="#4A4A4A" textColor2="#A4A4B4" />
+            )
+          }
         />
         <View style={styles.footerBox}>
           <Footer amount={amount} cartCount={count} />
