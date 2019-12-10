@@ -17,7 +17,7 @@ import { Product } from './typings'
 import Tag from './Tag'
 import PromotionTag from './PromotionTag'
 import FastImage from 'react-native-fast-image'
-
+import ProductImage from '@components/business/ProductImage'
 interface Props extends Product {
   disableAdd?: boolean
 }
@@ -64,11 +64,12 @@ function ProductListItem({
       <TouchableWithoutFeedback onPress={navigateToProductDetail}>
         <View style={styles.productBox}>
           <View style={styles.thumbnailBox}>
-            <FastImage
+            {/* <FastImage
               style={styles.thumbnail}
               source={{ uri: fitThumbnail }}
               resizeMode={FastImage.resizeMode.contain}
-            />
+            /> */}
+            <ProductImage source={{ uri: fitThumbnail }} size={100} />
             <View style={styles.productTagRow}>
               {productTags.slice(0, 2).map((tag, idx) => (
                 <Tag color={['#EF2F41', '#208DDC'][idx]} key={idx}>
