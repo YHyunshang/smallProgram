@@ -78,11 +78,13 @@ export default class Page extends React.Component<PageProps, PageState> {
     // tracking
     const isFromRNPage = $$tracking instanceof Object
     isFromRNPage && track('productDetail', {
-      ...$$tracking,
+      product_detail_source: $$tracking.name,
+      page_type: $$tracking.path,
       product_id: detailInfo.productCode,
       product_name: detailInfo.productName,
       original_price: detailInfo.price,
       present_price: detailInfo.promotionPrice || detailInfo.price,
+      product_spec: detailInfo.productSpecific,
     })
 
     // get poster

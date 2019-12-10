@@ -87,6 +87,8 @@ class Normal extends React.Component {
     track('Share', {
       Page_type: '商详页',
       Page_name: detailData.productName,
+      product_id: detailData.productCode,
+      product_name: detailData.productName,
       original_price: detailData.price,
       present_price: detailData.promotionPrice,
     })

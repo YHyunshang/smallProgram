@@ -84,10 +84,7 @@ export default class ShareModal extends React.Component {
     //   }
     // })
 
-    track('Share', {
-      Page_type: '商详页',
-      Page_name: productParams.productDesc,
-    })
+    track('ShareChanel', { Share_Chanel: '微信', Page_type: '商详页' })
     let weixinMiniProgramShareInfo = {
       type: 'miniProgram',
       title: '商品详情分享',

@@ -78,18 +78,6 @@ export default function withCartCountModify(WrappedComponent) {
     }
 
     onModifyCount = count => {
-      const currentScene = History.cur() || { path: '', name: '' }
-      const { code, name, price, slashedPrice, spec } = this.props
-      track('addToShoppingCart', {
-        $screen_name: currentScene.name,
-        page_type: currentScene.path,
-        product_id: code,
-        product_name: name,
-        original_price: slashedPrice || price,
-        present_price: price,
-        product_spec: spec,
-        tab_name: currentScene.extraData ? currentScene.extraData.currentTab || '' : ''
-      })
       if (
         count === 1 &&
         this.state.count === 0 &&
@@ -97,6 +85,20 @@ export default function withCartCountModify(WrappedComponent) {
       ) {
         this.showRemarksBeforeAddToCart()
       } else {
+        const currentScene = History.cur() || { path: '', name: '' }
+        const { code, name, price, slashedPrice, spec } = this.props
+        const {modifiedCount} = this.state
+        count > modifiedCount && track('addToShoppingCart', {
+          $screen_name: currentScene.name,
+          page_type: currentScene.path,
+          product_id: code,
+          product_name: name,
+          original_price: slashedPrice || price,
+          present_price: price,
+          product_spec: spec,
+          tab_name: currentScene.extraData ? currentScene.extraData.currentTab || '' : ''
+        })
+
         this.setState({ modifiedCount: count })
         this.requestUpdateCount(count)
       }

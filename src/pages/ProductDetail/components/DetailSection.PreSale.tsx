@@ -53,7 +53,7 @@ const DetailSection: React.FunctionComponent<DetailSectionProps> = ({ productDat
         </View>
       )}
       {images.map(ele => (
-        <FitImg source={{ uri: loadFitImg(ele) }} key={ele} />
+        <FitImg source={{ uri: loadFitImg(ele) }} key={ele} resizeMode="contain" />
       ))}
     </View>
   )
