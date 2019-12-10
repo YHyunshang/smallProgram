@@ -51,10 +51,17 @@ export default StyleSheet.create({
     paddingHorizontal: 10,
     paddingTop: 10,
     marginBottom: -3,
+    // position: 'relative',
   },
   similarGoodsImg: {
     width: 150,
     height: 150
+  },
+  tlTagRow: {
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    zIndex: 1,
   },
   goodsDesc: {
     width: 152,

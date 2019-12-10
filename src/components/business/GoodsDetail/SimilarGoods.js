@@ -14,9 +14,13 @@ import DetailCartAnimated from '../../business/Animated/DetailCartAnimated'
 // import Icon from '../Icon'
 import PropTypes from 'prop-types'
 import Tag from './Tag'
+import CommonTag from '@components/business/Content/Tag'
 import {transPenny} from '../../../utils/FormatUtil'
 import styles from './SimilarGoods.styles'
 import ProductImage from '../ProductImage'
+import theme from '../../../theme'
+import {iconDeliveryNextDay} from '@const/resources'
+import FastImage from 'react-native-fast-image'
 // const productActivityLabel = {activityBeginTime: '2019-09-29 00:00:00', activityEndTime: '2019-09-29 22:20:40', activityName: '限时抢购活动', discountPrice: 20, labels: ['特价', '满减', '限时抢购'], promotionCode: 'K001', promotionType: 0, promotionTypeName: '限时抢购', ruleType: 0, salesRatio: '45%'}
 // 商品购物车图标
 export default class SimilarGoods extends React.Component {
@@ -75,6 +79,14 @@ export default class SimilarGoods extends React.Component {
             )
           }
           <ProductImage source={{ uri: Img.loadRatioImage(item.mainUrl.url, 200) }} size={150} />
+
+          <View style={styles.tlTagRow}>
+            {item.isAdvanceSale === 1 ? (
+              <CommonTag color={theme.white} backgroundColor={theme.preSaleTagBg}>预售</CommonTag>
+            ) : item.deliveryType === 2 ? (
+              <FastImage source={iconDeliveryNextDay} style={{ width: 38, height: 16 }} />
+            ) : null}
+          </View>
         </View>
         <View style={styles.goodsTags}>
           {
