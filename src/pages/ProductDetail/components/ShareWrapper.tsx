@@ -9,6 +9,7 @@ import {ShareChannel} from "@common/typings";
 import Poster from "./Poster";
 import { shareToWxFriends } from '@services/goodsDetail'
 import Wrapper from "@components/Wrapper";
+import {track} from "@utils/tracking";
 
 interface ProductInfo {
   code: string
@@ -38,6 +39,7 @@ const ShareWrapper: React.FunctionComponent<ShareWrapperProps> =
   const onChannelSelected = (channel: ShareChannel) => {
     switch (channel) {
       case ShareChannel.WeChatFriends:
+        track('ShareChanel', { Share_Chanel: '朋友圈', Page_type: '商详页' })
         shareToWxFriends({
           name: product.name,
           code: product.code,
@@ -48,6 +50,7 @@ const ShareWrapper: React.FunctionComponent<ShareWrapperProps> =
         break
       case ShareChannel.Poster:
       default:
+        track('ShareChanel', { Share_Chanel: '微信小程序分享图', Page_type: '商详页' })
         setChannelSelectorVis(false)
         setPosterVis(true)
         break

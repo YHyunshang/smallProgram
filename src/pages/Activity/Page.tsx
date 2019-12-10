@@ -18,6 +18,8 @@ import Empty from './components/Empty'
 import TideManActivity from './components/TideMan/TideManActivity'
 import AdTitle from '@components/business/Content/AdTitle'
 import Loading from '../../components/common/Loading'
+import withHistory from "@HOC/withHistory";
+
 interface Props {
   activityCode: string // 活动编码
   shopCode?: string
@@ -41,6 +43,8 @@ interface State {
   }
 }
 
+// @ts-ignore: hoc can wrap class-styled components
+@withHistory({ path: '活动页', name: '活动页' })
 export default class Page extends React.Component<Props, State> {
   loading: any
   constructor(props) {

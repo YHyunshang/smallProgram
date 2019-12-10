@@ -18,6 +18,8 @@ import {ActivityStatus, BaseObj, Product, ProductDeliveryType, ProductLabels, Pr
 import theme from '@theme'
 import {formatFloorData} from './utils'
 import {LimitTimeBuy as LimitTimeBuyScene} from "@components/Scene";
+import withHistory from "@HOC/withHistory";
+import History from "@utils/history";
 
 const PlaceholderForNativeHeight = Native.getStatusBarHeight() + 86 + TabHeight
 const WindowWidth = Dimensions.get('window').width
@@ -68,6 +70,8 @@ interface State {
   shouldRefreshTab: boolean
 }
 
+// @ts-ignore: hoc can wrap class-styled components
+@withHistory({ path: '首页', name: '首页' })
 export default class Page extends React.Component<{}, State> {
   state = {
     shop: { code: '', type: '' },
@@ -328,6 +332,8 @@ export default class Page extends React.Component<{}, State> {
 
     const currentTab = tabList[index]
     if (!currentTab) return
+
+    History.updateCur(({ extraData = {} }) => ({ extraData: { ...extraData, currentTab: currentTab.title } }))
 
     this.setState({ currentTabIdx: index })
     if (!isRefresh) {

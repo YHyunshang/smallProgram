@@ -16,6 +16,7 @@ import Empty from './components/Empty'
 import { hotSaleBanner } from '@const/resources'
 import FitImage from 'react-native-fit-image'
 import {ProductDeliveryType, ProductType} from "@common/typings";
+import withHistory from "@HOC/withHistory";
 
 interface State {
   tabList: {
@@ -35,6 +36,8 @@ interface State {
   }
 }
 
+// @ts-ignore: hoc can wrap class-styled components
+@withHistory({ path: '热销排行', name: '热销排行' })
 export default class Page extends React.Component<Object, State> {
   state = {
     tabList: [],

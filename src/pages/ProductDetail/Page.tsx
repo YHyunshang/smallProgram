@@ -10,6 +10,9 @@ import PreSale from "./containers/PreSale";
 import Normal from "./containers/Normal";
 import {showToast, withLoading} from "@utils/native";
 import withInitialData from "@HOC/withInitialData";
+import {track} from "@utils/tracking";
+import withHistory from "@HOC/withHistory";
+import History from "@utils/history";
 
 interface InitialProductData extends BaseObj {
   type?: ProductType  // 商品类型
@@ -27,7 +30,11 @@ interface PageState {
   poster: string // 商品海报
 }
 
-class Page extends React.Component<PageProps, PageState> {
+// @ts-ignore: hoc can wrap class-styled components
+@withHistory({ path: '商详页', name: '商详页' })
+// @ts-ignore: hoc can wrap class-styled components
+@withInitialData
+export default class Page extends React.Component<PageProps, PageState> {
   static defaultProps = {
     initialData: {
       type: ProductType.Normal
@@ -48,7 +55,7 @@ class Page extends React.Component<PageProps, PageState> {
   }
 
   init = async () => {
-    const { productCode, storeCode, initialData: { type } } = this.props
+    const { productCode, storeCode, initialData: { $$tracking } } = this.props
 
     // request similar products
     getSimilarProduct(productCode, storeCode)
@@ -62,11 +69,23 @@ class Page extends React.Component<PageProps, PageState> {
     }
     this.setState({ productDetail: product })
 
+    const detailInfo = product.resChannelStoreProductVO || {}  // 商详信息
+    const sliderInfo = product.productSliderImagesResponseVOList || {}  // 轮播图
+
+    // 路由入栈
+    History.updateCur({ name: detailInfo.productName })
+
+    // tracking
+    const isFromRNPage = $$tracking instanceof Object
+    isFromRNPage && track('productDetail', {
+      ...$$tracking,
+      product_id: detailInfo.productCode,
+      product_name: detailInfo.productName,
+      original_price: detailInfo.price,
+      present_price: detailInfo.promotionPrice || detailInfo.price,
+    })
+
     // get poster
-    const {
-      resChannelStoreProductVO: detailInfo = {},  // 商详信息
-      productSliderImagesResponseVOList: sliderInfo = [],  // 轮播图
-    } = product
     const priceOnPoster = detailInfo.promotionPrice || detailInfo.price
     let thumbnail = detailInfo.mainUrl
     if (!thumbnail) {
@@ -105,5 +124,3 @@ class Page extends React.Component<PageProps, PageState> {
       )
   }
 }
-
-export default withInitialData(Page)

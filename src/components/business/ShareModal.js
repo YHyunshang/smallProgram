@@ -22,6 +22,7 @@ import Icon from '../../components/Icon'
 import styles from './ShareModal.styles'
 import {wechatFriend, wechatMoments} from '../../constants/resources'
 import {WeChatMP} from '@common/config'
+import {track} from '../../utils/tracking'
 const rnAppModule = NativeModules.RnAppModule// 原生商品详情模块
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
 export default class ShareModal extends React.Component {
@@ -82,6 +83,11 @@ export default class ShareModal extends React.Component {
     //     this.refs.toast.show('没有安装微信软件，请您安装微信之后再试', 2000)
     //   }
     // })
+
+    track('Share', {
+      Page_type: '商详页',
+      Page_name: productParams.productDesc,
+    })
     let weixinMiniProgramShareInfo = {
       type: 'miniProgram',
       title: '商品详情分享',

@@ -3,6 +3,7 @@
     "jsx": "react-native",
     "lib": ["es6", "es2017.object", "es2017.string", "es2018.promise"],
     "downlevelIteration": true,
+    "experimentalDecorators": true,
     "baseUrl": ".",
     "paths": {
       "@utils": ["./src/utils"],

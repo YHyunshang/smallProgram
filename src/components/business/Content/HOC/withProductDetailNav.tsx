@@ -24,7 +24,7 @@ const withProductDetailNav = <P extends object>(
           params: {
             productCode: code,
             storeCode: shopCode,
-            directTransmitParams: JSON.stringify({
+            directTransmitParams: {
               type,
               name,
               subTitle: desc,
@@ -33,7 +33,7 @@ const withProductDetailNav = <P extends object>(
               spec,
               count,
               thumbnail,
-            })
+            }
           },
         })
       }

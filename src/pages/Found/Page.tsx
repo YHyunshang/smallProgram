@@ -5,6 +5,7 @@ import { CMSServices } from '@services'
 import ActivityWithIPSC from '@components/business/Content/ActivityWithIPS'
 import {RefreshControl, View, FlatList} from 'react-native'
 import theme from '@theme'
+import withHistory from "@HOC/withHistory";
 
 const ActivityWithIPS = React.memo(ActivityWithIPSC)
 
@@ -15,6 +16,8 @@ interface State {
   enablePageScroll: boolean
 }
 
+// @ts-ignore: hoc can wrap class-styled components
+@withHistory({ path: '发现页', name: '发现页' })
 export default class Page extends React.PureComponent<Object, State> {
   state = {
     loading: false,

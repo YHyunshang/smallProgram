@@ -8,6 +8,7 @@
 import {DeviceEventEmitter, Dimensions, NativeEventEmitter, NativeModules, Platform, StatusBar,} from 'react-native'
 import * as Log from './log'
 import {BaseObj, Product} from '@common/typings'
+import History from "@utils/history";
 
 export enum NavPageType {
   NATIVE = '0',
@@ -17,7 +18,7 @@ export enum NavPageType {
 export interface Navigation {
   type: NavPageType
   uri: string
-  params?: {}
+  params?: BaseObj
   title?: string
 }
 /**
@@ -27,7 +28,7 @@ export interface Navigation {
  *               params： 跳转页面所需参数
  *               title：页面标题
  */
-export async function navigateTo({ type, uri, params, title }: Navigation) {
+export async function navigateTo({ type, uri, params={}, title }: Navigation) {
   let navigate: Function
   try {
     navigate = NativeModules.HomeNativeManager.pushToNewPage
@@ -45,32 +46,30 @@ export async function navigateTo({ type, uri, params, title }: Navigation) {
   const pageType = type
   const pageUri = platformUri
 
+  const navParams = {
+    ...params,
+    directTransmitParams: JSON.stringify({ // 透传给下级页面的数据
+      $$tracking: History.cur() || {},
+      ...(params.directTransmitParams || {})
+    }),
+    title: title || (uri === 'RNPreviewPurchase' ? '茅台专售' : '永辉买菜'),
+  }
+
   Log.debug(
     'calling HomeNativeManager.pushToNewPage with arguments',
     pageType,
     pageUri,
     JSON.stringify({ params: { ...params, title } })
   )
-  if(uri==='RNPreviewPurchase'){//如果是茅台专售页面再需判断是否登录，登录成功才跳转至茅台购买页面，否则跳转至登录页面
-    NativeModules.RnAppModule.verifyIsOnlineCallback(
-      (errMsg, responseData) => {
-        if (responseData=='1') {//返回1表示已登录，0表示未登录
-          return navigate(
-            pageType,
-            pageUri,
-            JSON.stringify({ params: { ...params, title: title || '茅台专售' } })
-          )
-        }
-      }
-    )
-  }
-  else{
-    return navigate(
-      pageType,
-      pageUri,
-      JSON.stringify({ params: { ...params, title: title || '永辉买菜' } })
-    )
-  }
+
+  const preCheck = uri === 'RNPreviewPurchase'  // 茅台跳转先检查是否已登陆
+    ? checkIsLoginOrGoToLogin()
+    : Promise.resolve(true)
+  preCheck.then(passed => passed && navigate(
+    pageType,
+    pageUri,
+    JSON.stringify({ params: navParams }),
+  ))
 }
 
 /**
@@ -317,4 +316,19 @@ export function withLoading(func: Function) {
       ? result.finally(() => toggleLoading(false))
       : result
   }
+}
+
+/**
+ * 检查是否已登陆否则跳转登陆
+ * @return Promise resolve(true) 为已登陆，resolve(false) 为未登陆
+ */
+export function checkIsLoginOrGoToLogin(): Promise<boolean> {
+  return new Promise((resolve, reject) => {
+    NativeModules.RnAppModule.verifyIsOnlineCallback(
+      (errMsg, responseData) => {
+        if (errMsg) reject(errMsg)
+        else resolve(responseData !== '1')
+      }
+    )
+  })
 }

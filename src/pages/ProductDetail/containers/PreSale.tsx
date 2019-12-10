@@ -11,6 +11,7 @@ import ProductSection from "../components/ProductSection.PreSale";
 import DetailSection from "../components/DetailSection.PreSale";
 import ShareWrapper from "../components/ShareWrapper";
 import {View} from "react-native";
+import {track} from "@utils/tracking";
 
 export interface PreSaleProps {
   product: BaseObj // 商品详情数据
@@ -39,7 +40,17 @@ class PreSale extends React.Component<PreSaleProps, PreSaleState> {
   }
 
   toggleShareVis = (visible: boolean) => {
-    visible && toggleGoodsDetailCartBarVis(false)
+    if (visible) {
+      toggleGoodsDetailCartBarVis(false)
+      const { product = {} } = this.props
+      const detailData = product.resChannelStoreProductVO || {}
+      track('Share', {
+        Page_type: '商详页',
+        Page_name: detailData.productName,
+        original_price: detailData.price,
+        present_price: detailData.promotionPrice,
+      })
+    }
     this.setState({shareWrapperVis: visible})
   }
 

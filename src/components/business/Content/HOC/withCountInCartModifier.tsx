@@ -9,6 +9,8 @@ import {Product} from '@common/typings'
 import debounce from 'lodash/debounce'
 import {CMSServices} from '@services'
 import {Log, Native} from '@utils'
+import {track} from "@utils/tracking";
+import History from "@utils/history";
 
 interface Props extends Product {
   shopCode: string // 门店编码
@@ -76,6 +78,18 @@ export default function withCartCountModify(WrappedComponent) {
     }
 
     onModifyCount = count => {
+      const currentScene = History.cur() || { path: '', name: '' }
+      const { code, name, price, slashedPrice, spec } = this.props
+      track('addToShoppingCart', {
+        $screen_name: currentScene.name,
+        page_type: currentScene.path,
+        product_id: code,
+        product_name: name,
+        original_price: slashedPrice || price,
+        present_price: price,
+        product_spec: spec,
+        tab_name: currentScene.extraData ? currentScene.extraData.currentTab || '' : ''
+      })
       if (
         count === 1 &&
         this.state.count === 0 &&

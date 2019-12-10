@@ -28,6 +28,7 @@ import FastImage from 'react-native-fast-image/src/index'
 import {FitImg} from '../../../components'
 import memorize from "memoize-one";
 import {ProductThumbnail} from '../../../common/config'
+import {track} from '../../../utils/tracking'
 
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
 
@@ -81,6 +82,14 @@ class Normal extends React.Component {
   handleShowModal = () => {
     goodsDetailManager.hideBottomViews()// 隐藏底部购物车模块
     this.shareModalRef.current.showShareModal()
+    const { product = {} } = this.props
+    const detailData = product.resChannelStoreProductVO || {}
+    track('Share', {
+      Page_type: '商详页',
+      Page_name: detailData.productName,
+      original_price: detailData.price,
+      present_price: detailData.promotionPrice,
+    })
   }
   /**
    * @description: 显示生成海报弹层
@@ -88,6 +97,7 @@ class Normal extends React.Component {
   handlePosterModal=() => {
     goodsDetailManager.hideBottomViews()// 隐藏底部购物车模块
     this.posterModalRef.current.showPosterModal()
+    track('ShareChanel', { Share_Chanel: '微信小程序分享图', Page_type: '商详页' })
   }
 
   handleMaota() {
@@ -101,6 +111,23 @@ class Normal extends React.Component {
    * @description: 点击相似商品列表跳转至商品详情
    */
   jumpGoodsDetail=(item) => {
+    const { product } = this.props
+    const detailData = product.resChannelStoreProductVO || {}
+    track('RecommendClick', {
+      scenerio_name: '相似商品',
+      product_id: item.productCode,
+      product_name: item.productName,
+      origin_price: item.price,
+      present_price: item.promotionPrice || item.price,
+      product_spec: item.productSpecific,
+      opration_type: '点击商品',
+      strategy_id: '',
+      from_product_id: detailData.productCode,
+      from_product_name: detailData.productName,
+      from_product_original_price: detailData.price,
+      from_product_present_price: detailData.promotionPrice || detailData.price,
+    })
+
     Native.navigateTo({
       type: Native.NavPageType.NATIVE,
       uri: 'A003,A003',

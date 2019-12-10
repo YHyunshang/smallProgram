@@ -7,6 +7,7 @@ import styles from './Page.styles'
 import CartFooter from "@components/business/CartFooter";
 import {LimitTimeBuy as LimitTimeBuyScene} from "@components/Scene";
 import {CMSServices} from "@services";
+import withHistory from "@HOC/withHistory";
 
 interface Props {
   shopCode: string
@@ -17,6 +18,8 @@ interface State {
   amount: number
 }
 
+// @ts-ignore: hoc can wrap class-styled components
+@withHistory({ path: '限时抢购活动页', name: '限时抢购活动页' })
 export default class Page extends React.Component<Props, State> {
   state = {
     count: 0,
