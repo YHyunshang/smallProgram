@@ -375,12 +375,12 @@ class Normal extends React.Component {
                 </View>
               </View>
               <View style={styles.goodsTags}>
+                {goodsInfo.deliveryType === 2 && (
+                  <FastImage source={iconDeliveryNextDay} style={{ width: 38, height: 16 }} />
+                )}
                 {tags}
                 {productTags}
                 {orderTags}
-                {product.deliveryType === 2 && (
-                  <FastImage source={iconDeliveryNextDay} style={{ width: 38, height: 16 }} />
-                )}
               </View>
               <View style={styles.goodsWrapper}>
                 <Text numberOfLines={1} style={styles.goodsName}>{name}</Text>
