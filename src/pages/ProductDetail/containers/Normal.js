@@ -293,7 +293,7 @@ class Normal extends React.Component {
     const goodsInfo = product.resChannelStoreProductVO || {}
     const productImgList = product.productDetailImagesResponseVOList || []
 
-    const loading = !!goodsInfo.productCode
+    const loading = !goodsInfo.productCode
     const shopUrl = this.getShopUrl(goodsInfo.shopUrl)
     const productActivityLabel = goodsInfo.productActivityLabel || {}
     const orderActivityLabel = goodsInfo.orderActivityLabel || {}
