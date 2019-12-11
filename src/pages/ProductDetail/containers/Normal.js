@@ -176,13 +176,7 @@ class Normal extends React.Component {
    */
   onMomentumScrollEnd = (event) => {
     let topTabY = event.nativeEvent.contentOffset.y
-    if (topTabY === 0) {
-      this.tabRef.current.resetIndex(0)
-    } else if (topTabY && topTabY >= this.goodsLayoutY && topTabY < this.detailLayoutY) {
-      this.tabRef.current.resetIndex(0)
-    } else if (topTabY && topTabY >= this.detailLayoutY) {
-      this.tabRef.current.resetIndex(1)
-    }
+    this.tabRef.current.resetIndex(topTabY < this.detailLayoutY ? 0 :1)
   }
   /**
    * @description: 跳转至原生的评价列表页面
