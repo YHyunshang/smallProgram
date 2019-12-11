@@ -27,8 +27,10 @@ export default class Page extends React.PureComponent<Object, State> {
 
   async componentDidMount() {
     const shopCode = await Native.getConstant('storeCode')
-    this.setState({ shopCode })
-    this.requestPageData(shopCode)
+    if (shopCode) {
+      this.setState({shopCode})
+      this.requestPageData(shopCode)
+    }
     this.nativeSubscription = CMSServices.subscriptShopChange(
       this.onNativeShopChange
     )
