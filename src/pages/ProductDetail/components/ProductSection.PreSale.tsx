@@ -54,7 +54,9 @@ const ProductSection: React.FunctionComponent<ProductSectionProps> =
 
         <View style={styles.preOrderRow}>
           <Text style={styles.normalText}>上市价 ¥{transPenny(preSaleData.onSalePrice)}</Text>
-          <Text style={styles.preOrderCountText}>{preSaleData.reserveNumber || 0}人已预订</Text>
+          <View style={styles.preOrderCountBox}>
+            <Text style={styles.preOrderCountText}>{preSaleData.reserveNumber || 0}人已预订</Text>
+          </View>
         </View>
 
         <View style={styles.productPropertyRow}>

@@ -53,14 +53,17 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 15,
   },
-  preOrderCountText: {
+  preOrderCountBox: {
     flexShrink: 0,
+    height: 16,
+    borderWidth: 0.5,
+    borderColor: '#B3B3B3',
+    paddingHorizontal: 5,
+    justifyContent: 'center',
+  },
+  preOrderCountText: {
     fontSize: 12,
     color: '#B3B3B3',
-    lineHeight: 15,
-    paddingHorizontal: 5,
-    borderColor: '#B3B3B3',
-    borderWidth: 0.5,
   },
 
   productPropertyRow: {
