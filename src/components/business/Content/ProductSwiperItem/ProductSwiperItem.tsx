@@ -7,7 +7,7 @@ import { Product } from '../typings'
 import Tag from '../Tag'
 import CountOperator from './CountOperator'
 import FastImage from 'react-native-fast-image'
-import ProductImage from '@components/business/ProductImage'
+
 interface Props extends Product {
   disableAdd: boolean
 }
@@ -55,12 +55,12 @@ function ProductSwiperItem({
       <TouchableWithoutFeedback onPress={navigateToProductDetail}>
         <View style={styles.productBox}>
           <View style={styles.thumbnailBox}>
-            {/* <FastImage
+            <FastImage
               style={styles.thumbnail}
               source={{ uri: fitThumbnail }}
               resizeMode={FastImage.resizeMode.contain}
-            /> */}
-            <ProductImage source={{ uri: fitThumbnail }} size={97} />
+            />
+
             {!!tag && (
               <View style={styles.tagRow}>
                 <Tag color="#FFE5E0">

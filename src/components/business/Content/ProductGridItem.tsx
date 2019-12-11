@@ -6,7 +6,6 @@ import * as React from 'react'
 import { View, Text, TouchableWithoutFeedback, Image } from 'react-native'
 import useTheme from './ProductGridItem.styles'
 import ProductCart from '../ProductCart'
-import ProductImage from '@components/business/ProductImage'
 import { Product } from './typings'
 import withCartCountModify from './HOC/withCountInCartModifier'
 import { Native, Img } from '@utils'
@@ -76,7 +75,7 @@ function ProductGridItem({
             style={styles.thumbnailBox}
             onLayout={e => setThumbnailWidth(e.nativeEvent.layout.width)}
           >
-            {/* <FastImage
+            <FastImage
               style={[
                 styles.thumbnail,
                 thumbnailWidth && {
@@ -86,8 +85,7 @@ function ProductGridItem({
               ]}
               source={{ uri: fitThumbnail }}
               resizeMode={FastImage.resizeMode.cover}
-            /> */}
-            <ProductImage source={{ uri: Img.loadRatioImage(thumbnail, thumbnailWidth) }} size={thumbnailWidth} />
+            />
             <View style={styles.tagRow}>
               {!!tag && <Text style={styles.tag}>{tag}</Text>}
             </View>
