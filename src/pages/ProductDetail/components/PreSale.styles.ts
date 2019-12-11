@@ -56,6 +56,7 @@ export default StyleSheet.create({
   preOrderCountBox: {
     flexShrink: 0,
     height: 16,
+    borderRadius: 1,
     borderWidth: 0.5,
     borderColor: '#B3B3B3',
     paddingHorizontal: 5,

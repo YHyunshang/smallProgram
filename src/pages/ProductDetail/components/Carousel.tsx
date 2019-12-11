@@ -19,8 +19,8 @@ export interface CarouselProps {
   images: string[]
 }
 
-const Carousel: React.FunctionComponent<CarouselProps> = ({ placeholder, images }) => {
-  const [ placeholderOpacity ] = React.useState(new Animated.Value(0))
+const Carousel: React.FunctionComponent<CarouselProps> = ({ placeholder, images=[] }) => {
+  const [ placeholderOpacity ] = React.useState(new Animated.Value(1))
   const [ placeholderVis, setPlaceholderVis ] = React.useState(true)
 
   let loadedCount = 0
@@ -40,6 +40,7 @@ const Carousel: React.FunctionComponent<CarouselProps> = ({ placeholder, images 
   return (
     <View style={styles.container}>
       <Swiper
+        key={images.length}
         height={Global.WindowWidth}
         loop
         autoplay
