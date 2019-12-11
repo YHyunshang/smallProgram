@@ -127,7 +127,7 @@ export default class Page extends React.Component<Object, State> {
       price: currentPrice,
       slashedPrice,
       count: data.productNum,
-      inventoryLabel: '',
+      inventoryLabel: data.isAdvanceSale !== 1 ? data.inventoryLabel : '',
       remarks,
       labels: (data.productActivityLabel || {labels: []}).labels,
       deliveryType: {

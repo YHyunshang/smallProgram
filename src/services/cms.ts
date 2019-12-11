@@ -251,7 +251,7 @@ export function formatProduct(data: { [index: string]: any }, shopCode: string =
     price: data.promotionPrice < data.price ? data.promotionPrice : data.price,
     slashedPrice: data.promotionPrice < data.price ? data.price : undefined,
     count: data.productNum || 0,
-    inventoryLabel: data.inventoryLabel,
+    inventoryLabel: type === ProductType.PreSale ? '' : data.inventoryLabel,
     remark: data.remark,
     remarks,
     labels: data.labelList || [],
