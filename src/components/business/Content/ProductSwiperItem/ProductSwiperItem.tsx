@@ -48,8 +48,8 @@ function ProductSwiperItem({
                 <Tag color={GlobalTheme.white} backgroundColor={GlobalTheme.preSaleTagBg}>预售</Tag>
               ) : deliveryType === ProductDeliveryType.NextDay ? (
                 <FastImage source={iconDeliveryNextDay} style={{width: 38, height: 16}}/>
-              ) : labels.slice(0, 1).map(ele => (
-                <Tag>{ele}</Tag>
+              ) : labels.slice(0, 1).map((ele, index) => (
+                <Tag key={index}>{ele}</Tag>
               ))}
             </View>
 

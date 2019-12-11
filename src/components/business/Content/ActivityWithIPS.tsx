@@ -75,7 +75,7 @@ export default function ActivityWithIPS({
           style={styles.productSwiper}
           horizontal
           data={products}
-          keyExtractor={item => item._key_}
+          keyExtractor={item => `${item._key_}`}
           renderItem={productItemRender}
           showsHorizontalScrollIndicator={false}
         />
@@ -94,7 +94,7 @@ const ProductItem = React.memo(({ thumbnail, name, desc, spec, price, slashedPri
       params: {
         productCode: code,
         storeCode: shopCode,
-        directTransmitParams: JSON.stringify({
+        directTransmitParams: {
           name,
           subTitle: desc,
           price: price,
@@ -102,7 +102,7 @@ const ProductItem = React.memo(({ thumbnail, name, desc, spec, price, slashedPri
           spec,
           count,
           thumbnail: fitThumbnail,
-        })
+        }
       },
     })
   }

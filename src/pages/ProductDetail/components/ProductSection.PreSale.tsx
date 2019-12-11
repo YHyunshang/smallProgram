@@ -35,35 +35,38 @@ const ProductSection: React.FunctionComponent<ProductSectionProps> =
   const detailData = productData.resChannelStoreProductVO || {}
   const preSaleData = productData.resProductAdvanceSaleVO || {}
   const carouselData = preSaleData.resProductPicVOList || []
+
+  const loading = !detailData.productCode
   const carouselImages = carouselData.sort((a, b) => a.sort - b.sort)
     .map(ele => ele.picUrl)
+  const spec = loading ? initialData.spec : detailData.productSpecific
 
   return (
     <View>
       <Carousel placeholder={initialData.thumbnail} images={carouselImages}/>
       <PreSaleBar
-        price={detailData.promotionPrice || detailData.price}
+        price={loading ? initialData.price : (detailData.promotionPrice || detailData.price)}
         startTs={datetimeStr2Ts(preSaleData.activityBeginDate)}
         endTs={datetimeStr2Ts(preSaleData.activityEndDate)}
         onStatusChange={onActivityStatusChange}
       />
 
       <View style={[styles.section, styles.mainInfoBox, styles.ph15]}>
-        <Text style={styles.h1}>{preSaleData.productName}</Text>
-        <Text style={styles.h5}>{preSaleData.activityProductBrief}</Text>
+        <Text style={styles.h1}>{loading ? initialData.name : preSaleData.productName}</Text>
+        <Text style={styles.h5}>{loading ? initialData.subtitle : preSaleData.activityProductBrief}</Text>
 
         <View style={styles.preOrderRow}>
-          <Text style={styles.normalText}>上市价 ¥{transPenny(preSaleData.onSalePrice)}</Text>
+          <Text style={styles.normalText}>上市价 ¥{transPenny(loading ? initialData.slashedPrice : preSaleData.onSalePrice)}</Text>
           <View style={styles.preOrderCountBox}>
             <Text style={styles.preOrderCountText}>{preSaleData.reserveNumber || 0}人已预订</Text>
           </View>
         </View>
 
         <View style={styles.productPropertyRow}>
-          {!!detailData.productSpecific && (
+          {!!spec && (
             <View style={styles.productPropertyItem}>
               <FastImage style={styles.productPropertyIcon} source={productSpecific}/>
-              <Text style={styles.productPropertyText}>{detailData.productSpecific}</Text>
+              <Text style={styles.productPropertyText}>{spec}</Text>
             </View>
           )}
           {/* 保存条件 */}

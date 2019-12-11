@@ -135,14 +135,14 @@ class Normal extends React.Component {
       uri: 'A003,A003',
       params: {
         productCode: item.productCode,
-        directTransmitParams: JSON.stringify({
+        directTransmitParams: {
           name: item.productName,
           subTitle: item.subTitle,
           price: item.promotionPrice || item.price,
           slashedPrice: item.price,
           spec: item.productSpecific,
           thumbnail: Img.loadRatioImage(item.mainUrl.url, 200),
-        })
+        }
       }
     })
   }
@@ -290,10 +290,8 @@ class Normal extends React.Component {
     let tags, productTags, orderTags// 促销类型 1 直降促销, 2 满减促销, 3 满件减满减折促销 ,4 第N件N折/N元,5 限时抢购
     const { initialData = {}, product = {}, poster, similarProducts = [] } = this.props
 
-    const {
-      resChannelStoreProductVO: goodsInfo = {},
-      productDetailImagesResponseVOList: productImgList = [],
-    } = product
+    const goodsInfo = product.resChannelStoreProductVO || {}
+    const productImgList = product.productDetailImagesResponseVOList || []
 
     const loading = !!goodsInfo.productCode
     const shopUrl = this.getShopUrl(goodsInfo.shopUrl)
