@@ -12,6 +12,8 @@ const RNSensorsAnalyticsModule = NativeModules.RNSensorsAnalyticsModule;
  */
 export function track(event: string, data: object):void {
   try {
+    console.log(`tracking: event[${event}] data`)
+    console.table(data)
     RNSensorsAnalyticsModule.track(event, data)
   } catch (e) {
     console.warn('[TRACK] tracking failed', e)

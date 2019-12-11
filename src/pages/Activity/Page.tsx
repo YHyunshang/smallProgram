@@ -19,6 +19,7 @@ import TideManActivity from './components/TideMan/TideManActivity'
 import AdTitle from '@components/business/Content/AdTitle'
 import Loading from '../../components/common/Loading'
 import withHistory from "@HOC/withHistory";
+import History from "@utils/history";
 
 interface Props {
   activityCode: string // 活动编码
@@ -102,6 +103,7 @@ export default class Page extends React.Component<Props, State> {
     if (result.length > 0) {
       const tab = result[0]
       Native.setTitle(tab.pageName || '优选商品')
+      History.updateCur({ name: tab.pageName || '优选商品' })
       nextState.currentTabKey = tab.id
       nextState.tabContentMap = {
         [tab.id]: this.floorDataFormatter(tab.templateVOList),

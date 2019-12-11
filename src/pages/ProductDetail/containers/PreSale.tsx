@@ -50,7 +50,7 @@ class PreSale extends React.Component<PreSaleProps, PreSaleState> {
         product_id: detailData.productCode,
         product_name: detailData.productName,
         original_price: detailData.price,
-        present_price: detailData.promotionPrice,
+        present_price: detailData.promotionPrice || detailData.price,
       })
     }
     this.setState({shareWrapperVis: visible})

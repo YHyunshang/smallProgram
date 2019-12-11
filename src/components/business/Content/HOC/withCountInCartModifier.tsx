@@ -88,7 +88,8 @@ export default function withCartCountModify(WrappedComponent) {
         const currentScene = History.cur() || { path: '', name: '' }
         const { code, name, price, slashedPrice, spec } = this.props
         const {modifiedCount} = this.state
-        count > modifiedCount && track('addToShoppingCart', {
+        console.log(currentScene)
+        count > modifiedCount && track('addToShoppingcart', {
           $screen_name: currentScene.name,
           page_type: currentScene.path,
           product_id: code,

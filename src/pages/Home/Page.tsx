@@ -195,6 +195,8 @@ export default class Page extends React.Component<{}, State> {
       shouldRefreshTab: false,
       shouldRefreshFirstTab: false,
     })
+    History.updateCur(({ extraData = {} }) =>
+      ({ extraData: { ...extraData, currentTab: tabList.length > 0 ? tabList[0].title : '' } }))
   }
 
   requestCMSContentData = async (tabId, shopCode) => {
