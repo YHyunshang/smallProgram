@@ -92,9 +92,7 @@ export default class Page extends React.Component<Props, State> {
     const { result } = res
     let nextState = {
       currentTabKey: '',
-      tabList: result
-        .filter(ele => ele.templateVOList && ele.templateVOList.length)
-        .map(item => ({ key: item.id, label: item.showName })),
+      tabList: result.map(item => ({ key: item.id, label: item.showName })),
       tabContentMap: {},
     }
     if (result.length > 0) {
