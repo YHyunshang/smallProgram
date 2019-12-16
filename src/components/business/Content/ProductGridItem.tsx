@@ -14,6 +14,8 @@ import withProductDetailNav from "./HOC/withProductDetailNav";
 import Tag from "@components/business/Content/Tag";
 import GlobalTheme from "@theme";
 import {iconDeliveryNextDay} from "@const/resources";
+import {FitImg} from "@components";
+import {transPenny} from "@utils/FormatUtil";
 
 enum ThemeChoices {
   TWO_PER_ROW = '2x',
@@ -68,7 +70,7 @@ function ProductGridItem({
                 },
               ]}
               source={{ uri: fitThumbnail }}
-              resizeMode={FastImage.resizeMode.cover}
+              resizeMode="contain"
             />
             <View style={styles.tagRow}>
               {isPreSale ? (
@@ -94,11 +96,11 @@ function ProductGridItem({
             </Text>
             <View style={styles.priceRow}>
               <Text style={styles.slashedPrice}>
-                {!!slashedPrice ? `¥${slashedPrice / 100}` : ''}
+                {(!!slashedPrice && slashedPrice > price) ? `¥${transPenny(slashedPrice)}` : ''}
               </Text>
               <Text style={styles.currentPrice}>
                 <Text style={styles.pricePrefix}>¥</Text>
-                {price / 100}
+                {transPenny(price)}
               </Text>
             </View>
           </View>

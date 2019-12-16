@@ -20,6 +20,7 @@ export enum ActivityStatus {
 // 商品类型
 export enum ProductType {
   Normal = 'normal',
+  LimitTimeBuy = 'limit-time-buy',
   PreSale = 'pre-sale',
 }
 
@@ -41,7 +42,7 @@ export enum ProductDeliveryType {
 // 商品
 export interface Product {
   type?: ProductType // 商品类型，预售 / 普通
-  cartId: string // 购物车商品id
+  cartId?: string // 购物车商品id
   code: string // 商品编码
   thumbnail: string // 缩略图
   name: string // 商品名称

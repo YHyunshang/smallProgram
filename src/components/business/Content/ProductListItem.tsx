@@ -73,7 +73,7 @@ function ProductListItem({
             <Text style={styles.desc} numberOfLines={1} ellipsizeMode="tail">
               {desc}
             </Text>
-            <View style={styles.tagRow}>
+            <View style={styles.specRow}>
               {!!spec && <Text style={styles.spec}>{spec}</Text>}
             </View>
             <View style={styles.tagRow}>

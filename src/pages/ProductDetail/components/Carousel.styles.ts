@@ -10,6 +10,7 @@ const FullWidth = Global.WindowWidth
 export default StyleSheet.create({
   container: {
     position: 'relative',
+    backgroundColor: theme.white,
   },
   dot: {
     width: 7,

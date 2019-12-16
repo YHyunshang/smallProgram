@@ -7,7 +7,7 @@ import {ActivityStatus, BaseObj} from "@common/typings";
 import {ProductThumbnail} from "@common/config";
 import {setNativeBtmCart, toggleGoodsDetailCartBarVis} from "@utils/native";
 import PageContainer from "../components/PageContainer";
-import ProductSection from "../components/ProductSection.PreSale";
+import ProductSection from "../components/ProductSection/PreSale";
 import DetailSection from "../components/DetailSection.PreSale";
 import ShareWrapper from "../components/ShareWrapper";
 import {View} from "react-native";

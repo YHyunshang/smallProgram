@@ -2,10 +2,10 @@
  * Created by 李华良 on 2019-11-26
  */
 import * as React from 'react'
-import Carousel from "./Carousel";
-import PreSaleBar from "./PreSaleBar";
+import Carousel from "../Carousel";
+import PreSaleBar from "../PreSaleBar";
 import {Text, View} from "react-native";
-import styles from "./PreSale.styles";
+import styles from "../PreSale.styles";
 import FastImage from "react-native-fast-image";
 import {iconBagCircle, iconOrderCircle, productConditions, productPlace, productSpecific} from "@const/resources";
 import {ActivityStatus, BaseObj} from "@common/typings";
@@ -39,6 +39,7 @@ const ProductSection: React.FunctionComponent<ProductSectionProps> =
   const loading = !detailData.productCode
   const carouselImages = carouselData.sort((a, b) => a.sort - b.sort)
     .map(ele => ele.picUrl)
+  const subTitle = loading ? initialData.subtitle : preSaleData.activityProductBrief
   const spec = loading ? initialData.spec : detailData.productSpecific
 
   return (
@@ -53,7 +54,9 @@ const ProductSection: React.FunctionComponent<ProductSectionProps> =
 
       <View style={[styles.section, styles.mainInfoBox, styles.ph15]}>
         <Text style={styles.h1}>{loading ? initialData.name : preSaleData.productName}</Text>
-        <Text style={styles.h5}>{loading ? initialData.subtitle : preSaleData.activityProductBrief}</Text>
+        {!!subTitle && (
+          <Text style={styles.h5}>{subTitle}</Text>
+        )}
 
         <View style={styles.preOrderRow}>
           <Text style={styles.normalText}>上市价 ¥{transPenny(loading ? initialData.slashedPrice : preSaleData.onSalePrice)}</Text>

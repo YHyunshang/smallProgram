@@ -73,6 +73,12 @@ export default StyleSheet.create({
     lineHeight: 19,
   },
 
+  specRow: {
+    height: 23,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
   tagRow: {
     height: 23,
     flexDirection: 'row',

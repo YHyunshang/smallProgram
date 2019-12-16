@@ -4,5 +4,13 @@
 import Icon from "./Icon"
 import FitImg from "./FitImg"
 import PopUp from "./PopUp"
+import Progress from './Progress'
+import Wrapper from './Wrapper'
 
-export { Icon, FitImg, PopUp }
+export {
+  Icon,
+  FitImg,
+  PopUp,
+  Progress,
+  Wrapper,
+}
