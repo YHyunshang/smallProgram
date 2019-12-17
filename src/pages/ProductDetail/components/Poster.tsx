@@ -3,12 +3,12 @@
  */
 import * as React from 'react'
 import { PopUp } from '@components'
-import { View, Text } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import styles from './Poster.styles'
 import FastImage from 'react-native-fast-image'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import { download } from '@utils/img'
 import { showToast } from '@utils/native'
+import Spin from "@components/Spin";
 
 export interface PosterProps {
   visible: boolean
@@ -22,15 +22,21 @@ const Poster: React.FunctionComponent<PosterProps> = ({
   onClose,
 }) => {
   const saveImg = () =>
-    download(image).then(() => {
+    download(image).then(data => {
+      console.log('download result>>>>', data)
       showToast('图片保存成功', '1')
       onClose instanceof Function && setTimeout(onClose, 500)
-    })
+    }, console.error)
 
   return (
     <PopUp visible={visible} title="保存至相册" onClose={onClose}>
       <View style={styles.container}>
-        <FastImage style={styles.poster} source={{ uri: image }} />
+        <View style={styles.posterBox}>
+          {!image && (
+              <Spin>loading...</Spin>
+          )}
+          <FastImage style={styles.poster} source={{ uri: image }} />
+        </View>
         <TouchableOpacity disabled={!image} onPress={saveImg}>
           <View style={styles.btnSave}>
             <Text style={styles.btnText}>保存图片</Text>

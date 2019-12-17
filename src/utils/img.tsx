@@ -7,7 +7,7 @@
 import {PixelRatio, Dimensions, Image, ImageURISource, ImageRequireSource, Platform, CameraRoll} from 'react-native'
 import * as Log from './log'
 import {FastImageSource} from "react-native-fast-image";
-import {applyPhotosPermission, isiOS, onNativeEvent} from "@utils/native";
+import {applyPhotosPermission, isiOS, onNativeEvent, showToast} from "@utils/native";
 import RNFS from "react-native-fs";
 /**
  * 根据屏幕像素密度获取对应尺寸的图片
@@ -108,7 +108,11 @@ export function download(uri) {
     return _download_(uri)
   } else {
     return new Promise((resolve, reject) => {
-      const removeListener = onNativeEvent('applyResult', () => {
+      const removeListener = onNativeEvent('applyResult', ({ resultValue }) => {
+        if (resultValue !== 'true') {
+          showToast('请同意永辉买菜访问您的相册', '0')
+          return
+        }
         removeListener()
         _download_(uri)
           .then(resolve, reject)
@@ -123,14 +127,17 @@ async function _download_(url:string) {
   const timestamp = new Date().getTime() // 获取当前时间错
   const random = String((Math.random() * 1000000) | 0) // 六位随机数
   const dirs = isiOS ? RNFS.LibraryDirectoryPath : RNFS.ExternalDirectoryPath // 外部文件，共享目录的绝对路径（仅限android）
-  const downloadDest = `${dirs}/${timestamp + random}.jpg`
+  const downloadDest = `${dirs}/${timestamp}${random}.jpg`
 
   const request = RNFS.downloadFile({
     fromUrl: url,
     toFile: downloadDest,
     background: true,
+    begin: console.log,
+    progress: console.table,
+    connectionTimeout: 5 * 1000
   })
-
-  return request.promise
-    .then(() => CameraRoll.saveToCameraRoll(downloadDest))
+  console.log(request)
+  await request.promise
+  return CameraRoll.saveToCameraRoll(downloadDest)
 }

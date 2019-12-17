@@ -143,9 +143,7 @@ export const noActivity =isAndroid
 export const noStore =isAndroid
     ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/no-store.png' }
     : require('@img/no-store.png')
-export const greenLoading =isAndroid
-    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/green-loading.png' }
-    : require('@img/green-loading.png')
+export const greenLoading = require('@img/green-loading.png')
 export const defaultPoint =isAndroid
     ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/default-point.png' }
     : require('@img/default-point.png')
