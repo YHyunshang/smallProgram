@@ -55,7 +55,7 @@ export default function withCartCountModify(WrappedComponent) {
       CMSServices.updateProductCountInCart(code, count, price, '', shopCode)
         .then(res => {
           Log.debug(`change count success: current is ${count}`, res)
-          this.setState({ count, disableAdd: false })
+          this.setState({ modifiedCount: count, count, disableAdd: false })
           afterModifyCount && afterModifyCount(count, res)
         })
         .catch(err => {
@@ -100,7 +100,6 @@ export default function withCartCountModify(WrappedComponent) {
           tab_name: currentScene.extraData ? currentScene.extraData.currentTab || '' : ''
         })
 
-        this.setState({ modifiedCount: count })
         this.requestUpdateCount(count)
       }
     }
