@@ -22,10 +22,13 @@ const Poster: React.FunctionComponent<PosterProps> = ({
   onClose,
 }) => {
   const saveImg = () =>
-    download(image).then(data => {
-      showToast('图片保存成功', '1')
-      onClose instanceof Function && setTimeout(onClose, 500)
-    }, console.error)
+    download(image).then(
+      data => {
+        showToast('图片保存成功', '1')
+        onClose instanceof Function && setTimeout(onClose, 500)
+      },
+      () => showToast('图片保存失败，请授权永辉买菜访问您的相册', '0')
+    )
 
   return (
     <PopUp visible={visible} title="保存至相册" onClose={onClose}>

@@ -110,7 +110,7 @@ export function download(uri) {
     return new Promise((resolve, reject) => {
       const removeListener = onNativeEvent('applyResult', ({ resultValue }) => {
         if (resultValue !== 'true') {
-          showToast('请同意永辉买菜访问您的相册', '0')
+          showToast('图片保存失败，请授权永辉买菜访问您的相册', '0')
           return
         }
         removeListener()
@@ -133,11 +133,7 @@ async function _download_(url:string) {
     fromUrl: url,
     toFile: downloadDest,
     background: true,
-    begin: console.log,
-    progress: console.table,
-    connectionTimeout: 5 * 1000
   })
-  console.log(request)
   await request.promise
   return CameraRoll.saveToCameraRoll(downloadDest)
 }
