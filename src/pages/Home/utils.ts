@@ -210,8 +210,8 @@ export function formatFloorData(
         key: floor.id,
         component: Box,
         wrapperStyle: {
-          paddingTop: 25,
-          paddingBottom: Math.ceil(boxData.length / columnNumber) > 2 ? 0 : 25,
+          paddingTop: 18,
+          paddingBottom: Math.ceil(boxData.length / columnNumber) > 2 ? 0 : 18,
           backgroundColor: '#FFF',
         },
         props: {
