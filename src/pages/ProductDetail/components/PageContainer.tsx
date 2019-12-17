@@ -44,7 +44,7 @@ class PageContainer extends React.PureComponent<PageContainerProps, PageContaine
         .sort((a, b) => a[0] - b[0])
   )
 
-  onMomentumScrollEnd = e => {
+  onScroll = e => {
     const y = e.nativeEvent.contentOffset.y
     const sortedSectionY = this.sortSectionYByIndex(this.tabSectionLayoutYMap)
     const nextSection = sortedSectionY.find(([secIdx, secY]) => secY > y)
@@ -67,7 +67,8 @@ class PageContainer extends React.PureComponent<PageContainerProps, PageContaine
     <ScrollView
       ref={this.scrollViewRef}
       style={styles.body}
-      onMomentumScrollEnd={this.onMomentumScrollEnd}
+      onScroll={this.onScroll}
+      scrollEventThrottle={16}
       removeClippedSubviews={false}
       showsVerticalScrollIndicator={false}
     >
