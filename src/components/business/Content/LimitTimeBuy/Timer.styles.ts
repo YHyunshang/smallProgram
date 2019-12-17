@@ -20,14 +20,14 @@ export default StyleSheet.create({
   },
   timerText: {
     fontSize: 13,
-    fontFamily: Platform.OS === 'ios' ? 'Arial' : 'monospace',
+    fontFamily: theme.monospacedFont,
     minWidth: 20,
     lineHeight: 20,
     textAlign: 'center',
     textAlignVertical: 'center',
     color: theme.white,
     backgroundColor: theme.black,
-    borderRadius: 1,
+    borderRadius: 3,
     overflow: 'hidden',
   },
   timerTextMillisecond: {

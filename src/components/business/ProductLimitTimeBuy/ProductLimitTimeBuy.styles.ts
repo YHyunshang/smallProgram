@@ -100,7 +100,8 @@ export default StyleSheet.create({
     paddingHorizontal: 3,
     color: '#6D7278',
     backgroundColor: 'rgba(245,245,245,1)',
-    borderRadius: 1,
+    borderRadius: 2,
+    overflow: 'hidden',
     marginRight: 5,
   },
 
