@@ -2,36 +2,51 @@
  * Created by 李华良 on 2019-11-26
  */
 import * as React from 'react'
-import {ActivityStatus, BaseObj, Product, ProductDeliveryType, ProductType} from "@common/typings";
+import {
+  ActivityStatus,
+  BaseObj,
+  Product,
+  ProductDeliveryType,
+  ProductType,
+} from '@common/typings'
 import uniqBy from 'lodash/uniqBy'
-import {getGoodsDetailData, getPoster, getSimilarProduct} from '@services/goodsDetail'
-import {ProductThumbnail} from "@common/config";
-import {transPenny} from "@utils/FormatUtil";
-import {setNativeBtmCart, showToast, toggleGoodsDetailCartBarVis} from "@utils/native";
-import withInitialData from "@HOC/withInitialData";
-import {track} from "@utils/tracking";
-import withHistory from "@HOC/withHistory";
-import History from "@utils/history";
-import PageContainer from "./components/PageContainer";
-import ShareWrapper from "./components/ShareWrapper";
-import memoized from "memoize-one";
+import {
+  getGoodsDetailData,
+  getPoster,
+  getSimilarProduct,
+} from '@services/goodsDetail'
+import { ProductThumbnail } from '@common/config'
+import { transPenny } from '@utils/FormatUtil'
+import {
+  setNativeBtmCart,
+  showToast,
+  toggleGoodsDetailCartBarVis,
+} from '@utils/native'
+import withInitialData from '@HOC/withInitialData'
+import { track } from '@utils/tracking'
+import withHistory from '@HOC/withHistory'
+import History from '@utils/history'
+import PageContainer from './components/PageContainer'
+import ShareWrapper from './components/ShareWrapper'
+import memoized from 'memoize-one'
 import {
   LimitTimeBuy as ProductSectionLimitTimeBuy,
   Normal as ProductSectionNormal,
   PreSale as ProductSectionPreSale,
-} from "./components/ProductSection";
-import DetailSection from "./components/DetailSection.PreSale";
-import {placeholderProduct} from "@const/resources";
-import SimilarProducts from "./components/SimilarProducts";
+} from './components/ProductSection'
+import DetailSection from './components/DetailSection.PreSale'
+import { placeholderProduct } from '@const/resources'
+import SimilarProducts from './components/SimilarProducts'
+import { loadRatioImage } from '@utils/img'
 
 interface InitialProductData extends BaseObj {
-  type?: ProductType  // 商品类型
+  type?: ProductType // 商品类型
 }
 
 export interface PageProps {
-  productCode: string  // 商品编码
-  storeCode: string  // 门店编码
-  initialData?: InitialProductData  // 初始数据，上级页面透传过来的简单商品数据
+  productCode: string // 商品编码
+  storeCode: string // 门店编码
+  initialData?: InitialProductData // 初始数据，上级页面透传过来的简单商品数据
 }
 
 interface PageState {
@@ -41,17 +56,26 @@ interface PageState {
   shareWrapperVis: boolean // 分享 wrapper 是否可见
 }
 
+// 获取以小程序方式分享到微信好友所需的商品信息
 const getProductInfoForSharing = memoized((data: BaseObj) => {
-  const {
-    resChannelStoreProductVO: detailInfo = {},
-  } = data
+  const detailInfo = data.resChannelStoreProductVO || {}
+  const sliderInfo = data.productSliderImagesResponseVOList || []
+
+  let thumbnail = ProductThumbnail
+  if (detailInfo.mainUrl && detailInfo.mainUrl.fileType === 0 && detailInfo.url)
+    thumbnail = detailInfo.mainUrl.url
+  else {
+    const img = sliderInfo.find(ele => ele.fileType === 0)
+    if (img) thumbnail = img.url
+  }
+  thumbnail = loadRatioImage(thumbnail, 300)
 
   return {
     code: detailInfo.productCode,
-    name: detailInfo.prodcutName,
+    name: detailInfo.productName,
     storeCode: detailInfo.storeCode,
-    desc: data.subTitle,
-    thumbnail: data.mainUrl,
+    desc: detailInfo.subTitle,
+    thumbnail,
   }
 })
 
@@ -62,8 +86,8 @@ const getProductInfoForSharing = memoized((data: BaseObj) => {
 export default class Page extends React.Component<PageProps, PageState> {
   static defaultProps = {
     initialData: {
-      type: ProductType.Normal
-    }
+      type: ProductType.Normal,
+    },
   }
 
   constructor(props: PageProps) {
@@ -72,7 +96,7 @@ export default class Page extends React.Component<PageProps, PageState> {
       productDetail: {},
       similarProducts: [],
       poster: '',
-      shareWrapperVis: false
+      shareWrapperVis: false,
     }
   }
 
@@ -81,13 +105,18 @@ export default class Page extends React.Component<PageProps, PageState> {
   }
 
   init = async () => {
-    const { productCode, storeCode, initialData: { $$tracking } } = this.props
+    const {
+      productCode,
+      storeCode,
+      initialData: { $$tracking },
+    } = this.props
 
     // request similar products
     getSimilarProduct(productCode, storeCode)
-      .then(data => uniqBy(data.result || [], 'productCode')
-        .filter(ele => ele && !!ele.productCode)
-        .map(ele => this.formatSimilarProducts(ele))
+      .then(data =>
+        uniqBy(data.result || [], 'productCode')
+          .filter(ele => ele && !!ele.productCode)
+          .map(ele => this.formatSimilarProducts(ele))
       )
       .then(similarProducts => this.setState({ similarProducts }))
 
@@ -99,29 +128,32 @@ export default class Page extends React.Component<PageProps, PageState> {
     }
     this.setState({ productDetail: product })
 
-    const detailInfo = product.resChannelStoreProductVO || {}  // 商详信息
-    const sliderInfo = product.productSliderImagesResponseVOList || {}  // 轮播图
+    const detailInfo = product.resChannelStoreProductVO || {} // 商详信息
+    const sliderInfo = product.productSliderImagesResponseVOList || {} // 轮播图
 
     // 路由入栈
     History.updateCur({ name: detailInfo.productName })
 
     // tracking
     const isFromRNPage = $$tracking instanceof Object
-    isFromRNPage && track('productDetail', {
-      product_detail_source: $$tracking.name,
-      page_type: $$tracking.path,
-      product_id: detailInfo.productCode,
-      product_name: detailInfo.productName,
-      original_price: detailInfo.price,
-      present_price: detailInfo.promotionPrice || detailInfo.price,
-      product_spec: detailInfo.productSpecific,
-    })
+    isFromRNPage &&
+      track('productDetail', {
+        product_detail_source: $$tracking.name,
+        page_type: $$tracking.path,
+        product_id: detailInfo.productCode,
+        product_name: detailInfo.productName,
+        original_price: detailInfo.price,
+        present_price: detailInfo.promotionPrice || detailInfo.price,
+        product_spec: detailInfo.productSpecific,
+      })
 
     // get poster
     const priceOnPoster = detailInfo.promotionPrice || detailInfo.price
     let thumbnail = detailInfo.mainUrl
     if (!thumbnail) {
-      const firstImgInSlider = sliderInfo.find(ele => ele.fileType === 0 && ele.url)
+      const firstImgInSlider = sliderInfo.find(
+        ele => ele.fileType === 0 && ele.url
+      )
       thumbnail = firstImgInSlider ? firstImgInSlider.url : ProductThumbnail
     }
     const { result: poster } = await getPoster({
@@ -134,17 +166,28 @@ export default class Page extends React.Component<PageProps, PageState> {
     this.setState({ poster })
   }
 
-  formatSimilarProducts = (data: BaseObj):{ beforeNav: () => void } & Product => {
-    const { mainUrl = {}, promotionPrice, price, productActivityLabel, orderActivityLabel } = data
+  formatSimilarProducts = (
+    data: BaseObj
+  ): { beforeNav: () => void } & Product => {
+    const {
+      mainUrl = {},
+      promotionPrice,
+      price,
+      productActivityLabel,
+      orderActivityLabel,
+    } = data
     const thumbnail = mainUrl.fileType === 0 ? mainUrl.url : placeholderProduct
-    const labels = [...new Set([
-      ...((productActivityLabel || {}).labels || []),
-      ...((orderActivityLabel || {}).labels || []),
-    ])]
+    const labels = [
+      ...new Set([
+        ...((productActivityLabel || {}).labels || []),
+        ...((orderActivityLabel || {}).labels || []),
+      ]),
+    ]
     return {
-      type: data.isAdvanceSale === 1
-        ? ProductType.PreSale
-        : (productActivityLabel || {}).promotionType === 5
+      type:
+        data.isAdvanceSale === 1
+          ? ProductType.PreSale
+          : (productActivityLabel || {}).promotionType === 5
           ? ProductType.LimitTimeBuy
           : ProductType.Normal,
       code: data.productCode,
@@ -160,10 +203,11 @@ export default class Page extends React.Component<PageProps, PageState> {
       remarks: data.noteContentList,
       inventoryLabel: data.inventoryLabel,
       isPreSale: data.isAdvanceSale === 1,
-      deliveryType: {
-        1: ProductDeliveryType.InTime,
-        2: ProductDeliveryType.NextDay,
-      }[data.deliveryType] || ProductDeliveryType.Other,
+      deliveryType:
+        {
+          1: ProductDeliveryType.InTime,
+          2: ProductDeliveryType.NextDay,
+        }[data.deliveryType] || ProductDeliveryType.Other,
       labels,
       beforeNav: () => {
         const { productDetail } = this.state
@@ -183,7 +227,7 @@ export default class Page extends React.Component<PageProps, PageState> {
           from_product_original_price: product.price,
           from_product_present_price: product.promotionPrice || product.price,
         })
-      }
+      },
     }
   }
 
@@ -201,7 +245,7 @@ export default class Page extends React.Component<PageProps, PageState> {
         present_price: detailData.promotionPrice || detailData.price,
       })
     }
-    this.setState({shareWrapperVis: visible})
+    this.setState({ shareWrapperVis: visible })
   }
 
   afterShareVisAnimation = (visible: boolean) => {
@@ -209,19 +253,24 @@ export default class Page extends React.Component<PageProps, PageState> {
   }
 
   // 获取分享给微信好友需要的商品信息
-  static getProductInfoForSharing = memoized((data: BaseObj = {}): BaseObj => {
-    const detailInfo = data.resChannelStoreProductVO || {}
+  static getProductInfoForSharing = memoized(
+    (data: BaseObj = {}): BaseObj => {
+      const detailInfo = data.resChannelStoreProductVO || {}
 
-    return {
-      code: detailInfo.productCode,
-      name: detailInfo.prodcutName,
-      storeCode: detailInfo.storeCode,
-      desc: data.subTitle,
-      thumbnail: data.mainUrl,
+      return {
+        code: detailInfo.productCode,
+        name: detailInfo.prodcutName,
+        storeCode: detailInfo.storeCode,
+        desc: data.subTitle,
+        thumbnail: data.mainUrl,
+      }
     }
-  })
+  )
 
-  onLimitTimBuyStatusChange = (status: ActivityStatus, oldStatus: ActivityStatus) => {
+  onLimitTimBuyStatusChange = (
+    status: ActivityStatus,
+    oldStatus: ActivityStatus
+  ) => {
     status === ActivityStatus.Expired && this.init()
   }
 
@@ -230,14 +279,16 @@ export default class Page extends React.Component<PageProps, PageState> {
   }
 
   renderProductSection = () => {
-    const {initialData} = this.props
-    const {productDetail, similarProducts} = this.state
+    const { initialData } = this.props
+    const { productDetail, similarProducts } = this.state
     const detailData = productDetail.resChannelStoreProductVO || {}
-    const productType = (detailData.productCode ? detailData.isAdvanceSale === 1 : initialData.type === ProductType.PreSale)
+    const productType = (detailData.productCode
+    ? detailData.isAdvanceSale === 1
+    : initialData.type === ProductType.PreSale)
       ? ProductType.PreSale
       : (detailData.productActivityLabel || {}).promotionType === 5
-        ? ProductType.LimitTimeBuy
-        : ProductType.Normal
+      ? ProductType.LimitTimeBuy
+      : ProductType.Normal
 
     switch (productType) {
       case ProductType.LimitTimeBuy:
@@ -262,7 +313,10 @@ export default class Page extends React.Component<PageProps, PageState> {
       default:
         return (
           <>
-            <ProductSectionNormal productData={productDetail} initialData={initialData}/>
+            <ProductSectionNormal
+              productData={productDetail}
+              initialData={initialData}
+            />
             <SimilarProducts products={similarProducts} />
           </>
         )
@@ -270,14 +324,14 @@ export default class Page extends React.Component<PageProps, PageState> {
   }
 
   renderTabContent = (tabContent, index) => {
-    const {productDetail} = this.state
+    const { productDetail } = this.state
 
     switch (index) {
       case 0:
         return this.renderProductSection()
       case 1:
       default:
-        return <DetailSection productData={productDetail}/>
+        return <DetailSection productData={productDetail} />
     }
   }
 
@@ -285,7 +339,9 @@ export default class Page extends React.Component<PageProps, PageState> {
     const { productDetail, poster, shareWrapperVis } = this.state
 
     // 分享到微信好友需要的商品信息
-    const productInfoForWXFriendsSharing = getProductInfoForSharing(productDetail)
+    const productInfoForWXFriendsSharing = getProductInfoForSharing(
+      productDetail
+    )
 
     return (
       <>
