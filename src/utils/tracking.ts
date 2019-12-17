@@ -11,6 +11,7 @@ const RNSensorsAnalyticsModule = NativeModules.RNSensorsAnalyticsModule;
  * @param data 事件数据
  */
 export function track(event: string, data: object):void {
+  return
   try {
     console.log(`tracking: event[${event}] data`)
     console.table(data)
