@@ -5,23 +5,22 @@
  * @Last Modified time: 2019-09-26 18:06:50
  */
 import * as React from 'react'
-import {ActivityIndicator, Animated, Dimensions, View} from 'react-native'
-import {Log, Native} from '@utils'
-import {CMSServices, ProductServices} from '@services'
+import { View, Animated, Dimensions } from 'react-native'
+import { Native, Log } from '@utils'
+import { CMSServices, ProductServices } from '@services'
 import styles from './Page.styles'
-import {TabView} from 'react-native-tab-view'
-import TabBar, {TabHeight} from './components/TabBar'
+import { TabView } from 'react-native-tab-view'
+import TabBar from './components/TabBar'
 import CMSScene from './components/CMSScene'
 import CategoryScene from './components/CategroryScene'
-import {Sort, StorageChoices} from './components/ProductFilter'
-import {ActivityStatus, BaseObj, Product, ProductDeliveryType, ProductLabels, ProductType} from '@common/typings'
-import theme from '@theme'
-import {formatFloorData} from './utils'
+import { StorageChoices, Sort } from './components/ProductFilter'
+import {ActivityStatus, BaseObj, Product, ProductDeliveryType, ProductType} from '@common/typings'
+import {formatFloorData, PlaceholderForNativeHeight} from './utils'
 import {LimitTimeBuy as LimitTimeBuyScene} from "@components/Scene";
 import withHistory from "@HOC/withHistory";
 import History from "@utils/history";
+import Loading from "@components/Loading";
 
-const PlaceholderForNativeHeight = Native.getStatusBarHeight() + 86 + TabHeight
 const WindowWidth = Dimensions.get('window').width
 const WindowHeight = Dimensions.get('window').height
 
@@ -91,6 +90,7 @@ export default class Page extends React.Component<{}, State> {
   removeShopChangeListener: Function
   removeCartChangeListener: Function
   removeNewcomerChangeListener: Function
+
   componentDidMount() {
     Native.setHomeFirstTabActiveStatus(true)
     this.syncScrollToNative({ nativeEvent: { contentOffset: { x: 0, y: 0 } } })
@@ -551,9 +551,7 @@ export default class Page extends React.Component<{}, State> {
           <CMSScene
             loading={contentLoading}
             data={content || []}
-            contentOffset={
-              currentRouteIdx === 0 ? 0 : PlaceholderForNativeHeight
-            }
+            isFullscreen={currentRouteIdx === 0}
             animatedVal={animatedValRefCmsScrollY}
             onScroll={onPageScroll}
             onRefresh={this.onRefresh}
@@ -588,10 +586,9 @@ export default class Page extends React.Component<{}, State> {
       <View style={styles.container}>
         {loading && tabList.length === 0 && (
           <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color={theme.primary} />
+            <Loading />
           </View>
         )}
-
         <TabView
           navigationState={navigationState}
           renderTabBar={this.renderTabBar}

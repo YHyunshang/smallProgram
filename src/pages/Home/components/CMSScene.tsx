@@ -2,13 +2,14 @@ import * as React from 'react'
 import {FlatList, Animated, View, RefreshControl, Platform} from 'react-native'
 import theme from '@theme'
 import SceneFooter from "./SceneFooter"
+import {PlaceholderForNativeHeight} from "../utils";
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
 
 interface Props {
   loading: boolean
   data: { [index: string]: any }[]
-  contentOffset: number
+  isFullscreen: boolean
   animatedVal: Animated.Value
   onScroll: (e: Event) => any
   onRefresh: () => any
@@ -23,7 +24,7 @@ const renderCMSFloor = ({ item: { wrapperStyle, component: Comp, props } }) => (
 function CMSScene({
   data,
   onScroll,
-  contentOffset,
+  isFullscreen,
   animatedVal,
   loading,
   onRefresh,
@@ -40,12 +41,11 @@ function CMSScene({
         <RefreshControl
           refreshing={!!loading}
           onRefresh={onRefresh}
-          colors={[theme.primary, theme.white]}
-          tintColor={theme.primary}
-          progressViewOffset={contentOffset}
+          colors={[ theme.refreshColor ]}
+          progressViewOffset={PlaceholderForNativeHeight}
         />
       }
-      ListHeaderComponent={<View style={{height: contentOffset}}/>}
+      ListHeaderComponent={<View style={{height: isFullscreen ? 0 : PlaceholderForNativeHeight}}/>}
       ListFooterComponent={data.length > 0 ? <SceneFooter/> : null}
     />
   }
@@ -53,8 +53,8 @@ function CMSScene({
   const translateY = animatedVal.interpolate({
     inputRange: [-100, 1, 50],
     outputRange: [
-      contentOffset,
-      contentOffset,
+      isFullscreen ? 0 : PlaceholderForNativeHeight,
+      isFullscreen ? 0 : PlaceholderForNativeHeight,
       0,
     ],
     extrapolate: 'clamp',
@@ -71,8 +71,7 @@ function CMSScene({
         <RefreshControl
           refreshing={!!loading}
           onRefresh={onRefresh}
-          colors={[theme.primary, theme.white]}
-          tintColor={theme.primary}
+          tintColor={theme.refreshColor}
         />
       }
       ListFooterComponent={data.length > 0 ? <SceneFooter /> : null}

@@ -2,11 +2,11 @@
  * Created by 李华良 on 2019-09-29
  */
 import * as React from 'react'
-import {ActivityIndicator, Image, RefreshControl, View} from "react-native";
+import {Image, RefreshControl, View} from "react-native";
 import {DataProvider, LayoutProvider, RecyclerListView} from 'recyclerlistview'
 // @ts-ignore
 import StickyContainer from 'recyclerlistview/sticky';
-import {CMSServices, LimitTimeBuyServices} from "@services";
+import {LimitTimeBuyServices} from "@services";
 import {bannerLimitTimeBuy} from "@const/resources";
 import TabBar from "./TabBar";
 import Timer from "./Timer";
@@ -17,6 +17,7 @@ import {Global, Native} from "@utils";
 import ProductLimitTimeBuy from "@components/business/ProductLimitTimeBuy";
 import isEqual from 'lodash/isEqual'
 import {Tab} from "./Typings";
+import Loading from "@components/Loading";
 
 const WindowWidth = Global.WindowWidth
 const BannerHeight = WindowWidth * 150 / 375
@@ -298,7 +299,7 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
       <View style={[ styles.container, { paddingTop } ]}>
         {loading && tabs.length === 0 && (
           <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color={theme.primary} />
+            <Loading/>
           </View>
         )}
 
@@ -310,8 +311,8 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
                 <RefreshControl
                   refreshing={loading && tabs.length > 0}
                   onRefresh={() => this.init(shopCode)}
-                  colors={[theme.primary, theme.white]}
-                  tintColor={theme.primary}
+                  colors={[theme.refreshColor]}
+                  tintColor={theme.refreshColor}
                 />
               )
             }}

@@ -6,6 +6,7 @@ import ActivityWithIPSC from '@components/business/Content/ActivityWithIPS'
 import {RefreshControl, View, FlatList} from 'react-native'
 import theme from '@theme'
 import withHistory from "@HOC/withHistory";
+import Loading from "@components/Loading";
 
 const ActivityWithIPS = React.memo(ActivityWithIPSC)
 
@@ -126,6 +127,12 @@ export default class Page extends React.PureComponent<Object, State> {
     const { floorData, loading, shopCode, enablePageScroll } = this.state
     return (
       <View style={styles.container}>
+        {loading && floorData.length === 0 && (
+          <View style={styles.loadingContainer}>
+            <Loading/>
+          </View>
+        )}
+
         <FlatList
           data={floorData}
           keyExtractor={item => `${item.key}`}
@@ -133,10 +140,10 @@ export default class Page extends React.PureComponent<Object, State> {
           showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl
-              refreshing={loading}
+              refreshing={loading && floorData.length > 0}
               onRefresh={() => this.requestPageData(shopCode)}
-              colors={[theme.primary, theme.white]}
-              tintColor={theme.primary}
+              colors={[theme.refreshColor]}
+              tintColor={theme.refreshColor}
             />
           }
           scrollEnabled={enablePageScroll}

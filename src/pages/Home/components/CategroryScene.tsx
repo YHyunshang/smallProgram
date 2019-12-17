@@ -4,8 +4,7 @@ import {Product} from '@common/typings'
 import Box, {Column as BoxColumn} from '@components/business/Content/Box'
 import {Animated, FlatList, Platform, RefreshControl, View,} from 'react-native'
 import ProductListItem from '@components/business/Content/ProductListItem'
-import {Native} from '@utils'
-import {TabHeight} from './TabBar'
+import { PlaceholderForNativeHeight } from '../utils'
 import theme from '@theme'
 import isEqual from 'lodash/isEqual'
 import ProductLimitTimeBuy from "@components/business/ProductLimitTimeBuy";
@@ -13,7 +12,6 @@ import SceneFooter from "./SceneFooter";
 import memorize from 'memoize-one'
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
-const PlaceholderForNativeHeight = Native.getStatusBarHeight() + 86 + TabHeight
 
 const CategoryFloor = React.memo(
   props => (
@@ -102,8 +100,8 @@ export default class CategoryScene extends React.PureComponent<Props> {
   }
 
   calcFlatData = memorize((categories, filter, products) =>
-    (categories.length > 0 || products.length > 0)
-      ? [
+      (categories.length > 0 || products.length > 0)
+        ? [
           { key: 'category', type: 'category', data: categories },
           { key: 'filter', type: 'filter', data: filter },
           ...(products || []).map(ele => ({
@@ -112,7 +110,7 @@ export default class CategoryScene extends React.PureComponent<Props> {
             data: ele,
           })),
         ]
-      : [],
+        : [],
     isEqual)
 
   render() {
@@ -138,13 +136,13 @@ export default class CategoryScene extends React.PureComponent<Props> {
     const floatFilterOpacity =
       (products || []).length > 0
         ? animatedVal.interpolate({
-            inputRange: [
-              50 + categoryFloorHeight,
-              50 + categoryFloorHeight + 0.1,
-            ],
-            outputRange: [0, 1],
-            extrapolate: 'clamp',
-          })
+          inputRange: [
+            50 + categoryFloorHeight,
+            50 + categoryFloorHeight + 0.1,
+          ],
+          outputRange: [0, 1],
+          extrapolate: 'clamp',
+        })
         : 0
     const floatFilterTranslateY = animatedVal.interpolate({
       inputRange: [0, 25, 50],
@@ -175,8 +173,8 @@ export default class CategoryScene extends React.PureComponent<Props> {
             <RefreshControl
               refreshing={!!loading}
               onRefresh={onRefresh}
-              colors={[theme.primary, theme.white]}
-              tintColor={theme.primary}
+              colors={[theme.refreshColor]}
+              tintColor={theme.refreshColor}
             />
           }
           ItemSeparatorComponent={this.renderSeparator}
@@ -197,8 +195,8 @@ export default class CategoryScene extends React.PureComponent<Props> {
           <RefreshControl
             refreshing={!!loading}
             onRefresh={onRefresh}
-            colors={[theme.primary, theme.white]}
-            tintColor={theme.primary}
+            colors={[theme.refreshColor]}
+            tintColor={theme.refreshColor}
             progressViewOffset={PlaceholderForNativeHeight}
           />
         }

@@ -225,7 +225,7 @@ export function onCartChange(handler: (...args: any) => any) {
  */
 export function showRemarkPickerBeforeAddToCart(
   product: Product
-): Promise<{ count: number; extraData: object }> {
+): Promise<{ count: number, extraData: object}> {
   console.log(product)
   const price =
     product.price < product.slashedPrice ? product.slashedPrice : product.price

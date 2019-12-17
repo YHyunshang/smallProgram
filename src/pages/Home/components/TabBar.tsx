@@ -14,8 +14,8 @@ import theme from '@theme'
 import memoize from "memoize-one"
 import isEqual from 'lodash/isEqual'
 import isEmpty from 'lodash/isEmpty'
+import { TabHeight } from "../utils"
 
-export const TabHeight = 40
 const windowWidth = Dimensions.get('window').width
 const statusBarHeight = Native.getStatusBarHeight()
 const backgroundHeight = statusBarHeight + 86 + TabHeight

@@ -19,9 +19,7 @@ import ProductSwiperC from '@components/business/Content/ProductSwiper'
 import BoxC from '@components/business/Content/Box'
 import DividerC from '@components/business/Content/Divider'
 import LimitTimeBuy from "@components/business/Content/LimitTimeBuy";
-import {Global} from "@utils";
-import { NativeModules } from 'react-native';
-const rnAppModule = NativeModules.RnAppModule// 原生模块
+import {Global, Native} from "@utils";
 const Carousel = React.memo(CarouselC)
 const AdTitle = React.memo(AdTitleC)
 const ProductList = React.memo(ProductListC)
@@ -268,3 +266,6 @@ export function formatFloorData(
   }
   return result
 }
+
+export const TabHeight = 40
+export const PlaceholderForNativeHeight = Native.getStatusBarHeight() + 86 + TabHeight
