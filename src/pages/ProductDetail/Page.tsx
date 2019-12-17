@@ -299,7 +299,9 @@ export default class Page extends React.Component<PageProps, PageState> {
               initialData={initialData}
               onStatusChange={this.onLimitTimBuyStatusChange}
             />
-            <SimilarProducts products={similarProducts} />
+            {similarProducts.length > 0 && (
+              <SimilarProducts products={similarProducts} />
+            )}
           </>
         )
       case ProductType.PreSale:
@@ -317,7 +319,9 @@ export default class Page extends React.Component<PageProps, PageState> {
               productData={productDetail}
               initialData={initialData}
             />
-            <SimilarProducts products={similarProducts} />
+            {similarProducts.length > 0 && (
+              <SimilarProducts products={similarProducts} />
+            )}
           </>
         )
     }
