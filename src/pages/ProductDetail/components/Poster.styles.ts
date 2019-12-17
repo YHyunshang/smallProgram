@@ -14,12 +14,10 @@ export default StyleSheet.create({
   posterBox: {
     position: 'relative',
     backgroundColor: theme.white,
-    borderRadius: 5,
-    overflow: 'hidden',
+    shadowColor: '#ddd',
     shadowOpacity: 0.6,
     shadowRadius: 5,
-    shadowColor: '#ddd',
-    elevation: 20,
+    elevation: 10,
   },
   poster: {
     width: 246,
