@@ -127,7 +127,7 @@ export const shareToWxFriends = (function() {
         title: name,
         thumbImage: thumbnail,
         description: desc,
-        miniProgramType: ENV === 'prod' ? 0 : 1, // 分享小程序版本 正式版:0，测试版:1，体验版:
+        miniProgramType: ENV === 'prod' ? 0 : 2, // 分享小程序版本 正式版:0，测试版:1，体验版:2
         userName: WeChatMP.id, // 小程序原生id非appid
         webpageUrl:
           'http://static-yh.yonghui.cn/downloadApp/buyVegetables/download.html',
