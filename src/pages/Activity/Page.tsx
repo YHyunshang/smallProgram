@@ -10,7 +10,7 @@ import ProductGrid from '@components/business/Content/ProductGrid'
 import ProductSwiper from '@components/business/Content/ProductSwiper'
 import Box from '@components/business/Content/Box'
 import Divider from '@components/business/Content/Divider'
-import { FlatList, View } from 'react-native'
+import {FlatList, RefreshControl, View} from 'react-native'
 import { Native } from '@utils'
 import Tab from './components/Tab'
 import Footer from './components/Footer'
@@ -20,6 +20,7 @@ import AdTitle from '@components/business/Content/AdTitle'
 import Loading from '../../components/common/Loading'
 import withHistory from "@HOC/withHistory";
 import History from "@utils/history";
+import theme from "@theme";
 
 interface Props {
   activityCode: string // 活动编码
@@ -47,7 +48,6 @@ interface State {
 // @ts-ignore: hoc can wrap class-styled components
 @withHistory({ path: '活动页', name: '活动页' })
 export default class Page extends React.Component<Props, State> {
-  loading: any
   constructor(props) {
     super(props)
 
@@ -64,6 +64,8 @@ export default class Page extends React.Component<Props, State> {
       },
     }
   }
+
+  loadingRef = React.createRef()
 
   componentDidMount() {
     this.requestTabList()
@@ -85,13 +87,13 @@ export default class Page extends React.Component<Props, State> {
     const { activityCode: code } = this.props
     const { shopCode, isFirst } = this.state
     this.setState({ loading: true })
-    isFirst ? this.loading.showLoading() : ''
+    isFirst ? this.loadingRef.current.showLoading() : ''
     let res
     try {
       res = await CMSServices.getActivity(code, shopCode)
     } finally {
       this.setState({ loading: false, isFirst: false })
-      this.loading.hideLoading()
+      this.loadingRef.current.hideLoading()
     }
 
     const { result } = res
@@ -331,8 +333,14 @@ export default class Page extends React.Component<Props, State> {
             stickyHeaderIndices === -1 ? [] : [stickyHeaderIndices]
           }
           removeClippedSubviews={false}
-          refreshing={false}
-          onRefresh={this.componentDidMount.bind(this)}
+          refreshControl={
+            <RefreshControl
+              refreshing={!!loading}
+              onRefresh={this.componentDidMount.bind(this)}
+              colors={[theme.primary, theme.white]}
+              tintColor={theme.primary}
+            />
+          }
           ListEmptyComponent={
             loading ? null : (
               <Empty type={1} textColor1="#4A4A4A" textColor2="#A4A4B4" />
@@ -342,7 +350,7 @@ export default class Page extends React.Component<Props, State> {
         <View style={styles.footerBox}>
           <Footer amount={amount} cartCount={count} />
         </View>
-        <Loading ref={ref => (this.loading = ref)}></Loading>
+        <Loading ref={this.loadingRef}></Loading>
       </View>
     )
   }
