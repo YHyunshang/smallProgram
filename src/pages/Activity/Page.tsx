@@ -335,10 +335,10 @@ export default class Page extends React.Component<Props, State> {
           removeClippedSubviews={false}
           refreshControl={
             <RefreshControl
-              refreshing={!!loading}
+              refreshing={loading && flatData.length > 0}
               onRefresh={this.componentDidMount.bind(this)}
-              colors={[theme.primary, theme.white]}
-              tintColor={theme.primary}
+              colors={[theme.refreshColor]}
+              tintColor={theme.refreshColor}
             />
           }
           ListEmptyComponent={
@@ -350,7 +350,7 @@ export default class Page extends React.Component<Props, State> {
         <View style={styles.footerBox}>
           <Footer amount={amount} cartCount={count} />
         </View>
-        <Loading ref={this.loadingRef}></Loading>
+        <Loading ref={this.loadingRef} />
       </View>
     )
   }

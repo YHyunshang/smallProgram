@@ -5,148 +5,71 @@
  * @LastEditors: yuwen.liu
  * @LastEditTime: 2019-11-06 15:16:27
  */
-import {Platform} from 'react-native'
+export const cartGray = require('@img/cart-gray.png')
 
-const os = Platform.OS
-const isAndroid = os === 'android'
+export const cart = require('@img/cart.png')
 
-export const cartGray = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/cart-gray.png'}
-  : require('@img/cart-gray.png')
+export const emptyActivity = require('@img/empty-activity.png')
 
-export const cart = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/cart.png'}
-  : require('@img/cart.png')
+export const emptyBag = require('@img/empty-bag.png')
 
-export const emptyActivity = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/empty-activity.green.png'}
-  : require('@img/empty-activity.png')
+export const hotSaleBanner = require('@img/hot-sale-banner.png')
 
-export const emptyBag = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/empty-bag.green.png'}
-  : require('@img/empty-bag.png')
+export const hotSaleTabBg = require('@img/hot-sale-tab-bg.png')
 
-export const hotSaleBanner = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/hot-sale-banner.green.png'}
-  : require('@img/hot-sale-banner.png')
+export const iconChecked = require('@img/icon-checked.png')
 
-export const hotSaleTabBg = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/hot-sale-tab-bg.green.png'}
-  : require('@img/hot-sale-tab-bg.png')
+export const iconSortAsc = require('@img/icon-sort-asc.png')
 
-export const iconChecked = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/icon-checked.green.png'}
-  : require('@img/icon-checked.png')
+export const iconSortDesc = require('@img/icon-sort-desc.png')
 
-export const iconSortAsc = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/icon-sort-asc.green.png'}
-  : require('@img/icon-sort-asc.png')
+export const iconSort = require('@img/icon-sort.png')
 
-export const iconSortDesc = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/icon-sort-desc.green.png'}
-  : require('@img/icon-sort-desc.png')
+export const iconUnchecked = require('@img/icon-unchecked.png')
 
-export const iconSort = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/icon-sort.png'}
-  : require('@img/icon-sort.png')
+export const minusCircleDisabled = require('@img/minus-circle-disabled.png')
 
-export const iconUnchecked = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/icon-unchecked.png'}
-  : require('@img/icon-unchecked.png')
+export const minusCircle = require('@img/minus-circle.png')
 
-export const minusCircleDisabled = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/minus-circle-disabled.png'}
-  : require('@img/minus-circle-disabled.png')
+export const placeholderBox = require('@img/placeholder-box.png')
 
-export const minusCircle = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/minus-circle.green.png'}
-  : require('@img/minus-circle.png')
+export const placeholderProduct = require('@img/placeholder-product.png')
 
-export const placeholderBox = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/placeholder-box.png'}
-  : require('@img/placeholder-box.png')
+export const plusCircleDisabled = require('@img/plus-circle-disabled.png')
 
-export const placeholderProduct = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/placeholder-product.png'}
-  : require('@img/placeholder-product.png')
+export const plusCircle = require('@img/plus-circle.png')
 
-export const plusCircleDisabled = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/plus-circle-disabled.png'}
-  : require('@img/plus-circle-disabled.png')
+export const plus = require('@img/plus.png')
 
-export const plusCircle = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/plus-circle.green.png'}
-  : require('@img/plus-circle.png')
+export const productConditions = require('@img/product-conditions.png')
 
-export const plus = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/plus.png'}
-  : require('@img/plus.png')
+export const productPlace = require('@img/product-place.png')
 
-export const productConditions = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/product-conditions.png'}
-  : require('@img/product-conditions.png')
+export const productSpecific = require('@img/product-specific.png')
 
-export const productPlace = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/product-place.png'}
-  : require('@img/product-place.png')
+export const wechatFriend = require('@img/wechat-friend.png')
 
-export const productSpecific = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/product-specific.png'}
-  : require('@img/product-specific.png')
+export const wechatMoments = require('@img/wechat-moments.png')
 
-export const wechatFriend = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/wechat-friend.png'}
-  : require('@img/wechat-friend.png')
+export const addToCart = require('@img/add-to-cart.png')
 
-export const wechatMoments = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/wechat-moments.png'}
-  : require('@img/wechat-moments.png')
+export const iconExpand = require('@img/icon-expand.png')
 
-export const addToCart = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/add-to-cart.green.png'}
-  : require('@img/add-to-cart.png')
+export const iconArrowRight = require('@img/icon-arrow-right.png')
 
-export const iconExpand = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/icon-expand.png'}
-  : require('@img/icon-expand.png')
+export const bannerLimitTimeBuy = require('@img/banner-limit-time-buy.jpg')
 
-export const iconArrowRight = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/icon-arrow-right.png'}
-  : require('@img/icon-arrow-right.png')
+export const iconPlusCircleRed = require('@img/icon-plus-circle-red.png')
 
-export const bannerLimitTimeBuy = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/banner-limit-time-buy.jpg'}
-  : require('@img/banner-limit-time-buy.jpg')
-
-export const iconPlusCircleRed = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/icon-plus-circle-red.png'}
-  : require('@img/icon-plus-circle-red.png')
-
-export const iconMinusCircleRed = isAndroid
-  ? {uri: 'http://static-yh.yonghui.cn/app/assets/xszt-RN/icon-minus-circle-red.png'}
-  : require('@img/icon-minus-circle-red.png')
-export const buyLimit =isAndroid
-    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/buy-limit.png' }
-    : require('@img/buy-limit.png')
-export const yellowWarn =isAndroid
-    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/yellow-info.png' }
-    : require('@img/yellow-info.png')
-export const greenWarn =isAndroid
-    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/green-info.png' }
-    : require('@img/green-info.png')
-export const soldOutDefault =isAndroid
-    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/sold-out-default.png' }
-    : require('@img/sold-out-default.png')
-export const noActivity =isAndroid
-    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/no-activity.png' }
-    : require('@img/no-activity.png')
-export const noStore =isAndroid
-    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/no-store.png' }
-    : require('@img/no-store.png')
+export const iconMinusCircleRed = require('@img/icon-minus-circle-red.png')
+export const buyLimit =require('@img/buy-limit.png')
+export const yellowWarn =require('@img/yellow-info.png')
+export const greenWarn =require('@img/green-info.png')
+export const soldOutDefault =require('@img/sold-out-default.png')
+export const noActivity =require('@img/no-activity.png')
+export const noStore =require('@img/no-store.png')
 export const greenLoading = require('@img/green-loading.png')
-export const defaultPoint =isAndroid
-    ? { uri: 'https://static-yh.yonghui.cn/app/assets/xszt-RN/default-point.png' }
-    : require('@img/default-point.png')
+export const defaultPoint =require('@img/default-point.png')
 
 export const activityPending = require('@img/icon-activity-pending.png')
 export const activityProcessing = require('@img/icon-fire.png')
