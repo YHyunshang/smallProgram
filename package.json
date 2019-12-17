@@ -5,8 +5,8 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start --host 0.0.0.0 --port 8081",
     "clean": "rm -rf dist && mkdir dist",
-    "bundle-android": "rm -rf dist/dist-android && mkdir -p dist/dist-android && react-native bundle --entry-file index.js --bundle-output dist/dist-android/index.jsbundle --platform android --assets-dest dist/dist-android --dev false && cd dist && zip -r dist-android.zip dist-android",
-    "bundle-ios": "rm -rf dist/dist-ios && mkdir -p dist/dist-ios && react-native bundle --entry-file index.js --bundle-output dist/dist-ios/index.jsbundle  --platform ios --assets-dest dist/dist-ios --dev false && cd dist && zip -r dist-ios.zip dist-ios",
+    "bundle-android": "rm -rf dist/dist-android dist/dist-android.zip && mkdir -p dist/dist-android && react-native bundle --entry-file index.js --bundle-output dist/dist-android/index.jsbundle --platform android --assets-dest dist/dist-android --dev false && cd dist && zip -r dist-android.zip dist-android",
+    "bundle-ios": "rm -rf dist/dist-ios dist/dist-ios.zip && mkdir -p dist/dist-ios && react-native bundle --entry-file index.js --bundle-output dist/dist-ios/index.jsbundle  --platform ios --assets-dest dist/dist-ios --dev false && cd dist && zip -r dist-ios.zip dist-ios",
     "bundle": "npm run bundle-ios && npm run bundle-android",
     "lint": "eslint . --fix --format=node_modules/eslint-formatter-pretty --quiet"
   },
