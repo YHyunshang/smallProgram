@@ -14,6 +14,8 @@ export default StyleSheet.create({
   posterBox: {
     position: 'relative',
     backgroundColor: theme.white,
+    borderRadius: 5,
+    overflow: 'hidden',
     shadowOpacity: 0.6,
     shadowRadius: 5,
     shadowColor: '#ddd',

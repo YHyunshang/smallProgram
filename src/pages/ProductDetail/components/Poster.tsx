@@ -23,7 +23,6 @@ const Poster: React.FunctionComponent<PosterProps> = ({
 }) => {
   const saveImg = () =>
     download(image).then(data => {
-      console.log('download result>>>>', data)
       showToast('图片保存成功', '1')
       onClose instanceof Function && setTimeout(onClose, 500)
     }, console.error)
@@ -33,7 +32,7 @@ const Poster: React.FunctionComponent<PosterProps> = ({
       <View style={styles.container}>
         <View style={styles.posterBox}>
           {!image && (
-              <Spin>loading...</Spin>
+              <Spin>图片加载中...</Spin>
           )}
           <FastImage style={styles.poster} source={{ uri: image }} />
         </View>
