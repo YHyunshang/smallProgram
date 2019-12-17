@@ -28,7 +28,7 @@ module.exports = {
     'brace-style': ['error'],
     // "camelcase": ["error", {properties: "never"}],  //某些情况 不用驼峰命名
     // "capitalized-comments": ["error"],              //注释随意  不用大小写开头
-    'comma-dangle': ['warn'],
+    // 'comma-dangle': ['warn'],
     'comma-spacing': ['error'],
     'comma-style': ['error'],
     'computed-property-spacing': ['error'],
@@ -86,7 +86,7 @@ module.exports = {
     'no-var': ['error'],
     'no-whitespace-before-property': ['error'],
     // "object-curly-newline": ["error"],
-    'object-curly-spacing': ['error'],
+    // 'object-curly-spacing': ['error'],
     'object-shorthand': ['error'],
     'operator-assignment': ['error'],
     'one-var': [2, { var: 'always' }], // 允许const 连续定义

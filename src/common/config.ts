@@ -3,12 +3,16 @@
  */
 // 微信小程序
 export const WeChatMP = {
-  id: 'gh_913462fd944f',  // 小程序原始 id
+  id: 'gh_913462fd944f', // 小程序原始 id
   appId: 'wx6e85fc07ec7a02f3',
   pages: {
     productDetail: 'pages/product-detail/product-detail',
-  }
+  },
 }
 
+// app 微信平台 appId
+export const WXAppId = 'wx3e5bc65c8d751e70'
+
 // 默认商品缩略图
-export const ProductThumbnail = 'http://static-yh.yonghui.cn/app/assets/xszt-RN/placeholder-product.png'
+export const ProductThumbnail =
+  'http://static-yh.yonghui.cn/app/assets/xszt-RN/placeholder-product.png'

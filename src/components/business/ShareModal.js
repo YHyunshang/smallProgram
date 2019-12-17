@@ -14,17 +14,17 @@ import {
   View,
   Image,
   TouchableOpacity,
-  NativeModules
+  NativeModules,
 } from 'react-native'
 import * as WeChat from 'react-native-wechat'
 import PopUp from '../common/PopUp'
 import Icon from '../../components/Icon'
 import styles from './ShareModal.styles'
-import {wechatFriend, wechatMoments} from '../../constants/resources'
-import {WeChatMP} from '@common/config'
-import {track} from '../../utils/tracking'
-const rnAppModule = NativeModules.RnAppModule// 原生商品详情模块
-const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
+import { wechatFriend, wechatMoments } from '../../constants/resources'
+import { WXAppId } from '@common/config'
+import { track } from '../../utils/tracking'
+const rnAppModule = NativeModules.RnAppModule // 原生商品详情模块
+const goodsDetailManager = NativeModules.GoodsDetailsNativeManager // 原生商品详情模块
 export default class ShareModal extends React.Component {
   constructor(props) {
     super(props)
@@ -44,30 +44,28 @@ export default class ShareModal extends React.Component {
   }
 
   componentDidMount() {
-    WeChat.registerApp(WeChatMP.appId)
+    WeChat.registerApp(WXAppId)
   }
 
-  componentWillUnmount() {
-
-  }
+  componentWillUnmount() {}
   /**
-  * @description: 显示分享弹层
-  */
+   * @description: 显示分享弹层
+   */
   showShareModal() {
     this.popUp.show()
   }
   /**
-  * @description: 隐藏分享弹层
-  */
+   * @description: 隐藏分享弹层
+   */
   hideShareModal() {
-    goodsDetailManager.showBottomViews()// 展示底部购物车模块
+    goodsDetailManager.showBottomViews() // 展示底部购物车模块
     this.popUp.hide()
   }
   /**
-  * @description: 发送微信朋友方法
-  */
+   * @description: 发送微信朋友方法
+   */
   shareFriend() {
-    let {productParams} = this.props
+    let { productParams } = this.props
     // WeChat.isWXAppInstalled().then((isInstalled) => {
     //   if (isInstalled) {
     //     WeChat.shareToSession({
@@ -91,13 +89,14 @@ export default class ShareModal extends React.Component {
       thumbImage: productParams.productUrl,
       description: productParams.productDesc,
       miniProgramType: 0, // 分享小程序版本 正式版:0，测试版:1，体验版:
-      webpageUrl: 'https://blog.csdn.net/weixin_34221036/article/details/91056421',
+      webpageUrl:
+        'https://blog.csdn.net/weixin_34221036/article/details/91056421',
       userName: 'gh_913462fd944f', // 小程序原生id非appid
-      path: `/pages/product-detail/product-detail?productCode=${productParams.productCode}&storeCode=${productParams.storeCode}`// 小程序商品详情页面路径
+      path: `/pages/product-detail/product-detail?productCode=${productParams.productCode}&storeCode=${productParams.storeCode}`, // 小程序商品详情页面路径
     }
-    WeChat.isWXAppInstalled().then((isInstalled) => {
+    WeChat.isWXAppInstalled().then(isInstalled => {
       if (isInstalled) {
-        WeChat.shareToSession(weixinMiniProgramShareInfo).catch((error) => {
+        WeChat.shareToSession(weixinMiniProgramShareInfo).catch(error => {
           rnAppModule.showToast(error.message, '0')
         })
       } else {
@@ -106,8 +105,8 @@ export default class ShareModal extends React.Component {
     })
   }
   /**
-  * @description: 分享朋友圈
-  */
+   * @description: 分享朋友圈
+   */
   showPosterModal() {
     // WeChat.isWXAppInstalled().then((isInstalled) => {
     //   if (isInstalled) {
@@ -125,36 +124,60 @@ export default class ShareModal extends React.Component {
     //   }
     // })
     this.popUp.hide()
-    const {onShare, productParams} = this.props
+    const { onShare, productParams } = this.props
     if (onShare) {
       onShare(productParams)
     }
   }
   render() {
-    const {modalBoxHeight} = this.props
+    const { modalBoxHeight } = this.props
     return (
-      <PopUp ref={ref => this.popUp = ref} modalBoxHeight={modalBoxHeight}>
+      <PopUp ref={ref => (this.popUp = ref)} modalBoxHeight={modalBoxHeight}>
         <View style={styles.shareTitleInfo}>
           <View></View>
-          <View style={styles.shareTitleText}><Text>分享至</Text></View>
-          <TouchableOpacity activeOpacity={0.95} onPress={() => {
-            this.hideShareModal()
-          }}>
-            <Icon style={styles.closeIcon} name='close' size={21} color="#9B9B9B" />
+          <View style={styles.shareTitleText}>
+            <Text>分享至</Text>
+          </View>
+          <TouchableOpacity
+            activeOpacity={0.95}
+            onPress={() => {
+              this.hideShareModal()
+            }}
+          >
+            <Icon
+              style={styles.closeIcon}
+              name="close"
+              size={21}
+              color="#9B9B9B"
+            />
           </TouchableOpacity>
         </View>
         <View style={styles.shareInfo}>
-          <TouchableOpacity activeOpacity={0.95} onPress={() => {
-            this.shareFriend()
-          }}>
-            <Image style={styles.shareImage} source={wechatFriend} resizeMode="cover"></Image>
-            <Text style={styles.shareText} >微信好友</Text>
+          <TouchableOpacity
+            activeOpacity={0.95}
+            onPress={() => {
+              this.shareFriend()
+            }}
+          >
+            <Image
+              style={styles.shareImage}
+              source={wechatFriend}
+              resizeMode="cover"
+            ></Image>
+            <Text style={styles.shareText}>微信好友</Text>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.95} onPress={() => {
-            this.showPosterModal()
-          }}>
-            <Image style={styles.shareImage} source={wechatMoments} resizeMode="cover"></Image>
-            <Text style={styles.shareText} >微信朋友圈</Text>
+          <TouchableOpacity
+            activeOpacity={0.95}
+            onPress={() => {
+              this.showPosterModal()
+            }}
+          >
+            <Image
+              style={styles.shareImage}
+              source={wechatMoments}
+              resizeMode="cover"
+            ></Image>
+            <Text style={styles.shareText}>微信朋友圈</Text>
           </TouchableOpacity>
         </View>
       </PopUp>

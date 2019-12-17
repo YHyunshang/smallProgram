@@ -6,9 +6,9 @@ import { NativeModules } from 'react-native'
 import RequestErr from './http-err'
 import HostMapper from './host-mapper'
 import * as Log from '../log'
-import { showToast } from '../native'
+import { showToast, ENV } from '../native'
 import * as HttpModel from './http.model'
-import {BaseObj} from "@common/typings";
+import { BaseObj } from '@common/typings'
 
 /**
  * send http request based on native
@@ -87,14 +87,13 @@ async function request(
  * @param path {string}
  * @param query {object}
  */
-export function formatUrl(hostKey: string, path: string, query:{[idx:string]: string} = {}) {
-  const nativeEnv = NativeModules.HttpNativeManager.envPathType
-  const env = { 0: 'test', 1: 'dev', 2: 'prod', 3: 'preProd' }[nativeEnv]
-  if (!env)
-    throw new RequestErr(
-      'RN',
-      `map native env[${nativeEnv}] to RN env[${env}] failed`
-    )
+export function formatUrl(
+  hostKey: string,
+  path: string,
+  query: { [idx: string]: string } = {}
+) {
+  const env = ENV
+  if (!env) throw new RequestErr('RN', `env not recognized`)
 
   const host = (HostMapper[env][hostKey] || '').trim().replace(/\/+$/, '')
   if (!host) throw new RequestErr('RN', `no host for hostKey[${hostKey}]`)

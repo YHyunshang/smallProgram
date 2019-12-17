@@ -5,10 +5,23 @@
  * @LastEditors: yuwen.liu
  * @LastEditTime: 2019-11-07 13:34:21
  */
-import {DeviceEventEmitter, Dimensions, NativeEventEmitter, NativeModules, Platform, StatusBar,} from 'react-native'
+import {
+  DeviceEventEmitter,
+  Dimensions,
+  NativeEventEmitter,
+  NativeModules,
+  Platform,
+  StatusBar,
+} from 'react-native'
 import * as Log from './log'
-import {BaseObj, Product} from '@common/typings'
-import History from "@utils/history";
+import { BaseObj, Product } from '@common/typings'
+import History from '@utils/history'
+
+// 环境
+export const ENV = (function() {
+  const env = NativeModules.HttpNativeManager.envPathType
+  return { 0: 'test', 1: 'dev', 2: 'prod', 3: 'preProd' }[env]
+})()
 
 export enum NavPageType {
   NATIVE = '0',
@@ -28,7 +41,12 @@ export interface Navigation {
  *               params： 跳转页面所需参数
  *               title：页面标题
  */
-export async function navigateTo({ type, uri, params={}, title }: Navigation) {
+export async function navigateTo({
+  type,
+  uri,
+  params = {},
+  title,
+}: Navigation) {
   let navigate: Function
   try {
     navigate = NativeModules.HomeNativeManager.pushToNewPage
@@ -48,9 +66,10 @@ export async function navigateTo({ type, uri, params={}, title }: Navigation) {
 
   const navParams = {
     ...params,
-    directTransmitParams: JSON.stringify({ // 透传给下级页面的数据
+    directTransmitParams: JSON.stringify({
+      // 透传给下级页面的数据
       $$tracking: History.cur() || {},
-      ...(params.directTransmitParams || {})
+      ...(params.directTransmitParams || {}),
     }),
     title: title || (uri === 'RNPreviewPurchase' ? '茅台专售' : '永辉买菜'),
   }
@@ -62,14 +81,15 @@ export async function navigateTo({ type, uri, params={}, title }: Navigation) {
     JSON.stringify({ params: navParams })
   )
 
-  const preCheck = uri === 'RNPreviewPurchase'  // 茅台跳转先检查是否已登陆
-    ? checkIsLoginOrGoToLogin()
-    : Promise.resolve(true)
-  preCheck.then(passed => passed && navigate(
-    pageType,
-    pageUri,
-    JSON.stringify({ params: navParams }),
-  ))
+  const preCheck =
+    uri === 'RNPreviewPurchase' // 茅台跳转先检查是否已登陆
+      ? checkIsLoginOrGoToLogin()
+      : Promise.resolve(true)
+  preCheck.then(
+    passed =>
+      passed &&
+      navigate(pageType, pageUri, JSON.stringify({ params: navParams }))
+  )
 }
 
 /**
@@ -93,9 +113,15 @@ export function setTitle(title = '') {
  * @param showPromotionProductListDialog  首页弹出新人购弹窗事件
  * @param params 参数
  */
-export function jumpToNativeDialog(showPromotionProductListDialog: string, params: string) {
+export function jumpToNativeDialog(
+  showPromotionProductListDialog: string,
+  params: string
+) {
   //RN模块调用原生的通用方法
-  return NativeModules.RnAppModule.sendEventToNative(showPromotionProductListDialog, params)
+  return NativeModules.RnAppModule.sendEventToNative(
+    showPromotionProductListDialog,
+    params
+  )
 }
 
 /**
@@ -103,9 +129,15 @@ export function jumpToNativeDialog(showPromotionProductListDialog: string, param
  * @param setActivityPageTitle 茅台活动页面设置右边的title的事件
  * @param params 参数
  */
-export function setActivityPageTitle(setActivityPageTitle: string, params: string) {
+export function setActivityPageTitle(
+  setActivityPageTitle: string,
+  params: string
+) {
   //RN模块调用原生的通用方法
-  return NativeModules.RnAppModule.sendEventToNative(setActivityPageTitle, params)
+  return NativeModules.RnAppModule.sendEventToNative(
+    setActivityPageTitle,
+    params
+  )
 }
 
 /**
@@ -113,9 +145,15 @@ export function setActivityPageTitle(setActivityPageTitle: string, params: strin
  * @param navigationBarEventSwitch 开启或关闭导航栏的点击事件名
  * @param params 参数
  */
-export function setNavigationBarEventSwitch(navigationBarEventSwitch: string, params: string) {
+export function setNavigationBarEventSwitch(
+  navigationBarEventSwitch: string,
+  params: string
+) {
   //RN模块调用原生的通用方法
-  return NativeModules.RnAppModule.sendEventToNative(navigationBarEventSwitch, params)
+  return NativeModules.RnAppModule.sendEventToNative(
+    navigationBarEventSwitch,
+    params
+  )
 }
 
 /**
@@ -187,7 +225,7 @@ export function onCartChange(handler: (...args: any) => any) {
  */
 export function showRemarkPickerBeforeAddToCart(
   product: Product
-): Promise<{ count: number, extraData: object}> {
+): Promise<{ count: number; extraData: object }> {
   console.log(product)
   const price =
     product.price < product.slashedPrice ? product.slashedPrice : product.price
@@ -214,7 +252,7 @@ export function showRemarkPickerBeforeAddToCart(
       'setItemNumberByProductcode',
       ({ responseData }) => {
         Log.debug('setItemNumberByProductcode', responseData)
-        let extraData:BaseObj = {}
+        let extraData: BaseObj = {}
         try {
           extraData = JSON.parse(responseData)
         } catch (e) {
@@ -267,7 +305,9 @@ export const onNativeEvent = (function() {
  */
 export function toggleGoodsDetailCartBarVis(visible: boolean) {
   const nativeModule = NativeModules.GoodsDetailsNativeManager
-  const fn = visible ? nativeModule.showBottomViews : nativeModule.hideBottomViews
+  const fn = visible
+    ? nativeModule.showBottomViews
+    : nativeModule.hideBottomViews
   fn()
 }
 
@@ -280,7 +320,10 @@ export function applyPhotosPermission() {
  * @param enabled 状态
  * @param text btn 文本
  */
-export function setNativeBtmCart(enabled: boolean, text: string = '加入购物车') {
+export function setNativeBtmCart(
+  enabled: boolean,
+  text: string = '加入购物车'
+) {
   NativeModules.RnAppModule.sendEventToNative(
     'setBottomAddTextStatus',
     JSON.stringify({ status: enabled ? '1' : '0', text })
@@ -303,7 +346,7 @@ export function toggleLoading(loading: boolean) {
  * @param func 要在首尾展示/隐藏 loading 的 function
  */
 export function withLoading(func: Function) {
-  return function () {
+  return function() {
     toggleLoading(true)
     let result: any
     try {
@@ -324,11 +367,9 @@ export function withLoading(func: Function) {
  */
 export function checkIsLoginOrGoToLogin(): Promise<boolean> {
   return new Promise((resolve, reject) => {
-    NativeModules.RnAppModule.verifyIsOnlineCallback(
-      (errMsg, responseData) => {
-        if (errMsg) reject(errMsg)
-        else resolve(responseData !== '1')
-      }
-    )
+    NativeModules.RnAppModule.verifyIsOnlineCallback((errMsg, responseData) => {
+      if (errMsg) reject(errMsg)
+      else resolve(responseData !== '1')
+    })
   })
 }
