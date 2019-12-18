@@ -2,8 +2,8 @@
  * @Descripttion: 
  * @Author: yuwen.liu
  * @Date: 2019-09-16 20:58:02
- * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-12-10 14:16:21
+ * @LastEditors  : yuwen.liu
+ * @LastEditTime : 2019-12-18 17:41:07
  */
 import { StyleSheet } from 'react-native'
 
@@ -11,7 +11,6 @@ export default StyleSheet.create({
   container: {
     paddingTop: 85,
     flex: 1,
-    backgroundColor:'#fff',
     alignItems: 'center',
   },
   image: {

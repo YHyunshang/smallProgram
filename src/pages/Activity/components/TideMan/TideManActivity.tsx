@@ -164,30 +164,6 @@ export default function TideManActivity({
     refreshBuyNum(productNum, productCode)
   }
 
-  /** @msg: 获取list每一项的高度
-   * @param {showBar,columnNumber}
-   */
-  const getItemHeight = (showBar, columnNumber) => {
-    let itemHeight = 0
-    if(showBar && columnNumber===1){
-      itemHeight = 110
-    }
-    if(showBar && columnNumber===2){
-      itemHeight = 200
-    }
-    if(!showBar && columnNumber===1){
-      itemHeight = 130
-    }
-    if(!showBar && columnNumber===2){
-      itemHeight = 250
-    }
-    if(!showBar && columnNumber===3){
-      itemHeight = 190
-    }
-    console.log(itemHeight)
-    return itemHeight
-  }
-
   /**
    * @msg: 渲染每行的数据
    */
@@ -274,11 +250,6 @@ export default function TideManActivity({
           showsVerticalScrollIndicator={false}
           removeClippedSubviews={false}
           refreshing={false}
-          getItemLayout={(data, index) => ({
-            length: getItemHeight(currentShowBar, currentColumnNumber),
-            offset: getItemHeight(currentShowBar, currentColumnNumber) * index,
-            index,
-          })}
           ListEmptyComponent={
             <Empty type={2} textColor1="#4A4A4A" textColor2="#A4A4B4" />
           }
