@@ -369,7 +369,7 @@ export function checkIsLoginOrGoToLogin(): Promise<boolean> {
   return new Promise((resolve, reject) => {
     NativeModules.RnAppModule.verifyIsOnlineCallback((errMsg, responseData) => {
       if (errMsg) reject(errMsg)
-      else resolve(responseData !== '1')
+      else resolve(responseData === '1')
     })
   })
 }
