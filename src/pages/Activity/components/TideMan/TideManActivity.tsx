@@ -2,11 +2,11 @@
  * @Descripttion: 潮物达人组件
  * @Author: yuwen.liu
  * @Date: 2019-11-21 11:23:19
- * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-12-10 10:25:06
+ * @LastEditors  : yuwen.liu
+ * @LastEditTime : 2019-12-18 11:40:38
  */
 import * as React from 'react'
-import { FlatList, View, Alert } from 'react-native'
+import { FlatList, View } from 'react-native'
 import styles from './TideManActivity.styles'
 import { CMSServices } from '@services'
 import useTheme from '@components/business/Content/ProductGrid.styles'
@@ -18,7 +18,7 @@ import LeftTab from './LeftTab'
 import Empty from '../Empty'
 import Loading from '@components/common/Loading'
 interface Props {
-  tabVos: {
+  currentTabVos: {
     id: number
     tabName: string
     showBar: boolean
@@ -28,20 +28,21 @@ interface Props {
       categoryName: string
     }[]
     tabDetailVOList: {
+      code: string
+      productNum: number
       categoryCode: string
     }[]
   }[]
   shopCode: string
   afterModifyCount: Function
-  requestTabList: Function
 }
 
 export default function TideManActivity({
-  tabVos,
+  currentTabVos,
   afterModifyCount,
-  requestTabList,
   shopCode,
 }: Props) {
+  const [tabVos, setTabVos] = React.useState(currentTabVos)
   const products = tabVos[0].tabDetailVOList.map(ele => ({
     ...CMSServices.formatProduct(ele),
     disableSync: true,
@@ -73,27 +74,10 @@ export default function TideManActivity({
   const themeStyles = useTheme(theme || '2x')
   const gridTotal = gridProducts.length
 
-  /** @msg: 根据tabId和categoryCode来查找左侧分栏的商品数据
-   * @param {categoryCode,tabId}
+  /** @msg: 过滤左边tab栏对应的商品数据
+   * @param {categoryCode}
    */
-  const getDataByCategory = async (categoryCode, tabId) => {
-    this.loading.showLoading()
-    let res
-    try {
-      res = await CMSServices.getDataByCategory(categoryCode, tabId, shopCode)
-    } finally {
-      this.loading.hideLoading()
-    }
-    const { result } = res
-    const products =
-      result &&
-      result.map(ele => ({
-        ...CMSServices.formatProduct(ele),
-        disableSync: true,
-        shopCode,
-      }))
-    setCurrentProducts(products)
-  }
+
   /** @msg: 过滤左边tab栏的数据
    * @param {id}
    */
@@ -138,7 +122,6 @@ export default function TideManActivity({
     }))
     setInitProducts(newInitProducts)
     setCurrentProducts(newInitProducts)
-    requestTabList()
   }
 
   /** @msg: 左边tab栏item改变触发的事件
@@ -146,13 +129,63 @@ export default function TideManActivity({
    */
   const onLeftTabChange = (code, index) => {
     setCurrentLeftTabKey(code)
-    getDataByCategory(code, currentTopTabKey)
-    // const newCurrentProducts = productsFilter(code)
-    // if (index === 0) {
-    //   setCurrentProducts(initProducts)
-    // } else {
-    //   setCurrentProducts(newCurrentProducts)
-    // }
+    const newCurrentProducts = productsFilter(code)
+    setCurrentProducts(index === 0 ? initProducts : newCurrentProducts)
+  }
+
+  /** @msg: 当切换tab时刷新购买数量
+   * @param {code,index}
+   */
+  const refreshBuyNum = (productNum, productCode) => {
+    tabVos.map(tab => {
+      tab.tabDetailVOList.map(item => {
+        if (item.code == productCode) {
+          item.productNum = productNum
+        }
+      })
+    })
+    setTabVos(tabVos)
+    initProducts.map(item => {
+      if (item.code == productCode) {
+        item.count = productNum
+      }
+    })
+    setInitProducts(initProducts)
+  }
+
+  /** @msg: 添加购物车成功时，刷新当前商品项的购买数量以及购物车总数量
+   * @param {count,result}
+   */
+  const refreshProductInfo = (
+    count,
+    { result: { productNum, productCode } }
+  ) => {
+    afterModifyCount(count)
+    refreshBuyNum(productNum, productCode)
+  }
+
+  /** @msg: 获取list每一项的高度
+   * @param {showBar,columnNumber}
+   */
+  const getItemHeight = (showBar, columnNumber) => {
+    let itemHeight = 0
+    if(showBar && columnNumber===1){
+      itemHeight = 110
+    }
+    if(showBar && columnNumber===2){
+      itemHeight = 200
+    }
+    if(!showBar && columnNumber===1){
+      itemHeight = 130
+    }
+    if(!showBar && columnNumber===2){
+      itemHeight = 250
+    }
+    if(!showBar && columnNumber===3){
+      itemHeight = 190
+    }
+    console.log(itemHeight)
+    return itemHeight
   }
 
   /**
@@ -172,13 +205,13 @@ export default function TideManActivity({
           <ProductGridItem
             {...product}
             theme={theme}
-            afterModifyCount={afterModifyCount}
+            afterModifyCount={refreshProductInfo}
           />
         </View>
       </View>
     ))
 
-  const _keyExtractor = (item, index) => item.id
+  const _keyExtractor = (item, index) => index
 
   /**
    * @msg: FlatList渲染的数据项
@@ -187,7 +220,7 @@ export default function TideManActivity({
     currentColumnNumber === 1 ? (
       <View style={styles.productBox}>
         <View style={styles.productWrapper} key={item.code}>
-          <ProductListItem {...item} afterModifyCount={afterModifyCount} />
+          <ProductListItem {...item} afterModifyCount={refreshProductInfo} />
           {index < total - 1 && <View style={styles.fakeBorder}></View>}
         </View>
       </View>
@@ -241,13 +274,18 @@ export default function TideManActivity({
           showsVerticalScrollIndicator={false}
           removeClippedSubviews={false}
           refreshing={false}
+          getItemLayout={(data, index) => ({
+            length: getItemHeight(currentShowBar, currentColumnNumber),
+            offset: getItemHeight(currentShowBar, currentColumnNumber) * index,
+            index,
+          })}
           ListEmptyComponent={
             <Empty type={2} textColor1="#4A4A4A" textColor2="#A4A4B4" />
           }
         />
       </View>
 
-      <Loading ref={ref => (this.loading = ref)}></Loading>
+      <Loading ref={ref => (this.loading = ref)} />
     </View>
   )
 }

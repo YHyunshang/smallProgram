@@ -271,12 +271,12 @@ export default class Page extends React.Component<Props, State> {
           key: floor.id,
           component: TideManActivity,
           props: {
-            tabVos: floor.tabVos,
+            currentTabVos: floor.tabVos,
             shopCode,
-            afterModifyCount: this.requestCartInfo,
-            requestTabList: this.requestTabList,
+            afterModifyCount: this.requestCartInfo
           },
         })
+
       }
       i++
     }
