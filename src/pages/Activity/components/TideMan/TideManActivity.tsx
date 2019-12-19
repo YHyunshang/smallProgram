@@ -6,7 +6,7 @@
  * @LastEditTime : 2019-12-18 11:40:38
  */
 import * as React from 'react'
-import { FlatList, View } from 'react-native'
+import { FlatList, View, Alert } from 'react-native';
 import styles from './TideManActivity.styles'
 import { CMSServices } from '@services'
 import useTheme from '@components/business/Content/ProductGrid.styles'
@@ -128,6 +128,7 @@ export default function TideManActivity({
    * @param {code,index}
    */
   const onLeftTabChange = (code, index) => {
+    Alert.alert(code)
     setCurrentLeftTabKey(code)
     const newCurrentProducts = productsFilter(code)
     setCurrentProducts(index === 0 ? initProducts : newCurrentProducts)
@@ -241,7 +242,7 @@ export default function TideManActivity({
         <FlatList
           style={[
             styles.tideManList,
-            currentColumnNumber === 2 && styles.gridWrapper,
+            currentColumnNumber === 2 && gridTotal && styles.gridWrapper,
           ]}
           data={currentColumnNumber === 1 ? currentProducts : gridProducts}
           renderItem={renderItemData}
