@@ -187,7 +187,7 @@ export default function TideManActivity({
       </View>
     ))
 
-  const _keyExtractor = (item, index) => index
+  const _keyExtractor = (item, index) => index.toString()
 
   /**
    * @msg: FlatList渲染的数据项
