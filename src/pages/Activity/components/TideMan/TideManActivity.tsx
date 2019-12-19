@@ -128,7 +128,6 @@ export default function TideManActivity({
    * @param {code,index}
    */
   const onLeftTabChange = (code, index) => {
-    Alert.alert(code)
     setCurrentLeftTabKey(code)
     const newCurrentProducts = productsFilter(code)
     setCurrentProducts(index === 0 ? initProducts : newCurrentProducts)
