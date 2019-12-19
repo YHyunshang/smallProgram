@@ -187,8 +187,6 @@ export default function TideManActivity({
       </View>
     ))
 
-  const _keyExtractor = (item, index) => index.toString()
-
   /**
    * @msg: FlatList渲染的数据项
    */
@@ -245,7 +243,7 @@ export default function TideManActivity({
           ]}
           data={currentColumnNumber === 1 ? currentProducts : gridProducts}
           renderItem={renderItemData}
-          keyExtractor={_keyExtractor}
+          keyExtractor={(item, index) => index.toString()}
           initialNumToRender={5}
           showsVerticalScrollIndicator={false}
           removeClippedSubviews={false}
