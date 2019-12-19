@@ -9,6 +9,7 @@ import {Img} from "@utils";
 export interface FitImgProps extends FastImageProperties {
 }
 
+let _FitImgMounted_ = false
 const _FitImg_ : React.FunctionComponent<FitImgProps> = (props) => {
   const {
     style,
@@ -19,16 +20,20 @@ const _FitImg_ : React.FunctionComponent<FitImgProps> = (props) => {
   const [imgRatio, setImgRatio] = React.useState(0)
 
   React.useEffect(() => {
-    Img.getRatio(props.source)
-      .then(setImgRatio)
+    _FitImgMounted_ = true
     return () => {
-      setImgRatio(0)
+      _FitImgMounted_ = false
     }
+  })
+
+  React.useEffect(() => {
+    Img.getRatio(props.source)
+      .then(ratio => _FitImgMounted_ && setImgRatio(ratio))
   }, [props.source])
 
   const onLayout = (e: LayoutChangeEvent) => {
     const { nativeEvent: { layout } } = e
-    if (layout.width !== width) setWidth(layout.width)
+    if (layout.width !== width && _FitImgMounted_) setWidth(layout.width)
   }
 
   const dimStyle = (imgRatio && width) ? { width: width, height: width / imgRatio } : {}

@@ -228,7 +228,7 @@ export function formatFloorData(
       })
       //首页1元新人礼包广告图入口
       result.push({
-        key: floor.id,
+        key: '$$comp-newPersonGiftAdSingle',
         component: NewPersonGiftAdSingle,
         wrapperStyle: [
           {
