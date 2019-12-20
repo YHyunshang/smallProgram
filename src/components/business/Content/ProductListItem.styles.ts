@@ -83,7 +83,6 @@ export default StyleSheet.create({
     height: 23,
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
   },
   tag: {
     fontSize: 10,

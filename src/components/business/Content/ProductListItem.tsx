@@ -15,6 +15,7 @@ import PromotionTag from './PromotionTag'
 import FastImage from 'react-native-fast-image'
 import theme from '@theme'
 import {iconDeliveryNextDay} from "@const/resources";
+import {transPenny} from "@utils/FormatUtil";
 
 interface Props extends Product {
   disableAdd?: boolean
@@ -81,15 +82,18 @@ function ProductListItem({
                 <Tag key={idx}>{tag}</Tag>
               )}
             </View>
-            <View style={styles.priceRow}>
+            <Text style={styles.priceRow}>
               <Text style={styles.currentPrice}>
-                <Text style={styles.pricePrefix}>¥ </Text>
-                {price / 100}
+                <Text style={styles.pricePrefix}>¥&nbsp;</Text>
+                {transPenny(price)}
               </Text>
               {!!slashedPrice && (
-                <Text style={styles.slashedPrice}>¥{slashedPrice / 100}</Text>
+                <>
+                  <Text>&nbsp;&nbsp;</Text>
+                  <Text style={styles.slashedPrice}>¥{transPenny(slashedPrice)}</Text>
+                </>
               )}
-            </View>
+            </Text>
           </View>
         </View>
       </TouchableWithoutFeedback>
