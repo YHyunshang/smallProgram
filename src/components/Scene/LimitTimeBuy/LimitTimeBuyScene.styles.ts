@@ -19,7 +19,6 @@ export default StyleSheet.create({
   },
   tabBox: {
     paddingBottom: 5,
-    backgroundColor: '#FFF'
   },
   timerBox: {
     height: 62,
