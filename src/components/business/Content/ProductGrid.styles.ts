@@ -10,49 +10,77 @@ export default theme =>
     {
       '2x': {
         container: {},
-        row: {
-          paddingHorizontal: 5,
-          flexDirection: 'row',
+
+        floorSeparator: {
+          height: 10,
         },
-        rowNotLast: {
-          marginBottom: 10,
+
+        rowFirst: {
+          paddingTop: 10,
         },
-        column: {
-          width: (windowWidth - 5 * 2) / 2,
-          paddingHorizontal: 5,
+        rowLast: {
+          paddingBottom: 10,
         },
-        productBox: {
-          backgroundColor: '#fff',
-          borderRadius: 5,
-          padding: 5,
+
+        col: {
           paddingHorizontal: 10,
-          paddingTop: 8,
-          paddingBottom: 12,
-          overflow: 'hidden',
-          shadowColor: 'rgba(0,0,0,0.06)',
-          shadowRadius: 11,
         },
+        colFirst: {
+          paddingRight: 5,
+        },
+        colLast: {
+          paddingLeft: 5,
+        },
+
+        productCell: {
+          padding: 10,
+          backgroundColor: '#FFF',
+          borderRadius: 5,
+          shadowColor: '#000',
+          shadowOpacity: 0.06,
+          shadowRadius: 11,
+          elevation: 7,
+        },
+        productCellNotLast: {
+          // marginRight: 10,
+        }
       },
       '3x': {
         container: {
           backgroundColor: '#FFF',
         },
-        row: {
-          flexDirection: 'row',
+
+        floorSeparator: {
+          borderTopWidth: 0.5,
+          borderTopColor: '#EEE'
         },
-        rowNotLast: {
+
+        rowFirst: {
+          borderTopWidth: 0.5,
+          borderTopColor: '#EEE',
+        },
+        rowLast: {
           borderBottomWidth: 0.5,
-          borderBottomColor: '#EEEEEE',
+          borderBottomColor: '#EEE',
         },
-        column: {
+
+        col: {
+          borderLeftWidth: 0.25,
+          borderLeftColor: '#EEE',
+          borderRightWidth: 0.25,
+          borderRightColor: '#EEE',
+        },
+        colFirst: {
+          borderLeftWidth: 0,
+        },
+        colLast: {
+          borderRightWidth: 0,
+        },
+
+        productCell: {
           padding: 10,
-          width: windowWidth / 3,
+          backgroundColor: '#FFF',
         },
-        columnNotLast: {
-          borderRightWidth: 0.5,
-          borderRightColor: '#EEEEEE',
-        },
-        productBox: {},
       },
     }[theme]
   )
