@@ -1,27 +1,26 @@
 /*
- * @Descripttion: 潮物达人组件
+ * @Descripttion: 酒专题组件
  * @Author: yuwen.liu
  * @Date: 2019-11-21 11:23:19
  * @LastEditors  : yuwen.liu
- * @LastEditTime : 2019-12-23 11:39:11
+ * @LastEditTime : 2019-12-23 11:12:11
  */
 import * as React from 'react'
-import { FlatList, View, Alert } from 'react-native';
-import styles from './TideManActivity.styles'
+import { FlatList, View, Alert } from 'react-native'
+import styles from './WineTopicActivity.styles'
 import { CMSServices } from '@services'
 import useTheme from '@components/business/Content/ProductGrid.styles'
 import ProductListItem from '@components/business/Content/ProductListItem'
 import ProductGridItem from '@components/business/Content/ProductGridItem'
 import chunk from 'lodash/chunk'
-import TopTab from './TopTab'
-import LeftTab from './LeftTab'
-import Empty from '../Empty'
+import TopTab from '../../../Activity/components/TideMan/TopTab'
+import LeftTab from '../../../Activity/components/TideMan/LeftTab'
+import Empty from '../../../Activity/components/Empty'
 import Loading from '@components/common/Loading'
 interface Props {
   currentTabVos: {
     id: number
     tabName: string
-    showBar: boolean
     subType: number
     categoryList: {
       categoryCode: string
@@ -37,7 +36,7 @@ interface Props {
   afterModifyCount: Function
 }
 
-export default function TideManActivity({
+export default function WineTopicActivity({
   currentTabVos,
   afterModifyCount,
   shopCode,
@@ -48,7 +47,6 @@ export default function TideManActivity({
     disableSync: true,
     shopCode,
   }))
-  const showBar = tabVos[0].showBar || false //是否展示左边侧栏
   const topTabList =
     tabVos && tabVos.map(tab => ({ key: tab.id, label: tab.tabName })) //顶部tab栏数据
   const initLeftTabList = tabVos[0].categoryList //初始化左边tab栏的数据
@@ -57,9 +55,6 @@ export default function TideManActivity({
     initLeftTabList[0] ? initLeftTabList[0].categoryCode : 'all'
   ) //初始化右边tab栏的当前选中的项，以及设置选中项的方法
   const [leftTabList, setLeftTabList] = React.useState(initLeftTabList) //初始化左侧tab栏的数据列表
-  const [currentShowBar, setCurrentShowBar] = React.useState(
-    tabVos[0].subType === 3 ? false : showBar
-  ) //初始化是否展示左侧分栏
   const [currentColumnNumber, setCurrentColumnNumber] = React.useState(
     tabVos[0].subType || 1
   ) //初始化一行展示的列数
@@ -70,19 +65,15 @@ export default function TideManActivity({
   const [currentProducts, setCurrentProducts] = React.useState(initProducts) //当前选中的tab下的商品数据
   const total = currentProducts.length
   const gridProducts = chunk(currentProducts, currentColumnNumber)
-  const theme = { 2: '2x', 3: '3x' }[currentColumnNumber]
-  const themeStyles = useTheme(theme || '2x')
+  const theme = '2x'
+  const themeStyles = useTheme(theme)
   const gridTotal = gridProducts.length
-
-  /** @msg: 过滤左边tab栏对应的商品数据
-   * @param {categoryCode}
-   */
-
   /** @msg: 过滤左边tab栏的数据
    * @param {id}
    */
   const leftTabListFilter = id =>
     tabVos && tabVos.filter(item => item.id === id)
+
   /** @msg: 过滤左边tab栏对应的商品数据
    * @param {categoryCode}
    */
@@ -109,9 +100,6 @@ export default function TideManActivity({
       newLeftTabList[0].categoryList[0]
         ? newLeftTabList[0].categoryList[0].categoryCode
         : 'all'
-    )
-    setCurrentShowBar(
-      newLeftTabList[0].subType === 3 ? false : newLeftTabList[0].showBar
     )
     setCurrentColumnNumber(newLeftTabList[0].subType)
     setTabDetailVOList(newLeftTabList[0].tabDetailVOList)
@@ -152,8 +140,7 @@ export default function TideManActivity({
     })
     setInitProducts(initProducts)
   }
-
-  /** @msg: 添加购物车成功时，刷新当前商品项的购买数量以及购物车总数量
+  /** @msg: 添加购物车成功时，刷新当前商品项的购买数量
    * @param {count,result}
    */
   const refreshProductInfo = (
@@ -163,7 +150,6 @@ export default function TideManActivity({
     afterModifyCount(count)
     refreshBuyNum(productNum, productCode)
   }
-
   /**
    * @msg: 渲染每行的数据
    */
@@ -171,7 +157,7 @@ export default function TideManActivity({
     products.map((product, colIdx) => (
       <View
         style={[
-          currentShowBar ? styles.noBar : themeStyles.column,
+          styles.noBar,
           colIdx % currentColumnNumber < currentColumnNumber - 1 &&
             themeStyles.columnNotLast,
         ]}
@@ -186,7 +172,6 @@ export default function TideManActivity({
         </View>
       </View>
     ))
-
   /**
    * @msg: FlatList渲染的数据项
    */
@@ -226,20 +211,17 @@ export default function TideManActivity({
         />
       )}
       <View style={styles.centerWrapper}>
-        {currentShowBar &&
-          currentColumnNumber !== 3 &&
-          leftTabList &&
-          leftTabList.length > 0 && (
-            <LeftTab
-              currentActive={currentLeftTabKey}
-              data={leftTabList}
-              onTabChange={onLeftTabChange}
-            />
-          )}
+        {leftTabList && leftTabList.length > 0 && (
+          <LeftTab
+            currentActive={currentLeftTabKey}
+            data={leftTabList}
+            onTabChange={onLeftTabChange}
+          />
+        )}
         <FlatList
           style={[
             styles.tideManList,
-            currentColumnNumber === 2 && gridTotal && styles.gridWrapper,
+            currentColumnNumber === 2 && styles.gridWrapper,
           ]}
           data={currentColumnNumber === 1 ? currentProducts : gridProducts}
           renderItem={renderItemData}
@@ -253,7 +235,6 @@ export default function TideManActivity({
           }
         />
       </View>
-
       <Loading ref={ref => (this.loading = ref)} />
     </View>
   )

@@ -3,8 +3,8 @@
  * @Company: yh
  * @Author: yuwen.liu
  * @Date: 2019-08-26 09:41:18
- * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-26 10:45:46
+ * @LastEditors  : yuwen.liu
+ * @LastEditTime : 2019-12-20 15:48:22
  */
 import { AppRegistry, Text, TouchableOpacity } from 'react-native'
 import Home from './src/pages/Home'
@@ -17,7 +17,7 @@ import HelpFeedBackAnswer from './src/pages/HelpFeedBack/HelpFeedBackAnswer'
 import LimitTimeBuy from './src/pages/LimitTimeBuy'
 import PreviewPurchase from './src/pages/MouTai/PreviewPurchase'
 import QualificationsQuery from './src/pages/MouTai/QualificationsQuery'
-
+import WineTopic from './src/pages/WineTopic/Page'
 // 隐藏 RN yellowBox warning 提示
 console.disableYellowBox = true
 
@@ -42,3 +42,4 @@ AppRegistry.registerComponent('RNHelpFeedBackAnswer', () => HelpFeedBackAnswer)
 AppRegistry.registerComponent('LimitTimeBuy', () => LimitTimeBuy)
 AppRegistry.registerComponent('RNPreviewPurchase', () => PreviewPurchase)
 AppRegistry.registerComponent('RNQualificationQuery', () => QualificationsQuery)
+AppRegistry.registerComponent('RNWineTopic', () => WineTopic)
