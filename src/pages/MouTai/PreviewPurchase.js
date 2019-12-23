@@ -3,8 +3,8 @@
  * @Company: yh
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
- * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-12-09 17:06:17
+ * @LastEditors  : yuwen.liu
+ * @LastEditTime : 2019-12-23 17:20:54
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity, Alert} from 'react-native'
@@ -317,7 +317,7 @@ export default class PreviewPurchase extends React.Component {
                   showsVerticalScrollIndicator={false}
                 >
                   <View style={styles.headBannerImage}>
-                    <TopBannerImage style={styles.headBannerImage} headImg={Img.loadRatioImage(exchangeInfoVO.integralExchangeUrl, Img.FullWidth)}></TopBannerImage>
+                    <TopBannerImage style={styles.headBannerImage} type={1} headImg={Img.loadRatioImage(exchangeInfoVO.integralExchangeUrl, Img.FullWidth)}></TopBannerImage>
                   </View>
                   <View style={styles.headBanner}>
                     {

@@ -2,8 +2,8 @@
  * @Descripttion: resources.ts
  * @Author: yuwen.liu
  * @Date: 2019-09-06 13:54:53
- * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-06 15:16:27
+ * @LastEditors  : yuwen.liu
+ * @LastEditTime : 2019-12-23 17:10:38
  */
 export const cartGray = require('@img/cart-gray.png')
 
@@ -86,3 +86,7 @@ export const iconShare = require('@img/icon-share.png')
 export const iconWeChatMoment = require('@img/icon-wechat-moment.png')
 
 export const iconDeliveryNextDay = require('@img/icon-delivery-next-day.png')
+
+export const defaultBanner = require('@img/default-banner.png')
+
+export const defaultCarousel = require('@img/default-carousel.png')
