@@ -3,8 +3,8 @@
  * @Company: yh
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
- * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-06 16:12:57
+ * @LastEditors  : yuwen.liu
+ * @LastEditTime : 2019-12-24 11:42:10
  */
 import React from 'react'
 import {ScrollView, View, Text, TouchableOpacity, NativeModules} from 'react-native'
@@ -20,6 +20,7 @@ export default class HelpFeedBackPage extends React.Component {
     this.state = {
       questionList: []
     }
+    this.loadingRef = React.createRef()
   }
 
   componentDidMount() {
@@ -36,18 +37,18 @@ export default class HelpFeedBackPage extends React.Component {
    * @description: 查询问题类型列表
    */
   getTypeList = () => {
-    this.loading.showLoading()
+    this.loadingRef.current.showLoading()
     getTypeList({})
       .then(({result: data, message, code}) => {
         if (code === 200000 && data) {
           this.setState({questionList: data})
-          this.loading.hideLoading()
+          this.loadingRef.current.hideLoading()
         } else {
-          this.loading.hideLoading()
+          this.loadingRef.current.hideLoading()
           rnAppModule.showToast(message, '0')
         }
       }).catch(({message}) => {
-        this.loading.hideLoading()
+        this.loadingRef.current.hideLoading()
         rnAppModule.showToast(message, '0')
       })
   }
@@ -80,7 +81,7 @@ export default class HelpFeedBackPage extends React.Component {
           </View>
           {questionItems}
         </ScrollView>
-        <Loading ref={ref => this.loading = ref}></Loading>
+        <Loading ref={this.loadingRef} />
       </View>
     )
   }

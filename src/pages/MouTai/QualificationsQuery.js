@@ -3,8 +3,8 @@
  * @Company: yh
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
- * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-12-09 17:07:22
+ * @LastEditors  : yuwen.liu
+ * @LastEditTime : 2019-12-24 13:53:05
  */
 import React from 'react'
 import {View, ScrollView, Text, Image, NativeModules, TouchableOpacity} from 'react-native'
@@ -41,6 +41,7 @@ export default class QualificationsQuery extends React.Component {
         // ]
       }
     }
+    this.loadingRef = React.createRef()
   }
   static propTypes = {
     activityCode: PropTypes.string // 活动编码
@@ -65,26 +66,26 @@ export default class QualificationsQuery extends React.Component {
   componentDidMount() {
     Native.setTitle('资格查询')
     this.getIntegralList()
-    this.loading.hideLoading()
+    this.loadingRef.current.hideLoading()
   }
   /**
    * @msg:查询资格查询积分列表
    */
   getIntegralList = () => {
     const {activityCode} = this.props
-    this.loading.showLoading()
+    this.loadingRef.current.showLoading()
     getIntegralList(activityCode)
       .then(({result: data, message, code}) => {
         if (code === 200000 && data) {
           this.setState({qualificationInfo: data})
-          this.loading.hideLoading()
+          this.loadingRef.current.hideLoading()
         } else {
           rnAppModule.showToast(message, '0')
-          this.loading.hideLoading()
+          this.loadingRef.current.hideLoading()
         }
       }).catch(({message}) => {
         rnAppModule.showToast(message, '0')
-        this.loading.hideLoading()
+        this.loadingRef.current.hideLoading()
       })
   }
   render() {
@@ -174,7 +175,7 @@ export default class QualificationsQuery extends React.Component {
             </View>
           </View>
         </ScrollView>
-        <Loading ref={ref => this.loading = ref}></Loading>
+        <Loading ref={this.loadingRef} />
       </View>
     )
   }

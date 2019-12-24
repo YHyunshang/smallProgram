@@ -3,8 +3,8 @@
  * @Company: yh
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
- * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-12-09 17:04:18
+ * @LastEditors  : yuwen.liu
+ * @LastEditTime : 2019-12-24 11:42:17
  */
 import React from 'react'
 import {ScrollView, View, Text, NativeModules} from 'react-native'
@@ -21,6 +21,7 @@ export default class HelpFeedBackPage extends React.Component {
     this.state = {
       answerList: []
     }
+    this.loadingRef = React.createRef()
   }
   static propTypes = {
     activityCode: PropTypes.string, // 活动编码
@@ -35,18 +36,18 @@ export default class HelpFeedBackPage extends React.Component {
   getAnswerList = () => {
     const {activityCode} = this.props
     let questionTypeId = activityCode
-    this.loading.showLoading()
+    this.loadingRef.current.showLoading()
     getAnswerList({questionTypeId})
       .then(({result: data, message, code}) => {
         if (code === 200000 && data) {
           this.setState({answerList: data})
-          this.loading.hideLoading()
+          this.loadingRef.current.hideLoading()
         } else {
-          this.loading.hideLoading()
+          this.loadingRef.current.hideLoading()
           rnAppModule.showToast(message, '0')
         }
       }).catch(({message}) => {
-        this.loading.hideLoading()
+        this.loadingRef.current.hideLoading()
         rnAppModule.showToast(message, '0')
       })
   }
@@ -73,7 +74,7 @@ export default class HelpFeedBackPage extends React.Component {
         >
           {answerItems}
         </ScrollView>
-        <Loading ref={ref => this.loading = ref}></Loading>
+        <Loading ref={this.loadingRef} />
       </View>
     )
   }

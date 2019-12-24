@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 酒专题活动
+ * @Author: yuwen.liu
+ * @Date: 2019-12-24 10:27:23
+ * @LastEditors  : yuwen.liu
+ * @LastEditTime : 2019-12-24 11:34:47
+ */
+
 import * as React from 'react'
 import styles from './Page.styles'
 import { CMSServices } from '@services'
