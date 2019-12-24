@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-21 11:23:19
  * @LastEditors  : yuwen.liu
- * @LastEditTime : 2019-12-24 11:29:35
+ * @LastEditTime : 2019-12-24 17:52:55
  */
 import * as React from 'react'
 import { FlatList, View, Alert } from 'react-native'
@@ -129,7 +129,7 @@ export default function TideManActivity({
   const onLeftTabChange = (code, index): void => {
     setCurrentLeftTabKey(code)
     const newCurrentProducts = productsFilter(code)
-    setCurrentProducts(index === 0 ? initProducts : newCurrentProducts)
+    setCurrentProducts(code === 'all' ? initProducts : newCurrentProducts)
   }
 
   /** @msg: 当切换tab时刷新购买数量
