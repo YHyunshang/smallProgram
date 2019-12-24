@@ -2,12 +2,12 @@
  * Created by 李华良 on 2019-11-26
  */
 import * as React from 'react'
-import {BaseObj} from "@common/typings";
-import {Text, View} from "react-native";
+import { BaseObj } from '@common/typings'
+import { Text, View } from 'react-native'
 import styles from './PreSale.styles'
-import {FitImg} from "@components";
-import memorize from "memoize-one";
-import {Img} from "@utils";
+import { FitImg } from '@components'
+import memorize from 'memoize-one'
+import { Img } from '@utils'
 
 const loadFitImg = memorize(imgSrc => Img.loadRatioImage(imgSrc, Img.FullWidth))
 
@@ -15,9 +15,12 @@ export interface DetailSectionProps {
   productData: BaseObj
 }
 
-const DetailSection: React.FunctionComponent<DetailSectionProps> = ({ productData }) => {
+const DetailSection: React.FunctionComponent<DetailSectionProps> = ({
+  productData,
+}) => {
   const preSaleData = productData.resProductAdvanceSaleVO || {}
   const detailData = productData.resChannelStoreProductVO || {}
+  const detailImgData = productData.productDetailImagesResponseVOList || []
 
   let shopImages = []
   try {
@@ -25,14 +28,30 @@ const DetailSection: React.FunctionComponent<DetailSectionProps> = ({ productDat
   } catch (e) {
     console.error('parse shopUrl error', e)
   }
-  const images = [
-    ...(preSaleData.resProductDescPicVOList || [])
-      .sort((a, b) => a.sort - b.sort).map(ele => ele.descPicUrl),
-    ...shopImages
-  ]
+  const images =
+    detailData.isAdvanceSale === 1
+      ? [
+          ...(preSaleData.resProductDescPicVOList || [])
+            .sort((a, b) => a.sort - b.sort)
+            .map(ele => ele.descPicUrl),
+          ...shopImages,
+        ]
+      : [
+          ...detailImgData
+            .filter(ele => ele.fileType === 0)
+            .map(ele => ele.url),
+          ...shopImages,
+        ]
 
   return (
-    <View style={[styles.section, styles.sectionLast, styles.ph15, styles.detailBox]}>
+    <View
+      style={[
+        styles.section,
+        styles.sectionLast,
+        styles.ph15,
+        styles.detailBox,
+      ]}
+    >
       <Text style={styles.h2}>商品详情</Text>
       {!!detailData.originPlace && (
         <View style={styles.detailInfoRow}>
@@ -43,7 +62,9 @@ const DetailSection: React.FunctionComponent<DetailSectionProps> = ({ productDat
       {!!detailData.productSpecific && (
         <View style={styles.detailInfoRow}>
           <Text style={styles.detailInfoTitle}>规格</Text>
-          <Text style={styles.detailInfoText}>{detailData.productSpecific}</Text>
+          <Text style={styles.detailInfoText}>
+            {detailData.productSpecific}
+          </Text>
         </View>
       )}
       {!!detailData.shelfLife && (
@@ -53,13 +74,16 @@ const DetailSection: React.FunctionComponent<DetailSectionProps> = ({ productDat
         </View>
       )}
       {images.map(ele => (
-        <FitImg source={{ uri: loadFitImg(ele) }} key={ele} resizeMode="contain" />
+        <FitImg
+          source={{ uri: loadFitImg(ele) }}
+          key={ele}
+          resizeMode="contain"
+        />
       ))}
     </View>
   )
-};
+}
 
-DetailSection.defaultProps = {
-};
+DetailSection.defaultProps = {}
 
 export default DetailSection
