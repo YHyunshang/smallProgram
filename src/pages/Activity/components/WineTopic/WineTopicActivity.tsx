@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-21 11:23:19
  * @LastEditors  : yuwen.liu
- * @LastEditTime : 2019-12-24 16:35:41
+ * @LastEditTime : 2019-12-24 16:35:15
  */
 import * as React from 'react'
 import { FlatList, View, Alert } from 'react-native'
@@ -13,9 +13,9 @@ import useTheme from '@components/business/Content/ProductGrid.styles'
 import ProductListItem from '@components/business/Content/ProductListItem'
 import ProductGridItem from '@components/business/Content/ProductGridItem'
 import chunk from 'lodash/chunk'
-import TopTab from '../../../Activity/components/TideMan/TopTab'
-import LeftTab from '../../../Activity/components/TideMan/LeftTab'
-import Empty from '../../../Activity/components/Empty'
+import TopTab from '../TideMan/TopTab'
+import LeftTab from '../TideMan/LeftTab'
+import Empty from '../Empty'
 interface Props {
   currentTabVos: {
     id: number

@@ -16,6 +16,7 @@ import Tab from './components/Tab'
 import Footer from './components/Footer'
 import Empty from './components/Empty'
 import TideManActivity from './components/TideMan/TideManActivity'
+import WineTopicActivity from './components/WineTopic/WineTopicActivity'
 import AdTitle from '@components/business/Content/AdTitle'
 import Loading from '../../components/common/Loading'
 import withHistory from "@HOC/withHistory";
@@ -276,7 +277,18 @@ export default class Page extends React.Component<Props, State> {
             afterModifyCount: this.requestCartInfo
           },
         })
-
+      }
+      else if (floor.type === 9) {
+        // 酒专题组件
+        result.push({
+          key: floor.id,
+          component: WineTopicActivity,
+          props: {
+            currentTabVos: floor.tabVos,
+            shopCode,
+            afterModifyCount: this.requestCartInfo
+          },
+        })
       }
       i++
     }
