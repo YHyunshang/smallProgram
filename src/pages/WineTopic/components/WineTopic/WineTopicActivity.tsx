@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-21 11:23:19
  * @LastEditors  : yuwen.liu
- * @LastEditTime : 2019-12-23 11:12:11
+ * @LastEditTime : 2019-12-24 11:28:51
  */
 import * as React from 'react'
 import { FlatList, View, Alert } from 'react-native'
@@ -16,7 +16,6 @@ import chunk from 'lodash/chunk'
 import TopTab from '../../../Activity/components/TideMan/TopTab'
 import LeftTab from '../../../Activity/components/TideMan/LeftTab'
 import Empty from '../../../Activity/components/Empty'
-import Loading from '@components/common/Loading'
 interface Props {
   currentTabVos: {
     id: number
@@ -235,7 +234,6 @@ export default function WineTopicActivity({
           }
         />
       </View>
-      <Loading ref={ref => (this.loading = ref)} />
     </View>
   )
 }

@@ -3,10 +3,10 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-21 11:23:19
  * @LastEditors  : yuwen.liu
- * @LastEditTime : 2019-12-23 11:39:11
+ * @LastEditTime : 2019-12-24 11:29:35
  */
 import * as React from 'react'
-import { FlatList, View, Alert } from 'react-native';
+import { FlatList, View, Alert } from 'react-native'
 import styles from './TideManActivity.styles'
 import { CMSServices } from '@services'
 import useTheme from '@components/business/Content/ProductGrid.styles'
@@ -16,7 +16,6 @@ import chunk from 'lodash/chunk'
 import TopTab from './TopTab'
 import LeftTab from './LeftTab'
 import Empty from '../Empty'
-import Loading from '@components/common/Loading'
 interface Props {
   currentTabVos: {
     id: number
@@ -253,8 +252,6 @@ export default function TideManActivity({
           }
         />
       </View>
-
-      <Loading ref={ref => (this.loading = ref)} />
     </View>
   )
 }

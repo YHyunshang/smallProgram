@@ -12,9 +12,10 @@ interface Props {
 }
 
 interface State {
-  shopCode: string
+  shopCode: string //门店编码
   wineActivity: {
     id: number
+    tabName: string //横向tab栏的名字
     subType: number // 一行展示几列 
     categoryList: {
       categoryCode: string //分类编码
@@ -34,6 +35,7 @@ interface State {
 }
 const rnAppModule = NativeModules.RnAppModule // 原生模块
 export default class Page extends React.Component<Props, State> {
+  loadingRef: React.RefObject<any>;
   constructor(props) {
     super(props)
 
@@ -46,10 +48,8 @@ export default class Page extends React.Component<Props, State> {
       },
       isShowEmpty: false,
     }
+    this.loadingRef = React.createRef()
   }
-
-  loadingRef = React.createRef()
-
   componentDidMount() {
     this.requestTabList()
     this.requestCartInfo()
