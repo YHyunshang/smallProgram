@@ -86,3 +86,5 @@ export const iconShare = require('@img/icon-share.png')
 export const iconWeChatMoment = require('@img/icon-wechat-moment.png')
 
 export const iconDeliveryNextDay = require('@img/icon-delivery-next-day.png')
+
+export const iconPoster = require('@img/icon-poster.png')

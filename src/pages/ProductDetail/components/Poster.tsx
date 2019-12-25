@@ -30,14 +30,23 @@ const Poster: React.FunctionComponent<PosterProps> = ({
       () => showToast('图片保存失败，请授权永辉买菜访问您的相册', '0')
     )
 
+  const [ loading, setLoading ] = React.useState(true)
+  const onImgLoadEnd = () => setLoading(false)
+  const onImgLoadError = () => !!image && showToast('Ops，海报被海豹吞了！', '0')
+
   return (
     <PopUp visible={visible} title="保存至相册" onClose={onClose}>
       <View style={styles.container}>
         <View style={styles.posterBox}>
-          {!image && (
+          {(!image || loading) && (
               <Spin>图片加载中...</Spin>
           )}
-          <FastImage style={styles.poster} source={{ uri: image }} />
+          <FastImage
+            style={styles.poster}
+            source={{ uri: image }}
+            onLoadEnd={onImgLoadEnd}
+            onError={onImgLoadError}
+          />
         </View>
         <TouchableOpacity disabled={!image} onPress={saveImg}>
           <View style={styles.btnSave}>

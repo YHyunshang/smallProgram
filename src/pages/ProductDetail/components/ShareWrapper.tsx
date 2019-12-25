@@ -2,8 +2,6 @@
  * Created by 李华良 on 2019-11-27
  */
 import * as React from 'react'
-import {Animated, Easing, TouchableWithoutFeedback, View} from "react-native";
-import styles from './ShareWrapper.styles'
 import ShareChannelSelector from "@components/business/ShareChannelSelector";
 import {ShareChannel} from "@common/typings";
 import Poster from "./Poster";
@@ -24,11 +22,12 @@ export interface ShareWrapperProps {
   product: ProductInfo
   poster: string
   onClose: () => void
+  onSelect: (channel: ShareChannel) => void
   afterVisibleAnimation?: (visible: boolean) => void
 }
 
 const ShareWrapper: React.FunctionComponent<ShareWrapperProps> =
-  ({ visible, product, poster, onClose, afterVisibleAnimation}) => {
+  ({ visible, product, poster, onClose, onSelect, afterVisibleAnimation}) => {
   const [ channelSelectorVis, setChannelSelectorVis ] = React.useState(false)
   const [ posterVis, setPosterVis ] = React.useState(false)
 
@@ -48,8 +47,12 @@ const ShareWrapper: React.FunctionComponent<ShareWrapperProps> =
           desc: product.desc,
         })
         break
+      case ShareChannel.WeChatMoment:
+        // todo: 分享 H5 到朋友圈
+        break
       case ShareChannel.Poster:
       default:
+        onSelect(ShareChannel.Poster)
         track('ShareChanel', { Share_Chanel: '分享海报', page_type: '商详页' })
         setChannelSelectorVis(false)
         setPosterVis(true)

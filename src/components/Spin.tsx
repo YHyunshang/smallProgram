@@ -18,7 +18,7 @@ const Spin: React.FunctionComponent<SpinProps> = ({ children }) => {
     const animation = Animated.loop(
       Animated.timing(animatedVal, {
         toValue: 1,
-        duration: 1000,
+        duration: 800,
         easing: Easing.linear,
         useNativeDriver: true,
       })

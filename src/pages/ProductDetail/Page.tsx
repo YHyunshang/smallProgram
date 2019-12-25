@@ -8,6 +8,7 @@ import {
   Product,
   ProductDeliveryType,
   ProductType,
+  ShareChannel,
 } from '@common/typings'
 import uniqBy from 'lodash/uniqBy'
 import {
@@ -36,7 +37,7 @@ import DetailSection from './components/DetailSection.PreSale'
 import { placeholderProduct } from '@const/resources'
 import SimilarProducts from './components/SimilarProducts'
 import { loadRatioImage } from '@utils/img'
-import {RouteContext} from "@utils/contextes";
+import { RouteContext } from "@utils/contextes";
 
 interface InitialProductData extends BaseObj {
   type?: ProductType // 商品类型
@@ -51,6 +52,7 @@ export interface PageProps {
 interface PageState {
   productDetail: BaseObj // 商品详情数据
   similarProducts: Product[] // 相似商品
+  posterLoading: boolean
   poster: string // 商品海报
   shareWrapperVis: boolean // 分享 wrapper 是否可见
   routeName: string
@@ -93,6 +95,7 @@ export default class Page extends React.Component<PageProps, PageState> {
     this.state = {
       productDetail: {},
       similarProducts: [],
+      posterLoading: false,
       poster: '',
       shareWrapperVis: false,
       routeName: '商详页',
@@ -143,24 +146,6 @@ export default class Page extends React.Component<PageProps, PageState> {
         present_price: transPenny(detailInfo.promotionPrice || detailInfo.price),
         product_spec: detailInfo.productSpecific,
       })
-
-    // get poster
-    const priceOnPoster = detailInfo.promotionPrice || detailInfo.price
-    let thumbnail = detailInfo.mainUrl
-    if (!thumbnail) {
-      const firstImgInSlider = sliderInfo.find(
-        ele => ele.fileType === 0 && ele.url
-      )
-      thumbnail = firstImgInSlider ? firstImgInSlider.url : ProductThumbnail
-    }
-    const { result: poster } = await getPoster({
-      name: detailInfo.productName,
-      price: `¥ ${transPenny(priceOnPoster)}`,
-      code: detailInfo.productCode,
-      storeCode: detailInfo.storeCode,
-      thumbnail,
-    })
-    this.setState({ poster })
   }
 
   formatSimilarProducts = (
@@ -229,6 +214,34 @@ export default class Page extends React.Component<PageProps, PageState> {
     }
   }
 
+  requestPoster = async () => {
+    const { productDetail: product = {} } = this.state
+    const detailInfo = product.resChannelStoreProductVO || {} // 商详信息
+    const sliderInfo = product.productSliderImagesResponseVOList || {} // 轮播图
+    const thumbnailInfo = product.productImagesResponseVOList || [] // 主图信息
+
+    const priceOnPoster = detailInfo.promotionPrice || detailInfo.price
+    let thumbnail: string
+    if (thumbnailInfo.length > 0) {
+      const thumbnailObj = thumbnailInfo.find(ele => ele.fileType === 0 && !!ele.url)
+      if (thumbnailObj) thumbnail = thumbnailObj.url
+    }
+    if (!thumbnail) {
+      const firstImgInSlider = sliderInfo.find(
+        ele => ele.fileType === 0 && ele.url
+      )
+      thumbnail = firstImgInSlider ? firstImgInSlider.url : ProductThumbnail
+    }
+    const { result: poster } = await getPoster({
+      name: detailInfo.productName,
+      price: `¥ ${transPenny(priceOnPoster)}`,
+      code: detailInfo.productCode,
+      storeCode: detailInfo.storeCode,
+      thumbnail,
+    })
+    return poster
+  }
+
   toggleShareVis = (visible: boolean) => {
     if (visible) {
       toggleGoodsDetailCartBarVis(false)
@@ -274,6 +287,15 @@ export default class Page extends React.Component<PageProps, PageState> {
 
   onPreSaleStatusChange = (status: ActivityStatus) => {
     setNativeBtmCart(status !== ActivityStatus.Processing)
+  }
+
+  onSelectShareChannel = (channel: ShareChannel) => {
+    if (channel === ShareChannel.Poster) {
+      this.setState({ posterLoading: true })
+      this.requestPoster()
+        .then(poster => this.setState({ poster }))
+        .finally(() => this.setState({ posterLoading: false }))
+    }
   }
 
   renderProductSection = () => {
@@ -357,6 +379,7 @@ export default class Page extends React.Component<PageProps, PageState> {
           product={productInfoForWXFriendsSharing}
           poster={poster}
           onClose={() => this.toggleShareVis(false)}
+          onSelect={this.onSelectShareChannel}
           afterVisibleAnimation={this.afterShareVisAnimation}
         />
       </RouteContext.Provider>
