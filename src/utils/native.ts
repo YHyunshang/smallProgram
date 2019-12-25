@@ -19,7 +19,7 @@ import {ActivityStatus, BaseObj, Product} from '@common/typings'
 // 环境
 export const ENV = (function() {
   const env = NativeModules.HttpNativeManager.envPathType
-  return { 0: 'test', 1: 'dev', 2: 'prod', 3: 'preProd' }[env]
+  return { 0: 'test', 1: 'dev', 2: 'prod', 3: 'preProd', 4: 'devPublic', 5: 'integration' }[env]
 })()
 
 export enum NavPageType {
