@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-21 11:23:19
  * @LastEditors  : yuwen.liu
- * @LastEditTime : 2019-12-24 17:52:55
+ * @LastEditTime : 2019-12-25 10:21:14
  */
 import * as React from 'react'
 import { FlatList, View, Alert } from 'react-native'
@@ -19,21 +19,21 @@ import Empty from '../Empty'
 interface Props {
   currentTabVos: {
     id: number
-    tabName: string
-    showBar: boolean
-    subType: number
+    tabName: string //顶部tab栏名称
+    showBar: boolean //是否展示左边侧栏
+    subType: number //一行展示几列
     categoryList: {
-      categoryCode: string
-      categoryName: string
+      categoryCode: string //分类编码
+      categoryName: string //分类名称
     }[]
     tabDetailVOList: {
       code: string
-      productNum: number
+      productNum: number //商品数量
       categoryCode: string
     }[]
   }[]
-  shopCode: string
-  afterModifyCount: Function
+  shopCode: string //门店编码
+  afterModifyCount: Function // 操作购物车数量的回调函数
 }
 
 export default function TideManActivity({
