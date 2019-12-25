@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-09-19 09:35:28
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-09-26 18:06:50
+ * @Last Modified time: 2019-12-24 17:25:35
  */
 import * as React from 'react'
 import { View, Animated, Dimensions } from 'react-native'
@@ -14,11 +14,17 @@ import TabBar from './components/TabBar'
 import CMSScene from './components/CMSScene'
 import CategoryScene from './components/CategroryScene'
 import { StorageChoices, Sort } from './components/ProductFilter'
-import {ActivityStatus, BaseObj, Product, ProductDeliveryType, ProductType} from '@common/typings'
-import {formatFloorData, PlaceholderForNativeHeight} from './utils'
-import {LimitTimeBuy as LimitTimeBuyScene} from "@components/Scene";
-import Loading from "@components/Loading";
-import {RouteContext} from "@utils/contextes";
+import {
+  ActivityStatus,
+  BaseObj,
+  Product,
+  ProductDeliveryType,
+  ProductType,
+} from '@common/typings'
+import { formatFloorData, NativePlaceHeightMax, TabHeight } from './utils'
+import { LimitTimeBuy as LimitTimeBuyScene } from '@components/Scene'
+import Loading from '@components/Loading'
+import { RouteContext } from "@utils/contextes";
 
 const WindowWidth = Dimensions.get('window').width
 const WindowHeight = Dimensions.get('window').height
@@ -142,11 +148,11 @@ export default class Page extends React.Component<{}, State> {
 
     this.onTabIndexChange(currentTabIdx, true)
   }
-  
+
   newcomerChange = ({ storeCode, storeTypeCode }) => {
     this.requestTabData(storeCode, storeTypeCode)
   }
-   
+
   requestTabData = async (shopCode: string, shopTypeCode: string) => {
     this.setState({ loading: true })
     let data: any[]
@@ -175,7 +181,7 @@ export default class Page extends React.Component<{}, State> {
       })),
     ]
 
-    this.setState(state => ({
+    this.setState({
       currentTabIdx: 0,
       tabList,
       tabContentMap:
@@ -191,7 +197,7 @@ export default class Page extends React.Component<{}, State> {
           : {},
       shouldRefreshTab: false,
       shouldRefreshFirstTab: false,
-    }))
+    })
   }
 
   requestCMSContentData = async (tabId, shopCode) => {
@@ -283,23 +289,33 @@ export default class Page extends React.Component<{}, State> {
       shopCode: shop.code,
       inventoryLabel: data.inventoryLabel,
       remarks,
-      deliveryType: {
-        1: ProductDeliveryType.InTime,
-        2: ProductDeliveryType.NextDay,
-      }[data.deliveryType] || ProductDeliveryType.Other,
+      deliveryType:
+        {
+          1: ProductDeliveryType.InTime,
+          2: ProductDeliveryType.NextDay,
+        }[data.deliveryType] || ProductDeliveryType.Other,
       isPreSale: data.isAdvanceSale === 1,
-      labels: (data.productActivityLabel || { labels: [] }).labels
+      labels: (data.productActivityLabel || { labels: [] }).labels,
     }
-    if (data.productActivityLabel && data.productActivityLabel.promotionType === 5) {
-      const {activityBeginTime, activityEndTime, salesRatio} = data.productActivityLabel
+    if (
+      data.productActivityLabel &&
+      data.productActivityLabel.promotionType === 5
+    ) {
+      const {
+        activityBeginTime,
+        activityEndTime,
+        salesRatio,
+      } = data.productActivityLabel
       const start = Number(activityBeginTime)
       const end = Number(activityEndTime)
       const now = Date.now()
       const price = Math.min(currentPrice, data.discountPrice || Infinity)
 
       const status =
-        now < start ? ActivityStatus.Pending
-          : now < end ? ActivityStatus.Processing
+        now < start
+          ? ActivityStatus.Pending
+          : now < end
+          ? ActivityStatus.Processing
           : ActivityStatus.Expired
       if (status === ActivityStatus.Processing) {
         result = {
@@ -324,7 +340,7 @@ export default class Page extends React.Component<{}, State> {
       animatedValRefCmsScrollY,
       tabContentMap,
       shouldRefreshFirstTab,
-      shouldRefreshTab
+      shouldRefreshTab,
     } = this.state
 
     const currentTab = tabList[index]
@@ -335,7 +351,7 @@ export default class Page extends React.Component<{}, State> {
       animatedValRefCmsScrollY.setValue(0)
       this.syncScrollToNative({
         nativeEvent: {
-          contentOffset: {x: 0, y: 0},
+          contentOffset: { x: 0, y: 0 },
         },
       })
     }
@@ -371,7 +387,7 @@ export default class Page extends React.Component<{}, State> {
               this.onFloorLimitTimeBuyExpire
             ),
           },
-          shouldRefreshFirstTab: index === 0 ? false : shouldRefreshFirstTab
+          shouldRefreshFirstTab: index === 0 ? false : shouldRefreshFirstTab,
         }))
       )
     } else if (currentTab.type === TabType.CATEGORY) {
@@ -475,7 +491,11 @@ export default class Page extends React.Component<{}, State> {
 
   // 限时抢购所有活动都已过期
   onAllLimitTimeBuyExpire = () => {
-    const { shop: { code, type }, currentTabIdx, tabList } = this.state
+    const {
+      shop: { code, type },
+      currentTabIdx,
+      tabList,
+    } = this.state
     if (tabList[currentTabIdx].title === '限时抢购') {
       this.setState({ currentTabIdx: 0 })
       this.requestTabData(code, type)
@@ -509,16 +529,21 @@ export default class Page extends React.Component<{}, State> {
     } = this.state
 
     const currentRouteIdx = tabList.findIndex(ele => ele.key === key)
-    if (Math.abs(currentActiveTabIdx - currentRouteIdx) > 1 && title !== '限时抢购') {
+    if (
+      Math.abs(currentActiveTabIdx - currentRouteIdx) > 1 &&
+      title !== '限时抢购'
+    ) {
       return <View />
     }
 
     if (title === '限时抢购') {
-      return <LimitTimeBuyScene
-        shopCode={this.state.shop.code}
-        paddingTop={PlaceholderForNativeHeight}
-        onAllExpired={this.onAllLimitTimeBuyExpire}
-      />
+      return (
+        <LimitTimeBuyScene
+          shopCode={this.state.shop.code}
+          paddingTop={NativePlaceHeightMax + TabHeight}
+          onAllExpired={this.onAllLimitTimeBuyExpire}
+        />
+      )
     }
 
     const content = tabContentMap[key]

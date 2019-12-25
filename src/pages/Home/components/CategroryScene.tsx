@@ -1,17 +1,31 @@
 import * as React from 'react'
 import ProductFilter from './ProductFilter'
-import {Product} from '@common/typings'
-import Box, {Column as BoxColumn} from '@components/business/Content/Box'
-import {Animated, FlatList, Platform, RefreshControl, View,} from 'react-native'
+import { Product } from '@common/typings'
+import Box, { Column as BoxColumn } from '@components/business/Content/Box'
+import {
+  Animated,
+  FlatList,
+  Platform,
+  RefreshControl,
+  View,
+} from 'react-native'
 import ProductListItem from '@components/business/Content/ProductListItem'
-import { PlaceholderForNativeHeight } from '../utils'
+import {
+  NativePlaceHeightMax,
+  TabHeight,
+  NativePlaceHeightMin,
+  NativePlaceHeightDelta as HeaderHeightRange,
+} from '../utils'
 import theme from '@theme'
 import isEqual from 'lodash/isEqual'
-import ProductLimitTimeBuy from "@components/business/ProductLimitTimeBuy";
-import SceneFooter from "./SceneFooter";
+import ProductLimitTimeBuy from '@components/business/ProductLimitTimeBuy'
+import SceneFooter from './SceneFooter'
 import memorize from 'memoize-one'
+import { Native } from '@utils'
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
+const HeaderHeightMax = NativePlaceHeightMax + TabHeight
+const HeaderHeightMin = NativePlaceHeightMin + TabHeight
 
 const CategoryFloor = React.memo(
   props => (
@@ -47,9 +61,11 @@ const ProductFloor = React.memo(
     <View
       style={{ backgroundColor: '#fff', padding: 15, position: 'relative' }}
     >
-      {!props.isLimitTimeBuy
-        ? (<ProductListItem {...props} disableSync />)
-        : (<ProductLimitTimeBuy {...props} thumbnailSize={100} />)}
+      {!props.isLimitTimeBuy ? (
+        <ProductListItem {...props} disableSync />
+      ) : (
+        <ProductLimitTimeBuy {...props} thumbnailSize={100} />
+      )}
     </View>
   ),
   isEqual
@@ -99,19 +115,21 @@ export default class CategoryScene extends React.PureComponent<Props> {
     return 50 + 10 + (categories.length <= 5 ? 74 : 74 * 2 + 20)
   }
 
-  calcFlatData = memorize((categories, filter, products) =>
-      (categories.length > 0 || products.length > 0)
+  calcFlatData = memorize(
+    (categories, filter, products) =>
+      categories.length > 0 || products.length > 0
         ? [
-          { key: 'category', type: 'category', data: categories },
-          { key: 'filter', type: 'filter', data: filter },
-          ...(products || []).map(ele => ({
-            key: ele.code,
-            type: 'product',
-            data: ele,
-          })),
-        ]
+            { key: 'category', type: 'category', data: categories },
+            { key: 'filter', type: 'filter', data: filter },
+            ...(products || []).map(ele => ({
+              key: ele.code,
+              type: 'product',
+              data: ele,
+            })),
+          ]
         : [],
-    isEqual)
+    isEqual
+  )
 
   render() {
     const {
@@ -133,36 +151,22 @@ export default class CategoryScene extends React.PureComponent<Props> {
     const flatData = this.calcFlatData(categories, filter, products)
 
     const categoryFloorHeight = this.calcCategoryFloorHeight()
-    const floatFilterOpacity =
-      (products || []).length > 0
-        ? animatedVal.interpolate({
-          inputRange: [
-            50 + categoryFloorHeight,
-            50 + categoryFloorHeight + 0.1,
-          ],
-          outputRange: [0, 1],
-          extrapolate: 'clamp',
-        })
-        : 0
+    const floatFilterOpacity = animatedVal.interpolate({
+      inputRange: [categoryFloorHeight, categoryFloorHeight + 0.1],
+      outputRange: [0, 1],
+      extrapolate: 'clamp',
+    })
     const floatFilterTranslateY = animatedVal.interpolate({
-      inputRange: [0, 25, 50],
-      outputRange: [
-        -PlaceholderForNativeHeight,
-        PlaceholderForNativeHeight,
-        PlaceholderForNativeHeight - 50,
-      ],
+      inputRange: [0, HeaderHeightRange],
+      outputRange: [HeaderHeightMax, HeaderHeightMin],
       extrapolate: 'clamp',
     })
 
     let body = null
     if (Platform.OS === 'ios') {
       const translateY = animatedVal.interpolate({
-        inputRange: [-100, 1, 50],
-        outputRange: [
-          PlaceholderForNativeHeight,
-          PlaceholderForNativeHeight,
-          0,
-        ],
+        inputRange: [0, HeaderHeightRange],
+        outputRange: [HeaderHeightMax, HeaderHeightMin],
         extrapolate: 'clamp',
       })
 
@@ -184,35 +188,37 @@ export default class CategoryScene extends React.PureComponent<Props> {
           initialNumToRender={5}
           maxToRenderPerBatch={5}
           showsVerticalScrollIndicator={false}
-          onScroll={(flatData.length === 0 || loading) ? undefined : onScroll}
+          onScroll={flatData.length === 0 || loading ? undefined : onScroll}
           scrollEventThrottle={16}
           ListFooterComponent={flatData.length === 0 ? null : <SceneFooter />}
         />
       )
     } else {
-      body = <AnimatedFlatList
-        style={{flex: 1}}
-        refreshControl={
-          <RefreshControl
-            refreshing={!!loading}
-            onRefresh={onRefresh}
-            colors={[theme.refreshColor]}
-            tintColor={theme.refreshColor}
-            progressViewOffset={PlaceholderForNativeHeight}
-          />
-        }
-        ItemSeparatorComponent={this.renderSeparator}
-        data={flatData}
-        renderItem={this.renderFloor}
-        windowSize={3}
-        initialNumToRender={5}
-        maxToRenderPerBatch={5}
-        showsVerticalScrollIndicator={false}
-        onScroll={onScroll}
-        scrollEventThrottle={16}
-        ListHeaderComponent={<View style={{height: PlaceholderForNativeHeight}}/>}
-        ListFooterComponent={flatData.length === 0 ? null : <SceneFooter/>}
-      />
+      body = (
+        <AnimatedFlatList
+          style={{ flex: 1 }}
+          refreshControl={
+            <RefreshControl
+              refreshing={!!loading}
+              onRefresh={onRefresh}
+              colors={[theme.refreshColor]}
+              tintColor={theme.refreshColor}
+              progressViewOffset={HeaderHeightMax}
+            />
+          }
+          ItemSeparatorComponent={this.renderSeparator}
+          data={flatData}
+          renderItem={this.renderFloor}
+          windowSize={3}
+          initialNumToRender={5}
+          maxToRenderPerBatch={5}
+          showsVerticalScrollIndicator={false}
+          onScroll={onScroll}
+          scrollEventThrottle={16}
+          ListHeaderComponent={<View style={{ height: HeaderHeightMax }} />}
+          ListFooterComponent={flatData.length === 0 ? null : <SceneFooter />}
+        />
+      )
     }
 
     return (

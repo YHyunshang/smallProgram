@@ -1,10 +1,17 @@
 import * as React from 'react'
-import {FlatList, Animated, View, RefreshControl, Platform} from 'react-native'
+import {
+  FlatList,
+  Animated,
+  View,
+  RefreshControl,
+  Platform,
+} from 'react-native'
 import theme from '@theme'
-import SceneFooter from "./SceneFooter"
-import {PlaceholderForNativeHeight} from "../utils";
+import SceneFooter from './SceneFooter'
+import { NativePlaceHeightMax, TabHeight } from '../utils'
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
+const HeaderHeightMax = NativePlaceHeightMax + TabHeight
 
 interface Props {
   loading: boolean
@@ -30,43 +37,45 @@ function CMSScene({
   onRefresh,
 }: Props) {
   if (Platform.OS === 'android') {
-    return <AnimatedFlatList
-      style={{flex: 1}}
-      data={data}
-      renderItem={renderCMSFloor}
-      keyExtractor={item => `${item.key}`}
-      onScroll={onScroll}
-      scrollEventThrottle={16}
-      showsVerticalScrollIndicator={false}
-      refreshControl={
-        <RefreshControl
-          refreshing={!!loading}
-          onRefresh={onRefresh}
-          colors={[ theme.refreshColor ]}
-          progressViewOffset={PlaceholderForNativeHeight}
-        />
-      }
-      ListHeaderComponent={<View style={{height: isFullscreen ? 0 : PlaceholderForNativeHeight}}/>}
-      ListFooterComponent={data.length > 0 ? <SceneFooter/> : null}
-    />
+    return (
+      <AnimatedFlatList
+        style={{ flex: 1 }}
+        data={data}
+        renderItem={renderCMSFloor}
+        keyExtractor={item => `${item.key}`}
+        onScroll={onScroll}
+        scrollEventThrottle={16}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={!!loading}
+            onRefresh={onRefresh}
+            colors={[theme.refreshColor]}
+            progressViewOffset={HeaderHeightMax}
+          />
+        }
+        ListHeaderComponent={
+          <View style={{ height: isFullscreen ? 0 : HeaderHeightMax }} />
+        }
+        ListFooterComponent={data.length > 0 ? <SceneFooter /> : null}
+      />
+    )
   }
 
-  const translateY = animatedVal.interpolate({
-    inputRange: [-100, 1, 50],
-    outputRange: [
-      isFullscreen ? 0 : PlaceholderForNativeHeight,
-      isFullscreen ? 0 : PlaceholderForNativeHeight,
-      0,
-    ],
-    extrapolate: 'clamp',
-  })
+  const translateY = !isFullscreen
+    ? animatedVal.interpolate({
+        inputRange: [-100, 1, 50],
+        outputRange: [HeaderHeightMax, HeaderHeightMax, 0],
+        extrapolate: 'clamp',
+      })
+    : 0
   return (
     <AnimatedFlatList
       style={{ flex: 1, transform: [{ translateY }] }}
       data={data}
       renderItem={renderCMSFloor}
       keyExtractor={item => `${item.key}`}
-      onScroll={(data.length === 0 || loading) ? undefined :onScroll}
+      onScroll={data.length === 0 || loading ? undefined : onScroll}
       scrollEventThrottle={16}
       showsVerticalScrollIndicator={false}
       refreshControl={

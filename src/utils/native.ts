@@ -203,8 +203,11 @@ export const isiPhoneX = (() => {
  * iPhone X* 预设 44；其他 iPhone 预设 20
  * Android 统一为当前 StatusBar 高度 + 5（美人尖高度）
  */
-export const getStatusBarHeight = () =>
-  isiOS ? (isiPhoneX ? 44 : 20) : StatusBar.currentHeight + 5
+export const StatusBarHeight = isiOS
+  ? isiPhoneX
+    ? 44
+    : 20
+  : StatusBar.currentHeight + 5
 
 /**
  * 监听购物车变化
@@ -250,7 +253,7 @@ export function addToCartForSimilarProduct(productData: BaseObj, isAdd: boolean)
  */
 export function showRemarkPickerBeforeAddToCart(
   product: Product
-): Promise<{ count: number, extraData: object}> {
+): Promise<{ count: number; extraData: object }> {
   console.log(product)
   const price =
     product.price < product.slashedPrice ? product.slashedPrice : product.price
