@@ -2,8 +2,8 @@
  * @Descripttion: 潮物达人顶部tab栏组件
  * @Author: yuwen.liu
  * @Date: 2019-11-12 21:18:25
- * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-12-06 17:13:23
+ * @LastEditors  : yuwen.liu
+ * @LastEditTime : 2019-12-25 10:09:42
  */
 import { StyleSheet } from 'react-native'
 import theme from '@theme'
@@ -19,17 +19,11 @@ export default StyleSheet.create({
     borderBottomColor: '#EBEBEB',
   },
   tabItemBox: {
-    marginHorizontal: 10,
+    marginHorizontal: 15,
     paddingVertical: 13,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  tabItemBoxFirst: {
-    marginLeft: 4,
-  },
-  tabItemBoxLast: {
-    marginRight: 4,
   },
   tabLabel: {
     fontSize: 14,
