@@ -237,8 +237,8 @@ export default class Page extends React.Component<PageProps, PageState> {
       const { productDetail: product = {} } = this.state
       const detailData = product.resChannelStoreProductVO || {}
       track('Share', {
-        Page_type: '商详页',
-        Page_name: detailData.productName,
+        page_type: '商详页',
+        $screen_name: detailData.productName,
         product_id: detailData.productCode,
         product_name: detailData.productName,
         original_price: detailData.price,
