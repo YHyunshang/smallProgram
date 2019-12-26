@@ -1,26 +1,28 @@
 import * as React from 'react'
-import {ScrollView, View} from 'react-native'
+import {ScrollView, TouchableWithoutFeedback, View} from 'react-native'
 import styles from './ProductSwiperWithBg.styles'
 import FitImage from 'react-native-fit-image'
-import {Img} from '@utils'
+import {Img, Native} from '@utils'
 import {Product} from '@common/typings'
 import ProductItem from './ProductItem'
 
-interface Props {
+interface ProductSwiperWithBgProps {
   backgroundImage: string
+  backgroundImageLink: Native.Navigation
   products: Product[]
 }
 
-export default function ProductSwiperWithBg({
-  backgroundImage,
-  products,
-}: Props) {
+const ProductSwiperWithBg: React.FunctionComponent<ProductSwiperWithBgProps> = (
+  { backgroundImage, backgroundImageLink, products }
+) => {
   const fitBg = Img.loadRatioImage(backgroundImage, Img.FullWidth)
   const productList = products.map(ele => <ProductItem {...ele} />)
 
   return (
     <View style={styles.container}>
-      <FitImage style={styles.bgImg} source={{ uri: fitBg }} />
+      <TouchableWithoutFeedback onPress={() => Native.navigateTo(backgroundImageLink)}>
+        <FitImage style={styles.bgImg} source={{ uri: fitBg }} />
+      </TouchableWithoutFeedback>
       <ScrollView
         style={styles.swiper}
         horizontal
@@ -31,3 +33,5 @@ export default function ProductSwiperWithBg({
     </View>
   )
 }
+
+export default ProductSwiperWithBg

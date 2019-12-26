@@ -162,7 +162,7 @@ export default class Page extends React.Component<Props, State> {
             data: floor.templateDetailVOList.map(ele => ({
               key: ele.id,
               image: ele.imgUrl,
-              link: CMSServices.formatLink(ele),
+              link: CMSServices.formatLink(ele, shopCode),
             })),
           },
         })
@@ -177,7 +177,8 @@ export default class Page extends React.Component<Props, State> {
               link: CMSServices.formatLink({
                 linkType: floor.titleLinkType,
                 link: floor.titleLink,
-              }),
+                code: null,
+              }, shopCode),
             },
           })
         }
@@ -189,7 +190,7 @@ export default class Page extends React.Component<Props, State> {
             component: AdSingle,
             props: {
               image: imgObj.imgUrl,
-              link: CMSServices.formatLink(imgObj),
+              link: CMSServices.formatLink(imgObj, shopCode),
             },
           })
         } else if (floor.subType === 2) {
@@ -200,7 +201,7 @@ export default class Page extends React.Component<Props, State> {
             props: {
               data: (floor.templateDetailVOList || []).map(ele => ({
                 image: ele.imgUrl,
-                link: CMSServices.formatLink(ele),
+                link: CMSServices.formatLink(ele, shopCode),
               })),
             },
           })
@@ -212,7 +213,7 @@ export default class Page extends React.Component<Props, State> {
             props: {
               data: floor.templateDetailVOList.slice(0, 2).map(ele => ({
                 image: ele.imgUrl,
-                link: CMSServices.formatLink(ele),
+                link: CMSServices.formatLink(ele, shopCode),
               })),
             },
           })

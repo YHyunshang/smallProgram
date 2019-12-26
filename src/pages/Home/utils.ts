@@ -69,7 +69,7 @@ export function formatFloorData(
             link:
               ele.name && ele.name.indexOf('茅台') != -1
                 ? CMSServices.mouTaiActivityLink(ele.name, shopCode)
-                : CMSServices.formatLink(ele),
+                : CMSServices.formatLink(ele, shopCode),
           })),
         },
       })
@@ -85,7 +85,8 @@ export function formatFloorData(
             link: CMSServices.formatLink({
               linkType: floor.titleLinkType,
               link: floor.titleLink,
-            }),
+              code: null
+            }, shopCode),
           },
         })
       }
@@ -107,6 +108,7 @@ export function formatFloorData(
             wrapperStyle: { paddingHorizontal: 0 },
             props: {
               backgroundImage: imgObj.imgUrl,
+              backgroundImageLink: CMSServices.formatLink(imgObj, shopCode),
               products: nextFloor.templateDetailVOList.map(ele => ({
                 ...CMSServices.formatProduct(ele),
                 shopCode,
@@ -134,7 +136,7 @@ export function formatFloorData(
             link:
               imgObj.name && imgObj.name.indexOf('茅台') != -1
                 ? CMSServices.mouTaiActivityLink(imgObj.name, shopCode)
-                : CMSServices.formatLink(imgObj),
+                : CMSServices.formatLink(imgObj, shopCode),
           },
         })
       } else if (floor.subType === 2) {
@@ -146,7 +148,7 @@ export function formatFloorData(
           props: {
             data: (floor.templateDetailVOList || []).map(ele => ({
               image: ele.imgUrl,
-              link: CMSServices.formatLink(ele),
+              link: CMSServices.formatLink(ele, shopCode),
             })),
           },
         })
@@ -159,7 +161,7 @@ export function formatFloorData(
           props: {
             data: floor.templateDetailVOList.slice(0, 2).map(ele => ({
               image: ele.imgUrl,
-              link: CMSServices.formatLink(ele),
+              link: CMSServices.formatLink(ele, shopCode),
             })),
           },
         })
