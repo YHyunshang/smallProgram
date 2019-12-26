@@ -39,7 +39,7 @@ export default theme =>
           shadowColor: '#000',
           shadowOpacity: 0.06,
           shadowRadius: 11,
-          elevation: 7,
+          elevation: 2,
         },
         productCellNotLast: {
           // marginRight: 10,
