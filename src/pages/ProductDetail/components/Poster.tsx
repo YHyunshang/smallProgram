@@ -31,6 +31,7 @@ const Poster: React.FunctionComponent<PosterProps> = ({
     )
 
   const [ loading, setLoading ] = React.useState(true)
+  React.useEffect(() => setLoading(true), [ image ])
   const onImgLoadEnd = () => setLoading(false)
   const onImgLoadError = () => !!image && showToast('Ops，海报被海豹吞了！', '0')
 
@@ -39,7 +40,7 @@ const Poster: React.FunctionComponent<PosterProps> = ({
       <View style={styles.container}>
         <View style={styles.posterBox}>
           {(!image || loading) && (
-              <Spin>图片加载中...</Spin>
+            <Spin>图片加载中...</Spin>
           )}
           <FastImage
             style={styles.poster}
