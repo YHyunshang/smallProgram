@@ -7,9 +7,17 @@ import PreSaleBar from "../PreSaleBar";
 import {Text, View} from "react-native";
 import styles from "../PreSale.styles";
 import FastImage from "react-native-fast-image";
-import {iconBagCircle, iconOrderCircle, productConditions, productPlace, productSpecific} from "@const/resources";
+import {
+  iconBagCircle,
+  iconDeliveryNextDay,
+  iconOrderCircle,
+  productConditions,
+  productPlace,
+  productSpecific
+} from "@const/resources";
 import {ActivityStatus, BaseObj} from "@common/typings";
 import {transPenny} from "@utils/FormatUtil";
+import Tag from "@components/business/Content/Tag";
 const dayjs = require('dayjs')
 
 const ts2Str = (ts: number) => ts ? dayjs(ts).format('MM月DD日HH:mm') : ''
@@ -40,6 +48,12 @@ const ProductSection: React.FunctionComponent<ProductSectionProps> =
   const carouselImages = carouselData.sort((a, b) => a.sort - b.sort)
     .map(ele => ele.picUrl)
   const subTitle = loading ? initialData.subtitle : preSaleData.activityProductBrief
+  const isNextDayArrive = detailData.deliveryType === 2
+  const labels = [...new Set([
+    ...(detailData.productActivityLabel || {}).labels || [],
+    ...(detailData.orderActivityLabel || {}).labels || [],
+  ])]
+  const hasLabel = labels.length > 0 || isNextDayArrive
   const spec = loading ? initialData.spec : detailData.productSpecific
 
   return (
@@ -56,6 +70,19 @@ const ProductSection: React.FunctionComponent<ProductSectionProps> =
         <Text style={styles.h1}>{loading ? initialData.name : preSaleData.productName}</Text>
         {!!subTitle && (
           <Text style={styles.h5}>{subTitle}</Text>
+        )}
+
+        {hasLabel && (
+          <View style={styles.tagRow}>
+            {isNextDayArrive && (
+              <FastImage source={iconDeliveryNextDay} style={{ width: 38, height: 16, marginRight: 5 }} />
+            )}
+            {labels.map(ele => (
+              <View style={styles.tagItem}>
+                <Tag key={ele} backgroundColor="#FFDED9" color="#FF3914">{ele}</Tag>
+              </View>
+            ))}
+          </View>
         )}
 
         <View style={styles.preOrderRow}>
@@ -88,7 +115,7 @@ const ProductSection: React.FunctionComponent<ProductSectionProps> =
         </View>
       </View>
 
-      <View style={styles.section}>
+      <View style={[ styles.section, styles.sectionLast ]}>
         <View style={styles.orderInfoRow}>
           <View style={styles.orderInfoItem}>
             <FastImage style={styles.orderInfoIcon} source={iconOrderCircle}/>

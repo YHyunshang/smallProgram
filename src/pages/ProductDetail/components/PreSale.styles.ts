@@ -48,10 +48,21 @@ export default StyleSheet.create({
     paddingTop: 13,
   },
 
+  tagRow: {
+    marginTop: 5,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+  },
+  tagItem: {
+    marginBottom: 3,
+  },
+
   preOrderRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 15,
+    paddingTop: 10,
+    paddingBottom: 12,
   },
   preOrderCountBox: {
     flexShrink: 0,

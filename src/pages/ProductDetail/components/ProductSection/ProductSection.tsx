@@ -56,7 +56,7 @@ const ProductSection: React.FunctionComponent<ProductSectionProps> = (
 
       {/*满减活动*/}
       {orderPromotion.promotionType === 2 && (
-        <View style={{ marginTop: 15 }}>
+        <View style={[ { marginTop: 15 }, productType === ProductType.PreSale && { marginBottom: 15 }]}>
           <ActivityNavigator
             tag={orderPromotion.ruleType === 22 ? '每满减' : '满减'}
             code={orderPromotion.promotionCode}

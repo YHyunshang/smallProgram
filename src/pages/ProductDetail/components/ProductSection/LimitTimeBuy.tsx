@@ -71,10 +71,12 @@ const ProductSection: React.FunctionComponent<ProductSectionProps> =
           {hasLabel && (
             <View style={styles.tagRow}>
               {isNextDayArrive && (
-                <FastImage source={iconDeliveryNextDay} style={{ width: 38, height: 16, marginRight: 5 }} />
+                <FastImage source={iconDeliveryNextDay} style={[styles.tagItem, { width: 38, height: 16, marginRight: 5 }]} />
               )}
               {labels.map(ele => (
-                <Tag key={ele} backgroundColor="#FFDED9" color="#FF3914">{ele}</Tag>
+                <View style={styles.tagItem}>
+                  <Tag key={ele} backgroundColor="#FFDED9" color="#FF3914">{ele}</Tag>
+                </View>
               ))}
             </View>
           )}

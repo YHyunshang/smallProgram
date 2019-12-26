@@ -37,9 +37,13 @@ export default StyleSheet.create({
   },
 
   tagRow: {
-    marginBottom: 10,
+    marginBottom: 7,
     flexDirection: 'row',
+    flexWrap: 'wrap',
     alignItems: 'center',
+  },
+  tagItem: {
+    marginBottom: 3,
   },
 
   nameRow: {
