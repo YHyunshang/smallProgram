@@ -39,7 +39,7 @@ const ShareWrapper: React.FunctionComponent<ShareWrapperProps> =
   const onChannelSelected = (channel: ShareChannel) => {
     switch (channel) {
       case ShareChannel.WeChatFriends:
-        track('ShareChanel', { Share_Chanel: '微信', page_type: '商详页' })
+        track('ShareChanel', { Share_Chanel: '微信好友', page_type: '商详页' })
         shareToWxFriends({
           name: product.name,
           code: product.code,
