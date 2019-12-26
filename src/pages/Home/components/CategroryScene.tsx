@@ -21,7 +21,7 @@ import isEqual from 'lodash/isEqual'
 import ProductLimitTimeBuy from '@components/business/ProductLimitTimeBuy'
 import SceneFooter from './SceneFooter'
 import memorize from 'memoize-one'
-import { Native } from '@utils'
+import {isiOS} from "@utils/native";
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
 const HeaderHeightMax = NativePlaceHeightMax + TabHeight
@@ -151,11 +151,17 @@ export default class CategoryScene extends React.PureComponent<Props> {
     const flatData = this.calcFlatData(categories, filter, products)
 
     const categoryFloorHeight = this.calcCategoryFloorHeight()
-    const floatFilterOpacity = animatedVal.interpolate({
-      inputRange: [categoryFloorHeight, categoryFloorHeight + 0.1],
-      outputRange: [0, 1],
-      extrapolate: 'clamp',
-    })
+    const floatFilterOpacity = isiOS
+      ? animatedVal.interpolate({
+          inputRange: [categoryFloorHeight, categoryFloorHeight + 0.1],
+          outputRange: [0, 1],
+          extrapolate: 'clamp',
+        })
+      : animatedVal.interpolate({
+          inputRange: [categoryFloorHeight + HeaderHeightRange, categoryFloorHeight + HeaderHeightRange + 0.1],
+          outputRange: [0, 1],
+          extrapolate: 'clamp',
+        })
     const floatFilterTranslateY = animatedVal.interpolate({
       inputRange: [0, HeaderHeightRange],
       outputRange: [HeaderHeightMax, HeaderHeightMin],
