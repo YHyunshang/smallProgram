@@ -27,7 +27,7 @@ const timeStr2Hm = (time:string) => time
 export interface ProductSectionProps {
   productData: BaseObj
   initialData: BaseObj
-  onActivityStatusChange: (status: ActivityStatus) => void
+  onActivityStatusChange: (status: ActivityStatus, oldStatus: ActivityStatus) => void
 }
 
 const ProductSection: React.FunctionComponent<ProductSectionProps> =
@@ -43,7 +43,7 @@ const ProductSection: React.FunctionComponent<ProductSectionProps> =
   const spec = loading ? initialData.spec : detailData.productSpecific
 
   return (
-    <View>
+    <>
       <Carousel placeholder={initialData.thumbnail} images={carouselImages}/>
       <PreSaleBar
         price={loading ? initialData.price : (detailData.promotionPrice || detailData.price)}
@@ -119,7 +119,7 @@ const ProductSection: React.FunctionComponent<ProductSectionProps> =
           </View>
         )}
       </View>
-    </View>
+    </>
   )
 }
 

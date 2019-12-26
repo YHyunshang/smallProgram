@@ -9,7 +9,7 @@ import FastImage from "react-native-fast-image";
 import {iconDeliveryNextDay, productPlace, productSpecific} from "@const/resources";
 import {transPenny} from "@utils/FormatUtil";
 import Tag from "@components/business/Content/Tag";
-import styles from './ProductSection.styles'
+import styles from './styles'
 
 export interface ProductSectionProps {
   productData: BaseObj
@@ -42,7 +42,7 @@ const ProductSection: React.FunctionComponent<ProductSectionProps> =
     const spec = loading ? initialData.spec : detailData.productSpecific
 
     return (
-      <View style={styles.container}>
+      <>
         <Carousel placeholder={initialData.thumbnail} images={sliders}/>
 
         <View style={styles.section}>
@@ -88,8 +88,7 @@ const ProductSection: React.FunctionComponent<ProductSectionProps> =
             )}
           </View>
         </View>
-
-      </View>
+      </>
     )
   }
 

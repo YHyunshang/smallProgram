@@ -9,7 +9,7 @@ import FastImage from "react-native-fast-image";
 import {iconDeliveryNextDay, productPlace, productSpecific} from "@const/resources";
 import {transPenny} from "@utils/FormatUtil";
 import Tag from "@components/business/Content/Tag";
-import styles from './ProductSection.styles'
+import styles from './styles'
 import LimitTimeBuyBar from "../LimitTimeBuyBar";
 
 export interface ProductSectionProps {
@@ -46,7 +46,7 @@ const ProductSection: React.FunctionComponent<ProductSectionProps> =
     const soldRatio = Number(activityInfo.salesRatio.replace('%', ''))
 
     return (
-      <View style={styles.container}>
+      <>
         <Carousel placeholder={initialData.thumbnail} images={sliders}/>
 
         <LimitTimeBuyBar
@@ -99,8 +99,7 @@ const ProductSection: React.FunctionComponent<ProductSectionProps> =
             )}
           </View>
         </View>
-
-      </View>
+      </>
     )
   }
 

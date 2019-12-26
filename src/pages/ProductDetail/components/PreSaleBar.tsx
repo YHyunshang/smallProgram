@@ -26,7 +26,7 @@ export interface PreSaleBarProps {
   price: number
   startTs: number
   endTs: number
-  onStatusChange: (status: ActivityStatus) => void
+  onStatusChange: (status: ActivityStatus, oldStatus: ActivityStatus) => void
 }
 
 const TimerSeparator:React.FunctionComponent<object> = () => (

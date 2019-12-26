@@ -28,14 +28,9 @@ import { track } from '@utils/tracking'
 import PageContainer from './components/PageContainer'
 import ShareWrapper from './components/ShareWrapper'
 import memoized from 'memoize-one'
-import {
-  LimitTimeBuy as ProductSectionLimitTimeBuy,
-  Normal as ProductSectionNormal,
-  PreSale as ProductSectionPreSale,
-} from './components/ProductSection'
+import ProductSection from './components/ProductSection'
 import DetailSection from './components/DetailSection.PreSale'
 import { placeholderProduct } from '@const/resources'
-import SimilarProducts from './components/SimilarProducts'
 import { loadRatioImage } from '@utils/img'
 import { RouteContext } from "@utils/contextes";
 
@@ -278,15 +273,13 @@ export default class Page extends React.Component<PageProps, PageState> {
     }
   )
 
-  onLimitTimBuyStatusChange = (
-    status: ActivityStatus,
-    oldStatus: ActivityStatus
-  ) => {
-    status === ActivityStatus.Expired && this.init()
-  }
-
-  onPreSaleStatusChange = (status: ActivityStatus) => {
-    setNativeBtmCart(status !== ActivityStatus.Processing)
+  // 活动状态变化
+  onActivityStatusChange = (type: ProductType, status: ActivityStatus, oldStatus: ActivityStatus) => {
+    if (type === ProductType.PreSale) { // 预售
+      setNativeBtmCart(status !== ActivityStatus.Processing)
+    } else if (type === ProductType.LimitTimeBuy) { // 限时抢购
+      status === ActivityStatus.Expired && this.init()
+    }
   }
 
   onSelectShareChannel = (channel: ShareChannel) => {
@@ -299,61 +292,20 @@ export default class Page extends React.Component<PageProps, PageState> {
     }
   }
 
-  renderProductSection = () => {
-    const { initialData } = this.props
-    const { productDetail, similarProducts } = this.state
-    const detailData = productDetail.resChannelStoreProductVO || {}
-    const productType = (detailData.productCode
-    ? detailData.isAdvanceSale === 1
-    : initialData.type === ProductType.PreSale)
-      ? ProductType.PreSale
-      : (detailData.productActivityLabel || {}).promotionType === 5
-      ? ProductType.LimitTimeBuy
-      : ProductType.Normal
-
-    switch (productType) {
-      case ProductType.LimitTimeBuy:
-        return (
-          <>
-            <ProductSectionLimitTimeBuy
-              productData={productDetail}
-              initialData={initialData}
-              onStatusChange={this.onLimitTimBuyStatusChange}
-            />
-            {similarProducts.length > 0 && (
-              <SimilarProducts products={similarProducts} />
-            )}
-          </>
-        )
-      case ProductType.PreSale:
-        return (
-          <ProductSectionPreSale
-            productData={productDetail}
-            initialData={initialData}
-            onActivityStatusChange={this.onPreSaleStatusChange}
-          />
-        )
-      default:
-        return (
-          <>
-            <ProductSectionNormal
-              productData={productDetail}
-              initialData={initialData}
-            />
-            {similarProducts.length > 0 && (
-              <SimilarProducts products={similarProducts} />
-            )}
-          </>
-        )
-    }
-  }
-
   renderTabContent = (tabContent, index) => {
-    const { productDetail } = this.state
+    const { productDetail, similarProducts } = this.state
+    const { initialData } = this.props
 
     switch (index) {
       case 0:
-        return this.renderProductSection()
+        return (
+          <ProductSection
+            initialData={initialData}
+            product={productDetail}
+            similarProducts={similarProducts}
+            onStatusChange={this.onActivityStatusChange}
+          />
+        )
       case 1:
       default:
         return <DetailSection productData={productDetail} />
