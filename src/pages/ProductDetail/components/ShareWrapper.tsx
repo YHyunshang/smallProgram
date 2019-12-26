@@ -3,11 +3,11 @@
  */
 import * as React from 'react'
 import ShareChannelSelector from "@components/business/ShareChannelSelector";
-import {ShareChannel} from "@common/typings";
+import { ShareChannel } from "@common/typings";
 import Poster from "./Poster";
-import { shareToWxFriends } from '@services/goodsDetail'
+import { shareToWxFriends, shareToWxTimeline } from '@services/goodsDetail'
 import Wrapper from "@components/Wrapper";
-import {track} from "@utils/tracking";
+import { track } from "@utils/tracking";
 
 interface ProductInfo {
   code: string
@@ -48,7 +48,14 @@ const ShareWrapper: React.FunctionComponent<ShareWrapperProps> =
         })
         break
       case ShareChannel.WeChatMoment:
-        // todo: 分享 H5 到朋友圈
+        track('ShareChanel', { Share_Chanel: '朋友圈', page_type: '商详页' })
+        shareToWxTimeline({
+          name: product.name,
+          code: product.code,
+          storeCode: product.storeCode,
+          thumbnail: product.thumbnail,
+          desc: product.desc,
+        })
         break
       case ShareChannel.Poster:
       default:

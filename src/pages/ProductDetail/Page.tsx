@@ -291,6 +291,7 @@ export default class Page extends React.Component<PageProps, PageState> {
 
   onSelectShareChannel = (channel: ShareChannel) => {
     if (channel === ShareChannel.Poster) {
+      if (this.state.poster) return
       this.setState({ posterLoading: true })
       this.requestPoster()
         .then(poster => this.setState({ poster }))

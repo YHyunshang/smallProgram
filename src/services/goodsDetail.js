@@ -135,3 +135,27 @@ export const shareToWxFriends = (function() {
       })
     })
 })()
+
+/**
+ * 分享到微信朋友圈
+ * @type {Function}
+ */
+export const shareToWxTimeline = (function () {
+  WeChat.registerApp(WXAppId)
+
+  return ({ name, code, thumbnail, storeCode }) => {
+    WeChat.isWXAppInstalled().then(installed => {
+      if (!installed) {
+        showToast('没有安装微信软件，请您安装微信之后再试', '0')
+        return new Error('WeChat is not installed')
+      }
+      return WeChat.shareToTimeline({
+        type: 'news',
+        title: `${name} | 永辉买菜`,
+        description: 'description',
+        thumbImage: thumbnail,
+        webpageUrl: '', // todo: 替换路径
+      })
+    })
+  }
+})()
