@@ -9,7 +9,7 @@
 import { Http } from '@utils'
 import { NativeModules, NativeEventEmitter } from 'react-native'
 import * as WeChat from 'react-native-wechat'
-import { WXAppId, WeChatMP } from '@common/config'
+import { WXAppId, WeChatMP, ShareH5 } from '@common/config'
 import { showToast, ENV } from '@utils/native'
 
 /**
@@ -154,7 +154,8 @@ export const shareToWxTimeline = (function () {
         title: `${name} | 永辉买菜`,
         description: 'description',
         thumbImage: thumbnail,
-        webpageUrl: '', // todo: 替换路径
+        webpageUrl: (ENV === 'prod' ? ShareH5.prod : ShareH5.test) +
+          `/pages/productModle/productModule.html?productCode=${code}&storeCode=${storeCode}`,
       })
     })
   }
