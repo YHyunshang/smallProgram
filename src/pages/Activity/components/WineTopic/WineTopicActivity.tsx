@@ -3,16 +3,15 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-21 11:23:19
  * @LastEditors  : yuwen.liu
- * @LastEditTime : 2019-12-25 10:22:23
+ * @LastEditTime : 2019-12-26 17:50:18
  */
 import * as React from 'react'
-import { FlatList, View, Alert } from 'react-native'
+import { FlatList, View } from 'react-native'
 import styles from './WineTopicActivity.styles'
 import { CMSServices } from '@services'
 import useTheme from '@components/business/Content/ProductGrid.styles'
 import ProductListItem from '@components/business/Content/ProductListItem'
 import ProductGridItem from '@components/business/Content/ProductGridItem'
-import chunk from 'lodash/chunk'
 import TopTab from '../TideMan/TopTab'
 import LeftTab from '../TideMan/LeftTab'
 import Empty from '../Empty'
@@ -63,10 +62,11 @@ export default function WineTopicActivity({
   const [initProducts, setInitProducts] = React.useState(products) //商品的原始数据
   const [currentProducts, setCurrentProducts] = React.useState(initProducts) //当前选中的tab下的商品数据
   const total = currentProducts.length
-  const gridProducts = chunk(currentProducts, currentColumnNumber)
+  const totalRow = Math.ceil(total / currentColumnNumber)
+  const colWidth = `${100 / currentColumnNumber}%`
+  // const colWidth = (width - ((currentColumnNumber + 1) * left) -80) / currentColumnNumber
   const theme = '2x'
   const themeStyles = useTheme(theme)
-  const gridTotal = gridProducts.length
   /** @msg: 过滤左边tab栏的数据
    * @param {id}
    */
@@ -150,28 +150,6 @@ export default function WineTopicActivity({
     refreshBuyNum(productNum, productCode)
   }
   /**
-   * @msg: 渲染每行的数据
-   */
-  const renderGridItemData = products =>
-    products.map((product, colIdx) => (
-      <View
-        style={[
-          styles.noBar,
-          colIdx % currentColumnNumber < currentColumnNumber - 1 &&
-            themeStyles.columnNotLast,
-        ]}
-        key={product.code}
-      >
-        <View style={[themeStyles.productBox]}>
-          <ProductGridItem
-            {...product}
-            theme={theme}
-            afterModifyCount={refreshProductInfo}
-          />
-        </View>
-      </View>
-    ))
-  /**
    * @msg: FlatList渲染的数据项
    */
   const renderItemData = ({ item, index }) =>
@@ -185,21 +163,29 @@ export default function WineTopicActivity({
     ) : (
       <View
         style={[
-          themeStyles.container,
-          currentColumnNumber === 2 && styles.gridWrapper,
+          Math.floor(index / currentColumnNumber) === 0 && themeStyles.rowFirst,
+          Math.floor(index / currentColumnNumber + 1) === totalRow &&
+            themeStyles.rowLast,
+          themeStyles.col,
+          index % currentColumnNumber === 0 && themeStyles.colFirst,
+          index % currentColumnNumber === currentColumnNumber - 1 &&
+            themeStyles.colLast,
+          { width: colWidth },
         ]}
       >
-        <View
-          style={[
-            themeStyles.row,
-            index < gridTotal - 1 && themeStyles.rowNotLast,
-          ]}
-          key={index}
-        >
-          {renderGridItemData(item)}
+        <View style={themeStyles.productCell}>
+          <ProductGridItem
+            {...item}
+            theme={theme}
+            afterModifyCount={refreshProductInfo}
+          />
         </View>
       </View>
     )
+  /**
+   * @msg: 分隔线组件
+   */
+  const SeparatorComponent = () => <View style={themeStyles.floorSeparator} />
   return (
     <View style={styles.tideMancontainer}>
       {topTabList && topTabList.length > 0 && (
@@ -218,16 +204,21 @@ export default function WineTopicActivity({
           />
         )}
         <FlatList
-          style={[
-            styles.tideManList,
-            currentColumnNumber === 2 && gridTotal && styles.gridWrapper,
-          ]}
-          data={currentColumnNumber === 1 ? currentProducts : gridProducts}
+          style={[styles.tideManList]}
+          data={currentProducts}
           renderItem={renderItemData}
           keyExtractor={(item, index) => index.toString()}
-          initialNumToRender={5}
+          key={
+            currentColumnNumber === 1
+              ? 'list'
+              : currentColumnNumber === 2
+              ? 'grid2x'
+              : 'grid3x'
+          }
           showsVerticalScrollIndicator={false}
           removeClippedSubviews={false}
+          numColumns={currentColumnNumber}
+          ItemSeparatorComponent={SeparatorComponent}
           refreshing={false}
           ListEmptyComponent={
             <Empty type={2} textColor1="#4A4A4A" textColor2="#A4A4B4" />

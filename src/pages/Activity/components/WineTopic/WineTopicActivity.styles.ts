@@ -3,17 +3,15 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-12 20:31:29
  * @LastEditors  : yuwen.liu
- * @LastEditTime : 2019-12-23 16:54:36
+ * @LastEditTime : 2019-12-26 17:50:04
  */
-import { StyleSheet ,Dimensions} from 'react-native'
-const {width} = Dimensions.get('window')
+import { StyleSheet } from 'react-native'
 export default StyleSheet.create({
   tideMancontainer: {
     flex: 1
   },
   tideManList: {
     flex: 1,
-    paddingTop: 10,
     backgroundColor: '#FFFFFF'
   },
   centerWrapper:{
@@ -30,13 +28,8 @@ export default StyleSheet.create({
     paddingHorizontal: 15
   },
   footerBox: {
-    // position:'absolute',
-    // bottom:0,
     elevation: 1,
     backgroundColor: '#FFF',
-    // shadowColor: 'rgba(0,0,0,0.1)',
-    // shadowOpacity: 1,
-    // shadowRadius: 10,
   },
   fakeBorder: {
     position: 'absolute',
@@ -45,12 +38,5 @@ export default StyleSheet.create({
     right: 20,
     height: 0.5,
     backgroundColor: '#EEE',
-  },
-  noBar: {
-    width: (width - 90) / 2,
-    paddingHorizontal: 5
-  },
-  gridWrapper: {
-   backgroundColor: '#FAFAFA'
   }
 })
