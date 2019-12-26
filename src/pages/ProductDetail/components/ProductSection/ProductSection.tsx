@@ -9,6 +9,17 @@ import PreSale from './PreSale'
 import Normal from './Normal'
 import SimilarProducts from "../SimilarProducts";
 import ActivityNavigator from "../ActivityNavigator";
+import memoizeOne from "memoize-one";
+
+const getTagName = memoizeOne((type: number, subType: number) => {
+  if (type === 6) return 'N 元任选'
+  return {
+    21: '满减',
+    22: '每满减',
+    31: '满件折',
+    32: '满件减',
+  }[subType]
+})
 
 export interface ProductSectionProps {
   initialData: BaseObj
@@ -42,11 +53,13 @@ const ProductSection: React.FunctionComponent<ProductSectionProps> = (
           onStatusChange={onActivityStatusChange}
         />
       ) : productType === ProductType.PreSale ? (
-        <PreSale
-          productData={product}
-          initialData={initialData}
-          onActivityStatusChange={onActivityStatusChange}
-        />
+        <View style={{ marginBottom: 15 }}>
+          <PreSale
+            productData={product}
+            initialData={initialData}
+            onActivityStatusChange={onActivityStatusChange}
+          />
+        </View>
       ) : (
         <Normal
           productData={product}
@@ -54,13 +67,13 @@ const ProductSection: React.FunctionComponent<ProductSectionProps> = (
         />
       )}
 
-      {/*满减活动*/}
-      {orderPromotion.promotionType === 2 && (
-        <View style={[ { marginTop: 15 }, productType === ProductType.PreSale && { marginBottom: 15 }]}>
+      {/*促销活动链接*/}
+      {[2, 3, 6].includes(orderPromotion.promotionType) && (
+        <View style={[ { marginTop: 15 }, productType === ProductType.PreSale && { marginTop: 0, marginBottom: 15 }]}>
           <ActivityNavigator
-            tag={orderPromotion.ruleType === 22 ? '每满减' : '满减'}
+            tag={getTagName(orderPromotion.promotionType, orderPromotion.ruleType)}
             code={orderPromotion.promotionCode}
-            title={`指定商品${orderPromotion.labels.length > 0 ? orderPromotion.labels.join('，') : '满减'}`}
+            title={`指定商品${orderPromotion.labels.length > 0 ? orderPromotion.labels.join('，') : '促销'}`}
           />
         </View>
       )}
