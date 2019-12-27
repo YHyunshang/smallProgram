@@ -14,7 +14,6 @@ export default StyleSheet.create({
     height: 50,
     paddingLeft: 24,
     paddingRight: 15,
-    borderBottomWidth: 0.25,
     borderBottomColor: '#EBEBEB',
   },
   title: {
@@ -36,13 +35,22 @@ export default StyleSheet.create({
   productGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    borderColor: '#EBEBEB',
+    borderTopWidth: 0.5,
+    borderBottomWidth: 0.5,
   },
   productBox: {
     flexBasis: '50%',
-    height: 110,
-    paddingVertical: 25,
+    paddingVertical: 20,
     paddingHorizontal: 15,
-    borderWidth: 0.25,
     borderColor: '#EBEBEB',
-  }
+    borderBottomWidth: 0.5,
+    borderRightWidth: 0.5,
+  },
+  productBoxInLastRow: {
+    borderBottomWidth: 0,
+  },
+  productBoxInLastCol: {
+    borderRightWidth: 0,
+  },
 })

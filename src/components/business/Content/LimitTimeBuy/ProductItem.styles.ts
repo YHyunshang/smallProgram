@@ -24,14 +24,10 @@ export default StyleSheet.create({
     color: theme.black,
   },
   spec: {
-    fontSize: 13,
+    fontSize: 12,
     color: theme.gray1,
   },
-  priceRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    overflow: 'hidden',
-  },
+  priceRow: {},
   waiting: {
     color: '#E74646',
     fontSize: 11,

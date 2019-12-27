@@ -20,7 +20,7 @@ export default function ProductItem ({ name, spec, price, slashedPrice, status, 
       <View style={styles.detailBox}>
         <Text style={styles.name} numberOfLines={1}>{name}</Text>
         <Text style={styles.spec} numberOfLines={1}>{spec}</Text>
-        <View style={styles.priceRow}>
+        <Text style={styles.priceRow} numberOfLines={1}>
           {status === ActivityStatus.Pending ? (
             <Text style={styles.waiting} numberOfLines={1}>敬请期待</Text>
           ) : (
@@ -30,9 +30,12 @@ export default function ProductItem ({ name, spec, price, slashedPrice, status, 
             </Text>
           )}
           {slashedPrice && (
-            <Text style={styles.slashedPrice} numberOfLines={1}>¥{Formatter.transPenny(slashedPrice)}</Text>
+            <Text>
+              &nbsp;&nbsp;
+              <Text style={styles.slashedPrice} numberOfLines={1}>¥{Formatter.transPenny(slashedPrice)}</Text>
+            </Text>
           )}
-        </View>
+        </Text>
       </View>
     </View>
   )

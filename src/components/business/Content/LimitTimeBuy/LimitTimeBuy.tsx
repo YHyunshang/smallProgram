@@ -67,6 +67,7 @@ export default function LimitTimeBuy({startTime, endTime, products, onExpired}: 
   }, [ startTime, endTime ])
 
   const title = statusToTitle(status)
+  const productRowTotal = Math.ceil(products.length / 2)
 
   return (
     <TouchableWithoutFeedback
@@ -80,8 +81,15 @@ export default function LimitTimeBuy({startTime, endTime, products, onExpired}: 
         </View>
 
         <View style={styles.productGrid}>
-          {products.map(product => (
-            <View style={styles.productBox} key={product.code}>
+          {products.map((product, index) => (
+            <View
+              style={[
+                styles.productBox,
+                Math.ceil((index + 1) / 2) === productRowTotal && styles.productBoxInLastRow,
+                (index + 1) % 2 === 0 && styles.productBoxInLastCol
+              ]}
+              key={product.code}
+            >
               <ProductRow {...product} status={status} />
             </View>
           ))}
