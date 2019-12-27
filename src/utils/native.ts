@@ -66,11 +66,7 @@ export async function navigateTo({
 
   const navParams = {
     ...params,
-    directTransmitParams: JSON.stringify({
-      // 透传给下级页面的数据
-      $$tracking: History.cur() || {},
-      ...(params.directTransmitParams || {}),
-    }),
+    directTransmitParams: JSON.stringify(params.directTransmitParams || {}),
     title: title || (uri === 'RNPreviewPurchase' ? '茅台专售' : '永辉买菜'),
   }
 

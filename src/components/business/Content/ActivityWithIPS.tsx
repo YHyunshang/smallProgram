@@ -13,6 +13,7 @@ import {FlatList, Text, TouchableOpacity, View} from 'react-native'
 import {Formatter, Img, Native} from '@utils'
 import FastImage from 'react-native-fast-image'
 import memorize from 'memoize-one'
+import withProductDetailNav from "@components/business/Content/HOC/withProductDetailNav";
 
 const loadRatioImage = memorize((imgSrc, width) => Img.loadRatioImage(imgSrc, width))
 
@@ -84,28 +85,13 @@ export default function ActivityWithIPS({
   )
 }
 
-const ProductItem = React.memo(({ thumbnail, name, desc, spec, price, slashedPrice, count, code, shopCode }: Product) => {
+const ProductItem = React.memo(
+  withProductDetailNav((
+    { thumbnail, name, price, getDetailNavigator }: (Product & {getDetailNavigator: (thumbnail: string) => () => void})
+  ) => {
   const fitThumbnail = Img.loadRatioImage(thumbnail, 80)
 
-  const navigateToProductDetail = () => {
-    Native.navigateTo({
-      type: Native.NavPageType.NATIVE,
-      uri: 'A003,A003',
-      params: {
-        productCode: code,
-        storeCode: shopCode,
-        directTransmitParams: {
-          name,
-          subTitle: desc,
-          price: price,
-          slashedPrice: slashedPrice || price,
-          spec,
-          count,
-          thumbnail: fitThumbnail,
-        }
-      },
-    })
-  }
+  const navigateToProductDetail = getDetailNavigator(fitThumbnail)
 
   return (
     <TouchableOpacity activeOpacity={0.95} onPress={navigateToProductDetail}>
@@ -127,4 +113,4 @@ const ProductItem = React.memo(({ thumbnail, name, desc, spec, price, slashedPri
     </View>
     </TouchableOpacity>
   )
-})
+}))

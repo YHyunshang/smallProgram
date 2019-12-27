@@ -24,8 +24,6 @@ import {
 } from '@utils/native'
 import withInitialData from '@HOC/withInitialData'
 import { track } from '@utils/tracking'
-import withHistory from '@HOC/withHistory'
-import History from '@utils/history'
 import PageContainer from './components/PageContainer'
 import ShareWrapper from './components/ShareWrapper'
 import memoized from 'memoize-one'
@@ -38,6 +36,7 @@ import DetailSection from './components/DetailSection.PreSale'
 import { placeholderProduct } from '@const/resources'
 import SimilarProducts from './components/SimilarProducts'
 import { loadRatioImage } from '@utils/img'
+import {RouteContext} from "@utils/contextes";
 
 interface InitialProductData extends BaseObj {
   type?: ProductType // 商品类型
@@ -54,6 +53,7 @@ interface PageState {
   similarProducts: Product[] // 相似商品
   poster: string // 商品海报
   shareWrapperVis: boolean // 分享 wrapper 是否可见
+  routeName: string
 }
 
 // 获取以小程序方式分享到微信好友所需的商品信息
@@ -80,8 +80,6 @@ const getProductInfoForSharing = memoized((data: BaseObj) => {
 })
 
 // @ts-ignore: hoc can wrap class-styled components
-@withHistory({ path: '商详页', name: '商详页' })
-// @ts-ignore: hoc can wrap class-styled components
 @withInitialData
 export default class Page extends React.Component<PageProps, PageState> {
   static defaultProps = {
@@ -97,6 +95,7 @@ export default class Page extends React.Component<PageProps, PageState> {
       similarProducts: [],
       poster: '',
       shareWrapperVis: false,
+      routeName: '商详页',
     }
   }
 
@@ -126,13 +125,11 @@ export default class Page extends React.Component<PageProps, PageState> {
       showToast('找不到该商品', '0')
       return
     }
-    this.setState({ productDetail: product })
 
     const detailInfo = product.resChannelStoreProductVO || {} // 商详信息
     const sliderInfo = product.productSliderImagesResponseVOList || {} // 轮播图
 
-    // 路由入栈
-    History.updateCur({ name: detailInfo.productName })
+    this.setState({ productDetail: product, routeName: detailInfo.productName })
 
     // tracking
     const isFromRNPage = $$tracking instanceof Object
@@ -340,7 +337,7 @@ export default class Page extends React.Component<PageProps, PageState> {
   }
 
   render() {
-    const { productDetail, poster, shareWrapperVis } = this.state
+    const { productDetail, poster, shareWrapperVis, routeName } = this.state
 
     // 分享到微信好友需要的商品信息
     const productInfoForWXFriendsSharing = getProductInfoForSharing(
@@ -348,7 +345,7 @@ export default class Page extends React.Component<PageProps, PageState> {
     )
 
     return (
-      <>
+      <RouteContext.Provider value={{ path: '商详页', name: routeName }}>
         <PageContainer
           tabs={['商品', '详情']}
           tabContentRenderer={this.renderTabContent}
@@ -361,7 +358,7 @@ export default class Page extends React.Component<PageProps, PageState> {
           onClose={() => this.toggleShareVis(false)}
           afterVisibleAnimation={this.afterShareVisAnimation}
         />
-      </>
+      </RouteContext.Provider>
     )
   }
 }

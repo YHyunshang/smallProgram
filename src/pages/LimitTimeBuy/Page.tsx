@@ -8,6 +8,7 @@ import CartFooter from "@components/business/CartFooter";
 import {LimitTimeBuy as LimitTimeBuyScene} from "@components/Scene";
 import {CMSServices} from "@services";
 import withHistory from "@HOC/withHistory";
+import {RouteContext} from "@utils/contextes";
 
 interface Props {
   shopCode: string
@@ -18,8 +19,6 @@ interface State {
   amount: number
 }
 
-// @ts-ignore: hoc can wrap class-styled components
-@withHistory({ path: '限时抢购活动页', name: '限时抢购活动页' })
 export default class Page extends React.Component<Props, State> {
   state = {
     count: 0,
@@ -43,9 +42,11 @@ export default class Page extends React.Component<Props, State> {
     const { shopCode } = this.props
 
     return (
-      <CartFooter count={count} amount={amount}>
-        <LimitTimeBuyScene shopCode={shopCode} afterAddCart={() => this.requestCartInfo(shopCode)} />
-      </CartFooter>
+      <RouteContext.Provider value={{ path: '限时抢购活动页', name: '限时抢购活动页' }}>
+        <CartFooter count={count} amount={amount}>
+          <LimitTimeBuyScene shopCode={shopCode} afterAddCart={() => this.requestCartInfo(shopCode)} />
+        </CartFooter>
+      </RouteContext.Provider>
     )
   }
 }
