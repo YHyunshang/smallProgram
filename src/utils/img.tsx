@@ -12,17 +12,17 @@ import RNFS from "react-native-fs";
 /**
  * 根据屏幕像素密度获取对应尺寸的图片
  * 仅支持 hotfile cdn，仅支持 按照宽度等比剪裁 或 按照固定宽高剪裁
+ * 支持的域名：
+ *  hotfile.yonghui.cn
+ *  hotfile-cdn.yonghui.cn
+ *  image-storage-service.yonghui.cn
  * 宽度自动最低 140
  * @param src 图片地址
  * @param width pt 宽度
  * @param height pt 高度
  */
 export function loadRatioImage(src: string, width?: number, height?: number) {
-  if (!/^https?:\/\/hotfile(-cdn)?\.yonghui\.cn/.test(src)) {
-    Log.warn(
-      'only support images on hotfile cdn: http(s)://hotfile(-cdn).yonghui.cn',
-      src
-    )
+  if (!/^https?:\/\/(hotfile(-cdn)?|image-storage-service)\.yonghui\.cn/.test(src)) {
     return src
   }
   if (!(
