@@ -15,21 +15,27 @@ export interface SimilarProductsProps {
 }
 
 const ProductItem: React.FunctionComponent<{ _data_: BaseObj } & Product> = ({ _data_, ...passedProps }) => {
+  const [count, setCount] = React.useState(passedProps.count)
+
   const childrenRender = ctxVal => {
-    const onModifyCount = () => Native.addToCartForSimilarProduct(_data_, true)
+    const onModifyCount = () =>
+      Native.addToCartForSimilarProduct({ ..._data_, productNum: count  }, true)
+        .then(count => {
+          setCount(count)
 
-    track('addToShoppingcart', {
-      $screen_name: ctxVal.name,
-      page_type: ctxVal.path,
-      product_id: passedProps.code,
-      product_name: passedProps.name,
-      original_price: passedProps.slashedPrice || passedProps.price,
-      present_price: passedProps.price,
-      product_spec: passedProps.spec,
-      tab_name: ctxVal.extraData ? ctxVal.extraData.currentTab || '' : ''
-    })
+          track('addToShoppingcart', {
+            $screen_name: ctxVal.name,
+            page_type: ctxVal.path,
+            product_id: passedProps.code,
+            product_name: passedProps.name,
+            original_price: passedProps.slashedPrice || passedProps.price,
+            present_price: passedProps.price,
+            product_spec: passedProps.spec,
+            tab_name: ctxVal.extraData ? ctxVal.extraData.currentTab || '' : ''
+          })
+        })
 
-    return <ProductGridItem {...passedProps} theme={ThemeChoices.TWO_PER_ROW} onModifyCount={onModifyCount} />
+    return <ProductGridItem {...passedProps} count={count} theme={ThemeChoices.TWO_PER_ROW} onModifyCount={onModifyCount} />
   }
 
   return (

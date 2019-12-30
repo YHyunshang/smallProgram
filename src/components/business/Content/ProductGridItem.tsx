@@ -78,7 +78,7 @@ function _ProductGridItem_({
               ) : deliveryType === ProductDeliveryType.NextDay ? (
                 <FastImage source={iconDeliveryNextDay} style={{width: 38, height: 16}}/>
               ) : labels.slice(0, 1).map(ele => (
-                <Tag>{ele}</Tag>
+                <Tag key={ele}>{ele}</Tag>
               ))}
             </View>
 
