@@ -7,15 +7,36 @@ import {BaseObj, Product} from "@common/typings";
 import styles from './SimilarProducts.styles'
 import {ProductGridItem, ThemeChoices} from "@components/business/Content/ProductGridItem";
 import {Native} from "@utils";
+import {track} from "@utils/tracking";
+import {RouteContext} from "@utils/contextes";
 
 export interface SimilarProductsProps {
   products: Product[]
 }
 
 const ProductItem: React.FunctionComponent<{ _data_: BaseObj } & Product> = ({ _data_, ...passedProps }) => {
-  const onModifyCount = () => Native.addToCartForSimilarProduct(_data_, true)
+  const childrenRender = ctxVal => {
+    const onModifyCount = () => Native.addToCartForSimilarProduct(_data_, true)
 
-  return <ProductGridItem {...passedProps} theme={ThemeChoices.TWO_PER_ROW} onModifyCount={onModifyCount} />
+    track('addToShoppingcart', {
+      $screen_name: ctxVal.name,
+      page_type: ctxVal.path,
+      product_id: passedProps.code,
+      product_name: passedProps.name,
+      original_price: passedProps.slashedPrice || passedProps.price,
+      present_price: passedProps.price,
+      product_spec: passedProps.spec,
+      tab_name: ctxVal.extraData ? ctxVal.extraData.currentTab || '' : ''
+    })
+
+    return <ProductGridItem {...passedProps} theme={ThemeChoices.TWO_PER_ROW} onModifyCount={onModifyCount} />
+  }
+
+  return (
+    <RouteContext.Consumer>
+      {childrenRender}
+    </RouteContext.Consumer>
+  )
 }
 
 const renderItem = ({ item, index }) => (
