@@ -10,7 +10,6 @@ import debounce from 'lodash/debounce'
 import {CMSServices} from '@services'
 import {Log, Native} from '@utils'
 import {track} from "@utils/tracking";
-import History from "@utils/history";
 import {Route, RouteContext} from "@utils/contextes";
 import {transPenny} from "@utils/FormatUtil";
 

@@ -19,22 +19,23 @@ const ProductItem: React.FunctionComponent<{ _data_: BaseObj } & Product> = ({ _
   const [count, setCount] = React.useState(passedProps.count)
 
   const childrenRender = ctxVal => {
-    const onModifyCount = () =>
-      Native.addToCartForSimilarProduct({ ..._data_, productNum: count  }, true)
+    const onModifyCount = () => {
+      track('addToShoppingcart', {
+        $screen_name: ctxVal.name,
+        page_type: ctxVal.path,
+        product_id: passedProps.code,
+        product_name: passedProps.name,
+        original_price: transPenny(passedProps.slashedPrice || passedProps.price),
+        present_price: transPenny(passedProps.price),
+        product_spec: passedProps.spec,
+        tab_name: ctxVal.extraData ? ctxVal.extraData.currentTab || '' : ''
+      })
+
+      Native.addToCartForSimilarProduct({..._data_, productNum: count}, true)
         .then(count => {
           setCount(count)
-
-          track('addToShoppingcart', {
-            $screen_name: ctxVal.name,
-            page_type: ctxVal.path,
-            product_id: passedProps.code,
-            product_name: passedProps.name,
-            original_price: transPenny(passedProps.slashedPrice || passedProps.price),
-            present_price: transPenny(passedProps.price),
-            product_spec: passedProps.spec,
-            tab_name: ctxVal.extraData ? ctxVal.extraData.currentTab || '' : ''
-          })
         })
+    }
 
     return <ProductGridItem {...passedProps} count={count} theme={ThemeChoices.TWO_PER_ROW} onModifyCount={onModifyCount} />
   }
