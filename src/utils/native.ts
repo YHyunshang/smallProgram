@@ -398,12 +398,3 @@ export function checkIsLoginOrGoToLogin(): Promise<boolean> {
     })
   })
 }
-
-/**
- * 通知 native 限时抢购状态变化
- * @param status
- */
-export function notifyLTBStatus(status: ActivityStatus) {
-  if (status === ActivityStatus.Pending) return
-  return NativeModules.GoodsDetailsNativeManager.notifyNativeFlashSaleStatus(status === ActivityStatus.Processing ? '1' : '0')
-}

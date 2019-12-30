@@ -18,7 +18,6 @@ import {
 import { ProductThumbnail } from '@common/config'
 import { transPenny } from '@utils/FormatUtil'
 import {
-  notifyLTBStatus,
   setNativeBtmCart,
   showToast,
   toggleGoodsDetailCartBarVis,
@@ -272,7 +271,6 @@ export default class Page extends React.Component<PageProps, PageState> {
     oldStatus: ActivityStatus
   ) => {
     status === ActivityStatus.Expired && this.init()
-    notifyLTBStatus(status)
   }
 
   onPreSaleStatusChange = (status: ActivityStatus) => {
