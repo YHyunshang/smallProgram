@@ -9,6 +9,7 @@ import {ProductGridItem, ThemeChoices} from "@components/business/Content/Produc
 import {Native} from "@utils";
 import {track} from "@utils/tracking";
 import {RouteContext} from "@utils/contextes";
+import {transPenny} from "@utils/FormatUtil";
 
 export interface SimilarProductsProps {
   products: Product[]
@@ -28,8 +29,8 @@ const ProductItem: React.FunctionComponent<{ _data_: BaseObj } & Product> = ({ _
             page_type: ctxVal.path,
             product_id: passedProps.code,
             product_name: passedProps.name,
-            original_price: passedProps.slashedPrice || passedProps.price,
-            present_price: passedProps.price,
+            original_price: transPenny(passedProps.slashedPrice || passedProps.price),
+            present_price: transPenny(passedProps.price),
             product_spec: passedProps.spec,
             tab_name: ctxVal.extraData ? ctxVal.extraData.currentTab || '' : ''
           })

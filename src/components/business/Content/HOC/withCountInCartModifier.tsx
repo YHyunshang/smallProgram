@@ -12,6 +12,7 @@ import {Log, Native} from '@utils'
 import {track} from "@utils/tracking";
 import History from "@utils/history";
 import {Route, RouteContext} from "@utils/contextes";
+import {transPenny} from "@utils/FormatUtil";
 
 interface Props extends Product {
   shopCode: string // 门店编码
@@ -97,8 +98,8 @@ export default function withCartCountModify(WrappedComponent) {
           page_type: currentScene.path,
           product_id: code,
           product_name: name,
-          original_price: slashedPrice || price,
-          present_price: price,
+          original_price: transPenny(slashedPrice || price),
+          present_price: transPenny(price),
           product_spec: spec,
           tab_name: currentScene.extraData ? currentScene.extraData.currentTab || '' : ''
         })
