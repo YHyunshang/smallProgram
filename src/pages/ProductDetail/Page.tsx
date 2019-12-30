@@ -140,8 +140,8 @@ export default class Page extends React.Component<PageProps, PageState> {
         page_type: $$tracking.path,
         product_id: detailInfo.productCode,
         product_name: detailInfo.productName,
-        original_price: detailInfo.price,
-        present_price: detailInfo.promotionPrice || detailInfo.price,
+        original_price: transPenny(detailInfo.price),
+        present_price: transPenny(detailInfo.promotionPrice || detailInfo.price),
         product_spec: detailInfo.productSpecific,
       })
 
@@ -215,15 +215,15 @@ export default class Page extends React.Component<PageProps, PageState> {
           scenerio_name: '相似商品',
           product_id: data.productCode,
           product_name: data.productName,
-          origin_price: data.price,
-          present_price: data.promotionPrice || data.price,
+          origin_price: transPenny(data.price),
+          present_price: transPenny(data.promotionPrice || data.price),
           product_spec: data.productSpecific,
           opration_type: '点击商品',
           strategy_id: '',
           from_product_id: product.productCode,
           from_product_name: product.productName,
-          from_product_original_price: product.price,
-          from_product_present_price: product.promotionPrice || product.price,
+          from_product_original_price: transPenny(product.price),
+          from_product_present_price: transPenny(product.promotionPrice || product.price),
         })
       },
       _data_: data, // 原始数据
@@ -241,8 +241,8 @@ export default class Page extends React.Component<PageProps, PageState> {
         $screen_name: detailData.productName,
         product_id: detailData.productCode,
         product_name: detailData.productName,
-        original_price: detailData.price,
-        present_price: detailData.promotionPrice || detailData.price,
+        original_price: transPenny(detailData.price),
+        present_price: transPenny(detailData.promotionPrice || detailData.price),
       })
     }
     this.setState({ shareWrapperVis: visible })
