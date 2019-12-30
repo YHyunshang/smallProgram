@@ -17,12 +17,12 @@ export default StyleSheet.create({
   },
 
   img: {
-    width: 40,
-    height: 40,
+    width: 24,
+    height: 24,
   },
 
   text: {
-    marginTop: 5,
+    marginTop: 15,
     fontSize: 12,
     color: theme.primary,
     lineHeight: 20,
