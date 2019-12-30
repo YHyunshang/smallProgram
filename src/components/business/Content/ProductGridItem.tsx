@@ -17,7 +17,7 @@ import {iconDeliveryNextDay} from "@const/resources";
 import {FitImg} from "@components";
 import {transPenny} from "@utils/FormatUtil";
 
-enum ThemeChoices {
+export enum ThemeChoices {
   TWO_PER_ROW = '2x',
   THREE_PER_ROW = '3x',
 }
@@ -27,7 +27,7 @@ export interface Props extends Product {
   getDetailNavigator: (thumbnail: string) => () => void
 }
 
-function ProductGridItem({
+function _ProductGridItem_({
   thumbnail,
   name,
   price,
@@ -115,6 +115,9 @@ function ProductGridItem({
     </View>
   )
 }
+
+export const ProductGridItem = withProductDetailNav(_ProductGridItem_)
+
 export default withCartCountModify(
-  withProductDetailNav(ProductGridItem)
+  withProductDetailNav(_ProductGridItem_)
 )

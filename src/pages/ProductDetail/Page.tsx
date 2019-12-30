@@ -165,7 +165,7 @@ export default class Page extends React.Component<PageProps, PageState> {
 
   formatSimilarProducts = (
     data: BaseObj
-  ): { beforeNav: () => void } & Product => {
+  ): { beforeNav: () => void, _data_: BaseObj } & Product => {
     const {
       mainUrl = {},
       promotionPrice,
@@ -225,6 +225,7 @@ export default class Page extends React.Component<PageProps, PageState> {
           from_product_present_price: product.promotionPrice || product.price,
         })
       },
+      _data_: data, // 原始数据
     }
   }
 

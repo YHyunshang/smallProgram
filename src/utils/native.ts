@@ -216,6 +216,18 @@ export function onCartChange(handler: (...args: any) => any) {
 }
 
 /**
+ * 相似商品加购
+ * @param productData api 返回的原始商品数据
+ * @param isAdd 是否是添加
+ */
+export function addToCartForSimilarProduct(productData: BaseObj, isAdd: boolean) {
+  return NativeModules.GoodsDetailsNativeManager.addToCart(
+    JSON.stringify(productData),
+    isAdd ? '1' : '0',
+  )
+}
+
+/**
  * 展示商品备注，用户选择后添加到购物车
  * @param products 商品对象
  */
