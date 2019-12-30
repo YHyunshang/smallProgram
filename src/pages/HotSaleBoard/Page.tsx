@@ -16,15 +16,17 @@ import Empty from './components/Empty'
 import { hotSaleBanner } from '@const/resources'
 import FitImage from 'react-native-fit-image'
 import {ProductDeliveryType, ProductType} from "@common/typings";
-import withHistory from "@HOC/withHistory";
+import {RouteContext} from "@utils/contextes";
+import memoizeOne from "memoize-one";
 
+interface TabData {
+  key: string
+  label: string
+}
 interface State {
-  tabList: {
-    key: string
-    label: string
-  }[]
+  tabList: TabData[]
   tabContentMap: {
-    [tab: string]: {}
+    [tab: string]: []
   }
   tabLoadingMap: {
     [tab: string]: boolean
@@ -36,8 +38,6 @@ interface State {
   }
 }
 
-// @ts-ignore: hoc can wrap class-styled components
-@withHistory({ path: '热销排行', name: '热销排行' })
 export default class Page extends React.Component<Object, State> {
   state = {
     tabList: [],
@@ -140,17 +140,25 @@ export default class Page extends React.Component<Object, State> {
 
   onTabChange = key => {
     this.setState({ currentTabId: key })
-    const { tabContentMap } = this.state
     this.flatListRef.current.scrollToOffset({ offset: 200 - 35.2941 })
     this.requestProductListUnderTab(key)
   }
 
-  renderFlatItem = ({ item: { component: Comp, props } }) => <Comp {...props} />
+  getCurrentTabName = memoizeOne((tabList: TabData[], currentTabId: string) => {
+    const tab = tabList.find(ele => ele.key === currentTabId)
+    return tab ? tab.label : '热销排行'
+  })
 
-  render() {
-    const { tabList, tabContentMap, tabLoadingMap, currentTabId } = this.state
+  getFloorData = memoizeOne((
+    tabList: TabData[],
+    currentTabId: string,
+    tabContentMap: {
+      [tab: string]: [],
+    },
+    currentTabLoading: boolean
+  ) => {
     const productsUnderCurrentTab = tabContentMap[currentTabId] || []
-    const floorData = [
+    return [
       {
         key: '$$img',
         component: FitImage,
@@ -171,37 +179,49 @@ export default class Page extends React.Component<Object, State> {
       },
       ...(productsUnderCurrentTab.length > 0
         ? [
-            {
-              key: '$$product-list',
-              component: ProductList,
-              props: { products: productsUnderCurrentTab.slice(0, 6) },
+          {
+            key: '$$product-list',
+            component: ProductList,
+            props: { products: productsUnderCurrentTab.slice(0, 6) },
+          },
+          {
+            key: '$$product-grid',
+            component: ProductGrid,
+            props: {
+              products: productsUnderCurrentTab.slice(6),
+              columnNumber: 2,
             },
-            {
-              key: '$$product-grid',
-              component: ProductGrid,
-              props: {
-                products: productsUnderCurrentTab.slice(6),
-                columnNumber: 2,
-              },
-            },
-          ]
-        : tabLoadingMap[currentTabId]
-        ? []
-        : [{ key: '$$empty', component: Empty }]),
+          },
+        ]
+        : currentTabLoading
+          ? []
+          : [{ key: '$$empty', component: Empty }]),
     ]
+  })
+
+  renderFlatItem = ({ item: { component: Comp, props } }) => <Comp {...props} />
+
+  render() {
+    const { tabList, tabContentMap, tabLoadingMap, currentTabId } = this.state
+
+    const floorData = this.getFloorData(tabList, currentTabId, tabContentMap, tabLoadingMap[currentTabId])
+    const pageName = this.getCurrentTabName(tabList, currentTabId)
+
     return (
-      <FlatList
-        ref={this.flatListRef}
-        style={styles.container}
-        data={floorData}
-        renderItem={this.renderFlatItem}
-        stickyHeaderIndices={[1]}
-        overScrollMode="always"
-        ListFooterComponent={<View style={styles.footer} />}
-        contentContainerStyle={{
-          minHeight: 200 + Dimensions.get('window').height,
-        }}
-      />
+      <RouteContext.Provider value={{ path: '热销排行', name: pageName }}>
+        <FlatList
+          ref={this.flatListRef}
+          style={styles.container}
+          data={floorData}
+          renderItem={this.renderFlatItem}
+          stickyHeaderIndices={[1]}
+          overScrollMode="always"
+          ListFooterComponent={<View style={styles.footer} />}
+          contentContainerStyle={{
+            minHeight: 200 + Dimensions.get('window').height,
+          }}
+        />
+      </RouteContext.Provider>
     )
   }
 }

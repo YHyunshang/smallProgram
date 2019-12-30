@@ -36,6 +36,7 @@ function CMSScene({
       renderItem={renderCMSFloor}
       keyExtractor={item => `${item.key}`}
       onScroll={onScroll}
+      scrollEventThrottle={16}
       showsVerticalScrollIndicator={false}
       refreshControl={
         <RefreshControl
@@ -66,6 +67,7 @@ function CMSScene({
       renderItem={renderCMSFloor}
       keyExtractor={item => `${item.key}`}
       onScroll={(data.length === 0 || loading) ? undefined :onScroll}
+      scrollEventThrottle={16}
       showsVerticalScrollIndicator={false}
       refreshControl={
         <RefreshControl

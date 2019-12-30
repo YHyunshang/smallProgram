@@ -11,6 +11,8 @@ import {CMSServices} from '@services'
 import {Log, Native} from '@utils'
 import {track} from "@utils/tracking";
 import History from "@utils/history";
+import {Route, RouteContext} from "@utils/contextes";
+import {transPenny} from "@utils/FormatUtil";
 
 interface Props extends Product {
   shopCode: string // 门店编码
@@ -26,6 +28,9 @@ interface State {
 
 export default function withCartCountModify(WrappedComponent) {
   return class extends React.Component<Props, State> {
+    static contextType:React.Context<Route> = RouteContext
+    context: Route
+
     constructor(props) {
       super(props)
       this.state = {
@@ -85,17 +90,16 @@ export default function withCartCountModify(WrappedComponent) {
       ) {
         this.showRemarksBeforeAddToCart()
       } else {
-        const currentScene = History.cur() || { path: '', name: '' }
+        const currentScene = this.context
         const { code, name, price, slashedPrice, spec } = this.props
         const {modifiedCount} = this.state
-        console.log(currentScene)
         count > modifiedCount && track('addToShoppingcart', {
           $screen_name: currentScene.name,
           page_type: currentScene.path,
           product_id: code,
           product_name: name,
-          original_price: slashedPrice || price,
-          present_price: price,
+          original_price: transPenny(slashedPrice || price),
+          present_price: transPenny(price),
           product_spec: spec,
           tab_name: currentScene.extraData ? currentScene.extraData.currentTab || '' : ''
         })

@@ -4,6 +4,8 @@
 import * as React from 'react'
 import {Native} from "@utils";
 import {Product} from "@common/typings";
+import {Route, RouteContext} from "@utils/contextes";
+import {transPenny} from "@utils/FormatUtil";
 
 interface InjectedProps extends Product {
   beforeNav: () => void
@@ -13,6 +15,9 @@ const withProductDetailNav = <P extends Product>(
   WrappedComp: React.ComponentType<P>
 ):React.ComponentClass<P & InjectedProps> =>
   class WithProductDetailNav extends React.Component<P & InjectedProps> {
+    static contextType:React.Context<Route> = RouteContext
+    context: Route
+
     public static displayName = `WithProductDetailNav(${WrappedComp.displayName || WrappedComp.name || 'Component'})`
 
     navToProductDetail = (thumbnail: string) => {
@@ -30,11 +35,12 @@ const withProductDetailNav = <P extends Product>(
               type,
               name,
               subTitle: desc,
-              price,
-              slashedPrice: slashedPrice || price,
+              price: transPenny(price),
+              slashedPrice: transPenny(slashedPrice || price),
               spec,
               count,
               thumbnail,
+              $$tracking: this.context
             }
           },
         })

@@ -14,8 +14,7 @@ import {
   StatusBar,
 } from 'react-native'
 import * as Log from './log'
-import { BaseObj, Product } from '@common/typings'
-import History from '@utils/history'
+import {ActivityStatus, BaseObj, Product} from '@common/typings'
 
 // 环境
 export const ENV = (function() {
@@ -66,11 +65,7 @@ export async function navigateTo({
 
   const navParams = {
     ...params,
-    directTransmitParams: JSON.stringify({
-      // 透传给下级页面的数据
-      $$tracking: History.cur() || {},
-      ...(params.directTransmitParams || {}),
-    }),
+    directTransmitParams: JSON.stringify(params.directTransmitParams || {}),
     title: title || (uri === 'RNPreviewPurchase' ? '茅台专售' : '永辉买菜'),
   }
 
@@ -217,6 +212,36 @@ export const getStatusBarHeight = () =>
  */
 export function onCartChange(handler: (...args: any) => any) {
   return DeviceEventEmitter.addListener('notifyRefreshCartNum', handler)
+}
+
+/**
+ * 相似商品加购
+ * @param productData api 返回的原始商品数据
+ * @param isAdd 是否是添加
+ */
+export function addToCartForSimilarProduct(productData: BaseObj, isAdd: boolean): Promise<number> {
+  NativeModules.GoodsDetailsNativeManager.addToCart(
+    JSON.stringify(productData),
+    isAdd ? '1' : '0',
+  )
+
+  return new Promise((resolve, reject) => {
+    onNativeEvent(
+      'setItemNumberByProductcode',
+      ({ productNumber, productCode, responseData }: { productNumber: string, productCode: string, responseData: string }) => {
+        if (productCode !== productData.productCode) return
+
+        let res: BaseObj
+        try {
+          res = JSON.parse(responseData)
+        } catch (e) {
+          return reject(e)
+        }
+
+        return res.code === 200000 ? resolve(Number(res.result.productNum)) : reject(new Error(res.message))
+      },
+    )
+  })
 }
 
 /**

@@ -17,9 +17,8 @@ import { StorageChoices, Sort } from './components/ProductFilter'
 import {ActivityStatus, BaseObj, Product, ProductDeliveryType, ProductType} from '@common/typings'
 import {formatFloorData, PlaceholderForNativeHeight} from './utils'
 import {LimitTimeBuy as LimitTimeBuyScene} from "@components/Scene";
-import withHistory from "@HOC/withHistory";
-import History from "@utils/history";
 import Loading from "@components/Loading";
+import {RouteContext} from "@utils/contextes";
 
 const WindowWidth = Dimensions.get('window').width
 const WindowHeight = Dimensions.get('window').height
@@ -69,8 +68,6 @@ interface State {
   shouldRefreshTab: boolean
 }
 
-// @ts-ignore: hoc can wrap class-styled components
-@withHistory({ path: '首页', name: '首页' })
 export default class Page extends React.Component<{}, State> {
   state = {
     shop: { code: '', type: '' },
@@ -178,7 +175,7 @@ export default class Page extends React.Component<{}, State> {
       })),
     ]
 
-    this.setState({
+    this.setState(state => ({
       currentTabIdx: 0,
       tabList,
       tabContentMap:
@@ -194,9 +191,7 @@ export default class Page extends React.Component<{}, State> {
           : {},
       shouldRefreshTab: false,
       shouldRefreshFirstTab: false,
-    })
-    History.updateCur(({ extraData = {} }) =>
-      ({ extraData: { ...extraData, currentTab: tabList.length > 0 ? tabList[0].title : '' } }))
+    }))
   }
 
   requestCMSContentData = async (tabId, shopCode) => {
@@ -334,8 +329,6 @@ export default class Page extends React.Component<{}, State> {
 
     const currentTab = tabList[index]
     if (!currentTab) return
-
-    History.updateCur(({ extraData = {} }) => ({ extraData: { ...extraData, currentTab: currentTab.title } }))
 
     this.setState({ currentTabIdx: index })
     if (!isRefresh) {
@@ -581,22 +574,25 @@ export default class Page extends React.Component<{}, State> {
       index: currentTabIdx,
       routes: tabList,
     }
+    const currentTabName = (tabList[currentTabIdx] || {}).title
 
     return (
-      <View style={styles.container}>
-        {loading && tabList.length === 0 && (
-          <View style={styles.loadingContainer}>
-            <Loading />
-          </View>
-        )}
-        <TabView
-          navigationState={navigationState}
-          renderTabBar={this.renderTabBar}
-          renderScene={this.renderScene}
-          onIndexChange={this.onTabIndexChange}
-          initialLayout={{ height: WindowHeight, width: WindowWidth }}
-        />
-      </View>
+      <RouteContext.Provider value={{ path: '首页', name: currentTabName, extraData: { currentTab: currentTabName } }}>
+        <View style={styles.container}>
+          {loading && tabList.length === 0 && (
+            <View style={styles.loadingContainer}>
+              <Loading />
+            </View>
+          )}
+          <TabView
+            navigationState={navigationState}
+            renderTabBar={this.renderTabBar}
+            renderScene={this.renderScene}
+            onIndexChange={this.onTabIndexChange}
+            initialLayout={{ height: WindowHeight, width: WindowWidth }}
+          />
+        </View>
+      </RouteContext.Provider>
     )
   }
 }

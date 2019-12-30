@@ -185,6 +185,7 @@ export default class CategoryScene extends React.PureComponent<Props> {
           maxToRenderPerBatch={5}
           showsVerticalScrollIndicator={false}
           onScroll={(flatData.length === 0 || loading) ? undefined : onScroll}
+          scrollEventThrottle={16}
           ListFooterComponent={flatData.length === 0 ? null : <SceneFooter />}
         />
       )
@@ -208,6 +209,7 @@ export default class CategoryScene extends React.PureComponent<Props> {
         maxToRenderPerBatch={5}
         showsVerticalScrollIndicator={false}
         onScroll={onScroll}
+        scrollEventThrottle={16}
         ListHeaderComponent={<View style={{height: PlaceholderForNativeHeight}}/>}
         ListFooterComponent={flatData.length === 0 ? null : <SceneFooter/>}
       />

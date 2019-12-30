@@ -7,6 +7,7 @@ import {RefreshControl, View, FlatList} from 'react-native'
 import theme from '@theme'
 import withHistory from "@HOC/withHistory";
 import Loading from "@components/Loading";
+import {RouteContext} from "@utils/contextes";
 
 const ActivityWithIPS = React.memo(ActivityWithIPSC)
 
@@ -18,7 +19,6 @@ interface State {
 }
 
 // @ts-ignore: hoc can wrap class-styled components
-@withHistory({ path: '发现页', name: '发现页' })
 export default class Page extends React.PureComponent<Object, State> {
   state = {
     loading: false,
@@ -126,29 +126,31 @@ export default class Page extends React.PureComponent<Object, State> {
   render() {
     const { floorData, loading, shopCode, enablePageScroll } = this.state
     return (
-      <View style={styles.container}>
-        {loading && floorData.length === 0 && (
-          <View style={styles.loadingContainer}>
-            <Loading/>
-          </View>
-        )}
+      <RouteContext.Provider value={{ path: '发现页', name: '发现页' }} >
+        <View style={styles.container}>
+          {loading && floorData.length === 0 && (
+            <View style={styles.loadingContainer}>
+              <Loading/>
+            </View>
+          )}
 
-        <FlatList
-          data={floorData}
-          keyExtractor={item => `${item.key}`}
-          renderItem={this.renderFlatItem}
-          showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl
-              refreshing={loading && floorData.length > 0}
-              onRefresh={() => this.requestPageData(shopCode)}
-              colors={[theme.refreshColor]}
-              tintColor={theme.refreshColor}
-            />
-          }
-          scrollEnabled={enablePageScroll}
-        />
-      </View>
+          <FlatList
+            data={floorData}
+            keyExtractor={item => `${item.key}`}
+            renderItem={this.renderFlatItem}
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl
+                refreshing={loading && floorData.length > 0}
+                onRefresh={() => this.requestPageData(shopCode)}
+                colors={[theme.refreshColor]}
+                tintColor={theme.refreshColor}
+              />
+            }
+            scrollEnabled={enablePageScroll}
+          />
+        </View>
+      </RouteContext.Provider>
     )
   }
 }
