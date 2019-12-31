@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     top: (height - 80) / 2
   },
   circle: {
-    width: 41,
-    height: 41
+    width: 24,
+    height: 24,
   }
 })
