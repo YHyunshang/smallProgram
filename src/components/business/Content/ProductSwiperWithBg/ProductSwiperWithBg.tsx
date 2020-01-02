@@ -16,7 +16,7 @@ const ProductSwiperWithBg: React.FunctionComponent<ProductSwiperWithBgProps> = (
   { backgroundImage, backgroundImageLink, products }
 ) => {
   const fitBg = Img.loadRatioImage(backgroundImage, Img.FullWidth)
-  const productList = products.map(ele => <ProductItem {...ele} />)
+  const productList = products.map(ele => <ProductItem key={ele.code} {...ele} />)
 
   return (
     <View style={styles.container}>
