@@ -189,11 +189,9 @@ export function getFoundPageData(shopCode: string) {
 export function formatLink({
   link,
   linkType,
-  code,
 }: {
   link: string
   linkType: number
-  code: string
 }, storeCode?: string) {
   return linkType === 1
     ? {
@@ -212,9 +210,9 @@ export function formatLink({
         params: {},
       }
     : linkType === 4 ? {
-        type: Native.NavPageType.RN,
-        uri: 'RNProductDetail',
-        params: { productCode: code, storeCode },
+        type: Native.NavPageType.NATIVE,
+        uri: 'A003,A003',
+        params: { productCode: link, storeCode },
       }
     : {}
 }
@@ -222,7 +220,7 @@ export function formatLink({
 /**
  * 跳转到茅台专售活动的专用链接
  */
-export function mouTaiActivityLink(productCode: string,shopCode: string) {
+export function mouTaiActivityLink(productCode: string, shopCode: string) {
   return {
     type: Native.NavPageType.RN,
     uri: 'RNPreviewPurchase',
