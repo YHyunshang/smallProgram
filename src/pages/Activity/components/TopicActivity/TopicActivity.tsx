@@ -1,13 +1,13 @@
 /*
- * @Descripttion: 潮物达人组件
+ * @Descripttion: 专题活动组件(潮物达人&酒专题)
  * @Author: yuwen.liu
  * @Date: 2019-11-21 11:23:19
  * @LastEditors  : yuwen.liu
- * @LastEditTime : 2019-12-26 17:49:44
+ * @LastEditTime : 2020-01-02 15:14:16
  */
 import * as React from 'react'
 import { FlatList, View, Alert } from 'react-native'
-import styles from './TideManActivity.styles'
+import styles from './TopicActivity.styles'
 import { CMSServices } from '@services'
 import useTheme from '@components/business/Content/ProductGrid.styles'
 import ProductListItem from '@components/business/Content/ProductListItem'
@@ -35,7 +35,7 @@ interface Props {
   afterModifyCount: Function // 操作购物车数量的回调函数
 }
 
-export default function TideManActivity({
+export default function TopicActivity({
   currentTabVos,
   afterModifyCount,
   shopCode,
