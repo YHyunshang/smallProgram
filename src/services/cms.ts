@@ -193,23 +193,25 @@ export function formatLink({
   link: string
   linkType: number
 }, storeCode?: string) {
-  return linkType === 1
+  if (!link) return {}
+
+  return linkType === 1 // native 页面
     ? {
         type: Native.NavPageType.NATIVE,
         uri: link,
         params: {},
       }
-    : linkType === 2 ? {
+    : linkType === 2 ? { // 活动页
         type: Native.NavPageType.RN,
         uri: 'RNActivity',
         params: { activityCode: link, type: 'activity' },
       }
-    : linkType === 3 ? {
+    : linkType === 3 ? { // H5 页面
         type: Native.NavPageType.H5,
         uri: link,
         params: {},
       }
-    : linkType === 4 ? {
+    : linkType === 4 ? { // 商详页
         type: Native.NavPageType.NATIVE,
         uri: 'A003,A003',
         params: { productCode: link, storeCode },
