@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-21 11:23:19
  * @LastEditors  : yuwen.liu
- * @LastEditTime : 2020-01-02 15:14:16
+ * @LastEditTime : 2020-01-03 17:08:12
  */
 import * as React from 'react'
 import { FlatList, View, Alert } from 'react-native'
@@ -32,6 +32,7 @@ interface Props {
     }[]
   }[]
   shopCode: string //门店编码
+  type: number //类型 8:潮物达人,9:酒专题
   afterModifyCount: Function // 操作购物车数量的回调函数
 }
 
@@ -39,7 +40,22 @@ export default function TopicActivity({
   currentTabVos,
   afterModifyCount,
   shopCode,
+  type,
 }: Props) {
+  /** @msg: 过滤左边tab栏对应的商品数据
+   * @param {categoryCode}
+   */
+  const productsFilter = (currenProductList, categoryCode) =>
+    currenProductList
+      .filter(
+        item =>
+          item.categoryCode && item.categoryCode.indexOf(categoryCode) != -1
+      )
+      .map(ele => ({
+        ...CMSServices.formatProduct(ele),
+        disableSync: true,
+        shopCode,
+      }))
   const [tabVos, setTabVos] = React.useState(currentTabVos)
   const products = tabVos[0].tabDetailVOList.map(ele => ({
     ...CMSServices.formatProduct(ele),
@@ -64,7 +80,10 @@ export default function TopicActivity({
   const [tabDetailVOList, setTabDetailVOList] = React.useState(
     tabVos[0].tabDetailVOList
   ) //初始化tabDetailVOList数据
-  const [initProducts, setInitProducts] = React.useState(products) //商品的原始数据
+  const initFirstTabProduct = productsFilter(tabDetailVOList, currentLeftTabKey) // 获取左边侧栏第一个tab的商品数据
+  const [initProducts, setInitProducts] = React.useState(
+    type === 8 ? products : initFirstTabProduct //  type:8是潮物达人取全部的商品数据，type:9 酒专题取第一个tab的商品数据
+  ) //商品的原始数据
   const [currentProducts, setCurrentProducts] = React.useState(initProducts) //当前选中的tab下的商品数据
   const total = currentProducts.length
   const totalRow = Math.ceil(total / currentColumnNumber)
@@ -76,21 +95,6 @@ export default function TopicActivity({
    */
   const leftTabListFilter = id =>
     tabVos && tabVos.filter(item => item.id === id)
-
-  /** @msg: 过滤左边tab栏对应的商品数据
-   * @param {categoryCode}
-   */
-  const productsFilter = categoryCode =>
-    tabDetailVOList
-      .filter(
-        item =>
-          item.categoryCode && item.categoryCode.indexOf(categoryCode) != -1
-      )
-      .map(ele => ({
-        ...CMSServices.formatProduct(ele),
-        disableSync: true,
-        shopCode,
-      }))
 
   /** @msg: 顶部tab栏item改变触发的事件
    * @param {key}
@@ -104,9 +108,6 @@ export default function TopicActivity({
         ? newLeftTabList[0].categoryList[0].categoryCode
         : 'all'
     )
-    setCurrentShowBar(
-      newLeftTabList[0].subType === 3 ? false : newLeftTabList[0].showBar
-    )
     setCurrentColumnNumber(newLeftTabList[0].subType)
     setTabDetailVOList(newLeftTabList[0].tabDetailVOList)
     const newInitProducts = newLeftTabList[0].tabDetailVOList.map(ele => ({
@@ -114,8 +115,19 @@ export default function TopicActivity({
       disableSync: true,
       shopCode,
     }))
-    setInitProducts(newInitProducts)
-    setCurrentProducts(newInitProducts)
+    const newInitFirstTabProduct = productsFilter(
+      newLeftTabList[0].tabDetailVOList,
+      newLeftTabList[0].categoryList[0]
+        ? newLeftTabList[0].categoryList[0].categoryCode
+        : 'all'
+    )
+    //type:8是潮物达人取全部的商品数据，type:9 酒专题取第一个tab的商品数据
+    const newFirstTabProduct =
+      type === 9 && newInitFirstTabProduct.length
+        ? newInitFirstTabProduct
+        : newInitProducts
+    setInitProducts(newFirstTabProduct)
+    setCurrentProducts(newFirstTabProduct)
   }
 
   /** @msg: 左边tab栏item改变触发的事件
@@ -123,7 +135,7 @@ export default function TopicActivity({
    */
   const onLeftTabChange = (code, index): void => {
     setCurrentLeftTabKey(code)
-    const newCurrentProducts = productsFilter(code)
+    const newCurrentProducts = productsFilter(tabDetailVOList, code)
     setCurrentProducts(code === 'all' ? initProducts : newCurrentProducts)
   }
 

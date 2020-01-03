@@ -273,6 +273,7 @@ export default class Page extends React.Component<Props, State> {
           props: {
             currentTabVos: floor.tabVos,
             shopCode,
+            type: floor.type,
             afterModifyCount: this.requestCartInfo
           },
         })
