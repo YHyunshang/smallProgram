@@ -20,6 +20,7 @@ import BoxC from '@components/business/Content/Box'
 import DividerC from '@components/business/Content/Divider'
 import LimitTimeBuy from "@components/business/Content/LimitTimeBuy";
 import {Global, Native} from "@utils";
+import {WindowWidth} from "@utils/global";
 const Carousel = React.memo(CarouselC)
 const AdTitle = React.memo(AdTitleC)
 const ProductList = React.memo(ProductListC)
@@ -127,6 +128,8 @@ export function formatFloorData(
           props: {
             image: imgObj.imgUrl,
             link: imgObj.name && imgObj.name.indexOf("茅台") != -1  ? CMSServices.mouTaiActivityLink(imgObj.name,shopCode) : CMSServices.formatLink(imgObj),
+            width: (i === 0 && currentTabIdx > 0) ? WindowWidth : undefined,
+            height: (i === 0 && currentTabIdx > 0) ? WindowWidth / (375 / 144) : undefined,
           },
         })
       } else if (floor.subType === 2) {
