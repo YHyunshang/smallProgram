@@ -11,7 +11,7 @@ interface Props {
   onTabChange: (key: string) => void
 }
 
-export default function Tab({ currentActive, data, onTabChange }: Props) {
+const Tab: React.FunctionComponent<Props> = ({ currentActive, data, onTabChange }) => {
   const total = data.length
   return (
     <View style={styles.container}>
@@ -44,3 +44,5 @@ export default function Tab({ currentActive, data, onTabChange }: Props) {
     </View>
   )
 }
+
+export default Tab

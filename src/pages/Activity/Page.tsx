@@ -20,6 +20,16 @@ import AdTitle from '@components/business/Content/AdTitle'
 import Loading from '../../components/common/Loading'
 import theme from "@theme";
 import {RouteContext} from "@utils/contextes";
+import {WindowWidth} from "@utils/global";
+import {BaseObj} from "@common/typings";
+import {placeholderHeadBanner} from "@const/resources";
+import FastImage from "react-native-fast-image";
+
+interface Floor {
+  key: string | number
+  component: React.ComponentType
+  props: BaseObj
+}
 
 interface Props {
   activityCode: string // 活动编码
@@ -36,16 +46,17 @@ interface State {
     label: string
   }[]
   tabContentMap: {
-    [tabKey: string]: {}[]
+    [tabKey: string]: Floor[]
   }
   cart: {
     amount: number
     count: number
   }
   pageTitle: string
+  hasHeadBanner: boolean
 }
 
-export default class Page extends React.Component<Props, State> {
+export default class Page extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props)
 
@@ -61,6 +72,7 @@ export default class Page extends React.Component<Props, State> {
         count: 0,
       },
       pageTitle: '',
+      hasHeadBanner: false,
     }
   }
 
@@ -73,7 +85,7 @@ export default class Page extends React.Component<Props, State> {
 
   requestCartInfo = async () => {
     const { shopCode } = this.state
-    const { result } = await CMSServices.getCartInfo(shopCode)
+    const { result = {} } = await CMSServices.getCartInfo(shopCode)
     this.setState({
       cart: {
         count: result.totalNum,
@@ -100,16 +112,19 @@ export default class Page extends React.Component<Props, State> {
       currentTabKey: '',
       tabList: result.map(item => ({ key: item.id, label: item.showName })),
       tabContentMap: {},
-      pageTitle: '优选商品'
+      pageTitle: '优选商品',
+      hasHeadBanner: false,
     }
     if (result.length > 0) {
       const tab = result[0]
       Native.setTitle(tab.pageName || '优选商品')
       nextState.pageTitle = tab.pageName || '优选商品'
       nextState.currentTabKey = tab.id
+      const formattedFloors = this.tabDataFormatter(tab.templateVOList, result.length > 1)
       nextState.tabContentMap = {
-        [tab.id]: this.floorDataFormatter(tab.templateVOList),
+        [tab.id]: formattedFloors,
       }
+      nextState.hasHeadBanner = result.length > 1 && formattedFloors[0].component === AdSingle
     }
     this.setState(nextState)
   }
@@ -126,15 +141,15 @@ export default class Page extends React.Component<Props, State> {
 
     const { result } = res
 
-    this.setState(({ tabContentMap: preTabContentMap }) => ({
+    this.setState(({ tabContentMap: preTabContentMap, tabList }) => ({
       tabContentMap: {
         ...preTabContentMap,
-        [tabKey]: this.floorDataFormatter(result.templateVOList),
+        [tabKey]: this.tabDataFormatter(result.templateVOList, tabList.length > 1),
       },
     }))
   }
 
-  floorDataFormatter = data => {
+  tabDataFormatter = (data: BaseObj, hasMultiTab: boolean):Floor[] => {
     let sortedData = data
       .sort((a, b) => a.pos - b.pos) // step 1: 排序
       .filter(
@@ -190,6 +205,8 @@ export default class Page extends React.Component<Props, State> {
             props: {
               image: imgObj.imgUrl,
               link: CMSServices.formatLink(imgObj),
+              width: (i === 0 && hasMultiTab) ? WindowWidth : undefined,
+              height: (i === 0 && hasMultiTab) ? WindowWidth / (375 / 144) : undefined,
             },
           })
         } else if (floor.subType === 2) {
@@ -289,11 +306,11 @@ export default class Page extends React.Component<Props, State> {
     this.requestTabContent(key)
   }
 
-  flatDataFormatter = () => {
-    const { currentTabKey, tabList, tabContentMap } = this.state
+  flatDataFormatter = ():Floor[] => {
+    const { currentTabKey, tabList, tabContentMap, hasHeadBanner } = this.state
     const currentTabContent = tabContentMap[currentTabKey] || []
 
-    if (tabList.length > 1 && currentTabContent.length > 0) {
+    if (tabList.length > 1) {
       const tabComp = {
         key: '$$tab',
         component: Tab,
@@ -303,15 +320,31 @@ export default class Page extends React.Component<Props, State> {
           onTabChange: this.onTabChange,
         },
       }
-      return currentTabContent[0].component === AdSingle
-        ? [currentTabContent[0], tabComp, ...currentTabContent.slice(1)]
-        : [tabComp, ...currentTabContent]
+      const firstFloor = hasHeadBanner
+        ? (currentTabContent.length > 0 && currentTabContent[0] && currentTabContent[0].component === AdSingle)
+          ? currentTabContent.slice(0, 1)
+          : [{
+              key: '$$defaultHeadBanner',
+              component: FastImage,
+              props: {
+                source: placeholderHeadBanner,
+                style: { width: WindowWidth, height: WindowWidth / (375 / 144) },
+                resizeMode: 'center',
+              },
+            }]
+        : currentTabContent.slice(0, 1)
+      return [
+        ...firstFloor,
+        tabComp,
+        ...currentTabContent.slice(1)
+      ]
     }
     return currentTabContent
   }
 
-  renderFlatItem = ({ item: { component: Comp, props } }) =>
-    React.createElement(Comp, props)
+  renderFlatItem = ({ item: { component: Comp, props } }: { item: Floor }) => (
+    <Comp {...props} />
+  )
 
   render() {
     const {

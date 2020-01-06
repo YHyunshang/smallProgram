@@ -6,14 +6,16 @@
  * @LastEditTime: 2019-12-10 10:24:55
  */
 import * as React from 'react'
-import { View, Image, Text, StyleSheet } from 'react-native'
+import { View, Image, Text } from 'react-native'
 import { emptyBag, emptyActivity } from '@const/resources'
 import styles from './Empty.styles'
+
 interface Props {
   type: number //类型，1:活动，2:商品
   textColor1: string
   textColor2: string
 }
+
 export default function Empty({ type, textColor1, textColor2 }: Props) {
   return (
     <View style={styles.container}>

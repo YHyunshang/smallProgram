@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-09-26 17:48:52
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-09-26 18:23:07
+ * @Last Modified time: 2020-01-06 15:57:42
  */
 import * as React from 'react'
 import { CMSServices } from '@services'
@@ -18,9 +18,10 @@ import ProductGridC from '@components/business/Content/ProductGrid'
 import ProductSwiperC from '@components/business/Content/ProductSwiper'
 import BoxC from '@components/business/Content/Box'
 import DividerC from '@components/business/Content/Divider'
-import LimitTimeBuy from "@components/business/Content/LimitTimeBuy";
-import {Global, Native} from "@utils";
-import {WindowWidth} from "@utils/global";
+import LimitTimeBuy from '@components/business/Content/LimitTimeBuy'
+import { Global, Native } from '@utils'
+import { WindowWidth } from '@utils/global'
+
 const Carousel = React.memo(CarouselC)
 const AdTitle = React.memo(AdTitleC)
 const ProductList = React.memo(ProductListC)
@@ -59,13 +60,17 @@ export function formatFloorData(
         component: Carousel,
         wrapperStyle: { paddingHorizontal: 0 },
         props: {
-          imageHeight: currentTabIdx === 0 && i === 0
-            ? Global.WindowWidth * 290 / 375
-            : Global.WindowWidth * 150 / 375,
+          imageHeight:
+            currentTabIdx === 0 && i === 0
+              ? (Global.WindowWidth * 290) / 375
+              : (Global.WindowWidth * 150) / 375,
           data: floor.templateDetailVOList.map(ele => ({
             key: ele.id,
             image: ele.imgUrl,
-            link: ele.name && ele.name.indexOf("茅台") != -1  ? CMSServices.mouTaiActivityLink(ele.name,shopCode) : CMSServices.formatLink(ele),
+            link:
+              ele.name && ele.name.indexOf('茅台') != -1
+                ? CMSServices.mouTaiActivityLink(ele.name, shopCode)
+                : CMSServices.formatLink(ele),
           })),
         },
       })
@@ -127,9 +132,15 @@ export function formatFloorData(
           ],
           props: {
             image: imgObj.imgUrl,
-            link: imgObj.name && imgObj.name.indexOf("茅台") != -1  ? CMSServices.mouTaiActivityLink(imgObj.name,shopCode) : CMSServices.formatLink(imgObj),
-            width: (i === 0 && currentTabIdx > 0) ? WindowWidth : undefined,
-            height: (i === 0 && currentTabIdx > 0) ? WindowWidth / (375 / 144) : undefined,
+            link:
+              imgObj.name && imgObj.name.indexOf('茅台') != -1
+                ? CMSServices.mouTaiActivityLink(imgObj.name, shopCode)
+                : CMSServices.formatLink(imgObj),
+            width: i === 0 && currentTabIdx > 0 ? WindowWidth : undefined,
+            height:
+              i === 0 && currentTabIdx > 0
+                ? WindowWidth / (375 / 144)
+                : undefined,
           },
         })
       } else if (floor.subType === 2) {
@@ -227,8 +238,8 @@ export function formatFloorData(
         component: NewPersonGiftAdSingle,
         wrapperStyle: [
           {
-            marginHorizontal:10,
-            marginBottom:10
+            marginHorizontal: 10,
+            marginBottom: 10,
           },
           currentTabIdx === 0 && {
             borderRadius: 5,
@@ -236,8 +247,8 @@ export function formatFloorData(
           },
         ],
         props: {
-          updateTime:new Date().getSeconds()
-        }
+          updateTime: new Date().getSeconds(),
+        },
       })
     } else if (floor.type === 5) {
       // 分割图
@@ -259,9 +270,11 @@ export function formatFloorData(
           props: {
             startTime: Number(activityBeginTime),
             endTime: Number(activityEndTime),
-            products: floor.templateDetailVOList.slice(0, 4).map(ele => CMSServices.formatProduct(ele)),
-            onExpired: onLimitTimeBuyExpire
-          }
+            products: floor.templateDetailVOList
+              .slice(0, 4)
+              .map(ele => CMSServices.formatProduct(ele)),
+            onExpired: onLimitTimeBuyExpire,
+          },
         })
       }
     }
@@ -271,4 +284,5 @@ export function formatFloorData(
 }
 
 export const TabHeight = 40
-export const PlaceholderForNativeHeight = Native.getStatusBarHeight() + 86 + TabHeight
+export const PlaceholderForNativeHeight =
+  Native.getStatusBarHeight() + 86 + TabHeight
