@@ -1,9 +1,9 @@
 /*
- * @Descripttion: 潮物达人活动组件页面样式
+ * @Descripttion: 专题活动组件页面样式(潮物达人&酒专题)
  * @Author: yuwen.liu
  * @Date: 2019-11-12 20:31:29
  * @LastEditors  : yuwen.liu
- * @LastEditTime : 2019-12-26 17:51:00
+ * @LastEditTime : 2020-01-07 10:30:41
  */
 import { StyleSheet} from 'react-native'
 export default StyleSheet.create({
