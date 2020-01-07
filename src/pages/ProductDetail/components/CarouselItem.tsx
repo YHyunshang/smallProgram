@@ -6,10 +6,12 @@ import { placeholderProductCarousel } from '@const/resources'
 
 export interface CarouselItemProps {
   image: string
+  priority: FastImage.Priority
 }
 
 const CarouselItem: React.FunctionComponent<CarouselItemProps> = ({
   image,
+  priority = FastImage.priority.normal,
 }) => {
   const [placeholderOpacity] = React.useState(new Animated.Value(1))
   const [placeholderVis, setPlaceholderVis] = React.useState(true)
@@ -26,7 +28,7 @@ const CarouselItem: React.FunctionComponent<CarouselItemProps> = ({
     <View style={styles.container}>
       <FastImage
         style={styles.contentImg}
-        source={{ uri: image }}
+        source={{ uri: image, priority }}
         resizeMode="contain"
         onLoad={onImgLoad}
       />

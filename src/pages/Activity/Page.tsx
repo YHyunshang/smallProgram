@@ -10,7 +10,7 @@ import ProductGrid from '@components/business/Content/ProductGrid'
 import ProductSwiper from '@components/business/Content/ProductSwiper'
 import Box from '@components/business/Content/Box'
 import Divider from '@components/business/Content/Divider'
-import {FlatList, RefreshControl, View} from 'react-native'
+import { FlatList, RefreshControl, View } from 'react-native'
 import { Native } from '@utils'
 import Tab from './components/Tab'
 import Footer from './components/Footer'
@@ -18,12 +18,12 @@ import Empty from './components/Empty'
 import TideManActivity from './components/TideMan/TideManActivity'
 import AdTitle from '@components/business/Content/AdTitle'
 import Loading from '../../components/common/Loading'
-import theme from "@theme";
-import {RouteContext} from "@utils/contextes";
-import {WindowWidth} from "@utils/global";
-import {BaseObj} from "@common/typings";
-import {placeholderHeadBanner} from "@const/resources";
-import FastImage from "react-native-fast-image";
+import theme from '@theme'
+import { RouteContext } from '@utils/contextes'
+import { WindowWidth } from '@utils/global'
+import { BaseObj } from '@common/typings'
+import { placeholderHeadBanner } from '@const/resources'
+import FastImage from 'react-native-fast-image'
 
 interface Floor {
   key: string | number
@@ -120,11 +120,15 @@ export default class Page extends React.PureComponent<Props, State> {
       Native.setTitle(tab.pageName || '优选商品')
       nextState.pageTitle = tab.pageName || '优选商品'
       nextState.currentTabKey = tab.id
-      const formattedFloors = this.tabDataFormatter(tab.templateVOList, result.length > 1)
+      const formattedFloors = this.tabDataFormatter(
+        tab.templateVOList,
+        result.length > 1
+      )
       nextState.tabContentMap = {
         [tab.id]: formattedFloors,
       }
-      nextState.hasHeadBanner = result.length > 1 && formattedFloors[0].component === AdSingle
+      nextState.hasHeadBanner =
+        result.length > 1 && formattedFloors[0].component === AdSingle
     }
     this.setState(nextState)
   }
@@ -144,12 +148,15 @@ export default class Page extends React.PureComponent<Props, State> {
     this.setState(({ tabContentMap: preTabContentMap, tabList }) => ({
       tabContentMap: {
         ...preTabContentMap,
-        [tabKey]: this.tabDataFormatter(result.templateVOList, tabList.length > 1),
+        [tabKey]: this.tabDataFormatter(
+          result.templateVOList,
+          tabList.length > 1
+        ),
       },
     }))
   }
 
-  tabDataFormatter = (data: BaseObj, hasMultiTab: boolean):Floor[] => {
+  tabDataFormatter = (data: BaseObj, hasMultiTab: boolean): Floor[] => {
     let sortedData = data
       .sort((a, b) => a.pos - b.pos) // step 1: 排序
       .filter(
@@ -205,8 +212,9 @@ export default class Page extends React.PureComponent<Props, State> {
             props: {
               image: imgObj.imgUrl,
               link: CMSServices.formatLink(imgObj),
-              width: (i === 0 && hasMultiTab) ? WindowWidth : undefined,
-              height: (i === 0 && hasMultiTab) ? WindowWidth / (375 / 144) : undefined,
+              width: i === 0 && hasMultiTab ? WindowWidth : undefined,
+              height:
+                i === 0 && hasMultiTab ? WindowWidth / (375 / 144) : undefined,
             },
           })
         } else if (floor.subType === 2) {
@@ -306,7 +314,7 @@ export default class Page extends React.PureComponent<Props, State> {
     this.requestTabContent(key)
   }
 
-  flatDataFormatter = ():Floor[] => {
+  flatDataFormatter = (): Floor[] => {
     const { currentTabKey, tabList, tabContentMap, hasHeadBanner } = this.state
     const currentTabContent = tabContentMap[currentTabKey] || []
 
@@ -320,24 +328,30 @@ export default class Page extends React.PureComponent<Props, State> {
           onTabChange: this.onTabChange,
         },
       }
-      const firstFloor = hasHeadBanner
-        ? (currentTabContent.length > 0 && currentTabContent[0] && currentTabContent[0].component === AdSingle)
-          ? currentTabContent.slice(0, 1)
-          : [{
-              key: '$$defaultHeadBanner',
-              component: FastImage,
-              props: {
-                source: placeholderHeadBanner,
-                style: { width: WindowWidth, height: WindowWidth / (375 / 144) },
-                resizeMode: 'center',
-              },
-            }]
-        : currentTabContent.slice(0, 1)
-      return [
-        ...firstFloor,
-        tabComp,
-        ...currentTabContent.slice(1)
-      ]
+      return hasHeadBanner
+        ? [
+            ...(currentTabContent.length > 0 &&
+            currentTabContent[0] &&
+            currentTabContent[0].component === AdSingle
+              ? currentTabContent.slice(0, 1)
+              : [
+                  {
+                    key: '$$defaultHeadBanner',
+                    component: FastImage,
+                    props: {
+                      source: placeholderHeadBanner,
+                      style: {
+                        width: WindowWidth,
+                        height: WindowWidth / (375 / 144),
+                      },
+                      resizeMode: 'center',
+                    },
+                  },
+                ]),
+            tabComp,
+            ...currentTabContent.slice(1),
+          ]
+        : [tabComp, ...currentTabContent]
     }
     return currentTabContent
   }

@@ -44,8 +44,14 @@ const Carousel: React.FunctionComponent<CarouselProps> = ({ images = [] }) => {
         paginationStyle={styles.paginationStyle}
         removeClippedSubviews={false}
       >
-        {images.map(ele => (
-          <CarouselItem image={loadFitImg(ele)} key={ele} />
+        {images.map((ele, index) => (
+          <CarouselItem
+            image={loadFitImg(ele)}
+            key={ele}
+            priority={
+              index === 0 ? FastImage.priority.high : FastImage.priority.normal
+            }
+          />
         ))}
       </Swiper>
       {placeholderVis && (

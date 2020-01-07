@@ -39,14 +39,14 @@ const AdSingle: React.FunctionComponent<Props> = ({
           <FitImg
             style={[styles.image, { width, height }]}
             source={{ uri: fitImg }}
-            resizeMode="cover"
+            resizeMode="contain"
             onLoad={() => setPlaceholderVis(false)}
           />
           {hasPlaceholder && placeholderVis && (
             <FastImage
               style={[styles.placeholderImg, { width, height }]}
               source={placeholderHeadBanner}
-              resizeMode="cover"
+              resizeMode="contain"
             />
           )}
         </View>
