@@ -6,13 +6,12 @@ import {
   Text,
   TouchableOpacity,
   Animated,
-  Easing,
   Dimensions,
   ImageBackground,
+  LayoutRectangle,
 } from 'react-native'
 import sumBy from 'lodash/sumBy'
 import memoizeOne from 'memoize-one'
-import isDeepEqual from 'lodash/isEqual'
 import { hotSaleTabBg } from '@const/resources'
 
 interface Props {
@@ -25,8 +24,11 @@ interface Props {
 }
 
 interface State {
-  itemLayoutMap: {
-    [tabKey: string]: { width: number }
+  itemLabelLayoutMap: {
+    [tabKey: string]: LayoutRectangle
+  }
+  itemBoxLayoutMap: {
+    [tabKey: string]: LayoutRectangle
   }
   indicatorWidth: number
   indicatorLeft: number
@@ -34,30 +36,35 @@ interface State {
 
 const windowWidth = Dimensions.get('window').width
 
-const indicatorPosCalculator = memoizeOne(layouts => {
-  const currentTabLayout = layouts.slice(-1)[0]
-  if (!currentTabLayout) return { width: 0, left: 0 }
+const indicatorPosCalculator = memoizeOne(
+  (boxLayouts: LayoutRectangle[], labelLayout: LayoutRectangle) => {
+    const currentBoxLayout = boxLayouts.slice(-1)[0]
+    if (!currentBoxLayout || !labelLayout || !labelLayout.width)
+      return { width: 0, left: 0 }
 
-  const indicatorWidth = currentTabLayout.width * 0.5
-  const tabLayoutsBeforeCurrent = layouts.slice(0, -1)
-  if (!tabLayoutsBeforeCurrent.every(ele => !!ele.width))
-    return { width: 0, left: 0 }
+    const indicatorWidth = labelLayout.width * 0.5
+    const boxLayoutsBeforeCurrent = boxLayouts.slice(0, -1)
+    if (!boxLayoutsBeforeCurrent.every(ele => !!ele.width))
+      return { width: 0, left: 0 }
 
-  const indicatorLeft =
-    sumBy(tabLayoutsBeforeCurrent, layout => layout.width + layout.x * 2) +
-    currentTabLayout.x +
-    currentTabLayout.width / 2 -
-    indicatorWidth * 0.5
+    const indicatorLeft =
+      sumBy(boxLayoutsBeforeCurrent, ({ width, x }) => width + 2 * x) +
+      labelLayout.x +
+      labelLayout.width * 0.5 -
+      indicatorWidth * 0.5
 
-  return {
-    width: indicatorWidth,
-    left: indicatorLeft,
-  }
-}, isDeepEqual)
+    return {
+      width: indicatorWidth,
+      left: indicatorLeft,
+    }
+  },
+  (a, b) => JSON.stringify(a) === JSON.stringify(b)
+)
 
 export default class Tab extends React.PureComponent<Props, State> {
   state = {
-    itemLayoutMap: {},
+    itemBoxLayoutMap: {},
+    itemLabelLayoutMap: {},
     indicatorWidth: 0,
     indicatorLeft: 0,
   }
@@ -65,12 +72,18 @@ export default class Tab extends React.PureComponent<Props, State> {
   scrollViewRef = React.createRef<ScrollView>()
 
   cachedTabLabelLayout = {}
+  cachedTabBoxLayout = {}
 
+  onTabBoxLayout = (tabKey, { nativeEvent: { layout } }) => {
+    this.cachedTabBoxLayout[tabKey] = layout
+    if (this.props.data.every(ele => !!this.cachedTabBoxLayout[ele.key])) {
+      this.setState({ itemBoxLayoutMap: this.cachedTabBoxLayout })
+    }
+  }
   onTabLabelLayout = (tabKey, { nativeEvent: { layout } }) => {
-    console.log(tabKey)
     this.cachedTabLabelLayout[tabKey] = layout
     if (this.props.data.every(ele => !!this.cachedTabLabelLayout[ele.key])) {
-      this.setState({ itemLayoutMap: this.cachedTabLabelLayout })
+      this.setState({ itemLabelLayoutMap: this.cachedTabLabelLayout })
     }
   }
 
@@ -88,13 +101,15 @@ export default class Tab extends React.PureComponent<Props, State> {
   static getDerivedStateFromProps(props, state) {
     console.log(props, state)
     const { data, currentTab } = props
-    const { itemLayoutMap } = state
+    const { itemLabelLayoutMap, itemBoxLayoutMap } = state
     const currentTabIdx = data.findIndex(tab => tab.key === currentTab)
     const tabLayouts = data
       .slice(0, currentTabIdx + 1)
-      .map(ele => itemLayoutMap[ele.key])
-    console.log('--->>>>', tabLayouts)
-    const indicatorPos = indicatorPosCalculator(tabLayouts)
+      .map(ele => itemBoxLayoutMap[ele.key])
+    const indicatorPos = indicatorPosCalculator(
+      tabLayouts,
+      itemLabelLayoutMap[currentTab]
+    )
 
     console.log(indicatorPos)
     return indicatorPos.width && indicatorPos.left
@@ -110,7 +125,10 @@ export default class Tab extends React.PureComponent<Props, State> {
         key={key}
         onPress={() => onTabChange(key)}
       >
-        <View style={styles.tabItemBox}>
+        <View
+          style={styles.tabItemBox}
+          onLayout={e => this.onTabBoxLayout(key, e)}
+        >
           <Text
             style={styles.tabItem}
             onLayout={e => this.onTabLabelLayout(key, e)}
