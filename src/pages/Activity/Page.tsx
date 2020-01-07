@@ -310,6 +310,9 @@ export default class Page extends React.PureComponent<Props, State> {
   }
 
   onTabChange = key => {
+    const { currentTabKey } = this.state
+    if (key === currentTabKey) return
+
     this.setState({ currentTabKey: key })
     this.requestTabContent(key)
   }
