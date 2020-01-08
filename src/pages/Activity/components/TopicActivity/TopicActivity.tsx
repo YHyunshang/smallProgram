@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-21 11:23:19
  * @LastEditors  : yuwen.liu
- * @LastEditTime : 2020-01-03 17:08:12
+ * @LastEditTime : 2020-01-08 10:06:59
  */
 import * as React from 'react'
 import { FlatList, View, Alert } from 'react-native'
@@ -107,6 +107,9 @@ export default function TopicActivity({
       newLeftTabList[0].categoryList[0]
         ? newLeftTabList[0].categoryList[0].categoryCode
         : 'all'
+    )
+    setCurrentShowBar(
+      newLeftTabList[0].subType === 3 ? false : newLeftTabList[0].showBar || false
     )
     setCurrentColumnNumber(newLeftTabList[0].subType)
     setTabDetailVOList(newLeftTabList[0].tabDetailVOList)
