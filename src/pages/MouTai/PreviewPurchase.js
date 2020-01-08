@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors  : yuwen.liu
- * @LastEditTime : 2020-01-08 11:09:50
+ * @LastEditTime : 2020-01-08 11:41:57
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity, Alert} from 'react-native'
@@ -38,7 +38,7 @@ export default class PreviewPurchase extends React.Component {
     super(props)
     this.handleThrottledOrderAmount = throttle(this.handleThrottledOrderAmount, 500)
     this.state = {
-      isActivity: true, // 是否有茅台活动
+      isActivity: false, // 是否有茅台活动
       isRuleFirst: true, // 是否是第一次请求规则接口
       isStoreFirst: true, // 是否是第一次请求预约门店接口
       activityCode: '', // 活动code
@@ -50,16 +50,16 @@ export default class PreviewPurchase extends React.Component {
       storeList: [''], // 门店list
       percent: 0,
       exchangeInfoVO: {
-        integralExchangeUrl: '',
-        unqualifiedDesc: '抱歉，您的积分不足，暂时没有购买资格，在线购物可以增加用户积分噢， 消费1元即可获取1积分～',
-        availableQuantity: 10, // 本月可预购的数量
-        monthTotalNumber: 3, // 当月最多购买数量
-        inventoryNumber: 20, // 当前库存剩余数量
-        inventoryProgressBar: 80, // 当前库存比
-        isQualifications: false, // 是否有购买资格
-        productName: '53度 500ml 飞天茅台(2019款',
-        exchangeCondition: '1000积分+1499元即可换购1瓶53度500ml飞天茅台',
-        limitDesc: '每月限购3瓶,全年不超过12瓶,当月如有遗留份额,则不累计'
+        integralExchangeUrl: ''
+        // unqualifiedDesc: '抱歉，您的积分不足，暂时没有购买资格，在线购物可以增加用户积分噢， 消费1元即可获取1积分～',
+        // availableQuantity: 10, // 本月可预购的数量
+        // monthTotalNumber: 3, // 当月最多购买数量
+        // inventoryNumber: 20, // 当前库存剩余数量
+        // inventoryProgressBar: 80, // 当前库存比
+        // isQualifications: false, // 是否有购买资格
+        // productName: '53度 500ml 飞天茅台(2019款',
+        // exchangeCondition: '1000积分+1499元即可换购1瓶53度500ml飞天茅台',
+        // limitDesc: '每月限购3瓶,全年不超过12瓶,当月如有遗留份额,则不累计'
       }
     }
     this.loadingRef = React.createRef()
@@ -99,9 +99,9 @@ export default class PreviewPurchase extends React.Component {
           let params = {middleTitle: data && data.title, rightTitle: '规则说明', rightEventName: 'notifyRulePopup'}
           this.setState(
             {
-              // exchangeInfoVO: data,
-              // isActivity: data.isActivity,
-              // activityCode: data.activityCode
+              exchangeInfoVO: data,
+              isActivity: data.isActivity,
+              activityCode: data.activityCode
             }
           )
           this.loadingRef.current.hideLoading()

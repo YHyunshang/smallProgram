@@ -4,12 +4,12 @@
  * @Author: yuwen.liu
  * @Date: 2019-08-29 11:25:46
  * @LastEditors  : yuwen.liu
- * @LastEditTime : 2020-01-08 11:25:38
+ * @LastEditTime : 2020-01-08 11:41:12
  */
 import React, {Component} from 'react'
 import {StyleSheet, View} from 'react-native'
 import PropTypes from 'prop-types'
-import {placeholderProductCarousel, placeholderHeadBanner} from '@const/resources'
+import {placeholderProductCarousel} from '@const/resources'
 import FastImage from 'react-native-fast-image'
 /**
  * 渲染顶部banner图片
@@ -30,7 +30,7 @@ export default class TopBannerImage extends Component {
     }
     render() {
       let {headImg, defaultImage, errImage, style, type} = this.props
-      defaultImage = type === 1 ? placeholderProductCarousel : placeholderHeadBanner
+      defaultImage = type === 1 ? placeholderProductCarousel : ''
       errImage = defaultImage
       // rnAppModule.showToast(`headImg::${headImg}`, '0')
       if (this.state.type === 1) {
@@ -50,7 +50,7 @@ export default class TopBannerImage extends Component {
             }}
             onLoadEnd={() => {
               this.setState({
-                isLoadComplete: false
+                isLoadComplete: true
               })
             }}
           />
