@@ -4,12 +4,12 @@
  * @Author: yuwen.liu
  * @Date: 2019-08-29 11:25:46
  * @LastEditors  : yuwen.liu
- * @LastEditTime : 2019-12-23 17:20:26
+ * @LastEditTime : 2020-01-08 11:25:38
  */
 import React, {Component} from 'react'
 import {StyleSheet, View} from 'react-native'
 import PropTypes from 'prop-types'
-import {defaultCarousel, defaultBanner} from '@const/resources'
+import {placeholderProductCarousel, placeholderHeadBanner} from '@const/resources'
 import FastImage from 'react-native-fast-image'
 /**
  * 渲染顶部banner图片
@@ -30,7 +30,7 @@ export default class TopBannerImage extends Component {
     }
     render() {
       let {headImg, defaultImage, errImage, style, type} = this.props
-      defaultImage = type === 1 ? defaultCarousel : defaultBanner
+      defaultImage = type === 1 ? placeholderProductCarousel : placeholderHeadBanner
       errImage = defaultImage
       // rnAppModule.showToast(`headImg::${headImg}`, '0')
       if (this.state.type === 1) {
@@ -50,12 +50,12 @@ export default class TopBannerImage extends Component {
             }}
             onLoadEnd={() => {
               this.setState({
-                isLoadComplete: true
+                isLoadComplete: false
               })
             }}
           />
           {!this.state.isLoadComplete && (
-            <FastImage style={[styles.imgDefault, styles.imgPosition, style]} source={defaultImage} resizeMode={FastImage.resizeMode.cover}/>
+            <FastImage style={[styles.imgDefault, styles.imgPosition, style]} source={defaultImage} resizeMode={FastImage.resizeMode.contain}/>
           )
           }
         </View>

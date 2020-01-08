@@ -3,7 +3,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-09-06 13:54:53
  * @LastEditors  : yuwen.liu
- * @LastEditTime : 2019-12-23 17:10:38
+ * @LastEditTime : 2020-01-08 11:25:18
  */
 export const cartGray = require('@img/cart-gray.png')
 
@@ -87,6 +87,6 @@ export const iconWeChatMoment = require('@img/icon-wechat-moment.png')
 
 export const iconDeliveryNextDay = require('@img/icon-delivery-next-day.png')
 
-export const defaultBanner = require('@img/default-banner.png')
+export const placeholderHeadBanner = require('@img/placeholder-head-banner.png')
 
-export const defaultCarousel = require('@img/default-carousel.png')
+export const placeholderProductCarousel = require('@img/placeholder-productCarousel.png')
