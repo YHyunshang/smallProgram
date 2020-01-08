@@ -10,7 +10,7 @@ import ProductGrid from '@components/business/Content/ProductGrid'
 import ProductSwiper from '@components/business/Content/ProductSwiper'
 import Box from '@components/business/Content/Box'
 import Divider from '@components/business/Content/Divider'
-import {FlatList, RefreshControl, View} from 'react-native'
+import { FlatList, RefreshControl, View } from 'react-native'
 import { Native } from '@utils'
 import Tab from './components/Tab'
 import Footer from './components/Footer'
@@ -18,8 +18,8 @@ import Empty from './components/Empty'
 import TideManActivity from './components/TideMan/TideManActivity'
 import AdTitle from '@components/business/Content/AdTitle'
 import Loading from '../../components/common/Loading'
-import theme from "@theme";
-import {RouteContext} from "@utils/contextes";
+import theme from '@theme'
+import { RouteContext } from '@utils/contextes'
 
 interface Props {
   activityCode: string // 活动编码
@@ -100,7 +100,7 @@ export default class Page extends React.Component<Props, State> {
       currentTabKey: '',
       tabList: result.map(item => ({ key: item.id, label: item.showName })),
       tabContentMap: {},
-      pageTitle: '优选商品'
+      pageTitle: '优选商品',
     }
     if (result.length > 0) {
       const tab = result[0]
@@ -174,11 +174,14 @@ export default class Page extends React.Component<Props, State> {
             component: AdTitle,
             props: {
               children: floor.title,
-              link: CMSServices.formatLink({
-                linkType: floor.titleLinkType,
-                link: floor.titleLink,
-                code: null,
-              }, shopCode),
+              link: CMSServices.formatLink(
+                {
+                  linkType: floor.titleLinkType,
+                  link: floor.titleLink,
+                },
+                shopCode
+              ),
+              moreVisible: floor.isMore,
             },
           })
         }

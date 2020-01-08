@@ -3,7 +3,7 @@ import { NativePlaceHeight } from './utils'
  * @Author: 李华良
  * @Date: 2019-09-26 17:48:52
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-12-24 18:13:33
+ * @Last Modified time: 2020-01-08 14:30:10
  */
 import * as React from 'react'
 import { CMSServices } from '@services'
@@ -82,11 +82,14 @@ export function formatFloorData(
           component: AdTitle,
           props: {
             children: floor.title,
-            link: CMSServices.formatLink({
-              linkType: floor.titleLinkType,
-              link: floor.titleLink,
-              code: null
-            }, shopCode),
+            link: CMSServices.formatLink(
+              {
+                linkType: floor.titleLinkType,
+                link: floor.titleLink,
+              },
+              shopCode
+            ),
+            moreVisible: floor.isMore,
           },
         })
       }
