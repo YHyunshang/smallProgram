@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-09-19 09:35:28
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-12-24 17:25:35
+ * @Last Modified time: 2020-01-09 15:48:47
  */
 import * as React from 'react'
 import { View, Animated, Dimensions } from 'react-native'
@@ -23,8 +23,8 @@ import {
 } from '@common/typings'
 import { formatFloorData, NativePlaceHeightMax, TabHeight } from './utils'
 import { LimitTimeBuy as LimitTimeBuyScene } from '@components/Scene'
-import Loading from '@components/Loading'
-import { RouteContext } from "@utils/contextes";
+import { RouteContext } from '@utils/contextes'
+import Spin from '@components/Spin'
 
 const WindowWidth = Dimensions.get('window').width
 const WindowHeight = Dimensions.get('window').height
@@ -72,6 +72,8 @@ interface State {
 
   shouldRefreshFirstTab: boolean
   shouldRefreshTab: boolean
+
+  autoRefreshing: boolean
 }
 
 export default class Page extends React.Component<{}, State> {
@@ -88,6 +90,7 @@ export default class Page extends React.Component<{}, State> {
 
     shouldRefreshFirstTab: false,
     shouldRefreshTab: false,
+    autoRefreshing: false,
   }
 
   removeShopChangeListener: Function
@@ -146,7 +149,11 @@ export default class Page extends React.Component<{}, State> {
   onCartChange = () => {
     const { currentTabIdx } = this.state
 
-    this.onTabIndexChange(currentTabIdx, true)
+    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+    this.setState({ autoRefreshing: true })
+    this.onTabIndexChange(currentTabIdx, true).then(() =>
+      this.setState({ autoRefreshing: false })
+    )
   }
 
   newcomerChange = ({ storeCode, storeTypeCode }) => {
@@ -424,7 +431,7 @@ export default class Page extends React.Component<{}, State> {
         }))
       )
     }
-    p.finally(() =>
+    return p.finally(() =>
       this.setState(({ tabContentLoadingMap }) => ({
         tabContentLoadingMap: {
           ...tabContentLoadingMap,
@@ -526,6 +533,7 @@ export default class Page extends React.Component<{}, State> {
       animatedValRefCmsScrollY,
       currentTabIdx: currentActiveTabIdx,
       tabList,
+      autoRefreshing,
     } = this.state
 
     const currentRouteIdx = tabList.findIndex(ele => ele.key === key)
@@ -547,7 +555,7 @@ export default class Page extends React.Component<{}, State> {
     }
 
     const content = tabContentMap[key]
-    const contentLoading = !!tabContentLoadingMap[key]
+    const contentLoading = !!tabContentLoadingMap[key] && !autoRefreshing
 
     const onPageScroll = Animated.event(
       [
@@ -594,7 +602,7 @@ export default class Page extends React.Component<{}, State> {
   }
 
   render() {
-    const { loading, currentTabIdx, tabList } = this.state
+    const { loading, currentTabIdx, tabList, autoRefreshing } = this.state
     const navigationState = {
       index: currentTabIdx,
       routes: tabList,
@@ -602,11 +610,17 @@ export default class Page extends React.Component<{}, State> {
     const currentTabName = (tabList[currentTabIdx] || {}).title
 
     return (
-      <RouteContext.Provider value={{ path: '首页', name: currentTabName, extraData: { currentTab: currentTabName } }}>
+      <RouteContext.Provider
+        value={{
+          path: '首页',
+          name: currentTabName,
+          extraData: { currentTab: currentTabName },
+        }}
+      >
         <View style={styles.container}>
-          {loading && tabList.length === 0 && (
+          {((loading && tabList.length === 0) || autoRefreshing) && (
             <View style={styles.loadingContainer}>
-              <Loading />
+              <Spin />
             </View>
           )}
           <TabView
