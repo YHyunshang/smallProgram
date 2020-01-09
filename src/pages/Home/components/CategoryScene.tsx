@@ -174,8 +174,8 @@ export default class CategoryScene extends React.PureComponent<Props> {
     let body = null
     if (Platform.OS === 'ios') {
       const translateY = animatedVal.interpolate({
-        inputRange: [0, HeaderHeightRange],
-        outputRange: [HeaderHeightMax, HeaderHeightMin],
+        inputRange: [-100, 1, 50],
+        outputRange: [HeaderHeightMax, HeaderHeightMax, 0],
         extrapolate: 'clamp',
       })
 
