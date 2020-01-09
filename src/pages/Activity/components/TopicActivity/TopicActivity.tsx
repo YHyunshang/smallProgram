@@ -3,10 +3,10 @@
  * @Author: yuwen.liu
  * @Date: 2019-11-21 11:23:19
  * @LastEditors  : yuwen.liu
- * @LastEditTime : 2020-01-08 10:06:59
+ * @LastEditTime : 2020-01-09 13:45:09
  */
 import * as React from 'react'
-import { FlatList, View, Alert } from 'react-native'
+import { FlatList, View } from 'react-native'
 import styles from './TopicActivity.styles'
 import { CMSServices } from '@services'
 import useTheme from '@components/business/Content/ProductGrid.styles'
@@ -109,7 +109,9 @@ export default function TopicActivity({
         : 'all'
     )
     setCurrentShowBar(
-      newLeftTabList[0].subType === 3 ? false : newLeftTabList[0].showBar || false
+      newLeftTabList[0].subType === 3
+        ? false
+        : newLeftTabList[0].showBar || false
     )
     setCurrentColumnNumber(newLeftTabList[0].subType)
     setTabDetailVOList(newLeftTabList[0].tabDetailVOList)

@@ -224,8 +224,7 @@ export function formatFloorData(
         component: NewPersonGiftAdSingle,
         wrapperStyle: [
           {
-            marginHorizontal:10,
-            marginBottom:10
+            marginHorizontal: 10
           },
           currentTabIdx === 0 && {
             borderRadius: 5,
