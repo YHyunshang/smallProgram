@@ -57,6 +57,8 @@ export default class Page extends React.Component<Props, State> {
       shopCode: props.shopCode,
       currentTabKey: '',
       tabList: [],
+      tabVos: [],
+      type: 0,
       tabContentMap: {},
       cart: {
         amount: 0,
