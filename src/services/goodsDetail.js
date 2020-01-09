@@ -126,11 +126,12 @@ export const shareToWxFriends = (function() {
         type: 'miniProgram',
         title: name,
         thumbImage: thumbnail,
-        description: desc,
+        description: desc || '永辉买菜 ｜ 把新鲜送到家',
         miniProgramType: ENV === 'prod' ? 0 : 2, // 分享小程序版本 正式版:0，测试版:1，体验版:2
         userName: WeChatMP.id, // 小程序原生id非appid
-        webpageUrl:
-          'http://static-yh.yonghui.cn/downloadApp/buyVegetables/download.html',
+        webpageUrl: `${
+          ENV === 'prod' ? ShareH5.prod : ShareH5.test
+        }/pages/productModle/productModule.html?productCode=${code}&storeCode=${storeCode}`,
         path: `/pages/product-detail/product-detail?productCode=${code}&storeCode=${storeCode}`, // 小程序商品详情页面路径
       })
     })
@@ -140,7 +141,7 @@ export const shareToWxFriends = (function() {
  * 分享到微信朋友圈
  * @type {Function}
  */
-export const shareToWxTimeline = (function () {
+export const shareToWxTimeline = (function() {
   WeChat.registerApp(WXAppId)
 
   return ({ name, code, thumbnail, storeCode }) => {
@@ -152,10 +153,11 @@ export const shareToWxTimeline = (function () {
       return WeChat.shareToTimeline({
         type: 'news',
         title: `${name} | 永辉买菜`,
-        description: 'description',
+        description: '永辉买菜 ｜ 把新鲜送到家',
         thumbImage: thumbnail,
-        webpageUrl: (ENV === 'prod' ? ShareH5.prod : ShareH5.test) +
-          `/pages/productModle/productModule.html?productCode=${code}&storeCode=${storeCode}`,
+        webpageUrl: `${
+          ENV === 'prod' ? ShareH5.prod : ShareH5.test
+        }/pages/productModle/productModule.html?productCode=${code}&storeCode=${storeCode}`,
       })
     })
   }
