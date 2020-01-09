@@ -21,7 +21,7 @@ import isEqual from 'lodash/isEqual'
 import ProductLimitTimeBuy from '@components/business/ProductLimitTimeBuy'
 import SceneFooter from './SceneFooter'
 import memorize from 'memoize-one'
-import {isiOS} from "@utils/native";
+import { isiOS } from '@utils/native'
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
 const HeaderHeightMax = NativePlaceHeightMax + TabHeight
@@ -158,7 +158,10 @@ export default class CategoryScene extends React.PureComponent<Props> {
           extrapolate: 'clamp',
         })
       : animatedVal.interpolate({
-          inputRange: [categoryFloorHeight + HeaderHeightRange, categoryFloorHeight + HeaderHeightRange + 0.1],
+          inputRange: [
+            categoryFloorHeight + HeaderHeightRange,
+            categoryFloorHeight + HeaderHeightRange + 0.1,
+          ],
           outputRange: [0, 1],
           extrapolate: 'clamp',
         })

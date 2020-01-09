@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-09-19 09:35:28
  * @Last Modified by: 李华良
- * @Last Modified time: 2020-01-09 15:48:47
+ * @Last Modified time: 2020-01-09 15:53:30
  */
 import * as React from 'react'
 import { View, Animated, Dimensions } from 'react-native'
@@ -12,7 +12,7 @@ import styles from './Page.styles'
 import { TabView } from 'react-native-tab-view'
 import TabBar from './components/TabBar'
 import CMSScene from './components/CMSScene'
-import CategoryScene from './components/CategroryScene'
+import CategoryScene from './components/CategoryScene'
 import { StorageChoices, Sort } from './components/ProductFilter'
 import {
   ActivityStatus,
