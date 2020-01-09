@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-09-19 09:35:28
  * @Last Modified by: 李华良
- * @Last Modified time: 2020-01-09 15:53:30
+ * @Last Modified time: 2020-01-09 17:21:05
  */
 import * as React from 'react'
 import { View, Animated, Dimensions } from 'react-native'
@@ -149,7 +149,6 @@ export default class Page extends React.Component<{}, State> {
   onCartChange = () => {
     const { currentTabIdx } = this.state
 
-    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
     this.setState({ autoRefreshing: true })
     this.onTabIndexChange(currentTabIdx, true).then(() =>
       this.setState({ autoRefreshing: false })
@@ -602,7 +601,7 @@ export default class Page extends React.Component<{}, State> {
   }
 
   render() {
-    const { loading, currentTabIdx, tabList, autoRefreshing } = this.state
+    const { loading, currentTabIdx, tabList } = this.state
     const navigationState = {
       index: currentTabIdx,
       routes: tabList,
@@ -618,7 +617,7 @@ export default class Page extends React.Component<{}, State> {
         }}
       >
         <View style={styles.container}>
-          {((loading && tabList.length === 0) || autoRefreshing) && (
+          {loading && tabList.length === 0 && (
             <View style={styles.loadingContainer}>
               <Spin />
             </View>
