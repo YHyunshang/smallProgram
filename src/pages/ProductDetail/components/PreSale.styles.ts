@@ -1,7 +1,7 @@
 /**
  * Created by 李华良 on 2019-11-26
  */
-import {StyleSheet} from "react-native";
+import { StyleSheet } from 'react-native'
 import theme from '@theme'
 
 export default StyleSheet.create({
@@ -93,7 +93,7 @@ export default StyleSheet.create({
   productPropertyIcon: {
     width: 16,
     height: 16,
-    marginRight: 3
+    marginRight: 3,
   },
   productPropertyText: {
     fontSize: 14,
@@ -127,15 +127,15 @@ export default StyleSheet.create({
   },
   orderInfoTextBox: {
     flex: 1,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   orderInfoTitle: {
     fontSize: 14,
-    color: '#666666'
+    color: '#666666',
   },
   orderInfoText: {
     fontSize: 12,
-    color: '#666666'
+    color: '#666666',
   },
   orderAddOnInfoRow: {
     paddingVertical: 10,

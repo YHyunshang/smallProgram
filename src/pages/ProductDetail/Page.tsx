@@ -32,7 +32,7 @@ import ProductSection from './components/ProductSection'
 import DetailSection from './components/DetailSection.PreSale'
 import { placeholderProduct } from '@const/resources'
 import { loadRatioImage } from '@utils/img'
-import { RouteContext } from "@utils/contextes";
+import { RouteContext } from '@utils/contextes'
 
 interface InitialProductData extends BaseObj {
   type?: ProductType // 商品类型
@@ -138,14 +138,16 @@ export default class Page extends React.Component<PageProps, PageState> {
         product_id: detailInfo.productCode,
         product_name: detailInfo.productName,
         original_price: transPenny(detailInfo.price),
-        present_price: transPenny(detailInfo.promotionPrice || detailInfo.price),
+        present_price: transPenny(
+          detailInfo.promotionPrice || detailInfo.price
+        ),
         product_spec: detailInfo.productSpecific,
       })
   }
 
   formatSimilarProducts = (
     data: BaseObj
-  ): { beforeNav: () => void, _data_: BaseObj } & Product => {
+  ): { beforeNav: () => void; _data_: BaseObj } & Product => {
     const {
       mainUrl = {},
       promotionPrice,
@@ -202,7 +204,9 @@ export default class Page extends React.Component<PageProps, PageState> {
           from_product_id: product.productCode,
           from_product_name: product.productName,
           from_product_original_price: transPenny(product.price),
-          from_product_present_price: transPenny(product.promotionPrice || product.price),
+          from_product_present_price: transPenny(
+            product.promotionPrice || product.price
+          ),
         })
       },
       _data_: data, // 原始数据
@@ -218,7 +222,9 @@ export default class Page extends React.Component<PageProps, PageState> {
     const priceOnPoster = detailInfo.promotionPrice || detailInfo.price
     let thumbnail: string
     if (thumbnailInfo.length > 0) {
-      const thumbnailObj = thumbnailInfo.find(ele => ele.fileType === 0 && !!ele.url)
+      const thumbnailObj = thumbnailInfo.find(
+        ele => ele.fileType === 0 && !!ele.url
+      )
       if (thumbnailObj) thumbnail = thumbnailObj.url
     }
     if (!thumbnail) {
@@ -248,7 +254,9 @@ export default class Page extends React.Component<PageProps, PageState> {
         product_id: detailData.productCode,
         product_name: detailData.productName,
         original_price: transPenny(detailData.price),
-        present_price: transPenny(detailData.promotionPrice || detailData.price),
+        present_price: transPenny(
+          detailData.promotionPrice || detailData.price
+        ),
       })
     }
     this.setState({ shareWrapperVis: visible })
@@ -265,7 +273,7 @@ export default class Page extends React.Component<PageProps, PageState> {
 
       return {
         code: detailInfo.productCode,
-        name: detailInfo.prodcutName,
+        name: detailInfo.productName,
         storeCode: detailInfo.storeCode,
         desc: data.subTitle,
         thumbnail: data.mainUrl,
@@ -274,10 +282,16 @@ export default class Page extends React.Component<PageProps, PageState> {
   )
 
   // 活动状态变化
-  onActivityStatusChange = (type: ProductType, status: ActivityStatus, oldStatus: ActivityStatus) => {
-    if (type === ProductType.PreSale) { // 预售
+  onActivityStatusChange = (
+    type: ProductType,
+    status: ActivityStatus,
+    oldStatus: ActivityStatus
+  ) => {
+    if (type === ProductType.PreSale) {
+      // 预售
       setNativeBtmCart(status !== ActivityStatus.Processing)
-    } else if (type === ProductType.LimitTimeBuy) { // 限时抢购
+    } else if (type === ProductType.LimitTimeBuy) {
+      // 限时抢购
       status === ActivityStatus.Expired && this.init()
     }
   }
