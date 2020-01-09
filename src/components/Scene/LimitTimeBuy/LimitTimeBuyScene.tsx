@@ -2,27 +2,34 @@
  * Created by 李华良 on 2019-09-29
  */
 import * as React from 'react'
-import {Image, RefreshControl, View} from "react-native";
-import {DataProvider, LayoutProvider, RecyclerListView} from 'recyclerlistview'
-// @ts-ignore
-import StickyContainer from 'recyclerlistview/sticky';
-import {LimitTimeBuyServices} from "@services";
-import {bannerLimitTimeBuy} from "@const/resources";
-import TabBar from "./TabBar";
-import Timer from "./Timer";
-import styles from "./LimitTimeBuyScene.styles";
-import theme from "@theme";
-import {ActivityStatus, Product} from "@common/typings";
-import {Global, Native} from "@utils";
-import ProductLimitTimeBuy from "@components/business/ProductLimitTimeBuy";
+import { Image, RefreshControl, View } from 'react-native'
+import {
+  DataProvider,
+  LayoutProvider,
+  RecyclerListView,
+} from 'recyclerlistview'
+// @ts-ignore: official usage
+import StickyContainer from 'recyclerlistview/sticky'
+import { LimitTimeBuyServices } from '@services'
+import { bannerLimitTimeBuy } from '@const/resources'
+import TabBar from './TabBar'
+import Timer from './Timer'
+import styles from './LimitTimeBuyScene.styles'
+import theme from '@theme'
+import { ActivityStatus, Product } from '@common/typings'
+import { Global, Native } from '@utils'
+import ProductLimitTimeBuy from '@components/business/ProductLimitTimeBuy'
 import isEqual from 'lodash/isEqual'
-import {Tab} from "./Typings";
-import Loading from "@components/Loading";
+import { Tab } from './Typings'
+import Loading from '@components/Loading'
 
 const WindowWidth = Global.WindowWidth
-const BannerHeight = WindowWidth * 150 / 375
+const BannerHeight = (WindowWidth * 150) / 375
 
-const ProductItem = React.memo(ProductLimitTimeBuy, isEqual)
+const ProductItem = React.memo(
+  ProductLimitTimeBuy,
+  (a, b) => JSON.stringify(a) === JSON.stringify(b)
+)
 
 enum ViewTypes {
   Banner = 'banner',
@@ -58,8 +65,9 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
     loading: false,
     tabs: [],
     products: [],
-    dataProvider: new DataProvider((r1, r2) => r1 !== r2)
-      .cloneWithRows([ {type: ViewTypes.Banner} ]),
+    dataProvider: new DataProvider((r1, r2) => r1 !== r2).cloneWithRows([
+      { type: ViewTypes.Banner },
+    ]),
     currentTabIndex: 0,
     productCountInCart: {},
   }
@@ -114,7 +122,10 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
     )
   }
 
-  componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
+  componentWillReceiveProps(
+    nextProps: Readonly<Props>,
+    nextContext: any
+  ): void {
     if (nextProps.shopCode !== this.props.shopCode) {
       this.init(nextProps.shopCode)
     }
@@ -125,17 +136,31 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
     this.removeCartChangeListener()
   }
 
-  init = async (shopCode) => {
-    const [tabs, productsUnderEachTab] = await this.requestActivityList(shopCode)
-    const d = tabs.length === 0
-      ? [ null ]
-      : [ null, { tabs, currentActiveIndex: 0 }, { start: tabs[0].start, end: tabs[0].end }, ...(productsUnderEachTab[0] || []) ]
-    const productCountInCart = productsUnderEachTab.reduce((acc, cur) => ({
-      ...acc,
-      ...cur.map(ele => ({ [ele.code]: ele.count }))
-    }), {})
+  init = async shopCode => {
+    const [tabs, productsUnderEachTab] = await this.requestActivityList(
+      shopCode
+    )
+    const d =
+      tabs.length === 0
+        ? [null]
+        : [
+            null,
+            { tabs, currentActiveIndex: 0 },
+            { start: tabs[0].start, end: tabs[0].end },
+            ...(productsUnderEachTab[0] || []),
+          ]
+    const productCountInCart = productsUnderEachTab.reduce(
+      (acc, cur) => ({
+        ...acc,
+        ...cur.reduce(
+          (acc, { code, count }) => ({ ...acc, [code]: count }),
+          {}
+        ),
+      }),
+      {}
+    )
 
-    this.setState(({dataProvider}) => ({
+    this.setState(({ dataProvider }) => ({
       tabs,
       currentTabIndex: 0,
       products: productsUnderEachTab,
@@ -151,7 +176,9 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
   }
 
   // 获取活动数据并格式化返回数据
-  requestActivityList = async (shopCode: string):Promise<[Tab[], Product[][]]> => {
+  requestActivityList = async (
+    shopCode: string
+  ): Promise<[Tab[], Product[][]]> => {
     this.setState({ loading: true })
     let res
     try {
@@ -162,40 +189,53 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
     const { result = [] } = res
     const now = Date.now()
     // 格式化返回的数据：[场次列表, 每个场次下的商品列表]，[[tabObj, tabObj, ...], [[productObj, productObj, ...], ...]]
-    return result.reduce(([tabs, productsUnderTab], cur) => {
-      const start = Number(cur.activityBeginTime)
-      const end = Number(cur.activityEndTime)
-      const status =
-        now < start ? ActivityStatus.Pending
-        : now < end ? ActivityStatus.Processing
-        : ActivityStatus.Expired
+    return result.reduce(
+      ([tabs, productsUnderTab], cur) => {
+        const start = Number(cur.activityBeginTime)
+        const end = Number(cur.activityEndTime)
+        const status =
+          now < start
+            ? ActivityStatus.Pending
+            : now < end
+            ? ActivityStatus.Processing
+            : ActivityStatus.Expired
 
-      return [
-        [...tabs, { start, end, status, }],
-        [...productsUnderTab, cur.products.map(product => {
-          const remarkOptions = (product.resProdcutNoteNewVO || { noteContentName: [] }).noteContentName
-          const remarks = remarkOptions.sort((a, b) => a.isDefault ? -1 : 1).map(ele => ele.name)
+        return [
+          [...tabs, { start, end, status }],
+          [
+            ...productsUnderTab,
+            cur.products.map(product => {
+              const remarkOptions = (
+                product.resProdcutNoteNewVO || { noteContentName: [] }
+              ).noteContentName
+              const remarks = remarkOptions
+                .sort((a, b) => (a.isDefault ? -1 : 1))
+                .map(ele => ele.name)
 
-          return {
-            cartId: product.cartId,
-            code: product.productCode,
-            thumbnail: product.productPic,
-            name: product.productName,
-            desc: product.subTitle,
-            spec: product.unit,
-            price: product.discountPrice,
-            slashedPrice: product.productPrice,
-            count: product.productNum,
-            shopCode: shopCode,
-            remark: product.remark,
-            remarks,
-            inventoryPercentage: product.inventoryProgressBar,
-            activityStatus: status,
-            inventoryLabel: product.inventoryProgressBar === 0 ? '补货中' : ''
-          }
-        })]
-      ]
-    }, [[], []])
+              return {
+                cartId: product.cartId,
+                code: product.productCode,
+                thumbnail: product.productPic,
+                name: product.productName,
+                desc: product.subTitle,
+                spec: product.unit,
+                price: product.discountPrice,
+                slashedPrice: product.productPrice,
+                count: product.productNum,
+                shopCode: shopCode,
+                remark: product.remark,
+                remarks,
+                inventoryPercentage: product.inventoryProgressBar,
+                activityStatus: status,
+                inventoryLabel:
+                  product.inventoryProgressBar === 0 ? '补货中' : '',
+              }
+            }),
+          ],
+        ]
+      },
+      [[], []]
+    )
   }
 
   startTimer = () => {
@@ -207,17 +247,22 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
       const nextTabs = tabs.map(ele => ({
         ...ele,
         status:
-          now < ele.start ? ActivityStatus.Pending
-          : now < ele.end ? ActivityStatus.Processing
-          : ActivityStatus.Expired,
+          now < ele.start
+            ? ActivityStatus.Pending
+            : now < ele.end
+            ? ActivityStatus.Processing
+            : ActivityStatus.Expired,
       }))
       if (!isEqual(tabs, nextTabs)) {
-        this.setState(({currentTabIndex, products, dataProvider}) => ({
+        this.setState(({ currentTabIndex, products, dataProvider }) => ({
           dataProvider: dataProvider.cloneWithRows([
             null,
             { tabs: nextTabs, currentActiveIndex: currentTabIndex },
             nextTabs[currentTabIndex],
-            ...(products[currentTabIndex] || []).map(ele => ({...ele, activityStatus: nextTabs[currentTabIndex].status}))
+            ...(products[currentTabIndex] || []).map(ele => ({
+              ...ele,
+              activityStatus: nextTabs[currentTabIndex].status,
+            })),
           ]),
         }))
       }
@@ -228,14 +273,17 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
     }, 1000)
   }
 
-  onTabIndexChange = (index:number) => {
-    this.setState(({tabs, products, dataProvider, productCountInCart}) => ({
+  onTabIndexChange = (index: number) => {
+    this.setState(({ tabs, products, dataProvider, productCountInCart }) => ({
       currentTabIndex: index,
       dataProvider: dataProvider.cloneWithRows([
         null,
         { tabs, currentActiveIndex: index },
         tabs[index],
-        ...(products[index] || []).map(ele => ({ ...ele, count: productCountInCart[ele.code] || 0 }))
+        ...(products[index] || []).map(ele => ({
+          ...ele,
+          count: productCountInCart[ele.code] || 0,
+        })),
       ]),
     }))
   }
@@ -248,22 +296,28 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
   }
 
   onProductCartCountChange = (product, count) => {
-    const {afterAddCart} = this.props
+    console.log('>>>>> modify count', count)
+    const { afterAddCart } = this.props
 
-    this.setState(({productCountInCart}) => ({
+    this.setState(({ productCountInCart }) => ({
       productCountInCart: {
         ...productCountInCart,
         [product.code]: count,
-      }
+      },
     }))
     afterAddCart && afterAddCart(count)
   }
 
-
   rowRenderer = (type, data, index) => {
+    const { productCountInCart } = this.state
     switch (type) {
       case ViewTypes.Banner:
-        return <Image style={{ width: '100%', height: BannerHeight }} source={bannerLimitTimeBuy} />
+        return (
+          <Image
+            style={{ width: '100%', height: BannerHeight }}
+            source={bannerLimitTimeBuy}
+          />
+        )
       case ViewTypes.Tab:
         return (
           <View style={styles.tabBox}>
@@ -282,9 +336,19 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
           </View>
         )
       case ViewTypes.Product:
+        const count =
+          productCountInCart[data.code] !== undefined
+            ? productCountInCart[data.code]
+            : data.count || 0
+
         return (
           <View style={styles.productListItem}>
-            <ProductItem {...data} thumbnailSize={75} afterModifyCount={c => this.onProductCartCountChange(data, c)} />
+            <ProductItem
+              {...data}
+              count={count}
+              thumbnailSize={75}
+              afterModifyCount={c => this.onProductCartCountChange(data, c)}
+            />
             {index > 3 && <View style={styles.productDivider} />}
           </View>
         )
@@ -293,13 +357,13 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
 
   render() {
     const { paddingTop, shopCode } = this.props
-    const { dataProvider, loading, tabs } = this.state
+    const { dataProvider, loading, tabs, productCountInCart } = this.state
 
     return (
-      <View style={[ styles.container, { paddingTop } ]}>
+      <View style={[styles.container, { paddingTop }]}>
         {loading && tabs.length === 0 && (
           <View style={styles.loadingContainer}>
-            <Loading/>
+            <Loading />
           </View>
         )}
 
@@ -314,11 +378,12 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
                   colors={[theme.refreshColor]}
                   tintColor={theme.refreshColor}
                 />
-              )
+              ),
             }}
             dataProvider={dataProvider}
             rowRenderer={this.rowRenderer}
             layoutProvider={this.layoutProvider}
+            extendedState={productCountInCart}
           />
         </StickyContainer>
       </View>

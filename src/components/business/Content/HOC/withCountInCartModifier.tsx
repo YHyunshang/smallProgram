@@ -2,16 +2,16 @@
  * @Author: 李华良
  * @Date: 2019-09-17 01:20:36
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-09-20 18:19:13
+ * @Last Modified time: 2020-01-09 11:20:09
  */
 import * as React from 'react'
-import {Product} from '@common/typings'
+import { Product } from '@common/typings'
 import debounce from 'lodash/debounce'
-import {CMSServices} from '@services'
-import {Log, Native} from '@utils'
-import {track} from "@utils/tracking";
-import {Route, RouteContext} from "@utils/contextes";
-import {transPenny} from "@utils/FormatUtil";
+import { CMSServices } from '@services'
+import { Log, Native } from '@utils'
+import { track } from '@utils/tracking'
+import { Route, RouteContext } from '@utils/contextes'
+import { transPenny } from '@utils/FormatUtil'
 
 interface Props extends Product {
   shopCode: string // 门店编码
@@ -26,8 +26,8 @@ interface State {
 }
 
 export default function withCartCountModify(WrappedComponent) {
-  return class extends React.Component<Props, State> {
-    static contextType:React.Context<Route> = RouteContext
+  return class extends React.PureComponent<Props, State> {
+    static contextType: React.Context<Route> = RouteContext
     context: Route
 
     constructor(props) {
@@ -35,7 +35,7 @@ export default function withCartCountModify(WrappedComponent) {
       this.state = {
         count: props.count || 0,
         modifiedCount: props.count || 0,
-        disableAdd: false
+        disableAdd: false,
       }
     }
 
@@ -44,7 +44,7 @@ export default function withCartCountModify(WrappedComponent) {
       nextContext: any
     ): void {
       Log.debug(
-        `count changed from parent: current - ${this.state.count}, next - ${nextProps.count}, disableSync - ${this.props.disableSync}`
+        `[${nextProps.code}] count changed from parent: current - ${this.state.count}, next - ${nextProps.count}, disableSync - ${this.props.disableSync}`
       )
       if (nextProps.count !== this.state.count && !this.props.disableSync) {
         this.setState({
@@ -63,7 +63,10 @@ export default function withCartCountModify(WrappedComponent) {
           afterModifyCount && afterModifyCount(count, res)
         })
         .catch(err => {
-          this.setState(({ count: preCount }) => ({ modifiedCount: preCount, disableAdd: err === '无法购买更多了' }))
+          this.setState(({ count: preCount }) => ({
+            modifiedCount: preCount,
+            disableAdd: err === '无法购买更多了',
+          }))
           throw err
         })
     }, 500)
@@ -91,17 +94,20 @@ export default function withCartCountModify(WrappedComponent) {
       } else {
         const currentScene = this.context
         const { code, name, price, slashedPrice, spec } = this.props
-        const {modifiedCount} = this.state
-        count > modifiedCount && track('addToShoppingcart', {
-          $screen_name: currentScene.name,
-          page_type: currentScene.path,
-          product_id: code,
-          product_name: name,
-          original_price: transPenny(slashedPrice || price),
-          present_price: transPenny(price),
-          product_spec: spec,
-          tab_name: currentScene.extraData ? currentScene.extraData.currentTab || '' : ''
-        })
+        const { modifiedCount } = this.state
+        count > modifiedCount &&
+          track('addToShoppingcart', {
+            $screen_name: currentScene.name,
+            page_type: currentScene.path,
+            product_id: code,
+            product_name: name,
+            original_price: transPenny(slashedPrice || price),
+            present_price: transPenny(price),
+            product_spec: spec,
+            tab_name: currentScene.extraData
+              ? currentScene.extraData.currentTab || ''
+              : '',
+          })
 
         this.requestUpdateCount(count)
       }

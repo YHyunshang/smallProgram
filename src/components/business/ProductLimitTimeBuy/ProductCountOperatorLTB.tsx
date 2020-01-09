@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-09-05 18:26:23
  * @Last Modified by: 李华良
- * @Last Modified time: 2019-09-18 22:37:24
+ * @Last Modified time: 2020-01-09 11:19:49
  */
 import * as React from 'react'
 import styles from './ProductCountOperatorLTB.styles'
@@ -15,9 +15,13 @@ import {
   Easing,
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
-import {iconMinusCircleRed, iconPlusCircleRed, plusCircleDisabled} from '@const/resources'
+import {
+  iconMinusCircleRed,
+  iconPlusCircleRed,
+  plusCircleDisabled,
+} from '@const/resources'
 import theme from '@theme'
-import {Native} from '@utils'
+import { Native } from '@utils'
 
 interface Props {
   count: number
@@ -31,7 +35,10 @@ interface State {
   animatedVal: Animated.Value
 }
 
-export default class ProductCountOperatorLTB extends React.Component<Props, State> {
+export default class ProductCountOperatorLTB extends React.Component<
+  Props,
+  State
+> {
   constructor(props) {
     super(props)
     this.state = {
@@ -58,13 +65,11 @@ export default class ProductCountOperatorLTB extends React.Component<Props, Stat
         easing: Easing.linear,
         useNativeDriver: true,
       }).start()
-    } else {
-      this.state.animatedVal.setValue(props.count <= 0 ? 0 : 1)
     }
   }
 
   onModifyCount = c => {
-    const {max, onChange, disabled} = this.props
+    const { max, onChange, disabled } = this.props
     if (disabled) {
       Native.showToast('不能添加更多了')
       return
@@ -74,8 +79,8 @@ export default class ProductCountOperatorLTB extends React.Component<Props, Stat
   }
 
   render() {
-    const {animatedVal} = this.state
-    const {count, max, disabled, children, disableAdd} = this.props
+    const { animatedVal } = this.state
+    const { count, max, disabled, children, disableAdd } = this.props
 
     const cartBtnScaleX = animatedVal.interpolate({
       inputRange: [0, 1],
@@ -92,20 +97,23 @@ export default class ProductCountOperatorLTB extends React.Component<Props, Stat
     return (
       <View style={styles.container}>
         <View
-          style={[styles.countOperatorBox, {opacity: count <= 0 ? 0 : 1}]}
+          style={[styles.countOperatorBox, { opacity: count <= 0 ? 0 : 1 }]}
         >
           <TouchableOpacity
             activeOpacity={0.75}
             onPress={() => this.onModifyCount(count - 1)}
           >
-            <Image style={styles.operImg} source={iconMinusCircleRed}/>
+            <Image style={styles.operImg} source={iconMinusCircleRed} />
           </TouchableOpacity>
           <Text style={styles.countText}>{count}</Text>
           <TouchableOpacity
             activeOpacity={0.75}
             onPress={() => this.onModifyCount(count + 1)}
           >
-            <Image style={styles.operImg} source={disableAdd ? plusCircleDisabled : iconPlusCircleRed}/>
+            <Image
+              style={styles.operImg}
+              source={disableAdd ? plusCircleDisabled : iconPlusCircleRed}
+            />
           </TouchableOpacity>
         </View>
 
@@ -114,7 +122,7 @@ export default class ProductCountOperatorLTB extends React.Component<Props, Stat
             styles.cartBtnBox,
             {
               opacity: cartBtnOpacity,
-              transform: [{scaleX: cartBtnScaleX}],
+              transform: [{ scaleX: cartBtnScaleX }],
               zIndex: count <= 0 ? 1 : -1,
             },
           ]}
@@ -127,17 +135,20 @@ export default class ProductCountOperatorLTB extends React.Component<Props, Stat
           >
             <View style={styles.cartBtnBox}>
               <LinearGradient
-                style={[styles.gradientBox,
+                style={[
+                  styles.gradientBox,
                   !disabled && {
                     shadowColor: '#EE4239',
                     shadowOpacity: 0.23,
                     shadowRadius: 4,
                     backgroundColor: '#FFF',
-                  }
+                  },
                 ]}
-                start={{x: 1, y: 0}}
-                end={{x: 0, y: 0}}
-                colors={!disabled ? ['#FF3914', '#FF6042'] : ['#BBBBBB', '#BBBBBB']}
+                start={{ x: 1, y: 0 }}
+                end={{ x: 0, y: 0 }}
+                colors={
+                  !disabled ? ['#FF3914', '#FF6042'] : ['#BBBBBB', '#BBBBBB']
+                }
               >
                 <Text style={styles.cartBtnText}>{children}</Text>
               </LinearGradient>
