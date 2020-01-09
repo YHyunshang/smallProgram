@@ -3,8 +3,8 @@
  * @Company: yh
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
- * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-12-09 17:06:17
+ * @LastEditors  : yuwen.liu
+ * @LastEditTime : 2020-01-08 11:41:57
  */
 import React from 'react'
 import {ScrollView, View, Text, Image, NativeModules, TouchableOpacity, Alert} from 'react-native'
@@ -62,6 +62,7 @@ export default class PreviewPurchase extends React.Component {
         // limitDesc: '每月限购3瓶,全年不超过12瓶,当月如有遗留份额,则不累计'
       }
     }
+    this.loadingRef = React.createRef()
   }
   static propTypes = {
     activityCode: PropTypes.string, // 活动编码
@@ -91,7 +92,7 @@ export default class PreviewPurchase extends React.Component {
    * @msg:获取预购活动
    */
   getPurchaseActivity = (productCode, shopCode) => {
-    this.loading.showLoading()
+    this.loadingRef.current.showLoading()
     getPurchaseActivity(productCode, shopCode)
       .then(({result: data, message, code}) => {
         if (code === 200000 && data) {
@@ -103,7 +104,7 @@ export default class PreviewPurchase extends React.Component {
               activityCode: data.activityCode
             }
           )
-          this.loading.hideLoading()
+          this.loadingRef.current.hideLoading()
           this.animate()
           if (data.isActivity) {
             Native.setActivityPageTitle('setActivityPageTitle', JSON.stringify(params))
@@ -112,11 +113,11 @@ export default class PreviewPurchase extends React.Component {
           }
         } else {
           rnAppModule.showToast(message, '0')
-          this.loading.hideLoading()
+          this.loadingRef.current.hideLoading()
         }
       }).catch(({message}) => {
         rnAppModule.showToast(message, '0')
-        this.loading.hideLoading()
+        this.loadingRef.current.hideLoading()
         if (message && message.indexOf('Token不存在') != -1) {
           this.handleGoHome()
         }
@@ -140,11 +141,11 @@ export default class PreviewPurchase extends React.Component {
       shopCode: this.state.shopCode,
       wantDistributionTime: ''
     }
-    this.loading.showLoading()
+    this.loadingRef.current.showLoading()
     handleOrderAmount(params)
       .then(({result: data, message, code}) => {
         if (code === 200000 && data) {
-          this.loading.hideLoading()
+          this.loadingRef.current.hideLoading()
           this.setState({preOrderNo: data.preOrderNo})
           Native.navigateTo({
             type: Native.NavPageType.NATIVE,
@@ -152,11 +153,11 @@ export default class PreviewPurchase extends React.Component {
             params: {preOrderNo: data.preOrderNo}
           })
         } else {
-          this.loading.hideLoading()
+          this.loadingRef.current.hideLoading()
           rnAppModule.showToast(message, '0')
         }
       }).catch(({message}) => {
-        this.loading.hideLoading()
+        this.loadingRef.current.hideLoading()
         rnAppModule.showToast(message, '0')
         if (message && message.indexOf('Token不存在') != -1) {
           this.handleGoHome()
@@ -211,19 +212,19 @@ export default class PreviewPurchase extends React.Component {
    */
   getReservationShopList = () => {
     if (this.state.isStoreFirst) {
-      this.loading.showLoading()
+      this.loadingRef.current.showLoading()
       getReservationShopList(this.state.activityCode)
         .then(({result: data, message, code}) => {
           if (code === 200000 && data) {
             this.setState({storeList: data, isStoreFirst: false})
-            this.loading.hideLoading()
+            this.loadingRef.current.hideLoading()
           } else {
             rnAppModule.showToast(message, '0')
-            this.loading.hideLoading()
+            this.loadingRef.current.hideLoading()
           }
         }).catch(({message}) => {
           rnAppModule.showToast(message, '0')
-          this.loading.hideLoading()
+          this.loadingRef.current.hideLoading()
         })
     }
   }
@@ -233,19 +234,19 @@ export default class PreviewPurchase extends React.Component {
   handleRuleDescription = () => {
     this.ruleModal.showModal()
     if (this.state.isRuleFirst) {
-      this.loading.showLoading()
+      this.loadingRef.current.showLoading()
       getRuleDescription(this.state.activityCode)
         .then(({result: data, message, code}) => {
           if (code === 200000 && data) {
             this.setState({ruleList: data, isRuleFirst: false})
-            this.loading.hideLoading()
+            this.loadingRef.current.hideLoading()
           } else {
             rnAppModule.showToast(message, '0')
-            this.loading.hideLoading()
+            this.loadingRef.current.hideLoading()
           }
         }).catch(({message}) => {
           rnAppModule.showToast(message, '0')
-          this.loading.hideLoading()
+          this.loadingRef.current.hideLoading()
         })
     }
   }
@@ -317,7 +318,7 @@ export default class PreviewPurchase extends React.Component {
                   showsVerticalScrollIndicator={false}
                 >
                   <View style={styles.headBannerImage}>
-                    <TopBannerImage style={styles.headBannerImage} headImg={Img.loadRatioImage(exchangeInfoVO.integralExchangeUrl, Img.FullWidth)}></TopBannerImage>
+                    <TopBannerImage style={styles.headBannerImage} type={1} headImg={Img.loadRatioImage(exchangeInfoVO.integralExchangeUrl, Img.FullWidth)}/>
                   </View>
                   <View style={styles.headBanner}>
                     {
@@ -520,7 +521,7 @@ export default class PreviewPurchase extends React.Component {
                 </TouchableOpacity>
               </View> : null
         }
-        <Loading ref={ref => this.loading = ref}></Loading>
+        <Loading ref={this.loadingRef} />
       </View>
     )
   }

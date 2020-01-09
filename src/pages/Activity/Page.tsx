@@ -15,7 +15,7 @@ import { Native } from '@utils'
 import Tab from './components/Tab'
 import Footer from './components/Footer'
 import Empty from './components/Empty'
-import TideManActivity from './components/TideMan/TideManActivity'
+import TopicActivity from './components/TopicActivity/TopicActivity'
 import AdTitle from '@components/business/Content/AdTitle'
 import Loading from '../../components/common/Loading'
 import theme from '@theme'
@@ -54,6 +54,8 @@ interface State {
   }
   pageTitle: string
   hasHeadBanner: boolean
+  tabVos: []
+  type: number
 }
 
 export default class Page extends React.PureComponent<Props, State> {
@@ -66,6 +68,8 @@ export default class Page extends React.PureComponent<Props, State> {
       shopCode: props.shopCode,
       currentTabKey: '',
       tabList: [],
+      tabVos: [],
+      type: 0,
       tabContentMap: {},
       cart: {
         amount: 0,
@@ -117,6 +121,10 @@ export default class Page extends React.PureComponent<Props, State> {
     }
     if (result.length > 0) {
       const tab = result[0]
+      this.setState({
+        tabVos: tab.templateVOList[0].tabVos,
+        type: tab.templateVOList[0].type,
+      })
       Native.setTitle(tab.pageName || '优选商品')
       nextState.pageTitle = tab.pageName || '优选商品'
       nextState.currentTabKey = tab.id
@@ -295,15 +303,15 @@ export default class Page extends React.PureComponent<Props, State> {
           },
         })
       } else if (floor.type === 8) {
-        // 潮物达人组件
+        // 8:潮物达人,9:酒专题
         result.push({
           key: floor.id,
-          component: TideManActivity,
+          component: TopicActivity,
           props: {
-            tabVos: floor.tabVos,
+            currentTabVos: floor.tabVos,
             shopCode,
+            type: floor.type,
             afterModifyCount: this.requestCartInfo,
-            requestTabList: this.requestTabList,
           },
         })
       }
@@ -372,6 +380,8 @@ export default class Page extends React.PureComponent<Props, State> {
       cart: { amount, count },
       loading,
       pageTitle,
+      type,
+      tabVos,
     } = this.state
     const flatData = this.flatDataFormatter()
     const stickyHeaderIndices = flatData.findIndex(ele => ele.component === Tab)
@@ -379,30 +389,45 @@ export default class Page extends React.PureComponent<Props, State> {
     return (
       <RouteContext.Provider value={{ path: '活动页', name: pageTitle }}>
         <View style={styles.container}>
-          <FlatList
-            style={styles.flatList}
-            data={flatData}
-            renderItem={this.renderFlatItem}
-            keyExtractor={item => `${item.key}`}
-            showsVerticalScrollIndicator={false}
-            stickyHeaderIndices={
-              stickyHeaderIndices === -1 ? [] : [stickyHeaderIndices]
-            }
-            removeClippedSubviews={false}
-            refreshControl={
-              <RefreshControl
-                refreshing={loading && flatData.length > 0}
-                onRefresh={this.componentDidMount.bind(this)}
-                colors={[theme.refreshColor]}
-                tintColor={theme.refreshColor}
-              />
-            }
-            ListEmptyComponent={
-              loading ? null : (
+          {type === 9 ? ( //type:9 酒专题 不走FlatList
+            <View style={styles.flatList}>
+              {tabVos && tabVos.length > 0 ? (
+                <TopicActivity
+                  type={type}
+                  shopCode={this.state.shopCode}
+                  afterModifyCount={this.requestCartInfo}
+                  currentTabVos={tabVos}
+                />
+              ) : (
                 <Empty type={1} textColor1="#4A4A4A" textColor2="#A4A4B4" />
-              )
-            }
-          />
+              )}
+            </View>
+          ) : (
+            <FlatList
+              style={styles.flatList}
+              data={flatData}
+              renderItem={this.renderFlatItem}
+              keyExtractor={item => `${item.key}`}
+              showsVerticalScrollIndicator={false}
+              stickyHeaderIndices={
+                stickyHeaderIndices === -1 ? [] : [stickyHeaderIndices]
+              }
+              removeClippedSubviews={false}
+              refreshControl={
+                <RefreshControl
+                  refreshing={loading && flatData.length > 0}
+                  onRefresh={this.componentDidMount.bind(this)}
+                  colors={[theme.refreshColor]}
+                  tintColor={theme.refreshColor}
+                />
+              }
+              ListEmptyComponent={
+                loading ? null : (
+                  <Empty type={1} textColor1="#4A4A4A" textColor2="#A4A4B4" />
+                )
+              }
+            />
+          )}
           <View style={styles.footerBox}>
             <Footer amount={amount} cartCount={count} />
           </View>

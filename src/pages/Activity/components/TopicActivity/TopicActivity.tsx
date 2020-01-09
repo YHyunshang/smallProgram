@@ -1,47 +1,62 @@
 /*
- * @Descripttion: 潮物达人组件
+ * @Descripttion: 专题活动组件(潮物达人&酒专题)
  * @Author: yuwen.liu
  * @Date: 2019-11-21 11:23:19
- * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-12-10 10:25:06
+ * @LastEditors  : yuwen.liu
+ * @LastEditTime : 2020-01-09 13:45:09
  */
 import * as React from 'react'
-import { FlatList, View, Alert } from 'react-native'
-import styles from './TideManActivity.styles'
+import { FlatList, View } from 'react-native'
+import styles from './TopicActivity.styles'
 import { CMSServices } from '@services'
 import useTheme from '@components/business/Content/ProductGrid.styles'
 import ProductListItem from '@components/business/Content/ProductListItem'
 import ProductGridItem from '@components/business/Content/ProductGridItem'
-import chunk from 'lodash/chunk'
 import TopTab from './TopTab'
 import LeftTab from './LeftTab'
 import Empty from '../Empty'
-import Loading from '@components/common/Loading'
 interface Props {
-  tabVos: {
+  currentTabVos: {
     id: number
-    tabName: string
-    showBar: boolean
-    subType: number
+    tabName: string //顶部tab栏名称
+    showBar: boolean //是否展示左边侧栏
+    subType: number //一行展示几列
     categoryList: {
-      categoryCode: string
-      categoryName: string
+      categoryCode: string //分类编码
+      categoryName: string //分类名称
     }[]
     tabDetailVOList: {
+      code: string
+      productNum: number //商品数量
       categoryCode: string
     }[]
   }[]
-  shopCode: string
-  afterModifyCount: Function
-  requestTabList: Function
+  shopCode: string //门店编码
+  type: number //类型 8:潮物达人,9:酒专题
+  afterModifyCount: Function // 操作购物车数量的回调函数
 }
 
-export default function TideManActivity({
-  tabVos,
+export default function TopicActivity({
+  currentTabVos,
   afterModifyCount,
-  requestTabList,
   shopCode,
+  type,
 }: Props) {
+  /** @msg: 过滤左边tab栏对应的商品数据
+   * @param {categoryCode}
+   */
+  const productsFilter = (currenProductList, categoryCode) =>
+    currenProductList
+      .filter(
+        item =>
+          item.categoryCode && item.categoryCode.indexOf(categoryCode) != -1
+      )
+      .map(ele => ({
+        ...CMSServices.formatProduct(ele),
+        disableSync: true,
+        shopCode,
+      }))
+  const [tabVos, setTabVos] = React.useState(currentTabVos)
   const products = tabVos[0].tabDetailVOList.map(ele => ({
     ...CMSServices.formatProduct(ele),
     disableSync: true,
@@ -65,54 +80,21 @@ export default function TideManActivity({
   const [tabDetailVOList, setTabDetailVOList] = React.useState(
     tabVos[0].tabDetailVOList
   ) //初始化tabDetailVOList数据
-  const [initProducts, setInitProducts] = React.useState(products) //商品的原始数据
+  const initFirstTabProduct = productsFilter(tabDetailVOList, currentLeftTabKey) // 获取左边侧栏第一个tab的商品数据
+  const [initProducts, setInitProducts] = React.useState(
+    type === 8 ? products : initFirstTabProduct //  type:8是潮物达人取全部的商品数据，type:9 酒专题取第一个tab的商品数据
+  ) //商品的原始数据
   const [currentProducts, setCurrentProducts] = React.useState(initProducts) //当前选中的tab下的商品数据
   const total = currentProducts.length
-  const gridProducts = chunk(currentProducts, currentColumnNumber)
+  const totalRow = Math.ceil(total / currentColumnNumber)
+  const colWidth = `${100 / currentColumnNumber}%`
   const theme = { 2: '2x', 3: '3x' }[currentColumnNumber]
   const themeStyles = useTheme(theme || '2x')
-  const gridTotal = gridProducts.length
-
-  /** @msg: 根据tabId和categoryCode来查找左侧分栏的商品数据
-   * @param {categoryCode,tabId}
-   */
-  const getDataByCategory = async (categoryCode, tabId) => {
-    this.loading.showLoading()
-    let res
-    try {
-      res = await CMSServices.getDataByCategory(categoryCode, tabId, shopCode)
-    } finally {
-      this.loading.hideLoading()
-    }
-    const { result } = res
-    const products =
-      result &&
-      result.map(ele => ({
-        ...CMSServices.formatProduct(ele),
-        disableSync: true,
-        shopCode,
-      }))
-    setCurrentProducts(products)
-  }
   /** @msg: 过滤左边tab栏的数据
    * @param {id}
    */
   const leftTabListFilter = id =>
     tabVos && tabVos.filter(item => item.id === id)
-  /** @msg: 过滤左边tab栏对应的商品数据
-   * @param {categoryCode}
-   */
-  const productsFilter = categoryCode =>
-    tabDetailVOList
-      .filter(
-        item =>
-          item.categoryCode && item.categoryCode.indexOf(categoryCode) != -1
-      )
-      .map(ele => ({
-        ...CMSServices.formatProduct(ele),
-        disableSync: true,
-        shopCode,
-      }))
 
   /** @msg: 顶部tab栏item改变触发的事件
    * @param {key}
@@ -127,7 +109,9 @@ export default function TideManActivity({
         : 'all'
     )
     setCurrentShowBar(
-      newLeftTabList[0].subType === 3 ? false : newLeftTabList[0].showBar
+      newLeftTabList[0].subType === 3
+        ? false
+        : newLeftTabList[0].showBar || false
     )
     setCurrentColumnNumber(newLeftTabList[0].subType)
     setTabDetailVOList(newLeftTabList[0].tabDetailVOList)
@@ -136,50 +120,60 @@ export default function TideManActivity({
       disableSync: true,
       shopCode,
     }))
-    setInitProducts(newInitProducts)
-    setCurrentProducts(newInitProducts)
-    requestTabList()
+    const newInitFirstTabProduct = productsFilter(
+      newLeftTabList[0].tabDetailVOList,
+      newLeftTabList[0].categoryList[0]
+        ? newLeftTabList[0].categoryList[0].categoryCode
+        : 'all'
+    )
+    //type:8是潮物达人取全部的商品数据，type:9 酒专题取第一个tab的商品数据
+    const newFirstTabProduct =
+      type === 9 && newInitFirstTabProduct.length
+        ? newInitFirstTabProduct
+        : newInitProducts
+    setInitProducts(newFirstTabProduct)
+    setCurrentProducts(newFirstTabProduct)
   }
 
   /** @msg: 左边tab栏item改变触发的事件
    * @param {code,index}
    */
-  const onLeftTabChange = (code, index) => {
+  const onLeftTabChange = (code, index): void => {
     setCurrentLeftTabKey(code)
-    getDataByCategory(code, currentTopTabKey)
-    // const newCurrentProducts = productsFilter(code)
-    // if (index === 0) {
-    //   setCurrentProducts(initProducts)
-    // } else {
-    //   setCurrentProducts(newCurrentProducts)
-    // }
+    const newCurrentProducts = productsFilter(tabDetailVOList, code)
+    setCurrentProducts(code === 'all' ? initProducts : newCurrentProducts)
   }
 
-  /**
-   * @msg: 渲染每行的数据
+  /** @msg: 当切换tab时刷新购买数量
+   * @param {code,index}
    */
-  const renderGridItemData = products =>
-    products.map((product, colIdx) => (
-      <View
-        style={[
-          currentShowBar ? styles.noBar : themeStyles.column,
-          colIdx % currentColumnNumber < currentColumnNumber - 1 &&
-            themeStyles.columnNotLast,
-        ]}
-        key={product.code}
-      >
-        <View style={[themeStyles.productBox]}>
-          <ProductGridItem
-            {...product}
-            theme={theme}
-            afterModifyCount={afterModifyCount}
-          />
-        </View>
-      </View>
-    ))
+  const refreshBuyNum = (productNum, productCode): void => {
+    tabVos.map(tab => {
+      tab.tabDetailVOList.map(item => {
+        if (item.code == productCode) {
+          item.productNum = productNum
+        }
+      })
+    })
+    setTabVos(tabVos)
+    initProducts.map(item => {
+      if (item.code == productCode) {
+        item.count = productNum
+      }
+    })
+    setInitProducts(initProducts)
+  }
 
-  const _keyExtractor = (item, index) => item.id
-
+  /** @msg: 添加购物车成功时，刷新当前商品项的购买数量以及购物车总数量
+   * @param {count,result}
+   */
+  const refreshProductInfo = (
+    count,
+    { result: { productNum, productCode } }
+  ): void => {
+    afterModifyCount(count)
+    refreshBuyNum(productNum, productCode)
+  }
   /**
    * @msg: FlatList渲染的数据项
    */
@@ -187,28 +181,36 @@ export default function TideManActivity({
     currentColumnNumber === 1 ? (
       <View style={styles.productBox}>
         <View style={styles.productWrapper} key={item.code}>
-          <ProductListItem {...item} afterModifyCount={afterModifyCount} />
+          <ProductListItem {...item} afterModifyCount={refreshProductInfo} />
           {index < total - 1 && <View style={styles.fakeBorder}></View>}
         </View>
       </View>
     ) : (
       <View
         style={[
-          themeStyles.container,
-          currentColumnNumber === 2 && styles.gridWrapper,
+          Math.floor(index / currentColumnNumber) === 0 && themeStyles.rowFirst,
+          Math.floor(index / currentColumnNumber + 1) === totalRow &&
+            themeStyles.rowLast,
+          themeStyles.col,
+          index % currentColumnNumber === 0 && themeStyles.colFirst,
+          index % currentColumnNumber === currentColumnNumber - 1 &&
+            themeStyles.colLast,
+          { width: colWidth },
         ]}
       >
-        <View
-          style={[
-            themeStyles.row,
-            index < gridTotal - 1 && themeStyles.rowNotLast,
-          ]}
-          key={index}
-        >
-          {renderGridItemData(item)}
+        <View style={themeStyles.productCell}>
+          <ProductGridItem
+            {...item}
+            theme={theme}
+            afterModifyCount={refreshProductInfo}
+          />
         </View>
       </View>
     )
+  /**
+   * @msg: 分隔线组件
+   */
+  const SeparatorComponent = () => <View style={themeStyles.floorSeparator} />
   return (
     <View style={styles.tideMancontainer}>
       {topTabList && topTabList.length > 0 && (
@@ -230,24 +232,27 @@ export default function TideManActivity({
             />
           )}
         <FlatList
-          style={[
-            styles.tideManList,
-            currentColumnNumber === 2 && styles.gridWrapper,
-          ]}
-          data={currentColumnNumber === 1 ? currentProducts : gridProducts}
+          style={[styles.tideManList]}
+          data={currentProducts}
           renderItem={renderItemData}
-          keyExtractor={_keyExtractor}
-          initialNumToRender={5}
+          keyExtractor={(item, index) => index.toString()}
+          key={
+            currentColumnNumber === 1
+              ? 'list'
+              : currentColumnNumber === 2
+              ? 'grid2x'
+              : 'grid3x'
+          }
           showsVerticalScrollIndicator={false}
           removeClippedSubviews={false}
+          numColumns={currentColumnNumber}
+          ItemSeparatorComponent={SeparatorComponent}
           refreshing={false}
           ListEmptyComponent={
             <Empty type={2} textColor1="#4A4A4A" textColor2="#A4A4B4" />
           }
         />
       </View>
-
-      <Loading ref={ref => (this.loading = ref)}></Loading>
     </View>
   )
 }

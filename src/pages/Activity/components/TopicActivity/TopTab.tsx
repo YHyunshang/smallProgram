@@ -2,8 +2,8 @@
  * @Descripttion: 顶部菜单栏
  * @Author: yuwen.liu
  * @Date: 2019-11-12 21:18:25
- * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-12-06 16:34:28
+ * @LastEditors  : yuwen.liu
+ * @LastEditTime : 2019-12-25 10:09:30
  */
 import * as React from 'react'
 import styles from './TopTab.styles'
@@ -32,8 +32,6 @@ export default function TopTab({ currentActive, data, onTabChange }: Props) {
             <View
               style={[
                 styles.tabItemBox,
-                index === 0 && styles.tabItemBoxFirst,
-                index === total - 1 && styles.tabItemBoxLast,
                 key === currentActive && styles.tabActiveItemBox,
               ]}
             >

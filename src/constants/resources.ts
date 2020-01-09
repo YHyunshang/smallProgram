@@ -2,8 +2,8 @@
  * @Descripttion: resources.ts
  * @Author: yuwen.liu
  * @Date: 2019-09-06 13:54:53
- * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-06 15:16:27
+ * @LastEditors  : yuwen.liu
+ * @LastEditTime : 2020-01-09 19:56:50
  */
 export const cartGray = require('@img/cart-gray.png')
 

@@ -1,9 +1,9 @@
 /*
- * @Descripttion: 左边侧栏组件
+ * @Descripttion: 左边纵向侧栏组件
  * @Author: yuwen.liu
  * @Date: 2019-11-12 23:52:53
- * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-12-05 10:30:48
+ * @LastEditors  : yuwen.liu
+ * @LastEditTime : 2019-12-25 14:46:03
  */
 import * as React from 'react'
 import styles from './LeftTab.styles'

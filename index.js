@@ -3,8 +3,8 @@
  * @Company: yh
  * @Author: yuwen.liu
  * @Date: 2019-08-26 09:41:18
- * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-11-26 10:45:46
+ * @LastEditors  : yuwen.liu
+ * @LastEditTime : 2020-01-09 19:57:14
  */
 import { AppRegistry, Text, TouchableOpacity } from 'react-native'
 import Home from './src/pages/Home'

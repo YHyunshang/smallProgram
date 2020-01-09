@@ -65,7 +65,6 @@ export default class NewPersonGiftAdSingle extends React.Component<Props,State> 
             <View style={styles.container}>
             <TouchableWithoutFeedback onPress={() => Native.jumpToNativeDialog('showPromotionProductListDialog','')}>
               <FitImage
-                style={styles.image}
                 source={{ uri: fitImg }}
                 resizeMode="cover"
                 indicator={false}
