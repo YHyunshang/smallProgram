@@ -63,6 +63,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'center',
+    textAlign: 'center',
     paddingBottom: 30,
   },
   currentPrice: {
@@ -97,5 +98,5 @@ export default StyleSheet.create({
     fontSize: 12,
     color: theme.gray1,
     lineHeight: 20,
-  }
+  },
 })
