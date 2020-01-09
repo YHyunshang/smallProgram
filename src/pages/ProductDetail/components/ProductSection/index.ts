@@ -1,12 +1,6 @@
 /**
  * Created by 李华良 on 2019-12-12
  */
-import Normal from './Normal'
-import LimitTimeBuy from './LimitTimeBuy'
-import PreSale from './PreSale'
+import ProductSection from './ProductSection'
 
-export {
-  Normal,
-  LimitTimeBuy,
-  PreSale,
-}
+export default ProductSection

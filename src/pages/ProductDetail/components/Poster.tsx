@@ -8,7 +8,7 @@ import styles from './Poster.styles'
 import FastImage from 'react-native-fast-image'
 import { download } from '@utils/img'
 import { showToast } from '@utils/native'
-import Spin from "@components/Spin";
+import Spin from '@components/Spin'
 
 export interface PosterProps {
   visible: boolean
@@ -30,14 +30,23 @@ const Poster: React.FunctionComponent<PosterProps> = ({
       () => showToast('图片保存失败，请授权永辉买菜访问您的相册', '0')
     )
 
+  const [loading, setLoading] = React.useState(true)
+  React.useEffect(() => setLoading(true), [image])
+  const onImgLoadEnd = () => setLoading(false)
+  const onImgLoadError = () =>
+    !!image && showToast('Ops，海报被海豹吞了！', '0')
+
   return (
     <PopUp visible={visible} title="保存至相册" onClose={onClose}>
       <View style={styles.container}>
         <View style={styles.posterBox}>
-          {!image && (
-              <Spin>图片加载中...</Spin>
-          )}
-          <FastImage style={styles.poster} source={{ uri: image }} />
+          {(!image || loading) && <Spin>图片加载中...</Spin>}
+          <FastImage
+            style={styles.poster}
+            source={{ uri: image }}
+            onLoadEnd={onImgLoadEnd}
+            onError={onImgLoadError}
+          />
         </View>
         <TouchableOpacity disabled={!image} onPress={saveImg}>
           <View style={styles.btnSave}>
@@ -45,7 +54,7 @@ const Poster: React.FunctionComponent<PosterProps> = ({
           </View>
         </TouchableOpacity>
         <Text style={styles.tips}>
-          保存到手机相册后，将图片分享到您的朋友圈
+          保存图片到手机相册后，将图片分享到您的圈子
         </Text>
       </View>
     </PopUp>

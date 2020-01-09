@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-09-19 09:35:28
  * @Last Modified by: 李华良
- * @Last Modified time: 2020-01-06 15:44:46
+ * @Last Modified time: 2020-01-09 18:49:30
  */
 import * as React from 'react'
 import { View, Animated, Dimensions, Alert } from 'react-native'
@@ -12,7 +12,7 @@ import styles from './Page.styles'
 import { TabView } from 'react-native-tab-view'
 import TabBar from './components/TabBar'
 import CMSScene from './components/CMSScene'
-import CategoryScene from './components/CategroryScene'
+import CategoryScene from './components/CategoryScene'
 import { StorageChoices, Sort } from './components/ProductFilter'
 import {
   ActivityStatus,
@@ -21,10 +21,10 @@ import {
   ProductDeliveryType,
   ProductType,
 } from '@common/typings'
-import { formatFloorData, PlaceholderForNativeHeight } from './utils'
+import { formatFloorData, NativePlaceHeightMax, TabHeight } from './utils'
 import { LimitTimeBuy as LimitTimeBuyScene } from '@components/Scene'
-import Loading from '@components/Loading'
 import { RouteContext } from '@utils/contextes'
+import Spin from '@components/Spin'
 
 const WindowWidth = Dimensions.get('window').width
 const WindowHeight = Dimensions.get('window').height
@@ -72,6 +72,8 @@ interface State {
 
   shouldRefreshFirstTab: boolean
   shouldRefreshTab: boolean
+
+  autoRefreshing: boolean
 }
 
 export default class Page extends React.Component<{}, State> {
@@ -88,6 +90,7 @@ export default class Page extends React.Component<{}, State> {
 
     shouldRefreshFirstTab: false,
     shouldRefreshTab: false,
+    autoRefreshing: false,
   }
 
   removeShopChangeListener: Function
@@ -146,7 +149,10 @@ export default class Page extends React.Component<{}, State> {
   onCartChange = () => {
     const { currentTabIdx } = this.state
 
-    this.onTabIndexChange(currentTabIdx, true)
+    this.setState({ autoRefreshing: true })
+    this.onTabIndexChange(currentTabIdx, true).then(() =>
+      this.setState({ autoRefreshing: false })
+    )
   }
 
   newcomerChange = ({ storeCode, storeTypeCode }) => {
@@ -181,7 +187,7 @@ export default class Page extends React.Component<{}, State> {
       })),
     ]
 
-    this.setState(state => ({
+    this.setState({
       currentTabIdx: 0,
       tabList,
       tabContentMap:
@@ -197,7 +203,7 @@ export default class Page extends React.Component<{}, State> {
           : {},
       shouldRefreshTab: false,
       shouldRefreshFirstTab: false,
-    }))
+    })
   }
 
   requestCMSContentData = async (tabId, shopCode) => {
@@ -424,7 +430,7 @@ export default class Page extends React.Component<{}, State> {
         }))
       )
     }
-    p.finally(() =>
+    return p.finally(() =>
       this.setState(({ tabContentLoadingMap }) => ({
         tabContentLoadingMap: {
           ...tabContentLoadingMap,
@@ -526,6 +532,7 @@ export default class Page extends React.Component<{}, State> {
       animatedValRefCmsScrollY,
       currentTabIdx: currentActiveTabIdx,
       tabList,
+      autoRefreshing,
     } = this.state
 
     const currentRouteIdx = tabList.findIndex(ele => ele.key === key)
@@ -540,14 +547,14 @@ export default class Page extends React.Component<{}, State> {
       return (
         <LimitTimeBuyScene
           shopCode={this.state.shop.code}
-          paddingTop={PlaceholderForNativeHeight}
+          paddingTop={NativePlaceHeightMax + TabHeight}
           onAllExpired={this.onAllLimitTimeBuyExpire}
         />
       )
     }
 
     const content = tabContentMap[key]
-    const contentLoading = !!tabContentLoadingMap[key]
+    const contentLoading = !!tabContentLoadingMap[key] && !autoRefreshing
 
     const onPageScroll = Animated.event(
       [
@@ -612,7 +619,7 @@ export default class Page extends React.Component<{}, State> {
         <View style={styles.container}>
           {loading && tabList.length === 0 && (
             <View style={styles.loadingContainer}>
-              <Loading />
+              <Spin />
             </View>
           )}
           <TabView

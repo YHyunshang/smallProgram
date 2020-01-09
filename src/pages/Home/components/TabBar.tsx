@@ -8,17 +8,16 @@ import {
   Dimensions,
   Platform,
 } from 'react-native'
-import { Native } from '@utils'
-import sumBy from 'lodash/sumBy'
 import theme from '@theme'
-import memoize from "memoize-one"
+import memoize from 'memoize-one'
+import sumBy from 'lodash/sumBy'
 import isEqual from 'lodash/isEqual'
 import isEmpty from 'lodash/isEmpty'
-import { TabHeight } from "../utils"
+import { TabHeight, NativePlaceHeightMax, NativePlaceHeightMin } from '../utils'
 
 const windowWidth = Dimensions.get('window').width
-const statusBarHeight = Native.getStatusBarHeight()
-const backgroundHeight = statusBarHeight + 86 + TabHeight
+const backgroundHeight = NativePlaceHeightMax + TabHeight
+const headerHeightRange = NativePlaceHeightMax - NativePlaceHeightMin
 
 interface Props {
   navigationState: {
@@ -64,8 +63,11 @@ export default class TabBar extends React.PureComponent<Props, State> {
   componentDidUpdate() {
     const { navigationState } = this.props
     const { tabTextLayoutMap, tabBoxLayoutMap } = this.state
-    const { indicatorWidth, indicatorTranslateX } =
-      this.calcIndicatorLayout(navigationState, tabTextLayoutMap, tabBoxLayoutMap)
+    const { indicatorWidth, indicatorTranslateX } = this.calcIndicatorLayout(
+      navigationState,
+      tabTextLayoutMap,
+      tabBoxLayoutMap
+    )
     if (!indicatorWidth) return
 
     const scrollToX = Math.max(
@@ -95,36 +97,43 @@ export default class TabBar extends React.PureComponent<Props, State> {
     }
   }
 
-  calcIndicatorLayout = memoize((navigationState, tabTextLayoutMap, tabBoxLayoutMap) => {
-    const { routes, index } = navigationState
+  calcIndicatorLayout = memoize(
+    (navigationState, tabTextLayoutMap, tabBoxLayoutMap) => {
+      const { routes, index } = navigationState
 
-    if (routes.length > 0 && !isEmpty(tabBoxLayoutMap) && !isEmpty(tabTextLayoutMap)) {
-      const currentActiveRoute = routes[index]
-      const currentActiveTabTextLayout =
-        tabTextLayoutMap[currentActiveRoute.key]
-      if (currentActiveTabTextLayout) {
-        const indicatorWidth = currentActiveTabTextLayout.width + 10
-        const routesBeforeCurrentActive = routes.slice(0, index)
-        const tabLayoutsBeforeCurrentActive = routesBeforeCurrentActive.map(
-          ele => tabBoxLayoutMap[ele.key]
-        )
+      if (
+        routes.length > 0 &&
+        !isEmpty(tabBoxLayoutMap) &&
+        !isEmpty(tabTextLayoutMap)
+      ) {
+        const currentActiveRoute = routes[index]
+        const currentActiveTabTextLayout =
+          tabTextLayoutMap[currentActiveRoute.key]
+        if (currentActiveTabTextLayout) {
+          const indicatorWidth = currentActiveTabTextLayout.width + 10
+          const routesBeforeCurrentActive = routes.slice(0, index)
+          const tabLayoutsBeforeCurrentActive = routesBeforeCurrentActive.map(
+            ele => tabBoxLayoutMap[ele.key]
+          )
 
-        const indicatorTranslateX =
-          sumBy(tabLayoutsBeforeCurrentActive, ele => ele.width) +
-          currentActiveTabTextLayout.x +
-          currentActiveTabTextLayout.width / 2 -
-          indicatorWidth / 2
-        return {
-          indicatorWidth,
-          indicatorTranslateX,
+          const indicatorTranslateX =
+            sumBy(tabLayoutsBeforeCurrentActive, ele => ele.width) +
+            currentActiveTabTextLayout.x +
+            currentActiveTabTextLayout.width / 2 -
+            indicatorWidth / 2
+          return {
+            indicatorWidth,
+            indicatorTranslateX,
+          }
         }
       }
-    }
-    return {
-      indicatorWidth: 0,
-      indicatorTranslateX: 0,
-    }
-  }, isEqual)
+      return {
+        indicatorWidth: 0,
+        indicatorTranslateX: 0,
+      }
+    },
+    isEqual
+  )
 
   renderTabs = () => {
     const {
@@ -206,49 +215,81 @@ export default class TabBar extends React.PureComponent<Props, State> {
     const { navigationState, animatedVal } = this.props
     const { tabTextLayoutMap, tabBoxLayoutMap } = this.state
     const { index } = navigationState
-    const { indicatorWidth, indicatorTranslateX } =
-      this.calcIndicatorLayout(navigationState, tabTextLayoutMap, tabBoxLayoutMap)
+    const { indicatorWidth, indicatorTranslateX } = this.calcIndicatorLayout(
+      navigationState,
+      tabTextLayoutMap,
+      tabBoxLayoutMap
+    )
 
     const tabTranslateY = animatedVal.interpolate({
-      inputRange: [0, 50],
-      outputRange: [statusBarHeight + 86, statusBarHeight + 36],
+      inputRange: [0, headerHeightRange],
+      outputRange: [NativePlaceHeightMax, NativePlaceHeightMin],
       extrapolate: 'clamp',
     })
-    const tabOpacity = animatedVal.interpolate({
-      inputRange: [-50, 0],
-      outputRange: [index === 0 ? 0 : 0.9999, 1],
+    const tabOpacity =
+      index === 0
+        ? animatedVal.interpolate({
+            inputRange: [-50, 0],
+            outputRange: [0, 1],
+            extrapolate: 'clamp',
+          })
+        : 1
+    const whiteBgOpacity =
+      index === 0
+        ? animatedVal.interpolate({
+            inputRange: [0, 50],
+            outputRange: [0, 1],
+            extrapolate: 'clamp',
+          })
+        : 1
+    const whiteBgTranslateY = animatedVal.interpolate({
+      inputRange: [0, headerHeightRange],
+      outputRange: [0, -headerHeightRange],
       extrapolate: 'clamp',
     })
-    const backgroundOpacity = animatedVal.interpolate({
-      inputRange: [0, 50],
-      outputRange: [index === 0 ? 0 : 0.9999, 1],
-      extrapolate: 'clamp',
-    })
-    const backgroundTranslateY = animatedVal.interpolate({
-      inputRange: [0, 50],
-      outputRange: [0, -50],
-      extrapolate: 'clamp',
-    })
-    const indicatorOpacity = animatedVal.interpolate({
-      inputRange: [0, 50],
-      outputRange: [index === 0 ? 1 : 0.0001, 0],
-      extrapolate: 'clamp',
-    })
-    const indicatorWhenScrollOpacity = animatedVal.interpolate({
-      inputRange: [0, 50],
-      outputRange: [index === 0 ? 0 : 0.9999, 1],
-      extrapolate: 'clamp',
-    })
+    const grayBgOpacity =
+      index === 0
+        ? animatedVal.interpolate({
+            inputRange: [0, 0.1, 50],
+            outputRange: [0.04, 0, 0],
+            extrapolate: 'clamp',
+          })
+        : 0
+    const indicatorOpacity =
+      index === 0
+        ? animatedVal.interpolate({
+            inputRange: [0, 50],
+            outputRange: [1, 0],
+            extrapolate: 'clamp',
+          })
+        : 0
+    const indicatorWhenScrollOpacity =
+      index === 0
+        ? animatedVal.interpolate({
+            inputRange: [0, 50],
+            outputRange: [0, 1],
+            extrapolate: 'clamp',
+          })
+        : 1
 
     return (
       <View style={[styles.container, Platform.OS === 'ios' && { zIndex: 1 }]}>
         <Animated.View
           style={[
-            styles.background,
+            styles.whiteBackground,
             {
               height: backgroundHeight,
-              opacity: backgroundOpacity,
-              transform: [{ translateY: backgroundTranslateY }],
+              opacity: whiteBgOpacity,
+              transform: [{ translateY: whiteBgTranslateY }],
+            },
+          ]}
+        />
+        <Animated.View
+          style={[
+            styles.grayBackground,
+            {
+              height: backgroundHeight,
+              opacity: grayBgOpacity,
             },
           ]}
         />

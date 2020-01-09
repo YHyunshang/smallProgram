@@ -184,34 +184,45 @@ export function getFoundPageData(shopCode: string) {
 /**
  * 将 CMS 中的跳转数据格式化为 native 识别的格式
  * @param param0 CMS 元数据，如图片等
+ * @param storeCode 门店编码
  */
 export function formatLink({
   link,
-  linkType
+  linkType,
 }: {
   link: string
-  linkType: string
-}) {
-  const apiType2NativeType = {
-    1: Native.NavPageType.NATIVE,
-    2: Native.NavPageType.RN,
-    3: Native.NavPageType.H5,
-  }
-  const type = apiType2NativeType[linkType]
-  return {
-    type: type,
-    uri: type === Native.NavPageType.RN ? 'RNActivity' : link,
-    params:
-      type === Native.NavPageType.RN
-        ? { activityCode: link, type: 'activity' }
-        : {},
-  }
+  linkType: number
+}, storeCode?: string) {
+  if (!link) return {}
+
+  return linkType === 1 // native 页面
+    ? {
+        type: Native.NavPageType.NATIVE,
+        uri: link,
+        params: {},
+      }
+    : linkType === 2 ? { // 活动页
+        type: Native.NavPageType.RN,
+        uri: 'RNActivity',
+        params: { activityCode: link, type: 'activity' },
+      }
+    : linkType === 3 ? { // H5 页面
+        type: Native.NavPageType.H5,
+        uri: link,
+        params: {},
+      }
+    : linkType === 4 ? { // 商详页
+        type: Native.NavPageType.NATIVE,
+        uri: 'A003,A003',
+        params: { productCode: link, storeCode },
+      }
+    : {}
 }
 
 /**
  * 跳转到茅台专售活动的专用链接
  */
-export function mouTaiActivityLink(productCode: string,shopCode: string) {
+export function mouTaiActivityLink(productCode: string, shopCode: string) {
   return {
     type: Native.NavPageType.RN,
     uri: 'RNPreviewPurchase',

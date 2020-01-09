@@ -5,7 +5,6 @@ import * as React from 'react'
 import FastImage, { FastImageProperties } from 'react-native-fast-image'
 import { LayoutChangeEvent, StyleSheet, View, Alert } from 'react-native'
 import { Img } from '@utils'
-import { isEqual } from 'lodash/isEqual'
 
 export interface FitImgProps extends FastImageProperties {}
 
@@ -16,9 +15,12 @@ const _FitImg_: React.FunctionComponent<FitImgProps> = props => {
   const [imgRatio, setImgRatio] = React.useState(0)
 
   React.useEffect(() => {
-    Img.getRatio(props.source).then(setImgRatio)
+    let shouldCancel = false
+    Img.getRatio(props.source).then(
+      ratio => !shouldCancel && setImgRatio(ratio)
+    )
     return () => {
-      setImgRatio(0)
+      shouldCancel = true
     }
   }, [props.source])
 

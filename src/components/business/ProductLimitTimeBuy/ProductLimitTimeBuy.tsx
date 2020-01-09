@@ -13,6 +13,7 @@ import ProgressBar from "@components/Scene/LimitTimeBuy/ProgressBar";
 import ProductCountOperatorLTB from "@components/business/ProductLimitTimeBuy/ProductCountOperatorLTB";
 import {Product} from "@common/typings";
 import withProductDetailNav from "@components/business/Content/HOC/withProductDetailNav";
+import {transPenny} from "@utils/FormatUtil";
 
 interface Props extends Product {
   thumbnailSize: number // 商品图片大小
@@ -86,19 +87,22 @@ function ProductLimitTimeBuy({
               </View>
               {!!spec && <Text style={styles.spec}>{spec}</Text>}
             </View>
-            <View style={styles.priceRow}>
+            <Text style={styles.priceRow}>
               {activityStatus !== ActivityStatus.Pending ? (
                 <Text style={styles.currentPrice}>
-                  <Text style={styles.pricePrefix}>¥ </Text>
-                  {price / 100}
+                  <Text style={styles.pricePrefix}>¥&nbsp;</Text>
+                  {transPenny(price)}
                 </Text>
               ) : (
                 <Text style={styles.expectPrice}>敬请期待</Text>
               )}
               {!!slashedPrice && (
-                <Text style={styles.slashedPrice}>¥{slashedPrice / 100}</Text>
+                <>
+                  <Text>&nbsp;&nbsp;</Text>
+                  <Text style={styles.slashedPrice}>¥{transPenny(slashedPrice)}</Text>
+                </>
               )}
-            </View>
+            </Text>
           </View>
         </View>
       </TouchableWithoutFeedback>

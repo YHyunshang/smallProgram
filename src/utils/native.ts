@@ -14,12 +14,19 @@ import {
   StatusBar,
 } from 'react-native'
 import * as Log from './log'
-import {ActivityStatus, BaseObj, Product} from '@common/typings'
+import { ActivityStatus, BaseObj, Product } from '@common/typings'
 
 // 环境
 export const ENV = (function() {
   const env = NativeModules.HttpNativeManager.envPathType
-  return { 0: 'test', 1: 'dev', 2: 'prod', 3: 'preProd' }[env]
+  return {
+    0: 'test',
+    1: 'dev',
+    2: 'prod',
+    3: 'preProd',
+    4: 'devPublic',
+    5: 'integration',
+  }[env]
 })()
 
 export enum NavPageType {
@@ -203,8 +210,11 @@ export const isiPhoneX = (() => {
  * iPhone X* 预设 44；其他 iPhone 预设 20
  * Android 统一为当前 StatusBar 高度 + 5（美人尖高度）
  */
-export const getStatusBarHeight = () =>
-  isiOS ? (isiPhoneX ? 44 : 20) : StatusBar.currentHeight + 5
+export const StatusBarHeight = isiOS
+  ? isiPhoneX
+    ? 44
+    : 20
+  : StatusBar.currentHeight + 5
 
 /**
  * 监听购物车变化
@@ -219,16 +229,27 @@ export function onCartChange(handler: (...args: any) => any) {
  * @param productData api 返回的原始商品数据
  * @param isAdd 是否是添加
  */
-export function addToCartForSimilarProduct(productData: BaseObj, isAdd: boolean): Promise<number> {
+export function addToCartForSimilarProduct(
+  productData: BaseObj,
+  isAdd: boolean
+): Promise<number> {
   NativeModules.GoodsDetailsNativeManager.addToCart(
     JSON.stringify(productData),
-    isAdd ? '1' : '0',
+    isAdd ? '1' : '0'
   )
 
   return new Promise((resolve, reject) => {
     onNativeEvent(
       'setItemNumberByProductcode',
-      ({ productNumber, productCode, responseData }: { productNumber: string, productCode: string, responseData: string }) => {
+      ({
+        productNumber,
+        productCode,
+        responseData,
+      }: {
+        productNumber: string
+        productCode: string
+        responseData: string
+      }) => {
         if (productCode !== productData.productCode) return
 
         let res: BaseObj
@@ -238,8 +259,10 @@ export function addToCartForSimilarProduct(productData: BaseObj, isAdd: boolean)
           return reject(e)
         }
 
-        return res.code === 200000 ? resolve(Number(res.result.productNum)) : reject(new Error(res.message))
-      },
+        return res.code === 200000
+          ? resolve(Number(res.result.productNum))
+          : reject(new Error(res.message))
+      }
     )
   })
 }
@@ -250,7 +273,7 @@ export function addToCartForSimilarProduct(productData: BaseObj, isAdd: boolean)
  */
 export function showRemarkPickerBeforeAddToCart(
   product: Product
-): Promise<{ count: number, extraData: object}> {
+): Promise<{ count: number; extraData: object }> {
   console.log(product)
   const price =
     product.price < product.slashedPrice ? product.slashedPrice : product.price
@@ -397,4 +420,15 @@ export function checkIsLoginOrGoToLogin(): Promise<boolean> {
       else resolve(responseData === '1')
     })
   })
+}
+
+/**
+ * Native 全局配置
+ * @param config 配置
+ */
+export function setGlobalConfig(config: BaseObj) {
+  return NativeModules.RnAppModule.sendEventToNative(
+    'setGlobalConfigAttribute',
+    JSON.stringify(config)
+  )
 }

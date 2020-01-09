@@ -15,7 +15,7 @@ const withInitialData = <P extends object>(
     try {
       initialData = JSON.parse(initialDataStr)
     } catch (e) {
-      console.error('parse initial data failed', e)
+      console.warn('parse initial data failed', e)
     }
     return <WrappedComp initialData={initialData} {...restProps as P} />
   }

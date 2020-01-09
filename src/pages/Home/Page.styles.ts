@@ -13,9 +13,10 @@ export default StyleSheet.create({
   loadingContainer: {
     position: 'absolute',
     top: 0,
-    bottom: 0,
+    bottom: -50,
     left: 0,
     right: 0,
+    zIndex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },

@@ -8,7 +8,7 @@ export default StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: 10,
+    paddingBottom: 12,
   },
 
   posterBox: {
@@ -28,7 +28,7 @@ export default StyleSheet.create({
   btnSave: {
     width: 246,
     height: 45,
-    backgroundColor: '#EE4239',
+    backgroundColor: '#41B25D',
     borderRadius: 23,
     justifyContent: 'center',
     alignItems: 'center',
@@ -42,6 +42,6 @@ export default StyleSheet.create({
   tips: {
     marginTop: 10,
     fontSize: 12,
-    color: theme.gray1,
+    color: '#848791',
   },
 })

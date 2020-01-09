@@ -7,7 +7,7 @@ import * as React from 'react'
 import {ShareChannel} from "@common/typings";
 import {Text, TouchableOpacity, View} from "react-native";
 import FastImage from "react-native-fast-image";
-import {wechatFriend, iconWeChatMoment} from "@const/resources";
+import {wechatFriend, iconWeChatMoment, iconPoster} from "@const/resources";
 import {PopUp} from "@components";
 import styles from './ShareChannelSelector.styles'
 
@@ -27,10 +27,16 @@ const ShareChannelSelector: React.FunctionComponent<ShareChannelSelectorProps> =
             <Text style={styles.channelText}>微信好友</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => onSelect(ShareChannel.Poster)}>
+        <TouchableOpacity onPress={() => onSelect(ShareChannel.WeChatMoment)}>
           <View style={styles.channelItem}>
             <FastImage style={styles.channelIcon} source={iconWeChatMoment} />
             <Text style={styles.channelText}>朋友圈</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => onSelect(ShareChannel.Poster)}>
+          <View style={styles.channelItem}>
+            <FastImage style={styles.channelIcon} source={iconPoster} />
+            <Text style={styles.channelText}>分享海报</Text>
           </View>
         </TouchableOpacity>
       </View>

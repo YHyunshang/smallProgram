@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-09-26 17:48:52
  * @Last Modified by: 李华良
- * @Last Modified time: 2020-01-06 15:57:42
+ * @Last Modified time: 2020-01-09 18:48:15
  */
 import * as React from 'react'
 import { CMSServices } from '@services'
@@ -20,7 +20,6 @@ import BoxC from '@components/business/Content/Box'
 import DividerC from '@components/business/Content/Divider'
 import LimitTimeBuy from '@components/business/Content/LimitTimeBuy'
 import { Global, Native } from '@utils'
-import { WindowWidth } from '@utils/global'
 
 const Carousel = React.memo(CarouselC)
 const AdTitle = React.memo(AdTitleC)
@@ -32,6 +31,8 @@ const Ad1v1 = React.memo(Ad1v1C)
 const Ad1v2 = React.memo(Ad1v2C)
 const Box = React.memo(BoxC)
 const Divider = React.memo(DividerC)
+
+const { WindowWidth } = Global
 
 export function formatFloorData(
   data: { [index: string]: any },
@@ -70,7 +71,7 @@ export function formatFloorData(
             link:
               ele.name && ele.name.indexOf('茅台') != -1
                 ? CMSServices.mouTaiActivityLink(ele.name, shopCode)
-                : CMSServices.formatLink(ele),
+                : CMSServices.formatLink(ele, shopCode),
           })),
         },
       })
@@ -83,10 +84,14 @@ export function formatFloorData(
           component: AdTitle,
           props: {
             children: floor.title,
-            link: CMSServices.formatLink({
-              linkType: floor.titleLinkType,
-              link: floor.titleLink,
-            }),
+            link: CMSServices.formatLink(
+              {
+                linkType: floor.titleLinkType,
+                link: floor.titleLink,
+              },
+              shopCode
+            ),
+            moreVisible: floor.isMore,
           },
         })
       }
@@ -108,6 +113,7 @@ export function formatFloorData(
             wrapperStyle: { paddingHorizontal: 0 },
             props: {
               backgroundImage: imgObj.imgUrl,
+              backgroundImageLink: CMSServices.formatLink(imgObj, shopCode),
               products: nextFloor.templateDetailVOList.map(ele => ({
                 ...CMSServices.formatProduct(ele),
                 shopCode,
@@ -135,7 +141,7 @@ export function formatFloorData(
             link:
               imgObj.name && imgObj.name.indexOf('茅台') != -1
                 ? CMSServices.mouTaiActivityLink(imgObj.name, shopCode)
-                : CMSServices.formatLink(imgObj),
+                : CMSServices.formatLink(imgObj, shopCode),
             width: i === 0 && currentTabIdx > 0 ? WindowWidth : undefined,
             height:
               i === 0 && currentTabIdx > 0
@@ -152,7 +158,7 @@ export function formatFloorData(
           props: {
             data: (floor.templateDetailVOList || []).map(ele => ({
               image: ele.imgUrl,
-              link: CMSServices.formatLink(ele),
+              link: CMSServices.formatLink(ele, shopCode),
             })),
           },
         })
@@ -165,7 +171,7 @@ export function formatFloorData(
           props: {
             data: floor.templateDetailVOList.slice(0, 2).map(ele => ({
               image: ele.imgUrl,
-              link: CMSServices.formatLink(ele),
+              link: CMSServices.formatLink(ele, shopCode),
             })),
           },
         })
@@ -234,7 +240,7 @@ export function formatFloorData(
       })
       //首页1元新人礼包广告图入口
       result.push({
-        key: floor.id,
+        key: '$$comp-newPersonGiftAdSingle',
         component: NewPersonGiftAdSingle,
         wrapperStyle: [
           {
@@ -283,6 +289,12 @@ export function formatFloorData(
   return result
 }
 
+// 预留给 native 的最大高度
+export const NativePlaceHeightMax = Native.StatusBarHeight + 56
+// 预留给 native 的最小高度
+export const NativePlaceHeightMin = Native.StatusBarHeight + 36
+// 预留给 native 的高度变化范围
+export const NativePlaceHeightDelta =
+  NativePlaceHeightMax - NativePlaceHeightMin
+// tab 高度
 export const TabHeight = 40
-export const PlaceholderForNativeHeight =
-  Native.getStatusBarHeight() + 86 + TabHeight

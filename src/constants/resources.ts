@@ -87,6 +87,8 @@ export const iconWeChatMoment = require('@img/icon-wechat-moment.png')
 
 export const iconDeliveryNextDay = require('@img/icon-delivery-next-day.png')
 
+export const iconPoster = require('@img/icon-poster.png')
+
 export const placeholderHeadBanner = require('@img/placeholder-head-banner.png')
 
 export const placeholderProductCarousel = require('@img/placeholder-productCarousel.png')

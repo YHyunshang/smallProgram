@@ -7,7 +7,8 @@ export interface BaseObj {
 
 export enum ShareChannel {
   WeChatFriends = '微信好友',
-  Poster = '朋友圈'
+  WeChatMoment = '朋友圈',
+  Poster = '海报'
 }
 
 // 活动状态

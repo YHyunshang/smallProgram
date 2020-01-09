@@ -9,7 +9,7 @@
 import { Http } from '@utils'
 import { NativeModules, NativeEventEmitter } from 'react-native'
 import * as WeChat from 'react-native-wechat'
-import { WXAppId, WeChatMP } from '@common/config'
+import { WXAppId, WeChatMP, ShareH5 } from '@common/config'
 import { showToast, ENV } from '@utils/native'
 
 /**
@@ -134,4 +134,29 @@ export const shareToWxFriends = (function() {
         path: `/pages/product-detail/product-detail?productCode=${code}&storeCode=${storeCode}`, // 小程序商品详情页面路径
       })
     })
+})()
+
+/**
+ * 分享到微信朋友圈
+ * @type {Function}
+ */
+export const shareToWxTimeline = (function () {
+  WeChat.registerApp(WXAppId)
+
+  return ({ name, code, thumbnail, storeCode }) => {
+    WeChat.isWXAppInstalled().then(installed => {
+      if (!installed) {
+        showToast('没有安装微信软件，请您安装微信之后再试', '0')
+        return new Error('WeChat is not installed')
+      }
+      return WeChat.shareToTimeline({
+        type: 'news',
+        title: `${name} | 永辉买菜`,
+        description: 'description',
+        thumbImage: thumbnail,
+        webpageUrl: (ENV === 'prod' ? ShareH5.prod : ShareH5.test) +
+          `/pages/productModle/productModule.html?productCode=${code}&storeCode=${storeCode}`,
+      })
+    })
+  }
 })()

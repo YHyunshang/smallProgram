@@ -13,7 +13,7 @@ import {
 } from '@const/resources'
 import { transPenny } from '@utils/FormatUtil'
 import Tag from '@components/business/Content/Tag'
-import styles from './ProductSection.styles'
+import styles from './styles'
 
 export interface ProductSectionProps {
   productData: BaseObj
@@ -53,7 +53,7 @@ const ProductSection: React.FunctionComponent<ProductSectionProps> = ({
   const spec = loading ? initialData.spec : detailData.productSpecific
 
   return (
-    <View style={styles.container}>
+    <>
       <Carousel images={sliders} />
 
       <View style={styles.section}>
@@ -75,13 +75,18 @@ const ProductSection: React.FunctionComponent<ProductSectionProps> = ({
             {isNextDayArrive && (
               <FastImage
                 source={iconDeliveryNextDay}
-                style={{ width: 38, height: 16, marginRight: 5 }}
+                style={[
+                  styles.tagItem,
+                  { width: 38, height: 16, marginRight: 5 },
+                ]}
               />
             )}
             {labels.map(ele => (
-              <Tag key={ele} backgroundColor="#FFDED9" color="#FF3914">
-                {ele}
-              </Tag>
+              <View style={styles.tagItem}>
+                <Tag key={ele} backgroundColor="#FFDED9" color="#FF3914">
+                  {ele}
+                </Tag>
+              </View>
             ))}
           </View>
         )}
@@ -114,7 +119,7 @@ const ProductSection: React.FunctionComponent<ProductSectionProps> = ({
           )}
         </View>
       </View>
-    </View>
+    </>
   )
 }
 

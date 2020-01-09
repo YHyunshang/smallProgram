@@ -15,7 +15,7 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   channelItem: {
-    width: 150,
+    width: 100,
     height: 100,
     paddingHorizontal: 10,
     justifyContent: 'center',

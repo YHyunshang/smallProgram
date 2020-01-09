@@ -13,7 +13,7 @@ import {
 } from '@const/resources'
 import { transPenny } from '@utils/FormatUtil'
 import Tag from '@components/business/Content/Tag'
-import styles from './ProductSection.styles'
+import styles from './styles'
 import LimitTimeBuyBar from '../LimitTimeBuyBar'
 
 export interface ProductSectionProps {
@@ -58,7 +58,7 @@ const ProductSection: React.FunctionComponent<ProductSectionProps> = ({
   const soldRatio = Number(activityInfo.salesRatio.replace('%', ''))
 
   return (
-    <View style={styles.container}>
+    <>
       <Carousel images={sliders} />
 
       <LimitTimeBuyBar
@@ -87,13 +87,18 @@ const ProductSection: React.FunctionComponent<ProductSectionProps> = ({
             {isNextDayArrive && (
               <FastImage
                 source={iconDeliveryNextDay}
-                style={{ width: 38, height: 16, marginRight: 5 }}
+                style={[
+                  styles.tagItem,
+                  { width: 38, height: 16, marginRight: 5 },
+                ]}
               />
             )}
             {labels.map(ele => (
-              <Tag key={ele} backgroundColor="#FFDED9" color="#FF3914">
-                {ele}
-              </Tag>
+              <View style={styles.tagItem}>
+                <Tag key={ele} backgroundColor="#FFDED9" color="#FF3914">
+                  {ele}
+                </Tag>
+              </View>
             ))}
           </View>
         )}
@@ -126,7 +131,7 @@ const ProductSection: React.FunctionComponent<ProductSectionProps> = ({
           )}
         </View>
       </View>
-    </View>
+    </>
   )
 }
 

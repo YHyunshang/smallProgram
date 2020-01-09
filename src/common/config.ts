@@ -16,3 +16,9 @@ export const WXAppId = 'wx3e5bc65c8d751e70'
 // 默认商品缩略图
 export const ProductThumbnail =
   'http://static-yh.yonghui.cn/app/assets/xszt-RN/placeholder-product.png'
+
+// 分享H5落地页域名
+export const ShareH5 = {
+  test: 'http://share-test.yonghui.cn',
+  prod: 'http://share.yonghui.cn',
+}

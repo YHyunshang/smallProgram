@@ -8,6 +8,7 @@ import {
   Product,
   ProductDeliveryType,
   ProductType,
+  ShareChannel,
 } from '@common/typings'
 import uniqBy from 'lodash/uniqBy'
 import {
@@ -27,16 +28,11 @@ import { track } from '@utils/tracking'
 import PageContainer from './components/PageContainer'
 import ShareWrapper from './components/ShareWrapper'
 import memoized from 'memoize-one'
-import {
-  LimitTimeBuy as ProductSectionLimitTimeBuy,
-  Normal as ProductSectionNormal,
-  PreSale as ProductSectionPreSale,
-} from './components/ProductSection'
+import ProductSection from './components/ProductSection'
 import DetailSection from './components/DetailSection.PreSale'
 import { placeholderProduct } from '@const/resources'
-import SimilarProducts from './components/SimilarProducts'
 import { loadRatioImage } from '@utils/img'
-import {RouteContext} from "@utils/contextes";
+import { RouteContext } from "@utils/contextes";
 
 interface InitialProductData extends BaseObj {
   type?: ProductType // 商品类型
@@ -51,6 +47,7 @@ export interface PageProps {
 interface PageState {
   productDetail: BaseObj // 商品详情数据
   similarProducts: Product[] // 相似商品
+  posterLoading: boolean
   poster: string // 商品海报
   shareWrapperVis: boolean // 分享 wrapper 是否可见
   routeName: string
@@ -93,6 +90,7 @@ export default class Page extends React.Component<PageProps, PageState> {
     this.state = {
       productDetail: {},
       similarProducts: [],
+      posterLoading: false,
       poster: '',
       shareWrapperVis: false,
       routeName: '商详页',
@@ -143,24 +141,6 @@ export default class Page extends React.Component<PageProps, PageState> {
         present_price: transPenny(detailInfo.promotionPrice || detailInfo.price),
         product_spec: detailInfo.productSpecific,
       })
-
-    // get poster
-    const priceOnPoster = detailInfo.promotionPrice || detailInfo.price
-    let thumbnail = detailInfo.mainUrl
-    if (!thumbnail) {
-      const firstImgInSlider = sliderInfo.find(
-        ele => ele.fileType === 0 && ele.url
-      )
-      thumbnail = firstImgInSlider ? firstImgInSlider.url : ProductThumbnail
-    }
-    const { result: poster } = await getPoster({
-      name: detailInfo.productName,
-      price: `¥ ${transPenny(priceOnPoster)}`,
-      code: detailInfo.productCode,
-      storeCode: detailInfo.storeCode,
-      thumbnail,
-    })
-    this.setState({ poster })
   }
 
   formatSimilarProducts = (
@@ -229,6 +209,34 @@ export default class Page extends React.Component<PageProps, PageState> {
     }
   }
 
+  requestPoster = async () => {
+    const { productDetail: product = {} } = this.state
+    const detailInfo = product.resChannelStoreProductVO || {} // 商详信息
+    const sliderInfo = product.productSliderImagesResponseVOList || {} // 轮播图
+    const thumbnailInfo = product.productImagesResponseVOList || [] // 主图信息
+
+    const priceOnPoster = detailInfo.promotionPrice || detailInfo.price
+    let thumbnail: string
+    if (thumbnailInfo.length > 0) {
+      const thumbnailObj = thumbnailInfo.find(ele => ele.fileType === 0 && !!ele.url)
+      if (thumbnailObj) thumbnail = thumbnailObj.url
+    }
+    if (!thumbnail) {
+      const firstImgInSlider = sliderInfo.find(
+        ele => ele.fileType === 0 && ele.url
+      )
+      thumbnail = firstImgInSlider ? firstImgInSlider.url : ProductThumbnail
+    }
+    const { result: poster } = await getPoster({
+      name: detailInfo.productName,
+      price: `¥ ${transPenny(priceOnPoster)}`,
+      code: detailInfo.productCode,
+      storeCode: detailInfo.storeCode,
+      thumbnail,
+    })
+    return poster
+  }
+
   toggleShareVis = (visible: boolean) => {
     if (visible) {
       toggleGoodsDetailCartBarVis(false)
@@ -265,72 +273,39 @@ export default class Page extends React.Component<PageProps, PageState> {
     }
   )
 
-  onLimitTimBuyStatusChange = (
-    status: ActivityStatus,
-    oldStatus: ActivityStatus
-  ) => {
-    status === ActivityStatus.Expired && this.init()
+  // 活动状态变化
+  onActivityStatusChange = (type: ProductType, status: ActivityStatus, oldStatus: ActivityStatus) => {
+    if (type === ProductType.PreSale) { // 预售
+      setNativeBtmCart(status !== ActivityStatus.Processing)
+    } else if (type === ProductType.LimitTimeBuy) { // 限时抢购
+      status === ActivityStatus.Expired && this.init()
+    }
   }
 
-  onPreSaleStatusChange = (status: ActivityStatus) => {
-    setNativeBtmCart(status !== ActivityStatus.Processing)
-  }
-
-  renderProductSection = () => {
-    const { initialData } = this.props
-    const { productDetail, similarProducts } = this.state
-    const detailData = productDetail.resChannelStoreProductVO || {}
-    const productType = (detailData.productCode
-    ? detailData.isAdvanceSale === 1
-    : initialData.type === ProductType.PreSale)
-      ? ProductType.PreSale
-      : (detailData.productActivityLabel || {}).promotionType === 5
-      ? ProductType.LimitTimeBuy
-      : ProductType.Normal
-
-    switch (productType) {
-      case ProductType.LimitTimeBuy:
-        return (
-          <>
-            <ProductSectionLimitTimeBuy
-              productData={productDetail}
-              initialData={initialData}
-              onStatusChange={this.onLimitTimBuyStatusChange}
-            />
-            {similarProducts.length > 0 && (
-              <SimilarProducts products={similarProducts} />
-            )}
-          </>
-        )
-      case ProductType.PreSale:
-        return (
-          <ProductSectionPreSale
-            productData={productDetail}
-            initialData={initialData}
-            onActivityStatusChange={this.onPreSaleStatusChange}
-          />
-        )
-      default:
-        return (
-          <>
-            <ProductSectionNormal
-              productData={productDetail}
-              initialData={initialData}
-            />
-            {similarProducts.length > 0 && (
-              <SimilarProducts products={similarProducts} />
-            )}
-          </>
-        )
+  onSelectShareChannel = (channel: ShareChannel) => {
+    if (channel === ShareChannel.Poster) {
+      if (this.state.poster) return
+      this.setState({ posterLoading: true })
+      this.requestPoster()
+        .then(poster => this.setState({ poster }))
+        .finally(() => this.setState({ posterLoading: false }))
     }
   }
 
   renderTabContent = (tabContent, index) => {
-    const { productDetail } = this.state
+    const { productDetail, similarProducts } = this.state
+    const { initialData } = this.props
 
     switch (index) {
       case 0:
-        return this.renderProductSection()
+        return (
+          <ProductSection
+            initialData={initialData}
+            product={productDetail}
+            similarProducts={similarProducts}
+            onStatusChange={this.onActivityStatusChange}
+          />
+        )
       case 1:
       default:
         return <DetailSection productData={productDetail} />
@@ -357,6 +332,7 @@ export default class Page extends React.Component<PageProps, PageState> {
           product={productInfoForWXFriendsSharing}
           poster={poster}
           onClose={() => this.toggleShareVis(false)}
+          onSelect={this.onSelectShareChannel}
           afterVisibleAnimation={this.afterShareVisAnimation}
         />
       </RouteContext.Provider>

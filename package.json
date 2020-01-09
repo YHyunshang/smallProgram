@@ -7,7 +7,7 @@
     "clean": "rm -rf dist && mkdir dist",
     "bundle-android": "rm -rf dist/dist-android dist/dist-android.zip && mkdir -p dist/dist-android && react-native bundle --entry-file index.js --bundle-output dist/dist-android/index.jsbundle --platform android --assets-dest dist/dist-android --dev false && cd dist && zip -r dist-android.zip dist-android",
     "bundle-ios": "rm -rf dist/dist-ios dist/dist-ios.zip && mkdir -p dist/dist-ios && react-native bundle --entry-file index.js --bundle-output dist/dist-ios/index.jsbundle  --platform ios --assets-dest dist/dist-ios --dev false && cd dist && zip -r dist-ios.zip dist-ios",
-    "bundle": "npm run bundle-ios && npm run bundle-android",
+    "bundle": "npm run bundle-ios & npm run bundle-android",
     "lint": "eslint . --fix --format=node_modules/eslint-formatter-pretty --quiet"
   },
   "dependencies": {
@@ -42,6 +42,7 @@
     "babel-eslint": "^10.0.2",
     "babel-jest": "24.8.0",
     "babel-plugin-module-resolver": "^3.2.0",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "console": "^0.7.2",
     "eslint": "^6.1.0",
     "eslint-config-airbnb-base": "^13.2.0",
