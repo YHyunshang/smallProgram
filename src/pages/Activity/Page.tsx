@@ -10,7 +10,7 @@ import ProductGrid from '@components/business/Content/ProductGrid'
 import ProductSwiper from '@components/business/Content/ProductSwiper'
 import Box from '@components/business/Content/Box'
 import Divider from '@components/business/Content/Divider'
-import {FlatList, RefreshControl, View} from 'react-native'
+import { FlatList, RefreshControl, View } from 'react-native'
 import { Native } from '@utils'
 import Tab from './components/Tab'
 import Footer from './components/Footer'
@@ -18,9 +18,8 @@ import Empty from './components/Empty'
 import TopicActivity from './components/TopicActivity/TopicActivity'
 import AdTitle from '@components/business/Content/AdTitle'
 import Loading from '../../components/common/Loading'
-import withHistory from "@HOC/withHistory";
-import History from "@utils/history";
-import theme from "@theme";
+import theme from '@theme'
+import { RouteContext } from '@utils/contextes'
 
 interface Props {
   activityCode: string // 活动编码
@@ -43,10 +42,9 @@ interface State {
     amount: number
     count: number
   }
+  pageTitle: string
 }
 
-// @ts-ignore: hoc can wrap class-styled components
-@withHistory({ path: '活动页', name: '活动页' })
 export default class Page extends React.Component<Props, State> {
   constructor(props) {
     super(props)
@@ -62,6 +60,7 @@ export default class Page extends React.Component<Props, State> {
         amount: 0,
         count: 0,
       },
+      pageTitle: '',
     }
   }
 
@@ -101,11 +100,12 @@ export default class Page extends React.Component<Props, State> {
       currentTabKey: '',
       tabList: result.map(item => ({ key: item.id, label: item.showName })),
       tabContentMap: {},
+      pageTitle: '优选商品',
     }
     if (result.length > 0) {
       const tab = result[0]
       Native.setTitle(tab.pageName || '优选商品')
-      History.updateCur({ name: tab.pageName || '优选商品' })
+      nextState.pageTitle = tab.pageName || '优选商品'
       nextState.currentTabKey = tab.id
       nextState.tabContentMap = {
         [tab.id]: this.floorDataFormatter(tab.templateVOList),
@@ -162,7 +162,7 @@ export default class Page extends React.Component<Props, State> {
             data: floor.templateDetailVOList.map(ele => ({
               key: ele.id,
               image: ele.imgUrl,
-              link: CMSServices.formatLink(ele),
+              link: CMSServices.formatLink(ele, shopCode),
             })),
           },
         })
@@ -174,10 +174,14 @@ export default class Page extends React.Component<Props, State> {
             component: AdTitle,
             props: {
               children: floor.title,
-              link: CMSServices.formatLink({
-                linkType: floor.titleLinkType,
-                link: floor.titleLink,
-              }),
+              link: CMSServices.formatLink(
+                {
+                  linkType: floor.titleLinkType,
+                  link: floor.titleLink,
+                },
+                shopCode
+              ),
+              moreVisible: floor.isMore,
             },
           })
         }
@@ -189,7 +193,7 @@ export default class Page extends React.Component<Props, State> {
             component: AdSingle,
             props: {
               image: imgObj.imgUrl,
-              link: CMSServices.formatLink(imgObj),
+              link: CMSServices.formatLink(imgObj, shopCode),
             },
           })
         } else if (floor.subType === 2) {
@@ -200,7 +204,7 @@ export default class Page extends React.Component<Props, State> {
             props: {
               data: (floor.templateDetailVOList || []).map(ele => ({
                 image: ele.imgUrl,
-                link: CMSServices.formatLink(ele),
+                link: CMSServices.formatLink(ele, shopCode),
               })),
             },
           })
@@ -212,7 +216,7 @@ export default class Page extends React.Component<Props, State> {
             props: {
               data: floor.templateDetailVOList.slice(0, 2).map(ele => ({
                 image: ele.imgUrl,
-                link: CMSServices.formatLink(ele),
+                link: CMSServices.formatLink(ele, shopCode),
               })),
             },
           })
@@ -317,41 +321,44 @@ export default class Page extends React.Component<Props, State> {
     const {
       cart: { amount, count },
       loading,
+      pageTitle,
     } = this.state
     const flatData = this.flatDataFormatter()
     const stickyHeaderIndices = flatData.findIndex(ele => ele.component === Tab)
 
     return (
-      <View style={styles.container}>
-        <FlatList
-          style={styles.flatList}
-          data={flatData}
-          renderItem={this.renderFlatItem}
-          keyExtractor={item => `${item.key}`}
-          showsVerticalScrollIndicator={false}
-          stickyHeaderIndices={
-            stickyHeaderIndices === -1 ? [] : [stickyHeaderIndices]
-          }
-          removeClippedSubviews={false}
-          refreshControl={
-            <RefreshControl
-              refreshing={loading && flatData.length > 0}
-              onRefresh={this.componentDidMount.bind(this)}
-              colors={[theme.refreshColor]}
-              tintColor={theme.refreshColor}
-            />
-          }
-          ListEmptyComponent={
-            loading ? null : (
-              <Empty type={1} textColor1="#4A4A4A" textColor2="#A4A4B4" />
-            )
-          }
-        />
-        <View style={styles.footerBox}>
-          <Footer amount={amount} cartCount={count} />
+      <RouteContext.Provider value={{ path: '活动页', name: pageTitle }}>
+        <View style={styles.container}>
+          <FlatList
+            style={styles.flatList}
+            data={flatData}
+            renderItem={this.renderFlatItem}
+            keyExtractor={item => `${item.key}`}
+            showsVerticalScrollIndicator={false}
+            stickyHeaderIndices={
+              stickyHeaderIndices === -1 ? [] : [stickyHeaderIndices]
+            }
+            removeClippedSubviews={false}
+            refreshControl={
+              <RefreshControl
+                refreshing={loading && flatData.length > 0}
+                onRefresh={this.componentDidMount.bind(this)}
+                colors={[theme.refreshColor]}
+                tintColor={theme.refreshColor}
+              />
+            }
+            ListEmptyComponent={
+              loading ? null : (
+                <Empty type={1} textColor1="#4A4A4A" textColor2="#A4A4B4" />
+              )
+            }
+          />
+          <View style={styles.footerBox}>
+            <Footer amount={amount} cartCount={count} />
+          </View>
+          <Loading ref={this.loadingRef} />
         </View>
-        <Loading ref={this.loadingRef} />
-      </View>
+      </RouteContext.Provider>
     )
   }
 }
