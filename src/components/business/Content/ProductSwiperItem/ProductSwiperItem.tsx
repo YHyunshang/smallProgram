@@ -10,6 +10,7 @@ import FastImage from 'react-native-fast-image'
 import withProductDetailNav from '../HOC/withProductDetailNav'
 import GlobalTheme from '@theme'
 import { iconDeliveryNextDay } from '@const/resources'
+import { transPenny } from '@utils/FormatUtil'
 
 interface Props extends Product {
   disableAdd: boolean
@@ -71,20 +72,20 @@ function ProductSwiperItem({
               </View>
             )}
           </View>
-          <View>
-            <Text style={styles.name} numberOfLines={1} ellipsizeMode="tail">
-              {name}
-            </Text>
-          </View>
+          <Text style={styles.name} numberOfLines={1} ellipsizeMode="tail">
+            {name}
+          </Text>
           <Text style={styles.priceRow}>
             <Text style={styles.currentPrice}>
               <Text style={styles.pricePrefix}>¥ </Text>
-              {price / 100}
+              {transPenny(price)}
             </Text>
             {slashedPrice && (
               <>
-                <Text>&nbsp;&nbsp;</Text>
-                <Text style={styles.slashedPrice}>¥{slashedPrice / 100}</Text>
+                <Text>&nbsp;</Text>
+                <Text style={styles.slashedPrice}>
+                  ¥{transPenny(slashedPrice)}
+                </Text>
               </>
             )}
           </Text>

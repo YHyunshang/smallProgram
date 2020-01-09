@@ -54,8 +54,8 @@ export default StyleSheet.create({
     fontSize: 13,
     fontWeight: '400',
     color: theme.black,
-    height: 18,
-    marginBottom: 5,
+    lineHeight: 18,
+    marginBottom: 2,
     textAlign: 'center',
   },
 
@@ -64,14 +64,13 @@ export default StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'center',
     textAlign: 'center',
-    paddingBottom: 30,
+    paddingBottom: 28,
   },
   currentPrice: {
     color: theme.orange,
     fontFamily: theme.priceFFPrimary,
     fontSize: 22,
     fontWeight: '600',
-    marginRight: 5,
     textAlignVertical: 'bottom',
   },
   pricePrefix: {
@@ -82,7 +81,6 @@ export default StyleSheet.create({
     fontWeight: '400',
     fontSize: 11,
     textDecorationLine: 'line-through',
-    lineHeight: 22,
     textAlignVertical: 'bottom',
   },
 
