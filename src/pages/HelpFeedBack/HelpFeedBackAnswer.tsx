@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors  : yuwen.liu
- * @LastEditTime : 2020-01-07 17:12:53
+ * @LastEditTime : 2020-01-09 18:16:13
  */
 import * as React from 'react'
 import { ScrollView, View, Text, NativeModules } from 'react-native'
@@ -18,7 +18,6 @@ const rnAppModule = NativeModules.RnAppModule // 原生模块
 
 interface Props {
   activityCode: string // 活动编码
-  type?: string //问题类型
 }
 
 interface State {
@@ -35,7 +34,6 @@ export default class HelpFeedBackPage extends React.Component<Props, State> {
   }
   static propTypes = {
     activityCode: PropTypes.string, // 活动编码
-    type: PropTypes.string, // 标题类型
   }
   componentDidMount() {
     this.getAnswerList()
@@ -63,9 +61,8 @@ export default class HelpFeedBackPage extends React.Component<Props, State> {
       })
   }
   render() {
-    const { type } = this.props
     const { answerList } = this.state
-    Native.setTitle(type)
+    // Native.setTitle(type)
     const answerItems = answerList
       ? answerList.map(({ question, answer }, index) => (
           <View

@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors  : yuwen.liu
- * @LastEditTime : 2020-01-07 17:35:52
+ * @LastEditTime : 2020-01-09 18:16:22
  */
 import * as React from 'react'
 import {
@@ -45,14 +45,12 @@ export default class HelpFeedBackPage extends React.Component<Props, State> {
    * @description: 跳转到帮助与反馈问题项
    */
   handleJumpToFeedBackItem(id, questionTypeName) {
-    NativeModules.HomeNativeManager.pushToNewPage(
-      '1',
-      'RNHelpFeedBackAnswer',
-      JSON.stringify({
-        title: String(questionTypeName),
-        params: { activityCode: String(id), type: String(questionTypeName) },
-      })
-    )
+    Native.navigateTo({
+      type: Native.NavPageType.RN,
+      uri: 'RNHelpFeedBackAnswer',
+      params: { activityCode: String(id)},
+      title: String(questionTypeName),
+    })
   }
   /**
    * @description: 查询问题类型列表
@@ -101,9 +99,9 @@ export default class HelpFeedBackPage extends React.Component<Props, State> {
     return (
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View>
+          <>
             <Text style={styles.basicQuestionTitle}>常见问题</Text>
-          </View>
+          </>
           {questionItems}
         </ScrollView>
         <Loading ref={this.loadingRef} />
