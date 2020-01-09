@@ -62,7 +62,7 @@ export default function TopicActivity({
     disableSync: true,
     shopCode,
   }))
-  const showBar = tabVos[0].showBar || false //是否展示左边侧栏
+  const showBar = type === 9 ? true : tabVos[0].showBar || false // 是否展示左边侧栏，酒专题侧边栏必现
   const topTabList =
     tabVos && tabVos.map(tab => ({ key: tab.id, label: tab.tabName })) //顶部tab栏数据
   const initLeftTabList = tabVos[0].categoryList //初始化左边tab栏的数据
@@ -111,6 +111,8 @@ export default function TopicActivity({
     setCurrentShowBar(
       newLeftTabList[0].subType === 3
         ? false
+        : type === 9
+        ? true
         : newLeftTabList[0].showBar || false
     )
     setCurrentColumnNumber(newLeftTabList[0].subType)
