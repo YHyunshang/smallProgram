@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styles from './ProductFilter.styles'
-import { View, Image, Text, TouchableOpacity } from 'react-native'
+import { View, Image, Text, TouchableOpacity, Alert } from 'react-native'
 import {
   iconChecked,
   iconSortAsc,
@@ -59,47 +59,49 @@ export default function ProductFilter({ filters, onFilterChange }: Props) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.filterBtn}
-        activeOpacity={0.95}
-        onPress={() => {
-          onFilterChange({
-            ...filters,
-            storage:
-              storage === StorageChoices.All
-                ? StorageChoices.InStore
-                : StorageChoices.All,
-          })
-        }}
-      >
-        <View style={styles.filterBox}>
-          <Text
-            style={[
-              styles.filterText,
-              filters.storage === StorageChoices.InStore &&
-                styles.filterTextActive,
-            ]}
-          >
-            有货
-          </Text>
-          <Image style={styles.filterImg} source={storageFilterImg}></Image>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.filterBtn}
-        activeOpacity={0.95}
-        onPress={() =>
-          onFilterChange({
-            ...filters,
-            priceSorter: priceSorter === Sort.ASC ? Sort.DESC : Sort.ASC,
-          })
-        }
-      >
-        <View style={styles.filterBox}>
-          <Text style={styles.filterText}>价格</Text>
-          <Image style={styles.sortImg} source={sortImg}></Image>
-        </View>
-      </TouchableOpacity>
+      <View style={styles.filterBtn}>
+        <TouchableOpacity
+          activeOpacity={0.95}
+          onPress={() =>
+            onFilterChange({
+              ...filters,
+              storage:
+                storage === StorageChoices.All
+                  ? StorageChoices.InStore
+                  : StorageChoices.All,
+            })
+          }
+        >
+          <View style={styles.filterBox}>
+            <Text
+              style={[
+                styles.filterText,
+                filters.storage === StorageChoices.InStore &&
+                  styles.filterTextActive,
+              ]}
+            >
+              有货
+            </Text>
+            <Image style={styles.filterImg} source={storageFilterImg}></Image>
+          </View>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.filterBtn}>
+        <TouchableOpacity
+          activeOpacity={0.95}
+          onPress={() =>
+            onFilterChange({
+              ...filters,
+              priceSorter: priceSorter === Sort.ASC ? Sort.DESC : Sort.ASC,
+            })
+          }
+        >
+          <View style={styles.filterBox}>
+            <Text style={styles.filterText}>价格</Text>
+            <Image style={styles.sortImg} source={sortImg}></Image>
+          </View>
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }

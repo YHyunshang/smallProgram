@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-09-19 09:35:28
  * @Last Modified by: 李华良
- * @Last Modified time: 2020-01-09 18:49:30
+ * @Last Modified time: 2020-01-09 22:12:18
  */
 import * as React from 'react'
 import { View, Animated, Dimensions, Alert } from 'react-native'

@@ -1,5 +1,5 @@
 /*
- * @Descripttion: 
+ * @Descripttion:
  * @Author: yuwen.liu
  * @Date: 2019-10-14 10:30:28
  * @LastEditors: yuwen.liu
@@ -12,7 +12,6 @@ export default StyleSheet.create({
   container: {
     flexDirection: 'row',
     backgroundColor: '#FFF',
-    height: 37,
     alignItems: 'center',
   },
   filterBtn: {
@@ -25,6 +24,7 @@ export default StyleSheet.create({
     // paddingHorizontal: 76,
     borderBottomColor: '#EBEBEB',
     borderBottomWidth: 0.5,
+    height: 37,
     flex: 1,
   },
   filterText: {

@@ -151,9 +151,13 @@ export default class CategoryScene extends React.PureComponent<Props> {
     const flatData = this.calcFlatData(categories, filter, products)
 
     const categoryFloorHeight = this.calcCategoryFloorHeight()
+
     const floatFilterOpacity = isiOS
       ? animatedVal.interpolate({
-          inputRange: [categoryFloorHeight, categoryFloorHeight + 0.1],
+          inputRange: [
+            categories.length <= 5 ? 40 : 110,
+            (categories.length <= 5 ? 40 : 110) + 0.1,
+          ],
           outputRange: [0, 1],
           extrapolate: 'clamp',
         })
