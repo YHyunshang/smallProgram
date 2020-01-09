@@ -290,6 +290,7 @@ export default class TabBar extends React.PureComponent<Props, State> {
             {
               height: backgroundHeight,
               opacity: grayBgOpacity,
+              transform: [{ translateY: whiteBgTranslateY }],
             },
           ]}
         />

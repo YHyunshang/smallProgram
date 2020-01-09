@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styles from './ProductFilter.styles'
-import { View, Image, Text, TouchableOpacity, Alert } from 'react-native'
+import { View, Image, Text, TouchableOpacity } from 'react-native'
 import {
   iconChecked,
   iconSortAsc,
