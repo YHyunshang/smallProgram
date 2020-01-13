@@ -37,13 +37,6 @@ export default function Box({ data, columnNumber, maxRow = 2 }: Props) {
 
   const [showAll, setShowAll] = React.useState(false)
 
-  // if (Platform.OS === 'android') {
-  //   if (UIManager.setLayoutAnimationEnabledExperimental) {
-  //     UIManager.setLayoutAnimationEnabledExperimental(true)
-  //   }
-  // }
-  // LayoutAnimation.easeInEaseOut()
-
   return (
     <View style={styles.container}>
       {gridData.slice(0, maxRow).map((row, idx) => (
