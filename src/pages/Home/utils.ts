@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-09-26 17:48:52
  * @Last Modified by: 李华良
- * @Last Modified time: 2020-01-13 18:21:52
+ * @Last Modified time: 2020-01-13 18:29:46
  */
 import * as React from 'react'
 import { CMSServices } from '@services'
@@ -199,7 +199,10 @@ export function formatFloorData(
         result.push({
           key: floor.id,
           component,
-          wrapperStyle: { paddingHorizontal: 0 },
+          wrapperStyle: {
+            paddingHorizontal: 0,
+            marginBottom: component === ProductSwiper ? 10 : 0,
+          },
           props: {
             products: floor.templateDetailVOList.map(ele => ({
               ...CMSServices.formatProduct(ele),

@@ -16,6 +16,17 @@ export default StyleSheet.create({
     height: 97,
   },
 
+  thumbnailPlaceholderBox: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 1,
+  },
+  thumbnailPlaceholder: {
+    width: 97,
+    height: 97,
+  },
+
   tagRow: {
     position: 'absolute',
     top: 0,
