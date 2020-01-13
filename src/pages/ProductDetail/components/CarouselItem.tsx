@@ -2,7 +2,7 @@ import * as React from 'react'
 import { View, Animated, Easing, Image } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import styles from './CarouselItem.styles'
-import { placeholderProductCarousel } from '@const/resources'
+import { placeholder } from '@const/resources'
 
 export interface CarouselItemProps {
   image: string
@@ -38,7 +38,7 @@ const CarouselItem: React.FunctionComponent<CarouselItemProps> = ({
         >
           <FastImage
             style={styles.placeholderImg}
-            source={placeholderProductCarousel}
+            source={placeholder}
             resizeMode="contain"
           />
         </Animated.View>
