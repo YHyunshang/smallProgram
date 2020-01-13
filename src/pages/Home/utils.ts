@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-09-26 17:48:52
  * @Last Modified by: 李华良
- * @Last Modified time: 2020-01-13 18:29:46
+ * @Last Modified time: 2020-01-13 18:39:18
  */
 import * as React from 'react'
 import { CMSServices } from '@services'
@@ -141,14 +141,11 @@ export function formatFloorData(
           key: floor.id,
           component: AdSingle,
           wrapperStyle: [
-            {
-              marginHorizontal:
-                currentTabIdx === 0 && imgObj.name !== '查看更多' ? 10 : 0,
-            },
             currentTabIdx === 0 && {
               borderRadius: 5,
               overflow: 'hidden',
             },
+            { marginBottom: imgObj.name === '查看更多' ? 10 : 0 },
           ],
           props: {
             image: imgObj.imgUrl,

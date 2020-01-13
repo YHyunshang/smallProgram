@@ -10,13 +10,13 @@ export default StyleSheet.create({
   productBox: {
     position: 'relative',
     paddingVertical: 15,
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
   },
   fakeBorder: {
     position: 'absolute',
     bottom: 0,
-    left: 20,
-    right: 20,
+    left: 15,
+    right: 15,
     height: 0.5,
     backgroundColor: '#EEE',
   },
