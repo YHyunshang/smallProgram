@@ -92,3 +92,4 @@ export const iconPoster = require('@img/icon-poster.png')
 export const placeholderHeadBanner = require('@img/placeholder-head-banner.png')
 
 export const placeholder = require('@img/placeholder.png')
+export const placeholderProductThumbnail = require('@img/placeholder-productThumbnail.png')

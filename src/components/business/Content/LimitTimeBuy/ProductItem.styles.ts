@@ -1,7 +1,7 @@
 /**
  * Created by 李华良 on 2019-09-29
  */
-import {StyleSheet} from "react-native";
+import { StyleSheet } from 'react-native'
 import theme from '@theme'
 
 export default StyleSheet.create({
@@ -9,12 +9,29 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  thumbnail: {
-    width: 50,
-    height: 50,
+
+  thumbnailBox: {
+    position: 'relative',
   },
+  thumbnail: {
+    width: 60,
+    height: 60,
+  },
+
+  thumbnailPlaceholderBox: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 1,
+    backgroundColor: '#FBFBFB',
+  },
+  thumbnailPlaceholder: {
+    width: 60,
+    height: 60,
+  },
+
   detailBox: {
-    paddingLeft: 15,
+    paddingLeft: 10,
     flex: 1,
     height: 60,
     justifyContent: 'space-between',
@@ -49,5 +66,5 @@ export default StyleSheet.create({
     textDecorationLine: 'line-through',
     textAlignVertical: 'bottom',
     paddingBottom: 1.5,
-  }
+  },
 })
