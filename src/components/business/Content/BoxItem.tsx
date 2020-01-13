@@ -3,13 +3,14 @@
  * Created by 李华良 on 2019-07-04
  */
 import * as React from 'react'
-import { View, Text, TouchableWithoutFeedback } from 'react-native'
+import { View, Text, TouchableWithoutFeedback, Animated } from 'react-native'
 import { Native, Img } from '@utils'
 import styles from './BoxItem.styles'
 import { placeholderBox } from '@const/resources'
 import FastImage from 'react-native-fast-image'
 import { track } from '@utils/tracking'
 import { RouteContext, Route } from '@utils/contextes'
+import { usePlaceholder } from '@utils/hooks'
 
 export interface Props {
   link: Native.Navigation // 跳转链接
@@ -19,6 +20,7 @@ export interface Props {
 
 export default function BoxItem({ link, image, title }: Props) {
   const fitImg = image ? { uri: Img.loadRatioImage(image, 52) } : placeholderBox
+  const [placeholderVis, placeholderOpacityStyle, onLoad] = usePlaceholder()
 
   const renderer = (ctxVal: Route): React.ReactNode => {
     const onPress = () => {
@@ -38,8 +40,20 @@ export default function BoxItem({ link, image, title }: Props) {
           <FastImage
             style={styles.boxImg}
             source={fitImg}
-            resizeMode={FastImage.resizeMode.contain}
+            resizeMode="contain"
+            onLoad={onLoad}
           />
+          {placeholderVis && (
+            <Animated.View
+              style={[styles.placeholderBox, placeholderOpacityStyle]}
+            >
+              <FastImage
+                style={[styles.placeholder]}
+                source={placeholderBox}
+                resizeMode="contain"
+              />
+            </Animated.View>
+          )}
           <Text
             style={styles.boxText}
             selectable={false}

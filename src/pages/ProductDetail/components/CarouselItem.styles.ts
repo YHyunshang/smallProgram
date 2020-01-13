@@ -1,4 +1,3 @@
-import { placeholderBox } from './../../../constants/resources'
 import { WindowWidth } from './../../../utils/global'
 import { StyleSheet } from 'react-native'
 
