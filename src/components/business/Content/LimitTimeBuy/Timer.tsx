@@ -2,9 +2,10 @@
  * Created by 李华良 on 2019-09-29
  */
 import * as React from 'react'
-import {View, Text} from 'react-native'
+import { View, Text } from 'react-native'
 import styles from './Timer.styles'
-import {padTimeByUnit, TimeUnit} from "./utils";
+import { transMilliseconds } from '@utils/FormatUtil'
+import TimePad from './TimePad'
 
 interface Props {
   title: string
@@ -13,28 +14,21 @@ interface Props {
 }
 
 export default function Timer({ title, duration, millisecondVis }: Props) {
+  const [hour, minutes, seconds, milliseconds] = transMilliseconds(duration)
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
       {duration > 0 && (
         <React.Fragment>
-          <Text style={styles.timerText}>
-            {padTimeByUnit(duration, TimeUnit.Hour)}
-          </Text>
+          <TimePad>{hour}</TimePad>
           <Text style={styles.colon}>:</Text>
-          <Text style={styles.timerText}>
-            {padTimeByUnit(duration, TimeUnit.Min)}
-          </Text>
+          <TimePad>{minutes}</TimePad>
           <Text style={styles.colon}>:</Text>
-          <Text style={styles.timerText}>
-            {padTimeByUnit(duration, TimeUnit.Sec)}
-          </Text>
+          <TimePad>{seconds}</TimePad>
           {!!millisecondVis && (
             <React.Fragment>
               <Text style={styles.colon}>:</Text>
-              <Text style={[ styles.timerText, styles.timerTextMillisecond ]}>
-                {padTimeByUnit(duration, TimeUnit.MsH)}
-              </Text>
+              <TimePad color="#999">{milliseconds}</TimePad>
             </React.Fragment>
           )}
         </React.Fragment>
