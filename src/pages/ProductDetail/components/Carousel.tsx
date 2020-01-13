@@ -9,7 +9,7 @@ import Swiper from 'react-native-swiper'
 import memorize from 'memoize-one'
 import CarouselItem from './CarouselItem'
 import FastImage from 'react-native-fast-image'
-import { placeholderProductCarousel } from '@const/resources'
+import { placeholder } from '@const/resources'
 
 const loadFitImg = memorize(imgSrc => Img.loadRatioImage(imgSrc, Img.FullWidth))
 
@@ -60,7 +60,7 @@ const Carousel: React.FunctionComponent<CarouselProps> = ({ images = [] }) => {
         >
           <FastImage
             style={styles.placeholderImg}
-            source={placeholderProductCarousel}
+            source={placeholder}
             resizeMode="contain"
           />
         </Animated.View>
