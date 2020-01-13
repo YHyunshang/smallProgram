@@ -1,7 +1,7 @@
 /**
  * Created by 李华良 on 2019-09-29
  */
-import {Platform, StyleSheet} from "react-native";
+import { Platform, StyleSheet } from 'react-native'
 import theme from '@theme'
 
 export default StyleSheet.create({
@@ -11,26 +11,11 @@ export default StyleSheet.create({
   },
   title: {
     fontSize: 13,
-    paddingRight: 6
+    paddingRight: 6,
   },
   colon: {
     width: 5,
     textAlign: 'center',
     textAlignVertical: 'center',
   },
-  timerText: {
-    fontSize: 13,
-    fontFamily: theme.monospacedFont,
-    minWidth: 20,
-    lineHeight: 20,
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    color: theme.white,
-    backgroundColor: theme.black,
-    borderRadius: 3,
-    overflow: 'hidden',
-  },
-  timerTextMillisecond: {
-    backgroundColor: '#999'
-  }
 })

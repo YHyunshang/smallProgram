@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-09-26 17:48:52
  * @Last Modified by: 李华良
- * @Last Modified time: 2020-01-13 16:59:44
+ * @Last Modified time: 2020-01-13 18:21:52
  */
 import * as React from 'react'
 import { CMSServices } from '@services'
@@ -290,6 +290,7 @@ export function formatFloorData(
               .map(ele => CMSServices.formatProduct(ele)),
             onExpired: onLimitTimeBuyExpire,
           },
+          wrapperStyle: { marginBottom: 10 },
         })
       }
     }
