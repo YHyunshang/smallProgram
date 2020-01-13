@@ -3,14 +3,15 @@
  * Created by 李华良 on 2019-07-12
  */
 import * as React from 'react'
-import { TouchableWithoutFeedback, View } from 'react-native'
+import { TouchableWithoutFeedback, View, Animated, Image } from 'react-native'
 import styles from './AdSingle.styles'
 import { Native, Img } from '@utils'
 import FastImage from 'react-native-fast-image'
 import memorize from 'memoize-one'
 import { FitImg } from '@components'
-import { placeholderHeadBanner } from '@const/resources'
+import { placeholderHeadBanner, placeholder } from '@const/resources'
 import { WindowWidth } from '@utils/global'
+import { usePlaceholder } from '@utils/hooks'
 
 const loadRatioImage = memorize((img, width) => Img.loadRatioImage(img, width))
 
@@ -19,6 +20,8 @@ export interface Props {
   link: Native.Navigation // 跳转地址类型
   width?: number
   height?: number
+  initialWidth?: number // 初始宽，即初始占位，图片加载后以实际宽度为准
+  initialHeight?: number
 }
 
 const AdSingle: React.FunctionComponent<Props> = ({
@@ -26,32 +29,42 @@ const AdSingle: React.FunctionComponent<Props> = ({
   link,
   width,
   height,
+  initialWidth,
+  initialHeight,
 }) => {
   const fitImg = loadRatioImage(image, width || WindowWidth)
-  const hasPlaceholder: boolean = width > 0 && height > 0
-  const [placeholderVis, setPlaceholderVis] = React.useState(true)
-  React.useEffect(() => setPlaceholderVis(true), [fitImg])
+  const hasPlaceholder: boolean =
+    (width > 0 && height > 0) || (initialWidth > 0 && initialHeight > 0)
+  const [placeholderVis, placeholderOpacityStyle, onLoad] = usePlaceholder()
+
+  const containerStyle = [
+    styles.container,
+    initialWidth &&
+      initialHeight &&
+      placeholderVis && { width: initialWidth, initialHeight },
+  ]
+  const placeholderBoxStyle = [styles.placeholderBox, placeholderOpacityStyle]
 
   return (
-    <View style={styles.container}>
-      <TouchableWithoutFeedback onPress={() => Native.navigateTo(link)}>
-        <View>
-          <FitImg
-            style={[styles.image, { width, height }]}
-            source={{ uri: fitImg }}
-            resizeMode="contain"
-            onLoad={() => setPlaceholderVis(false)}
-          />
-          {hasPlaceholder && placeholderVis && (
-            <FastImage
-              style={[styles.placeholderImg, { width, height }]}
-              source={placeholderHeadBanner}
+    <TouchableWithoutFeedback onPress={() => Native.navigateTo(link)}>
+      <View style={containerStyle}>
+        <FitImg
+          style={[styles.image, { width, height }]}
+          source={{ uri: fitImg }}
+          resizeMode="contain"
+          onLoad={onLoad}
+        />
+        {hasPlaceholder && placeholderVis && (
+          <Animated.View style={placeholderBoxStyle}>
+            <Image
+              style={styles.placeholderImg}
+              source={placeholder}
               resizeMode="contain"
             />
-          )}
-        </View>
-      </TouchableWithoutFeedback>
-    </View>
+          </Animated.View>
+        )}
+      </View>
+    </TouchableWithoutFeedback>
   )
 }
 

@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-09-26 17:48:52
  * @Last Modified by: 李华良
- * @Last Modified time: 2020-01-09 18:48:15
+ * @Last Modified time: 2020-01-13 16:59:44
  */
 import * as React from 'react'
 import { CMSServices } from '@services'
@@ -20,6 +20,7 @@ import BoxC from '@components/business/Content/Box'
 import DividerC from '@components/business/Content/Divider'
 import LimitTimeBuy from '@components/business/Content/LimitTimeBuy'
 import { Global, Native } from '@utils'
+import { WindowWidth } from '@utils/global'
 
 const Carousel = React.memo(CarouselC)
 const AdTitle = React.memo(AdTitleC)
@@ -31,8 +32,6 @@ const Ad1v1 = React.memo(Ad1v1C)
 const Ad1v2 = React.memo(Ad1v2C)
 const Box = React.memo(BoxC)
 const Divider = React.memo(DividerC)
-
-const { WindowWidth } = Global
 
 export function formatFloorData(
   data: { [index: string]: any },
@@ -123,6 +122,21 @@ export function formatFloorData(
           i += 2
           continue
         }
+        const dimensionProps =
+          imgObj.name === '查看更多' || imgObj.name === '标题' // 查看更多、区位标题
+            ? {}
+            : i === 0 && currentTabIdx > 0 // 非首位 tab 的头图
+            ? { width: WindowWidth, height: WindowWidth / (375 / 144) }
+            : nextFloor && nextFloor.type === 3 && nextFloor.subType === 1 // 商品列表头图
+            ? {
+                initialWidth: WindowWidth,
+                initialHeight: WindowWidth / (375 / 118),
+              }
+            : {
+                // 通栏广告
+                initialWidth: WindowWidth,
+                initialHeight: WindowWidth / (375 / 108),
+              }
         result.push({
           key: floor.id,
           component: AdSingle,
@@ -142,11 +156,7 @@ export function formatFloorData(
               imgObj.name && imgObj.name.indexOf('茅台') != -1
                 ? CMSServices.mouTaiActivityLink(imgObj.name, shopCode)
                 : CMSServices.formatLink(imgObj, shopCode),
-            width: i === 0 && currentTabIdx > 0 ? WindowWidth : undefined,
-            height:
-              i === 0 && currentTabIdx > 0
-                ? WindowWidth / (375 / 144)
-                : undefined,
+            ...dimensionProps,
           },
         })
       } else if (floor.subType === 2) {
