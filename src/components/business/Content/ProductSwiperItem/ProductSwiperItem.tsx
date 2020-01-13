@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styles from './ProductSwiperItem.styles'
-import { Text, TouchableWithoutFeedback, View } from 'react-native'
+import { Text, TouchableWithoutFeedback, View, Animated } from 'react-native'
 import { Img } from '@utils'
 import withCartCountModify from '../HOC/withCountInCartModifier'
 import { Product, ProductDeliveryType } from '@common/typings'
@@ -9,8 +9,13 @@ import CountOperator from './CountOperator'
 import FastImage from 'react-native-fast-image'
 import withProductDetailNav from '../HOC/withProductDetailNav'
 import GlobalTheme from '@theme'
-import { iconDeliveryNextDay } from '@const/resources'
+import {
+  iconDeliveryNextDay,
+  placeholderProduct,
+  placeholderProductThumbnail,
+} from '@const/resources'
 import { transPenny } from '@utils/FormatUtil'
+import { usePlaceholder } from '@utils/hooks'
 
 interface Props extends Product {
   disableAdd: boolean
@@ -33,6 +38,7 @@ function ProductSwiperItem({
 }: Props) {
   const fitThumbnail = Img.loadRatioImage(thumbnail, 100)
   const navigateToProductDetail = getDetailNavigator(fitThumbnail)
+  const [placeholderVis, placeholderOpacityStyle, onLoad] = usePlaceholder()
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={navigateToProductDetail}>
@@ -41,8 +47,23 @@ function ProductSwiperItem({
             <FastImage
               style={styles.thumbnail}
               source={{ uri: fitThumbnail }}
-              resizeMode={FastImage.resizeMode.contain}
+              resizeMode="contain"
+              onLoad={onLoad}
             />
+            {placeholderVis && (
+              <Animated.View
+                style={[
+                  styles.thumbnailPlaceholderBox,
+                  placeholderOpacityStyle,
+                ]}
+              >
+                <FastImage
+                  style={styles.thumbnailPlaceholder}
+                  source={placeholderProductThumbnail}
+                  resizeMode="contain"
+                />
+              </Animated.View>
+            )}
 
             <View style={styles.tagRow}>
               {isPreSale ? (
