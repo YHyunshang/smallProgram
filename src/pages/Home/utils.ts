@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-09-26 17:48:52
  * @Last Modified by: 李华良
- * @Last Modified time: 2020-01-13 18:39:18
+ * @Last Modified time: 2020-01-14 10:59:12
  */
 import * as React from 'react'
 import { CMSServices } from '@services'
@@ -145,7 +145,15 @@ export function formatFloorData(
               borderRadius: 5,
               overflow: 'hidden',
             },
-            { marginBottom: imgObj.name === '查看更多' ? 10 : 0 },
+            imgObj.name === '查看更多' // 查看更多图片
+              ? { marginBottom: 10 }
+              : nextFloor && nextFloor.type === 3 && nextFloor.subType === 1 // 商品列表头图
+              ? {
+                  paddingTop: 15,
+                  paddingHorizontal: 10,
+                  backgroundColor: '#FFF',
+                }
+              : {},
           ],
           props: {
             image: imgObj.imgUrl,
@@ -161,7 +169,11 @@ export function formatFloorData(
         result.push({
           key: floor.id,
           component: Ad1v2,
-          wrapperStyle: { paddingHorizontal: currentTabIdx === 0 ? 15 : 0 },
+          wrapperStyle: {
+            backgroundColor: '#FFF',
+            marginBottom: 10,
+            paddingBottom: 10,
+          },
           props: {
             data: (floor.templateDetailVOList || []).map(ele => ({
               image: ele.imgUrl,
@@ -174,7 +186,11 @@ export function formatFloorData(
         result.push({
           key: floor.id,
           component: Ad1v1,
-          wrapperStyle: { paddingHorizontal: currentTabIdx === 0 ? 10 : 0 },
+          wrapperStyle: {
+            backgroundColor: '#FFF',
+            marginBottom: 10,
+            paddingBottom: 10,
+          },
           props: {
             data: floor.templateDetailVOList.slice(0, 2).map(ele => ({
               image: ele.imgUrl,
