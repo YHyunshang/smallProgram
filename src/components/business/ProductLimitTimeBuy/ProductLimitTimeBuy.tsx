@@ -70,15 +70,20 @@ function ProductLimitTimeBuy({
               resizeMode="contain"
               onLoad={onLoad}
             />
-            <Animated.View
-              style={[styles.thumbnailPlaceholderBox, placeholderOpacityStyle]}
-            >
-              <FastImage
-                style={[styles.thumbnailPlaceholder, thumbnailDim]}
-                source={placeholderProductThumbnail}
-                resizeMode="contain"
-              />
-            </Animated.View>
+            {placeholderVis && (
+              <Animated.View
+                style={[
+                  styles.thumbnailPlaceholderBox,
+                  placeholderOpacityStyle,
+                ]}
+              >
+                <FastImage
+                  style={[styles.thumbnailPlaceholder, thumbnailDim]}
+                  source={placeholderProductThumbnail}
+                  resizeMode="contain"
+                />
+              </Animated.View>
+            )}
             <View style={styles.productTagRow}>
               {productTags.slice(0, 2).map((tag, idx) => (
                 <Tag color={['#EF2F41', '#208DDC'][idx]} key={idx}>
