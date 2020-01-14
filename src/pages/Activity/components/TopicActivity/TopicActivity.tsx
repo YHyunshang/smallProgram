@@ -173,7 +173,7 @@ export default function TopicActivity({
     count,
     { result: { productNum, productCode } }
   ): void => {
-    afterModifyCount(count)
+    afterModifyCount(count, productCode)
     refreshBuyNum(productNum, productCode)
   }
   /**

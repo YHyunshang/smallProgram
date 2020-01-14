@@ -1,22 +1,12 @@
 import * as React from 'react'
 import styles from './Page.styles'
 import { CMSServices } from '@services'
-import Carousel from '@components/business/Content/Carousel'
-import AdSingle from '@components/business/Content/AdSingle'
-import Ad1v2 from '@components/business/Content/Ad1v2'
-import Ad1v1 from '@components/business/Content/Ad1v1'
-import ProductList from '@components/business/Content/ProductList'
-import ProductGrid from '@components/business/Content/ProductGrid'
-import ProductSwiper from '@components/business/Content/ProductSwiper'
-import Box from '@components/business/Content/Box'
-import Divider from '@components/business/Content/Divider'
 import { FlatList, RefreshControl, View } from 'react-native'
 import { Native } from '@utils'
 import Tab from './components/Tab'
 import Footer from './components/Footer'
 import Empty from './components/Empty'
 import TopicActivity from './components/TopicActivity/TopicActivity'
-import AdTitle from '@components/business/Content/AdTitle'
 import Loading from '../../components/common/Loading'
 import theme from '@theme'
 import { RouteContext } from '@utils/contextes'
@@ -24,12 +14,9 @@ import { WindowWidth } from '@utils/global'
 import { BaseObj } from '@common/typings'
 import { placeholderHeadBanner } from '@const/resources'
 import FastImage from 'react-native-fast-image'
-
-interface Floor {
-  key: string | number
-  component: React.ComponentType
-  props: BaseObj
-}
+import { formatFloors, Floor } from './utils'
+import memoizeOne from 'memoize-one'
+import AdSingle from '@components/business/Content/AdSingle'
 
 interface Props {
   activityCode: string // 活动编码
@@ -46,7 +33,7 @@ interface State {
     label: string
   }[]
   tabContentMap: {
-    [tabKey: string]: Floor[]
+    [tabKey: string]: Object[]
   }
   cart: {
     amount: number
@@ -56,6 +43,9 @@ interface State {
   hasHeadBanner: boolean
   tabVos: []
   type: number
+  productCountMap: {
+    [productCode: string]: number
+  }
 }
 
 export default class Page extends React.PureComponent<Props, State> {
@@ -77,6 +67,7 @@ export default class Page extends React.PureComponent<Props, State> {
       },
       pageTitle: '',
       hasHeadBanner: false,
+      productCountMap: {},
     }
   }
 
@@ -118,6 +109,7 @@ export default class Page extends React.PureComponent<Props, State> {
       tabContentMap: {},
       pageTitle: '优选商品',
       hasHeadBanner: false,
+      productCountMap: {},
     }
     if (result.length > 0) {
       const tab = result[0]
@@ -128,15 +120,26 @@ export default class Page extends React.PureComponent<Props, State> {
       Native.setTitle(tab.pageName || '优选商品')
       nextState.pageTitle = tab.pageName || '优选商品'
       nextState.currentTabKey = tab.id
-      const formattedFloors = this.tabDataFormatter(
-        tab.templateVOList,
-        result.length > 1
-      )
+      const firstFloor = tab.templateVOList
+        .sort((a, b) => a.pos - b.pos) // step 1: 排序
+        .filter(
+          // step 2: 过滤掉空数据
+          ele =>
+            ele.img ||
+            (ele.tabVos && ele.tabVos.length > 0) ||
+            (ele.templateDetailVOList && ele.templateDetailVOList.length > 0)
+        )[0]
       nextState.tabContentMap = {
-        [tab.id]: formattedFloors,
+        [tab.id]: tab.templateVOList,
       }
       nextState.hasHeadBanner =
-        result.length > 1 && formattedFloors[0].component === AdSingle
+        result.length > 1 &&
+        firstFloor &&
+        firstFloor.type === 2 &&
+        firstFloor.subType === 1
+      nextState.productCountMap = this.productCountMapFormatter(
+        tab.templateVOList
+      )
     }
     this.setState(nextState)
   }
@@ -153,237 +156,136 @@ export default class Page extends React.PureComponent<Props, State> {
 
     const { result } = res
 
-    this.setState(({ tabContentMap: preTabContentMap, tabList }) => ({
-      tabContentMap: {
-        ...preTabContentMap,
-        [tabKey]: this.tabDataFormatter(
-          result.templateVOList,
-          tabList.length > 1
-        ),
-      },
-    }))
+    this.setState(
+      ({ tabContentMap: preTabContentMap, tabList, productCountMap }) => ({
+        tabContentMap: {
+          ...preTabContentMap,
+          [tabKey]: result.templateVOList,
+        },
+        productCountMap: {
+          ...productCountMap,
+          ...this.productCountMapFormatter(result.templateVOList),
+        },
+      })
+    )
   }
 
-  tabDataFormatter = (data: BaseObj, hasMultiTab: boolean): Floor[] => {
-    let sortedData = data
-      .sort((a, b) => a.pos - b.pos) // step 1: 排序
-      .filter(
-        // step 2: 过滤掉空数据
-        ele =>
-          ele.img ||
-          (ele.tabVos && ele.tabVos.length > 0) ||
-          (ele.templateDetailVOList && ele.templateDetailVOList.length > 0)
-      )
-
-    // step 3: 整合成组件
-    const { shopCode } = this.props
-    let result = []
-    let i = 0
-    let length = sortedData.length
-    while (i < length) {
-      let floor = sortedData[i]
-      if (floor.type === 1) {
-        // 轮播图
-        result.push({
-          key: floor.id,
-          component: Carousel,
-          props: {
-            imageHeight: 150,
-            data: floor.templateDetailVOList.map(ele => ({
-              key: ele.id,
-              image: ele.imgUrl,
-              link: CMSServices.formatLink(ele, shopCode),
-            })),
-          },
-        })
-      } else if (floor.type === 2) {
-        // 广告标题
-        if (floor.title && !(i === 0 && floor.subType === 1)) {
-          result.push({
-            key: `c-ad-${floor.id}-title`,
-            component: AdTitle,
-            props: {
-              children: floor.title,
-              link: CMSServices.formatLink(
-                {
-                  linkType: floor.titleLinkType,
-                  link: floor.titleLink,
-                },
-                shopCode
-              ),
-              moreVisible: floor.isMore,
-            },
-          })
-        }
-        if (floor.subType === 1) {
-          // 单张广告图
-          const imgObj = floor.templateDetailVOList[0]
-          result.push({
-            key: floor.id,
-            component: AdSingle,
-            props: {
-              image: imgObj.imgUrl,
-              link: CMSServices.formatLink(imgObj, shopCode),
-              width: i === 0 && hasMultiTab ? WindowWidth : undefined,
-              height:
-                i === 0 && hasMultiTab ? WindowWidth / (375 / 144) : undefined,
-            },
-          })
-        } else if (floor.subType === 2) {
-          // 1v2
-          result.push({
-            key: floor.id,
-            component: Ad1v2,
-            props: {
-              data: (floor.templateDetailVOList || []).map(ele => ({
-                image: ele.imgUrl,
-                link: CMSServices.formatLink(ele, shopCode),
-              })),
-            },
-          })
-        } else if (floor.subType === 3) {
-          // 1v1
-          result.push({
-            key: floor.id,
-            component: Ad1v1,
-            props: {
-              data: floor.templateDetailVOList.slice(0, 2).map(ele => ({
-                image: ele.imgUrl,
-                link: CMSServices.formatLink(ele, shopCode),
-              })),
-            },
-          })
-        }
-      } else if (floor.type === 3) {
-        // 商品
-        const component =
-          {
-            1: ProductList,
-            2: ProductGrid,
-            3: ProductGrid,
-            4: ProductSwiper,
-          }[floor.subType] || ProductSwiper
-        if (component)
-          result.push({
-            key: floor.id,
-            component,
-            props: {
-              products: floor.templateDetailVOList.map(ele => ({
-                ...CMSServices.formatProduct(ele),
-                disableSync: true,
-                shopCode,
-              })),
-              columnNumber:
-                [2, 3].indexOf(floor.subType) > -1 ? floor.subType : undefined,
-              afterModifyCount: this.requestCartInfo,
-            },
-          })
-      } else if (floor.type === 4 && [1, 2].indexOf(floor.subType) !== -1) {
-        // 分类入口，宫格
-        result.push({
-          key: floor.id,
-          component: Box,
-          props: {
-            columnNumber: { 1: 4, 2: 5 }[floor.subType],
-            data: floor.templateDetailVOList.map(ele => ({
-              key: ele.id,
-              image: ele.imgUrl,
-              title: ele.name,
-              link: CMSServices.formatLink(ele),
-            })),
-          },
-        })
-      } else if (floor.type === 5) {
-        // 分割图
-        result.push({
-          key: floor.id,
-          component: Divider,
-          props: {
-            image: floor.img,
-          },
-        })
-      } else if (floor.type === 8) {
-        // 8:潮物达人,9:酒专题
-        result.push({
-          key: floor.id,
-          component: TopicActivity,
-          props: {
-            currentTabVos: floor.tabVos,
-            shopCode,
-            type: floor.type,
-            afterModifyCount: this.requestCartInfo,
-          },
+  // 提取所有楼层中的商品数量数据
+  productCountMapFormatter = (data: BaseObj[]) => {
+    let productCountMap: { [productCode: string]: number } = {}
+    data.forEach(floorData => {
+      if ([3, 8, 9].indexOf(floorData.type) > -1) {
+        ;(floorData.templateDetailVOList || []).forEach(product => {
+          productCountMap[product.code] = product.productNum || 0
         })
       }
-      i++
-    }
-
-    return result
+    })
+    return productCountMap
   }
 
   onTabChange = key => {
-    const { currentTabKey } = this.state
+    const { currentTabKey, tabContentMap } = this.state
     if (key === currentTabKey) return
 
     this.setState({ currentTabKey: key })
-    this.requestTabContent(key)
+    !tabContentMap[key] && this.requestTabContent(key)
   }
 
-  flatDataFormatter = (): Floor[] => {
-    const { currentTabKey, tabList, tabContentMap, hasHeadBanner } = this.state
-    const currentTabContent = tabContentMap[currentTabKey] || []
+  onProductCountChange = (count, productCode) => {
+    this.setState(({ productCountMap }) => ({
+      productCountMap: {
+        ...productCountMap,
+        [productCode]: count,
+      },
+    }))
+    this.requestCartInfo()
+  }
 
-    if (tabList.length > 1) {
-      const tabComp = {
-        key: '$$tab',
-        component: Tab,
-        props: {
-          data: tabList,
-          currentActive: currentTabKey,
-          onTabChange: this.onTabChange,
-        },
-      }
-      return hasHeadBanner
-        ? [
-            ...(currentTabContent.length > 0 &&
-            currentTabContent[0] &&
-            currentTabContent[0].component === AdSingle
-              ? currentTabContent.slice(0, 1)
-              : [
-                  {
-                    key: '$$defaultHeadBanner',
-                    component: FastImage,
-                    props: {
-                      source: placeholderHeadBanner,
-                      style: {
-                        width: WindowWidth,
-                        height: WindowWidth / (375 / 144),
+  // 将楼层数据映射为楼层组件
+  flatDataFormatter = memoizeOne(
+    (
+      shopCode,
+      tabList,
+      currentTabKey,
+      tabContentMap,
+      hasHeadBanner,
+      productCountMap
+    ): Floor[] => {
+      const currentTabData = tabContentMap[currentTabKey] || []
+
+      const currentTabContent = formatFloors(
+        currentTabData,
+        tabList.length > 1,
+        shopCode,
+        this.onProductCountChange,
+        productCountMap
+      )
+
+      if (tabList.length > 1) {
+        const tabComp = {
+          key: '$$tab',
+          component: Tab,
+          props: {
+            data: tabList,
+            currentActive: currentTabKey,
+            onTabChange: this.onTabChange,
+          },
+        }
+        return hasHeadBanner
+          ? [
+              ...(currentTabContent.length > 0 &&
+              currentTabContent[0] &&
+              currentTabContent[0].component === AdSingle
+                ? currentTabContent.slice(0, 1)
+                : [
+                    {
+                      key: '$$defaultHeadBanner',
+                      component: FastImage,
+                      props: {
+                        source: placeholderHeadBanner,
+                        style: {
+                          width: WindowWidth,
+                          height: WindowWidth / (375 / 144),
+                        },
+                        resizeMode: 'contain',
                       },
-                      resizeMode: 'center',
                     },
-                  },
-                ]),
-            tabComp,
-            ...currentTabContent.slice(1),
-          ]
-        : [tabComp, ...currentTabContent]
+                  ]),
+              tabComp,
+              ...currentTabContent.slice(1),
+            ]
+          : [tabComp, ...currentTabContent]
+      }
+      return currentTabContent
     }
-    return currentTabContent
-  }
+  )
 
   renderFlatItem = ({ item: { component: Comp, props } }: { item: Floor }) => (
     <Comp {...props} />
   )
 
   render() {
+    const { shopCode } = this.props
     const {
       cart: { amount, count },
       loading,
       pageTitle,
       type,
       tabVos,
+      currentTabKey,
+      tabList,
+      tabContentMap,
+      hasHeadBanner,
+      productCountMap,
     } = this.state
-    const flatData = this.flatDataFormatter()
+    const flatData = this.flatDataFormatter(
+      shopCode,
+      tabList,
+      currentTabKey,
+      tabContentMap,
+      hasHeadBanner,
+      productCountMap
+    )
     const stickyHeaderIndices = flatData.findIndex(ele => ele.component === Tab)
 
     return (
@@ -408,11 +310,10 @@ export default class Page extends React.PureComponent<Props, State> {
               data={flatData}
               renderItem={this.renderFlatItem}
               keyExtractor={item => `${item.key}`}
-              showsVerticalScrollIndicator={false}
+              removeClippedSubviews={false}
               stickyHeaderIndices={
                 stickyHeaderIndices === -1 ? [] : [stickyHeaderIndices]
               }
-              removeClippedSubviews={false}
               refreshControl={
                 <RefreshControl
                   refreshing={loading && flatData.length > 0}

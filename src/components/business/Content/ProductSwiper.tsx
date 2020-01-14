@@ -3,9 +3,9 @@
  */
 import * as React from 'react'
 import styles from './ProductSwiper.styles'
-import {ScrollView, View} from 'react-native'
+import { ScrollView, View } from 'react-native'
 import ProductSwiperItem from './ProductSwiperItem/ProductSwiperItem'
-import {Product} from '@common/typings'
+import { Product } from '@common/typings'
 
 interface Props {
   products: Product[]
@@ -29,7 +29,10 @@ export default function ProductSwiper({ products, afterModifyCount }: Props) {
           ]}
           key={product.code}
         >
-          <ProductSwiperItem {...product} afterModifyCount={afterModifyCount} />
+          <ProductSwiperItem
+            {...product}
+            afterModifyCount={c => afterModifyCount(c, product.code)}
+          />
         </View>
       ))}
     </ScrollView>
