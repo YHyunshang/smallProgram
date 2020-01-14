@@ -147,7 +147,7 @@ export default class Page extends React.Component<PageProps, PageState> {
 
   formatSimilarProducts = (
     data: BaseObj
-  ): { beforeNav: () => void; _data_: BaseObj } & Product => {
+  ): { beforeNav?: () => void; _data_: BaseObj } & Product => {
     const {
       mainUrl = {},
       promotionPrice,
@@ -188,27 +188,27 @@ export default class Page extends React.Component<PageProps, PageState> {
           2: ProductDeliveryType.NextDay,
         }[data.deliveryType] || ProductDeliveryType.Other,
       labels,
-      beforeNav: () => {
-        const { productDetail } = this.state
-        const product = productDetail.resChannelStoreProductVO || {}
+      // beforeNav: () => {
+      //   const { productDetail } = this.state
+      //   const product = productDetail.resChannelStoreProductVO || {}
 
-        track('RecommendClick', {
-          scenerio_name: '相似商品',
-          product_id: data.productCode,
-          product_name: data.productName,
-          origin_price: transPenny(data.price),
-          present_price: transPenny(data.promotionPrice || data.price),
-          product_spec: data.productSpecific,
-          opration_type: '点击商品',
-          strategy_id: '',
-          from_product_id: product.productCode,
-          from_product_name: product.productName,
-          from_product_original_price: transPenny(product.price),
-          from_product_present_price: transPenny(
-            product.promotionPrice || product.price
-          ),
-        })
-      },
+      //   track('RecommendClick', {
+      //     scenerio_name: '相似商品',
+      //     product_id: data.productCode,
+      //     product_name: data.productName,
+      //     origin_price: transPenny(data.price),
+      //     present_price: transPenny(data.promotionPrice || data.price),
+      //     product_spec: data.productSpecific,
+      //     opration_type: '点击商品',
+      //     strategy_id: '',
+      //     from_product_id: product.productCode,
+      //     from_product_name: product.productName,
+      //     from_product_original_price: transPenny(product.price),
+      //     from_product_present_price: transPenny(
+      //       product.promotionPrice || product.price
+      //     ),
+      //   })
+      // },
       _data_: data, // 原始数据
     }
   }
