@@ -31,6 +31,26 @@ export default StyleSheet.create({
     overflow: 'hidden',
   },
 
+  innerImgBox: {
+    position: 'relative',
+  },
+
+  placeholderBox: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    zIndex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FBFBFB',
+  },
+  placeholder: {
+    width: 150,
+    height: 38,
+  },
+
   rightTopImgBox: {
     paddingBottom: 1.5,
   },
