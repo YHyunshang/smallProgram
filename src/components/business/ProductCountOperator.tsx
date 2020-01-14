@@ -8,7 +8,7 @@ import {
   Animated,
   Easing,
 } from 'react-native'
-import {addToCart, minusCircle, plusCircleDisabled} from '@const/resources'
+import { addToCart, minusCircle, plusCircleDisabled } from '@const/resources'
 import { Log, Native } from '@utils'
 
 interface Props {
@@ -49,8 +49,6 @@ export default class ProductCountOperator extends React.Component<
         easing: Easing.linear,
         useNativeDriver: true,
       }).start()
-    } else {
-      this.state.animatedVal.setValue(props.count <= 0 ? 0 : 1)
     }
   }
 

@@ -2,7 +2,7 @@
  * @Author: 李华良
  * @Date: 2019-09-17 01:20:36
  * @Last Modified by: 李华良
- * @Last Modified time: 2020-01-09 11:20:09
+ * @Last Modified time: 2020-01-14 19:35:22
  */
 import * as React from 'react'
 import { Product } from '@common/typings'
@@ -60,7 +60,7 @@ export default function withCartCountModify(WrappedComponent) {
         .then(res => {
           Log.debug(`change count success: current is ${count}`, res)
           this.setState({ modifiedCount: count, count, disableAdd: false })
-          afterModifyCount && afterModifyCount(count, res)
+          afterModifyCount instanceof Function && afterModifyCount(count, res)
         })
         .catch(err => {
           this.setState(({ count: preCount }) => ({
@@ -77,7 +77,9 @@ export default function withCartCountModify(WrappedComponent) {
         ({ count, extraData }) => {
           this.setState(
             { count, modifiedCount: count },
-            () => afterModifyCount && afterModifyCount(count, extraData)
+            () =>
+              afterModifyCount instanceof Function &&
+              afterModifyCount(count, extraData)
           )
         },
         () => this.setState({ count: 0, modifiedCount: 0 })
