@@ -3,30 +3,34 @@
  * @Company: yh
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
- * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-12-09 16:56:30
+ * @LastEditors  : yuwen.liu
+ * @LastEditTime : 2020-01-14 16:57:58
  */
 import {Native} from '@utils'
 import {noStore} from '@const/resources'
-import React, {Component} from 'react'
-import PropTypes from 'prop-types'
+import * as React from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 // import CommonModal from '../../common/CommonModal'
 import {StyleSheet, View, Text, ScrollView, Image, TouchableOpacity, Dimensions} from 'react-native'
 const {width, height} = Dimensions.get('window')
+
+interface Props {
+  ruleList: [] // 规则列表
+}
+
+interface State {
+  show: boolean // 是否展示
+}
+
 /**
  * 弹出层
  */
-export default class RuleModal extends Component {
+export default class RuleModal extends React.Component<Props, State> {
   constructor(props) {
     super(props)
     this.state = {
       show: false
     }
-  }
-  static propTypes = {
-    ruleList: PropTypes.array.isRequired, // 规则列表
-    onRef: PropTypes.func
   }
   /**
    * @description: 展示弹层方法
@@ -58,8 +62,7 @@ export default class RuleModal extends Component {
     Native.setNavigationBarEventSwitch('navigationBarEventSwitch', JSON.stringify({swithTag: '1'}))
   }
   render() {
-    const {ruleList, onRef} = this.props
-    onRef(this)
+    const {ruleList} = this.props
     // 规则详细
     const ruleListWrapper = ruleList && ruleList.length > 0 ? ruleList.map((item, index) => (
       <View key={index}>
@@ -85,7 +88,6 @@ export default class RuleModal extends Component {
                 </View>
               </ScrollView>
               <TouchableOpacity
-                style={styles.shareTouchableOpacity}
                 activeOpacity={0.95}
                 onPress={() => {
                   this.handleCloseModal()

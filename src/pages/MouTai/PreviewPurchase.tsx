@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-10-28 16:18:48
  * @LastEditors  : yuwen.liu
- * @LastEditTime : 2020-01-14 15:05:06
+ * @LastEditTime : 2020-01-14 15:24:59
  */
 import * as React from 'react'
 import {
@@ -109,7 +109,8 @@ export default class PreviewPurchase extends React.Component<Props, State> {
         // isQualifications: false, // 是否有购买资格
         // productName: '53度 500ml 飞天茅台(2019款',
         // exchangeCondition: '1000积分+1499元即可换购1瓶53度500ml飞天茅台',
-        // limitDesc: '每月限购3瓶,全年不超过12瓶,当月如有遗留份额,则不累计'
+        // limitDesc: '每月限购3瓶,全年不超过12瓶,当月如有遗留份额,则不累计',
+        // price:0
       },
     }
     this.loadingRef = React.createRef()
