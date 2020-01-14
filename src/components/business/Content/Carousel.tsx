@@ -3,11 +3,13 @@
  * Created by 李华良 on 2019-08-19
  */
 import * as React from 'react'
-import { View, Image, TouchableWithoutFeedback } from 'react-native'
+import { View, Image, TouchableWithoutFeedback, Animated } from 'react-native'
 import Swiper from 'react-native-swiper'
 import Styles from './Carousel.styles'
 import { Native, Img } from '@utils'
 import FastImage from 'react-native-fast-image'
+import { usePlaceholder } from '@utils/hooks'
+import { placeholder } from '@const/resources'
 
 interface Props {
   imageHeight: number
@@ -19,6 +21,7 @@ interface Props {
 }
 
 export default function Carousel({ imageHeight = 290, data }: Props) {
+  const [placeholderVis, placeholderOpacityStyle, onLoad] = usePlaceholder()
   return (
     <View style={Styles.container} onStartShouldSetResponder={() => true}>
       <Swiper
@@ -34,17 +37,29 @@ export default function Carousel({ imageHeight = 290, data }: Props) {
         {data.map(({ image, link, key }) => {
           const fitImg = Img.loadRatioImage(image, Img.FullWidth)
           return (
-            <View style={Styles.slider} key={key}>
-              <TouchableWithoutFeedback
-                onPress={() => link.type && Native.navigateTo(link)}
-              >
+            <TouchableWithoutFeedback
+              onPress={() => link.type && Native.navigateTo(link)}
+            >
+              <View style={Styles.slider} key={key}>
                 <FastImage
                   style={[Styles.image, { height: imageHeight }]}
                   source={{ uri: fitImg }}
+                  resizeMode="contain"
+                  onLoadStart={onLoad}
                 />
-              </TouchableWithoutFeedback>
-
-            </View>
+                {placeholderVis && (
+                  <Animated.View
+                    style={[Styles.placeholderBox, placeholderOpacityStyle]}
+                  >
+                    <FastImage
+                      style={Styles.placeholder}
+                      source={placeholder}
+                      resizeMode="contain"
+                    />
+                  </Animated.View>
+                )}
+              </View>
+            </TouchableWithoutFeedback>
           )
         })}
       </Swiper>
