@@ -1,10 +1,17 @@
 import * as React from 'react'
-import {ScrollView, TouchableWithoutFeedback, View} from 'react-native'
+import {
+  ScrollView,
+  TouchableWithoutFeedback,
+  View,
+  Animated,
+} from 'react-native'
 import styles from './ProductSwiperWithBg.styles'
-import FitImage from 'react-native-fit-image'
-import {Img, Native} from '@utils'
-import {Product} from '@common/typings'
+import { Img, Native } from '@utils'
+import { Product } from '@common/typings'
 import ProductItem from './ProductItem'
+import { usePlaceholder } from '@utils/hooks'
+import FastImage from 'react-native-fast-image'
+import { placeholder } from '@const/resources'
 
 interface ProductSwiperWithBgProps {
   backgroundImage: string
@@ -12,16 +19,40 @@ interface ProductSwiperWithBgProps {
   products: Product[]
 }
 
-const ProductSwiperWithBg: React.FunctionComponent<ProductSwiperWithBgProps> = (
-  { backgroundImage, backgroundImageLink, products }
-) => {
+const ProductSwiperWithBg: React.FunctionComponent<
+  ProductSwiperWithBgProps
+> = ({ backgroundImage, backgroundImageLink, products }) => {
   const fitBg = Img.loadRatioImage(backgroundImage, Img.FullWidth)
-  const productList = products.map(ele => <ProductItem key={ele.code} {...ele} />)
+  const productList = products.map(ele => (
+    <ProductItem key={ele.code} {...ele} />
+  ))
+  const [placeholderVis, placeholderOpacityStyle, onLoad] = usePlaceholder()
 
   return (
     <View style={styles.container}>
-      <TouchableWithoutFeedback onPress={() => Native.navigateTo(backgroundImageLink)}>
-        <FitImage style={styles.bgImg} source={{ uri: fitBg }} />
+      <TouchableWithoutFeedback
+        onPress={() => Native.navigateTo(backgroundImageLink)}
+      >
+        <View style={styles.bgBox}>
+          <FastImage
+            style={styles.bgImg}
+            source={{ uri: fitBg }}
+            resizeMode="contain"
+            onLoad={onLoad}
+          />
+
+          {placeholderVis && (
+            <Animated.View
+              style={[styles.thumbnailPlaceholderBox, placeholderOpacityStyle]}
+            >
+              <FastImage
+                style={styles.thumbnailPlaceholder}
+                source={placeholder}
+                resizeMode="contain"
+              />
+            </Animated.View>
+          )}
+        </View>
       </TouchableWithoutFeedback>
       <ScrollView
         style={styles.swiper}

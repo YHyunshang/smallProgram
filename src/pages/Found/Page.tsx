@@ -3,11 +3,10 @@ import styles from './Page.styles'
 import { Native } from '@utils'
 import { CMSServices } from '@services'
 import ActivityWithIPSC from '@components/business/Content/ActivityWithIPS'
-import {RefreshControl, View, FlatList} from 'react-native'
+import { RefreshControl, View, FlatList } from 'react-native'
 import theme from '@theme'
-import withHistory from "@HOC/withHistory";
-import Loading from "@components/Loading";
-import {RouteContext} from "@utils/contextes";
+import Loading from '@components/Loading'
+import { RouteContext } from '@utils/contextes'
 
 const ActivityWithIPS = React.memo(ActivityWithIPSC)
 
@@ -24,7 +23,7 @@ export default class Page extends React.PureComponent<Object, State> {
     loading: false,
     floorData: [],
     shopCode: '',
-    enablePageScroll: true
+    enablePageScroll: true,
   }
 
   nativeSubscription: { remove: Function }
@@ -32,7 +31,7 @@ export default class Page extends React.PureComponent<Object, State> {
   async componentDidMount() {
     const shopCode = await Native.getConstant('storeCode')
     if (shopCode) {
-      this.setState({shopCode})
+      this.setState({ shopCode })
       this.requestPageData(shopCode)
     }
     this.nativeSubscription = CMSServices.subscriptShopChange(
@@ -61,8 +60,11 @@ export default class Page extends React.PureComponent<Object, State> {
     }
     const { result } = res
     const validData = result.templateVOList
-      .filter(floor => (floor.type === 2 || floor.type === 3)
-        && (floor.templateDetailVOList && floor.templateDetailVOList.length > 0) )
+      .filter(
+        floor =>
+          (floor.type === 2 || floor.type === 3) &&
+          (floor.templateDetailVOList && floor.templateDetailVOList.length > 0)
+      )
       .sort((a, b) => a.pos - b.pos)
 
     let floorData = []
@@ -77,7 +79,10 @@ export default class Page extends React.PureComponent<Object, State> {
         floorData.push({
           key: curFloor.id,
           image: imgObj.imgUrl,
-          products: nextFloor.templateDetailVOList.map(this.productFormatter, shopCode),
+          products: nextFloor.templateDetailVOList.map(
+            this.productFormatter,
+            shopCode
+          ),
           activityCode: imgObj.link,
         })
         i += 2
@@ -94,7 +99,10 @@ export default class Page extends React.PureComponent<Object, State> {
         floorData.push({
           key: curFloor.id,
           image: null,
-          products: curFloor.templateDetailVOList.map(this.productFormatter, shopCode),
+          products: curFloor.templateDetailVOList.map(
+            this.productFormatter,
+            shopCode
+          ),
           link: {},
         })
       }
@@ -126,11 +134,11 @@ export default class Page extends React.PureComponent<Object, State> {
   render() {
     const { floorData, loading, shopCode, enablePageScroll } = this.state
     return (
-      <RouteContext.Provider value={{ path: '发现页', name: '发现页' }} >
+      <RouteContext.Provider value={{ path: '发现页', name: '发现页' }}>
         <View style={styles.container}>
           {loading && floorData.length === 0 && (
             <View style={styles.loadingContainer}>
-              <Loading/>
+              <Loading />
             </View>
           )}
 
