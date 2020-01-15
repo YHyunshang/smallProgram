@@ -20,19 +20,4 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
-  tabBar: {
-    width: '100%',
-    backgroundColor: 'transparent',
-  },
-  tabItem: {
-    flex: 1,
-    alignItems: 'center',
-    padding: 16,
-  },
-
-  sceneBox: {
-    flex: 1,
-    backgroundColor: '#FAFAFA',
-  },
 })
