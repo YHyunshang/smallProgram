@@ -11,6 +11,7 @@ import { FitImg } from '@components'
 import { placeholder } from '@const/resources'
 import { WindowWidth } from '@utils/global'
 import { usePlaceholder } from '@utils/hooks'
+import FastImage from 'react-native-fast-image'
 
 const loadRatioImage = memorize((img, width) => Img.loadRatioImage(img, width))
 
@@ -57,7 +58,7 @@ const AdSingle: React.FunctionComponent<Props> = ({
         />
         {hasPlaceholder && placeholderVis && (
           <Animated.View style={placeholderBoxStyle}>
-            <Image
+            <FastImage
               style={styles.placeholderImg}
               source={placeholder}
               resizeMode="contain"

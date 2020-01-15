@@ -21,5 +21,8 @@ export default StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#FBFBFB',
   },
-  placeholderImg: {},
+  placeholderImg: {
+    width: 145,
+    height: 40,
+  },
 })
