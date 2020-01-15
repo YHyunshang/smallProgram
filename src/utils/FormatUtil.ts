@@ -3,8 +3,8 @@
  * @Company: yh
  * @Author: yuwen.liu
  * @Date: 2019-07-22 13:37:10
- * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-28 11:17:18
+ * @LastEditors  : yuwen.liu
+ * @LastEditTime : 2020-01-15 17:24:21
  */
 
 /**
@@ -33,7 +33,7 @@ export const formatYMDEn = (timestamp) => {
   }
   const date = new Date(parseInt(timestamp))
   const year = date.getFullYear()
-  const month = parseInt(date.getMonth()) + 1
+  const month = date.getMonth() + 1
   const day = date.getDate()
   return `${year}-${month}-${day}`
 }
