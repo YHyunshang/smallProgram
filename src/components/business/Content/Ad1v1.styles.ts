@@ -34,4 +34,24 @@ export default StyleSheet.create({
     width: imgWidth,
     height: imgHeight,
   },
+
+  innerImgBox: {
+    position: 'relative',
+  },
+
+  placeholderBox: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    zIndex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FBFBFB',
+  },
+  placeholder: {
+    width: 145,
+    height: 40,
+  },
 })
