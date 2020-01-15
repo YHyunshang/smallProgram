@@ -1,3 +1,4 @@
+import { BaseObj } from '@common/typings'
 /*
  * @Author: 李华良
  * @Date: 2019-09-26 17:48:52
@@ -34,7 +35,7 @@ const Box = React.memo(BoxC)
 const Divider = React.memo(DividerC)
 
 export function formatFloorData(
-  data: { [index: string]: any },
+  data: BaseObj[],
   shopCode: string,
   currentTabIdx: number,
   onLimitTimeBuyExpire: () => void
@@ -103,7 +104,10 @@ export function formatFloorData(
           result.push({
             key: `c-${floor.id}&${nextFloor.id}`,
             component: ProductSwiperWithBg,
-            wrapperStyle: { paddingHorizontal: 0 },
+            wrapperStyle: {
+              paddingHorizontal: 0,
+              marginBottom: 10,
+            },
             props: {
               backgroundImage: imgObj.imgUrl,
               backgroundImageLink: CMSServices.formatLink(imgObj, shopCode),
@@ -135,10 +139,6 @@ export function formatFloorData(
           key: floor.id,
           component: AdSingle,
           wrapperStyle: [
-            currentTabIdx === 0 && {
-              borderRadius: 5,
-              overflow: 'hidden',
-            },
             currentTabIdx > 0 && i === 0 // 首页非首位 tab 下的头图
               ? {}
               : imgObj.name === '查看更多' // 查看更多图片

@@ -30,6 +30,7 @@ const ProductSwiperWithBg: React.FunctionComponent<
 
   return (
     <View style={styles.container}>
+      <View style={styles.fakeBorder} />
       <TouchableWithoutFeedback
         onPress={() => Native.navigateTo(backgroundImageLink)}
       >
