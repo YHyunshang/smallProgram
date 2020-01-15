@@ -47,8 +47,8 @@ export default StyleSheet.create({
     backgroundColor: '#FBFBFB',
   },
   placeholder: {
-    width: 150,
-    height: 38,
+    width: 145,
+    height: 40,
   },
 
   rightTopImgBox: {
