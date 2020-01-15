@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-08-29 11:25:46
  * @LastEditors  : yuwen.liu
- * @LastEditTime : 2020-01-15 14:40:13
+ * @LastEditTime : 2020-01-15 16:49:52
  */
 import * as React from 'react'
 import { StyleSheet, View } from 'react-native'
@@ -64,7 +64,7 @@ export default class TopBannerImage extends React.Component<Props, State> {
         />
         {!this.state.isLoadComplete && (
           <FastImage
-            style={[styles.imgDefault, styles.imgPosition, style]}
+            style={[styles.imgDefault, styles.imgPosition]}
             source={defaultImage}
             resizeMode={FastImage.resizeMode.contain}
           />
@@ -81,8 +81,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   imgDefault: {
-    width: '100%',
-    height: 118,
+    width: 170,
+    height: 56,
   },
   imgPosition: {
     overflow: 'hidden',
