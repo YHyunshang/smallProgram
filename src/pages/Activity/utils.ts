@@ -27,15 +27,7 @@ export function formatFloors(
   onProductCountChange: (c: number, productCode: string) => void,
   productCountMap: { [code: string]: number }
 ): Floor[] {
-  let sortedData = data
-    .sort((a, b) => a.pos - b.pos) // step 1: 排序
-    .filter(
-      // step 2: 过滤掉空数据
-      ele =>
-        ele.img ||
-        (ele.tabVos && ele.tabVos.length > 0) ||
-        (ele.templateDetailVOList && ele.templateDetailVOList.length > 0)
-    )
+  let sortedData = CMSServices.filterData(data)
 
   // step 3: 整合成组件
   let result = []

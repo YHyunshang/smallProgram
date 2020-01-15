@@ -39,15 +39,9 @@ export function formatFloorData(
   currentTabIdx: number,
   onLimitTimeBuyExpire: () => void
 ) {
-  let sortedData = data
-    .sort((a, b) => a.pos - b.pos) // step 1: 排序
-    .filter(
-      // step 2: 过滤掉空数据
-      ele =>
-        ele.img ||
-        (ele.templateDetailVOList && ele.templateDetailVOList.length > 0)
-    )
-  // step 3: 整合成组件
+  let sortedData = CMSServices.filterData(data)
+
+  // 整合成组件
   let result = []
   let i = 0
   let length = sortedData.length
