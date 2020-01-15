@@ -4,6 +4,15 @@ import { WindowWidth } from '@utils/global'
 export default StyleSheet.create({
   container: {
     position: 'relative',
+    paddingTop: 10,
+  },
+
+  fakeBorder: {
+    backgroundColor: '#FFF',
+    height: 40,
+    position: 'absolute',
+    top: 0,
+    width: '100%',
   },
 
   bgBox: {
@@ -11,6 +20,9 @@ export default StyleSheet.create({
     paddingBottom: 56,
   },
   bgImg: {
+    borderTopStartRadius: 15,
+    borderTopEndRadius: 15,
+    overflow: 'hidden',
     width: WindowWidth,
     height: (WindowWidth * 264) / 375,
   },
@@ -40,7 +52,9 @@ export default StyleSheet.create({
     borderRadius: 5,
     overflow: 'hidden',
     backgroundColor: '#fff',
-    shadowColor: 'rgba(0,0,0,0.06)',
+    shadowColor: '#000',
+    shadowOpacity: 0.06,
     shadowRadius: 11,
+    elevation: 2,
   },
 })
