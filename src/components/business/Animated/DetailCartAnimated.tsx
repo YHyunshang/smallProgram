@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-31 10:28:53
  * @LastEditors  : yuwen.liu
- * @LastEditTime : 2020-01-14 15:03:32
+ * @LastEditTime : 2020-01-15 10:28:38
  */
 import * as React from 'react'
 import * as PropTypes from 'prop-types'
@@ -37,7 +37,7 @@ interface State {
     stockQuantity: number // 库存数量
   } // 商品项
   cartNumber: number // 添加购物车数量
-  animatedValue: any // 动画初始值
+  animatedValue: Animated.AnimatedValue // 动画初始值
 }
 
 export default class DetailCartAnimated extends React.Component<Props, State> {

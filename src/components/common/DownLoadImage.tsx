@@ -3,10 +3,10 @@
  * @Company: yh
  * @Author: yuwen.liu
  * @Date: 2019-07-18 12:30:01
- * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-12-09 11:08:51
+ * @LastEditors  : yuwen.liu
+ * @LastEditTime : 2020-01-15 10:07:43
  */
-import RNFS from 'react-native-fs'
+import * as RNFS from 'react-native-fs'
 import {
   Platform,
   CameraRoll
