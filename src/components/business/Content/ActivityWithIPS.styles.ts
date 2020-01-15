@@ -7,9 +7,30 @@ export default StyleSheet.create({
     borderRadius: 10,
     overflow: 'hidden',
   },
+
+  bannerBox: {
+    position: 'relative',
+  },
+
   image: {
     borderRadius: 10,
     overflow: 'hidden',
+  },
+
+  placeholderBox: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    zIndex: 0,
+    backgroundColor: '#FAFAFA',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  placeholder: {
+    width: 145,
+    height: 40,
   },
 
   productSwiper: {
@@ -19,7 +40,7 @@ export default StyleSheet.create({
   productBox: {
     paddingHorizontal: 7.5,
     paddingTop: 10,
-    paddingBottom: 15,
+    paddingBottom: 10,
     alignItems: 'center',
   },
   productBoxFirst: {
@@ -29,18 +50,31 @@ export default StyleSheet.create({
     marginRight: 2.5,
   },
 
+  thumbnailBox: {
+    position: 'relative',
+    marginBottom: 6,
+  },
+
   thumbnail: {
-    margin: 10,
-    width: 72,
-    height: 72,
-    marginBottom: 16,
+    width: 92,
+    height: 92,
+  },
+
+  thumbnailPlaceholderBox: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
+  thumbnailPlaceholder: {
+    width: 92,
+    height: 92,
   },
 
   nameBox: {
     width: 92,
     height: 34,
     justifyContent: 'center',
-    marginBottom: 6,
+    marginBottom: 5,
   },
 
   name: {
