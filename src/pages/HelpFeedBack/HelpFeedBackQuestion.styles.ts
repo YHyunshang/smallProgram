@@ -3,11 +3,11 @@
  * @Company: yh
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
- * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-08-29 11:15:23
+ * @LastEditors  : yuwen.liu
+ * @LastEditTime : 2020-01-15 17:20:17
  */
 import {StyleSheet, Dimensions} from 'react-native'
-import {isIPhoneXMarginTop} from '../../utils/IsIphoneX'
+import {isIPhoneXMarginTop} from '@utils/IsIphoneX'
 const {height} = Dimensions.get('window')
 export default StyleSheet.create({
   container: {
