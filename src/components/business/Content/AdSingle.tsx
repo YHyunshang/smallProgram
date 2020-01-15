@@ -35,15 +35,13 @@ const AdSingle: React.FunctionComponent<Props> = ({
   borderRadius,
 }) => {
   const fitImg = loadRatioImage(image, width || WindowWidth)
-  const hasPlaceholder: boolean =
-    (width > 0 && height > 0) || (initialWidth > 0 && initialHeight > 0)
   const [placeholderVis, placeholderOpacityStyle, onLoad] = usePlaceholder()
 
   const containerStyle = [
     styles.container,
-    initialWidth &&
-      initialHeight &&
-      placeholderVis && { width: initialWidth, height: initialHeight },
+    placeholderVis &&
+      initialWidth &&
+      initialHeight && { width: initialWidth, height: initialHeight },
   ]
   const placeholderBoxStyle = [styles.placeholderBox, placeholderOpacityStyle]
 
@@ -56,7 +54,7 @@ const AdSingle: React.FunctionComponent<Props> = ({
           resizeMode="contain"
           onLoad={onLoad}
         />
-        {hasPlaceholder && placeholderVis && (
+        {placeholderVis && (
           <Animated.View style={placeholderBoxStyle}>
             <FastImage
               style={styles.placeholderImg}
@@ -68,6 +66,11 @@ const AdSingle: React.FunctionComponent<Props> = ({
       </View>
     </TouchableWithoutFeedback>
   )
+}
+
+AdSingle.defaultProps = {
+  initialWidth: WindowWidth,
+  initialHeight: WindowWidth / (375 / 108),
 }
 
 export default AdSingle
