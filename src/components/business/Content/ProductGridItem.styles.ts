@@ -26,6 +26,14 @@ export default theme =>
       '3x': { width: 105, height: 105 },
     }[theme],
 
+    thumbnailPlaceholderBox: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      zIndex: 1,
+    },
+    thumbnailPlaceholder: {},
+
     infoBox: {},
 
     name: {
