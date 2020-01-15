@@ -127,7 +127,7 @@ export function formatFloorData(
             ? {}
             : i === 0 && currentTabIdx > 0 // 非首位 tab 的头图
             ? { width: WindowWidth, height: WindowWidth / (375 / 144) }
-            : nextFloor && nextFloor.type === 3 && nextFloor.subType === 1 // 商品列表头图
+            : nextFloor && nextFloor.type === 3 // 商品位头图
             ? {
                 initialWidth: WindowWidth - 20,
                 initialHeight: (WindowWidth - 20) / (375 / 118),
@@ -149,7 +149,7 @@ export function formatFloorData(
               ? {}
               : imgObj.name === '查看更多' // 查看更多图片
               ? { marginBottom: 10 }
-              : nextFloor && nextFloor.type === 3 && nextFloor.subType === 1 // 商品列表头图
+              : nextFloor && nextFloor.type === 3 // 商品位头图
               ? {
                   paddingTop: 15,
                   paddingHorizontal: 10,
@@ -163,6 +163,7 @@ export function formatFloorData(
               imgObj.name && imgObj.name.indexOf('茅台') != -1
                 ? CMSServices.mouTaiActivityLink(imgObj.name, shopCode)
                 : CMSServices.formatLink(imgObj, shopCode),
+            borderRadius: nextFloor && nextFloor.type === 3 ? 5 : 0,
             ...dimensionProps,
           },
         })

@@ -21,6 +21,7 @@ export interface Props {
   height?: number
   initialWidth?: number // 初始宽，即初始占位，图片加载后以实际宽度为准
   initialHeight?: number
+  borderRadius?: number
 }
 
 const AdSingle: React.FunctionComponent<Props> = ({
@@ -30,6 +31,7 @@ const AdSingle: React.FunctionComponent<Props> = ({
   height,
   initialWidth,
   initialHeight,
+  borderRadius,
 }) => {
   const fitImg = loadRatioImage(image, width || WindowWidth)
   const hasPlaceholder: boolean =
@@ -46,7 +48,7 @@ const AdSingle: React.FunctionComponent<Props> = ({
 
   return (
     <TouchableWithoutFeedback onPress={() => Native.navigateTo(link)}>
-      <View style={containerStyle}>
+      <View style={[containerStyle, { borderRadius }]}>
         <FitImg
           style={[styles.image, { width, height }]}
           source={{ uri: fitImg }}
