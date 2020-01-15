@@ -120,15 +120,7 @@ export default class Page extends React.PureComponent<Props, State> {
       Native.setTitle(tab.pageName || '优选商品')
       nextState.pageTitle = tab.pageName || '优选商品'
       nextState.currentTabKey = tab.id
-      const firstFloor = tab.templateVOList
-        .sort((a, b) => a.pos - b.pos) // step 1: 排序
-        .filter(
-          // step 2: 过滤掉空数据
-          ele =>
-            ele.img ||
-            (ele.tabVos && ele.tabVos.length > 0) ||
-            (ele.templateDetailVOList && ele.templateDetailVOList.length > 0)
-        )[0]
+      const firstFloor = CMSServices.filterData(tab.templateVOList)[0]
       nextState.tabContentMap = {
         [tab.id]: tab.templateVOList,
       }

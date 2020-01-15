@@ -1,13 +1,19 @@
+import { BaseObj } from '@common/typings'
 /*
- * @Descripttion: 
+ * @Descripttion:
  * @Author: yuwen.liu
  * @Date: 2019-10-12 11:25:52
  * @LastEditors: yuwen.liu
  * @LastEditTime: 2019-12-05 15:30:33
  */
-import {NativeEventEmitter, NativeModules} from 'react-native'
-import {Http, Log, Native} from '@utils'
-import {Product, ProductDeliveryType, ProductLabels, ProductType} from "@common/typings";
+import { NativeEventEmitter, NativeModules } from 'react-native'
+import { Http, Log, Native } from '@utils'
+import {
+  Product,
+  ProductDeliveryType,
+  ProductLabels,
+  ProductType,
+} from '@common/typings'
 
 /**
  * 获取 CMS 初始数据
@@ -15,7 +21,10 @@ import {Product, ProductDeliveryType, ProductLabels, ProductType} from "@common/
  * @return {Promise} Http request instance
  */
 export function getHomeTabs(shopCode) {
-  return Http.get('productCenter', `/v2/cms/mobile/${shopCode}/getHomePage?version=2`)
+  return Http.get(
+    'productCenter',
+    `/v2/cms/mobile/${shopCode}/getHomePage?version=2`
+  )
 }
 
 /**
@@ -23,10 +32,7 @@ export function getHomeTabs(shopCode) {
  * @return {Promise} Http request instance
  */
 export function getNewPersonBanner() {
-  return Http.get(
-    'productCenter',
-    `/newcomer/banner`
-  )
+  return Http.get('productCenter', `/newcomer/banner`)
 }
 
 /**
@@ -113,7 +119,11 @@ export function getActivity(activityCode: string, shopCode: string) {
  * @param categoryCode 分类 categoryCode
  * @param shopCode 门店 code
  */
-export function getDataByCategory(categoryCode: string, tabId: string, shopCode: string) {
+export function getDataByCategory(
+  categoryCode: string,
+  tabId: string,
+  shopCode: string
+) {
   return Http.get(
     'productCenter',
     `/cms/mobile/${shopCode}/tabBar?tabId=${tabId}&categoryCode=${categoryCode}`
@@ -135,13 +145,16 @@ export function updateProductCountInCart(
   remark = '',
   shopCode: string
 ) {
-  Log.debug('addToCart:', JSON.stringify({
-    productCode,
-    productNum,
-    productPrice,
-    remark,
-    shopCode,
-  }))
+  Log.debug(
+    'addToCart:',
+    JSON.stringify({
+      productCode,
+      productNum,
+      productPrice,
+      remark,
+      shopCode,
+    })
+  )
   return new Promise((resolve, reject) => {
     NativeModules.HomeNativeManager.addToCart(
       'post',
@@ -178,7 +191,10 @@ export function updateProductCountInCart(
  * @param shopCode 门店编码
  */
 export function getFoundPageData(shopCode: string) {
-  return Http.get('productCenter', `/cms/mobile/${shopCode}/getDiscoveryPage?version=2`)
+  return Http.get(
+    'productCenter',
+    `/cms/mobile/${shopCode}/getDiscoveryPage?version=2`
+  )
 }
 
 /**
@@ -186,13 +202,16 @@ export function getFoundPageData(shopCode: string) {
  * @param param0 CMS 元数据，如图片等
  * @param storeCode 门店编码
  */
-export function formatLink({
-  link,
-  linkType,
-}: {
-  link: string
-  linkType: number
-}, storeCode?: string) {
+export function formatLink(
+  {
+    link,
+    linkType,
+  }: {
+    link: string
+    linkType: number
+  },
+  storeCode?: string
+) {
   if (!link) return {}
 
   return linkType === 1 // native 页面
@@ -201,17 +220,23 @@ export function formatLink({
         uri: link,
         params: {},
       }
-    : linkType === 2 ? { // 活动页
+    : linkType === 2
+    ? {
+        // 活动页
         type: Native.NavPageType.RN,
         uri: 'RNActivity',
         params: { activityCode: link, type: 'activity' },
       }
-    : linkType === 3 ? { // H5 页面
+    : linkType === 3
+    ? {
+        // H5 页面
         type: Native.NavPageType.H5,
         uri: link,
         params: {},
       }
-    : linkType === 4 ? { // 商详页
+    : linkType === 4
+    ? {
+        // 商详页
         type: Native.NavPageType.NATIVE,
         uri: 'A003,A003',
         params: { productCode: link, storeCode },
@@ -226,7 +251,7 @@ export function mouTaiActivityLink(productCode: string, shopCode: string) {
   return {
     type: Native.NavPageType.RN,
     uri: 'RNPreviewPurchase',
-    params:{ activityCode: productCode, shopCode},
+    params: { activityCode: productCode, shopCode },
   }
 }
 
@@ -235,7 +260,10 @@ export function mouTaiActivityLink(productCode: string, shopCode: string) {
  * @param data CMS 商品数据
  * @param shopCode 门店编码
  */
-export function formatProduct(data: { [index: string]: any }, shopCode: string = ''):Product {
+export function formatProduct(
+  data: { [index: string]: any },
+  shopCode: string = ''
+): Product {
   const remarkOptions = (data.resProdcutNoteNewVO || { noteContentName: [] })
     .noteContentName
   const defaultRemark = remarkOptions.find(r => r.isDefault)
@@ -246,9 +274,10 @@ export function formatProduct(data: { [index: string]: any }, shopCode: string =
       ]
     : remarkOptions.map(ele => ele.name)
 
-  const type = (data.advanceSaleProduct || { isAdvanceSale: 0 }).isAdvanceSale === 1
-    ? ProductType.PreSale
-    : ProductType.Normal
+  const type =
+    (data.advanceSaleProduct || { isAdvanceSale: 0 }).isAdvanceSale === 1
+      ? ProductType.PreSale
+      : ProductType.Normal
 
   return {
     type,
@@ -266,10 +295,11 @@ export function formatProduct(data: { [index: string]: any }, shopCode: string =
     remark: data.remark,
     remarks,
     labels: data.labelList || [],
-    deliveryType: {
-      1: ProductDeliveryType.InTime,
-      2: ProductDeliveryType.NextDay,
-    }[data.deliveryType] || ProductDeliveryType.Other,
+    deliveryType:
+      {
+        1: ProductDeliveryType.InTime,
+        2: ProductDeliveryType.NextDay,
+      }[data.deliveryType] || ProductDeliveryType.Other,
     isPreSale: type === ProductType.PreSale,
     shopCode,
   }
@@ -297,10 +327,32 @@ export function groupTags(tags: string[]): ProductLabels {
   let result: ProductLabels = {}
   tags.forEach(ele => {
     if (/\d+(\.\d+)?折/.test(ele) || /满\d/.test(ele) || /第\d+件/.test(ele)) {
-      result.activity = result.activity ? [ ele ] : [...result.activity, ele]
+      result.activity = result.activity ? [ele] : [...result.activity, ele]
     } else {
-      result.product = result.product ? [ ele ] : [...result.product, ele]
+      result.product = result.product ? [ele] : [...result.product, ele]
     }
   })
   return result
+}
+
+/**
+ * CMS 数据过滤
+ */
+export function filterData(data: BaseObj[]): BaseObj[] {
+  return data
+    .sort((a, b) => a.pos - b.pos) // step 1: 排序
+    .filter(
+      // step 2: 过滤掉空数据
+      ele =>
+        ele.img ||
+        (ele.tabVos && ele.tabVos.length > 0) ||
+        (ele.templateDetailVOList &&
+          ele.templateDetailVOList.length > 0 &&
+          // 单张广告图必须配置图片
+          !(
+            ele.type === 2 &&
+            ele.subType === 1 &&
+            !ele.templateDetailVOList[0].imgUrl
+          ))
+    )
 }
