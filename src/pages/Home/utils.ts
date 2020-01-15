@@ -129,8 +129,8 @@ export function formatFloorData(
             ? { width: WindowWidth, height: WindowWidth / (375 / 144) }
             : nextFloor && nextFloor.type === 3 && nextFloor.subType === 1 // 商品列表头图
             ? {
-                initialWidth: WindowWidth,
-                initialHeight: WindowWidth / (375 / 118),
+                initialWidth: WindowWidth - 20,
+                initialHeight: (WindowWidth - 20) / (375 / 118),
               }
             : {
                 // 通栏广告
@@ -145,7 +145,9 @@ export function formatFloorData(
               borderRadius: 5,
               overflow: 'hidden',
             },
-            imgObj.name === '查看更多' // 查看更多图片
+            currentTabIdx > 0 && i === 0 // 首页非首位 tab 下的头图
+              ? {}
+              : imgObj.name === '查看更多' // 查看更多图片
               ? { marginBottom: 10 }
               : nextFloor && nextFloor.type === 3 && nextFloor.subType === 1 // 商品列表头图
               ? {

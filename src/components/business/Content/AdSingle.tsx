@@ -6,10 +6,9 @@ import * as React from 'react'
 import { TouchableWithoutFeedback, View, Animated, Image } from 'react-native'
 import styles from './AdSingle.styles'
 import { Native, Img } from '@utils'
-import FastImage from 'react-native-fast-image'
 import memorize from 'memoize-one'
 import { FitImg } from '@components'
-import { placeholderHeadBanner, placeholder } from '@const/resources'
+import { placeholder } from '@const/resources'
 import { WindowWidth } from '@utils/global'
 import { usePlaceholder } from '@utils/hooks'
 
@@ -41,7 +40,7 @@ const AdSingle: React.FunctionComponent<Props> = ({
     styles.container,
     initialWidth &&
       initialHeight &&
-      placeholderVis && { width: initialWidth, initialHeight },
+      placeholderVis && { width: initialWidth, height: initialHeight },
   ]
   const placeholderBoxStyle = [styles.placeholderBox, placeholderOpacityStyle]
 
