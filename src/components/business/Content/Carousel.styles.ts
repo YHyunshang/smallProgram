@@ -42,7 +42,7 @@ export default StyleSheet.create({
     backgroundColor: '#FBFBFB',
   },
   placeholder: {
-    width: 170,
-    height: 56,
+    width: 145,
+    height: 40,
   },
 })
