@@ -14,7 +14,10 @@ interface Props {
 }
 
 export default function Timer({ title, duration, millisecondVis }: Props) {
-  const [hour, minutes, seconds, milliseconds] = transMilliseconds(duration)
+  const [hour, minutes, seconds, milliseconds] = transMilliseconds(
+    duration
+  ).map((d, idx) => (idx < 3 ? `${d}`.padStart(2, '0') : `${d / 100}`))
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
@@ -28,7 +31,7 @@ export default function Timer({ title, duration, millisecondVis }: Props) {
           {!!millisecondVis && (
             <React.Fragment>
               <Text style={styles.colon}>:</Text>
-              <TimePad>{Math.floor(milliseconds / 100)}</TimePad>
+              <TimePad>{milliseconds}</TimePad>
             </React.Fragment>
           )}
         </React.Fragment>

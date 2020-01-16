@@ -15,9 +15,7 @@ const TimePad: React.FunctionComponent<TimePadProps> = ({
 }) => {
   return (
     <View style={[styles.container, { backgroundColor }]}>
-      <Text style={[styles.text, { color }]}>
-        {`${children}`.padStart(2, '0')}
-      </Text>
+      <Text style={[styles.text, { color }]}>{children}</Text>
     </View>
   )
 }
