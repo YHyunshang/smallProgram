@@ -16,6 +16,18 @@ export default StyleSheet.create({
     flexShrink: 0,
     flexGrow: 0,
     marginRight: 15,
+    position: 'relative',
+  },
+
+  thumbnailPlaceholderBox: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 1,
+  },
+  thumbnailPlaceholder: {
+    width: 100,
+    height: 100,
   },
 
   productTagRow: {
@@ -114,7 +126,6 @@ export default StyleSheet.create({
   },
   currentPrice: {
     color: '#FA8500',
-    fontWeight: '600',
     fontSize: 25,
     fontFamily: theme.priceFFPrimary,
     marginRight: 5,
@@ -143,5 +154,5 @@ export default StyleSheet.create({
     fontSize: 14,
     color: theme.gray1,
     lineHeight: 24,
-  }
+  },
 })

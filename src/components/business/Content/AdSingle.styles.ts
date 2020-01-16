@@ -6,12 +6,23 @@ import { StyleSheet } from 'react-native'
 export default StyleSheet.create({
   container: {
     position: 'relative',
+    overflow: 'hidden',
   },
   image: {},
-  placeholderImg: {
+
+  placeholderBox: {
     position: 'absolute',
     top: 0,
+    right: 0,
+    bottom: 0,
     left: 0,
     zIndex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FBFBFB',
+  },
+  placeholderImg: {
+    width: 145,
+    height: 40,
   },
 })

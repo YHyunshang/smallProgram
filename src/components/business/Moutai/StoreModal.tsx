@@ -3,41 +3,59 @@
  * @Company: yh
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
- * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-12-09 16:57:42
+ * @LastEditors  : yuwen.liu
+ * @LastEditTime : 2020-01-14 17:13:36
  */
 import {Native} from '@utils'
 import {noStore} from '@const/resources'
-import React, {Component} from 'react'
-import PropTypes from 'prop-types'
+import * as React from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import CommonModal from '../../common/CommonModal'
 import {StyleSheet, View, Text, Image, ScrollView, TouchableOpacity} from 'react-native'
+
+interface Props {
+  storeList: {
+    cityName: string
+    resActivityStoreVOList:{
+      storeName: string
+    }[]
+  }[] // 门店列表
+}
+
+interface State {
+  show: boolean // 是否展示
+  storeList: {
+    cityName: string
+    resActivityStoreVOList:{
+      storeName: string
+    }[]
+  }[] // 门店列表
+}
+
 /**
  * 弹出层
  */
-export default class StoreModal extends Component {
+export default class StoreModal extends React.Component<Props, State> {
+  commonModalRef: React.RefObject<any>
   constructor(props) {
     super(props)
     this.state = {
       show: false,
       storeList: []
     }
-  }
-  static propTypes = {
-    storeList: PropTypes.array.isRequired // 门店列表
+    this.commonModalRef = React.createRef()
   }
   /**
   * @description: 显示弹层
   */
   showModal() {
-    this.commonModal.show()
+    this.commonModalRef.current.show()
   }
   /**
 * @description: 隐藏弹层
 */
   handleCloseModal() {
-    this.commonModal.hide()
+    this.commonModalRef.current.hide()
     Native.setNavigationBarEventSwitch('navigationBarEventSwitch', JSON.stringify({swithTag: '1'}))
   }
   render() {
@@ -60,7 +78,7 @@ export default class StoreModal extends Component {
       <Text style={styles.seeOtherText}>看看其他的吧</Text>
     </View>
     return (
-      <CommonModal ref={ref => this.commonModal = ref} modalBoxHeight={424} modalBoxWidth={325}>
+      <CommonModal ref={this.commonModalRef} modalBoxHeight={424} modalBoxWidth={325}>
         <ScrollView
           showsVerticalScrollIndicator={false}
         >
@@ -69,7 +87,6 @@ export default class StoreModal extends Component {
           </View>
         </ScrollView>
         <TouchableOpacity
-          style={styles.shareTouchableOpacity}
           activeOpacity={0.95}
           onPress={() => {
             this.handleCloseModal()

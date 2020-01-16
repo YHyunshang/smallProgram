@@ -3,29 +3,41 @@
  * @Company: yh
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
- * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-12-09 11:09:41
+ * @LastEditors  : yuwen.liu
+ * @LastEditTime : 2020-01-15 14:35:27
  */
-import React, {Component} from 'react'
-import PropTypes from 'prop-types'
+import * as React from 'react'
 import {StyleSheet, View, TouchableOpacity, Animated, Easing, Dimensions, NativeModules} from 'react-native'
 const goodsDetailManager = NativeModules.GoodsDetailsNativeManager// 原生商品详情模块
 /**
  * 弹出层
  */
 const {width, height} = Dimensions.get('window')
-export default class PopUp extends Component {
+
+interface Props {
+  transparentIsClick: boolean  // 透明区域是否可以点击
+  modalBoxBg: string // 背景色默认白色
+  modalBoxHeight: number // 盒子高度默认300
+  hide: Function // 关闭时的回调函数
+}
+
+interface State {
+  offset: Animated.AnimatedValue // offset动画初始值
+  show: boolean // 是否展示模态弹窗
+}
+export default class PopUp extends React.Component <Props, State>{
+  static defaultProps: {
+  modalBoxHeight: number; // 盒子高度默认300
+    modalBoxBg: string; // 背景色默认白色
+    hide(): void; // 关闭时的回调函数
+    transparentIsClick: boolean; // 透明区域是否可以点击
+  };
   constructor(props) {
     super(props)
     this.state = {
       offset: new Animated.Value(0),
       show: false
     }
-  }
-  static propTypes = {
-    modalBoxBg: PropTypes.string, // 背景色
-    modalBoxHeight: PropTypes.number.isRequired, // 模态窗口的高度
-    transparentIsClick: PropTypes.bool // 透明区域是否可以点击
   }
   /**
    * @description: 淡进动画效果

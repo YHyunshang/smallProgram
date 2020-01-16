@@ -27,15 +27,7 @@ export function formatFloors(
   onProductCountChange: (c: number, productCode: string) => void,
   productCountMap: { [code: string]: number }
 ): Floor[] {
-  let sortedData = data
-    .sort((a, b) => a.pos - b.pos) // step 1: 排序
-    .filter(
-      // step 2: 过滤掉空数据
-      ele =>
-        ele.img ||
-        (ele.tabVos && ele.tabVos.length > 0) ||
-        (ele.templateDetailVOList && ele.templateDetailVOList.length > 0)
-    )
+  let sortedData = CMSServices.filterData(data)
 
   // step 3: 整合成组件
   let result = []
@@ -85,9 +77,12 @@ export function formatFloors(
           props: {
             image: imgObj.imgUrl,
             link: CMSServices.formatLink(imgObj, shopCode),
-            width: i === 0 && hasMultiTab ? WindowWidth : undefined,
-            height:
-              i === 0 && hasMultiTab ? WindowWidth / (375 / 144) : undefined,
+            ...(i === 0 && hasMultiTab
+              ? { width: WindowWidth, heigh: WindowWidth / (375 / 144) }
+              : {
+                  initialWidth: WindowWidth,
+                  initialHeight: WindowWidth / (375 / 108),
+                }),
           },
         })
       } else if (floor.subType === 2) {
@@ -122,6 +117,7 @@ export function formatFloors(
         const product = CMSServices.formatProduct(ele, shopCode)
         return {
           ...product,
+          shopCode,
           count: productCountMap[ele.code],
           afterModifyCount: c => onProductCountChange(c, ele.code),
         }

@@ -19,6 +19,17 @@ export default StyleSheet.create({
     position: 'relative',
   },
 
+  thumbnailPlaceholderBox: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 1,
+  },
+  thumbnailPlaceholder: {
+    width: 100,
+    height: 100,
+  },
+
   productTagRow: {
     position: 'absolute',
     top: 0,
@@ -53,8 +64,7 @@ export default StyleSheet.create({
     minWidth: 0,
   },
 
-  thumbnail: {
-  },
+  thumbnail: {},
 
   name: {
     fontSize: 17,
@@ -111,7 +121,6 @@ export default StyleSheet.create({
   },
   currentPrice: {
     color: '#FA8500',
-    fontWeight: '600',
     fontSize: 25,
     fontFamily: theme.priceFFPrimary,
     marginRight: 5,

@@ -16,6 +16,17 @@ export default StyleSheet.create({
     height: 97,
   },
 
+  thumbnailPlaceholderBox: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 1,
+  },
+  thumbnailPlaceholder: {
+    width: 97,
+    height: 97,
+  },
+
   tagRow: {
     position: 'absolute',
     top: 0,
@@ -70,7 +81,6 @@ export default StyleSheet.create({
     color: theme.orange,
     fontFamily: theme.priceFFPrimary,
     fontSize: 22,
-    fontWeight: '600',
     textAlignVertical: 'bottom',
   },
   pricePrefix: {

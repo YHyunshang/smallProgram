@@ -3,19 +3,23 @@
  * Created by 李华良 on 2019-08-19
  */
 import * as React from 'react'
-import {Text, TouchableWithoutFeedback, View} from 'react-native'
+import { Text, TouchableWithoutFeedback, View, Animated } from 'react-native'
 import useTheme from './ProductGridItem.styles'
 import ProductCart from '../ProductCart'
-import {Product, ProductDeliveryType} from '@common/typings'
+import { Product, ProductDeliveryType } from '@common/typings'
 import withCartCountModify from './HOC/withCountInCartModifier'
-import {Img, Native} from '@utils'
+import { Img, Native } from '@utils'
 import FastImage from 'react-native-fast-image'
-import withProductDetailNav from "./HOC/withProductDetailNav";
-import Tag from "@components/business/Content/Tag";
-import GlobalTheme from "@theme";
-import {iconDeliveryNextDay} from "@const/resources";
-import {FitImg} from "@components";
-import {transPenny} from "@utils/FormatUtil";
+import withProductDetailNav from './HOC/withProductDetailNav'
+import Tag from '@components/business/Content/Tag'
+import GlobalTheme from '@theme'
+import {
+  iconDeliveryNextDay,
+  placeholderProductThumbnail,
+} from '@const/resources'
+import { FitImg } from '@components'
+import { transPenny } from '@utils/FormatUtil'
+import { usePlaceholder } from '@utils/hooks'
 
 export enum ThemeChoices {
   TWO_PER_ROW = '2x',
@@ -53,6 +57,8 @@ function _ProductGridItem_({
     }
   }
 
+  const [placeholderVis, placeholderOpacityStyle, onLoad] = usePlaceholder()
+
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={navigateToProductDetail}>
@@ -71,15 +77,46 @@ function _ProductGridItem_({
               ]}
               source={{ uri: fitThumbnail }}
               resizeMode="contain"
+              onLoad={onLoad}
             />
+
+            {placeholderVis && (
+              <Animated.View
+                style={[
+                  styles.thumbnailPlaceholderBox,
+                  placeholderOpacityStyle,
+                ]}
+              >
+                <FastImage
+                  style={[
+                    styles.thumbnailPlaceholder,
+                    thumbnailWidth && {
+                      width: thumbnailWidth,
+                      height: thumbnailWidth,
+                    },
+                  ]}
+                  source={placeholderProductThumbnail}
+                  resizeMode="contain"
+                />
+              </Animated.View>
+            )}
+
             <View style={styles.tagRow}>
               {isPreSale ? (
-                <Tag color={GlobalTheme.white} backgroundColor={GlobalTheme.preSaleTagBg}>预售</Tag>
+                <Tag
+                  color={GlobalTheme.white}
+                  backgroundColor={GlobalTheme.preSaleTagBg}
+                >
+                  预售
+                </Tag>
               ) : deliveryType === ProductDeliveryType.NextDay ? (
-                <FastImage source={iconDeliveryNextDay} style={{width: 38, height: 16}}/>
-              ) : labels.slice(0, 1).map(ele => (
-                <Tag key={ele}>{ele}</Tag>
-              ))}
+                <FastImage
+                  source={iconDeliveryNextDay}
+                  style={{ width: 38, height: 16 }}
+                />
+              ) : (
+                labels.slice(0, 1).map(ele => <Tag key={ele}>{ele}</Tag>)
+              )}
             </View>
 
             {!!inventoryLabel && (
@@ -96,7 +133,9 @@ function _ProductGridItem_({
             </Text>
             <View style={styles.priceRow}>
               <Text style={styles.slashedPrice}>
-                {(!!slashedPrice && slashedPrice > price) ? `¥${transPenny(slashedPrice)}` : ''}
+                {!!slashedPrice && slashedPrice > price
+                  ? `¥${transPenny(slashedPrice)}`
+                  : ''}
               </Text>
               <Text style={styles.currentPrice}>
                 <Text style={styles.pricePrefix}>¥</Text>
@@ -107,10 +146,7 @@ function _ProductGridItem_({
         </View>
       </TouchableWithoutFeedback>
       <View style={styles.cartBox}>
-        <ProductCart
-          count={count}
-          onCountChange={onCountChange}
-        />
+        <ProductCart count={count} onCountChange={onCountChange} />
       </View>
     </View>
   )
@@ -118,6 +154,4 @@ function _ProductGridItem_({
 
 export const ProductGridItem = withProductDetailNav(_ProductGridItem_)
 
-export default withCartCountModify(
-  withProductDetailNav(_ProductGridItem_)
-)
+export default withCartCountModify(withProductDetailNav(_ProductGridItem_))

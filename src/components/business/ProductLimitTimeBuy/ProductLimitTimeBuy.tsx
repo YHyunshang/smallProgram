@@ -3,17 +3,26 @@
  * Created by 李华良 on 2019-10-07
  */
 import * as React from 'react'
-import {Image, Text, TouchableWithoutFeedback, View,} from 'react-native'
+import {
+  Image,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+  Animated,
+} from 'react-native'
 import styles from './ProductLimitTimeBuy.styles'
-import {Img, Native} from '@utils'
+import { Img, Native } from '@utils'
 import withCartCountModify from '../Content/HOC/withCountInCartModifier'
-import {ActivityStatus} from "@common/typings"
+import { ActivityStatus } from '@common/typings'
 import Tag from '../Content/Tag'
-import ProgressBar from "@components/Scene/LimitTimeBuy/ProgressBar";
-import ProductCountOperatorLTB from "@components/business/ProductLimitTimeBuy/ProductCountOperatorLTB";
-import {Product} from "@common/typings";
-import withProductDetailNav from "@components/business/Content/HOC/withProductDetailNav";
-import {transPenny} from "@utils/FormatUtil";
+import ProgressBar from '@components/Scene/LimitTimeBuy/ProgressBar'
+import ProductCountOperatorLTB from '@components/business/ProductLimitTimeBuy/ProductCountOperatorLTB'
+import { Product } from '@common/typings'
+import withProductDetailNav from '@components/business/Content/HOC/withProductDetailNav'
+import { transPenny } from '@utils/FormatUtil'
+import { usePlaceholder } from '@utils/hooks'
+import FastImage from 'react-native-fast-image'
+import { placeholderProductThumbnail } from '@const/resources'
 
 interface Props extends Product {
   thumbnailSize: number // 商品图片大小
@@ -43,21 +52,38 @@ function ProductLimitTimeBuy({
   const fitThumbnail = Img.loadRatioImage(thumbnail, thumbnailSize)
   const navigateToProductDetail = getDetailNavigator(fitThumbnail)
 
-  const thumbnailDim = {width: thumbnailSize, height: thumbnailSize}
-  const isCartDisabled = inventoryPercentage <= 0 ||
+  const thumbnailDim = { width: thumbnailSize, height: thumbnailSize }
+  const isCartDisabled =
+    inventoryPercentage <= 0 ||
     activityStatus === ActivityStatus.Pending ||
     activityStatus === ActivityStatus.Expired
+  const [placeholderVis, placeholderOpacityStyle, onLoad] = usePlaceholder()
 
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={navigateToProductDetail}>
         <View style={styles.productBox}>
           <View style={styles.thumbnailBox}>
-            <Image
+            <FastImage
               style={[styles.thumbnail, thumbnailDim]}
-              source={{uri: fitThumbnail}}
+              source={{ uri: fitThumbnail }}
               resizeMode="contain"
+              onLoad={onLoad}
             />
+            {placeholderVis && (
+              <Animated.View
+                style={[
+                  styles.thumbnailPlaceholderBox,
+                  placeholderOpacityStyle,
+                ]}
+              >
+                <FastImage
+                  style={[styles.thumbnailPlaceholder, thumbnailDim]}
+                  source={placeholderProductThumbnail}
+                  resizeMode="contain"
+                />
+              </Animated.View>
+            )}
             <View style={styles.productTagRow}>
               {productTags.slice(0, 2).map((tag, idx) => (
                 <Tag color={['#EF2F41', '#208DDC'][idx]} key={idx}>
@@ -67,14 +93,16 @@ function ProductLimitTimeBuy({
             </View>
 
             {!!inventoryLabel && (
-              <View style={[styles.inventoryBox, { top: thumbnailSize / 2 - 11 }]}>
+              <View
+                style={[styles.inventoryBox, { top: thumbnailSize / 2 - 11 }]}
+              >
                 <View style={styles.inventoryLabelBg}>
                   <Text style={styles.inventoryLabel}>{inventoryLabel}</Text>
                 </View>
               </View>
             )}
           </View>
-          <View style={[styles.infoBox, ]}>
+          <View style={[styles.infoBox]}>
             <Text style={styles.name} numberOfLines={1} ellipsizeMode="tail">
               {name}
             </Text>
@@ -83,7 +111,7 @@ function ProductLimitTimeBuy({
             </Text>
             <View style={styles.tagRow}>
               <View style={styles.inventoryPercentage}>
-                <ProgressBar percentage={inventoryPercentage} text="库存"/>
+                <ProgressBar percentage={inventoryPercentage} text="库存" />
               </View>
               {!!spec && <Text style={styles.spec}>{spec}</Text>}
             </View>
@@ -99,7 +127,9 @@ function ProductLimitTimeBuy({
               {!!slashedPrice && (
                 <>
                   <Text>&nbsp;&nbsp;</Text>
-                  <Text style={styles.slashedPrice}>¥{transPenny(slashedPrice)}</Text>
+                  <Text style={styles.slashedPrice}>
+                    ¥{transPenny(slashedPrice)}
+                  </Text>
                 </>
               )}
             </Text>
@@ -121,6 +151,4 @@ function ProductLimitTimeBuy({
   )
 }
 
-export default withCartCountModify(
-  withProductDetailNav(ProductLimitTimeBuy)
-)
+export default withCartCountModify(withProductDetailNav(ProductLimitTimeBuy))

@@ -33,7 +33,6 @@ export default StyleSheet.create({
     textAlign: 'right',
     color: '#FA8500',
     fontSize: 18,
-    fontWeight: '600',
     fontFamily: theme.priceFFPrimary,
     paddingHorizontal: 10,
   },

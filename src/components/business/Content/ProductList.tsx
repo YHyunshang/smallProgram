@@ -32,6 +32,7 @@ export default function ProductList({ products, afterModifyCount }: Props) {
 
   return (
     <FlatList
+      style={styles.container}
       data={products}
       renderItem={floorRenderer}
       keyExtractor={item => `${item.code}`}

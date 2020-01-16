@@ -10,6 +10,7 @@ export default StyleSheet.create({
     paddingHorizontal: 1.5,
     alignItems: 'center',
     justifyContent: 'space-between',
+    position: 'relative',
   },
   boxImg: {
     width: 52,
@@ -20,5 +21,18 @@ export default StyleSheet.create({
     fontSize: 13,
     fontWeight: '400',
     color: theme.black,
+  },
+
+  placeholderBox: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1,
+    alignItems: 'center',
+  },
+  placeholder: {
+    width: 52,
+    height: 52,
   },
 })

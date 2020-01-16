@@ -5,7 +5,7 @@ import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
   container: {
-    backgroundColor: '#FFF',
+    backgroundColor: '#FAFAFA',
     position: 'relative',
     flex: 1,
   },
@@ -19,20 +19,5 @@ export default StyleSheet.create({
     zIndex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-
-  tabBar: {
-    width: '100%',
-    backgroundColor: 'transparent',
-  },
-  tabItem: {
-    flex: 1,
-    alignItems: 'center',
-    padding: 16,
-  },
-
-  sceneBox: {
-    flex: 1,
-    backgroundColor: '#FFF',
   },
 })

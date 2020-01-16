@@ -1,10 +1,10 @@
 /*
- * @Description:Tag.styles.js
+ * @Description:Tag样式
  * @Company: yh
  * @Author: yuwen.liu
  * @Date: 2019-08-20 11:29:26
- * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-27 14:03:49
+ * @LastEditors  : yuwen.liu
+ * @LastEditTime : 2020-01-15 17:10:29
  */
 import {
   StyleSheet

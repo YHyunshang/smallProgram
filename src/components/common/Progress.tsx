@@ -3,31 +3,31 @@
  * @Company: yh
  * @Author: yuwen.liu
  * @Date: 2019-10-07 15:02:09
- * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-12-09 11:12:22
+ * @LastEditors  : yuwen.liu
+ * @LastEditTime : 2020-01-15 14:40:27
  */
-import React, {Component} from 'react'
-import {
-  StyleSheet,
-  Text,
-  View
-} from 'react-native'
-import PropTypes from 'prop-types'
-export default class Progress extends Component {
+import * as React from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+
+interface Props {
+  saleNum: string // 销售数量
+}
+
+export default class Progress extends React.Component<Props> {
   constructor(props) {
     super(props)
   }
-  static propTypes = {
-    saleNum: PropTypes.string // 销售百分比
-  }
   render() {
-    let {saleNum} = this.props
-    let newSaleNum = saleNum ? saleNum.split('%') : ''
+    let { saleNum } = this.props
+    let newSaleNum: Array<any> = saleNum ? saleNum.split('%') : []
     let showText = ''
-    if (newSaleNum) {
+    if (newSaleNum && newSaleNum.length > 0) {
       if (Number(newSaleNum[0]) >= 100) {
         showText = '库存'
-      } else if ((Number(newSaleNum[0]) > 50 && Number(newSaleNum[0]) < 100) || Number(newSaleNum[0] == 0)) {
+      } else if (
+        (Number(newSaleNum[0]) > 50 && Number(newSaleNum[0]) < 100) ||
+        Number(newSaleNum[0] == 0)
+      ) {
         showText = '剩余'
       } else {
         showText = '仅剩'
@@ -35,13 +35,19 @@ export default class Progress extends Component {
     }
     return (
       <View style={styles.box}>
-        <View style={[styles.child, {width: Number(newSaleNum[0]) >= 100 ? '100%' : saleNum}]}/>
+        <View
+          style={[
+            styles.child,
+            { width: Number(newSaleNum[0]) >= 100 ? '100%' : saleNum },
+          ]}
+        />
         <View style={styles.processAnimate}>
-          {
-            saleNum ?
-              <Text style={styles.saleNum}>{showText}{saleNum}</Text>
-              : null
-          }
+          {saleNum ? (
+            <Text style={styles.saleNum}>
+              {showText}
+              {saleNum}
+            </Text>
+          ) : null}
         </View>
       </View>
     )
@@ -56,7 +62,7 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     backgroundColor: '#FFACBA',
     textAlign: 'center',
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   child: {
     height: '100%',
@@ -64,7 +70,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   processAnimate: {
     position: 'absolute',
@@ -73,11 +79,11 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 7
+    borderRadius: 7,
   },
   saleNum: {
     fontSize: 10,
     color: '#F32E57',
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 })

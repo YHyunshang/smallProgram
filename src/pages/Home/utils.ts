@@ -1,8 +1,9 @@
+import { BaseObj } from '@common/typings'
 /*
  * @Author: 李华良
  * @Date: 2019-09-26 17:48:52
  * @Last Modified by: 李华良
- * @Last Modified time: 2020-01-09 18:48:15
+ * @Last Modified time: 2020-01-14 10:59:12
  */
 import * as React from 'react'
 import { CMSServices } from '@services'
@@ -20,6 +21,7 @@ import BoxC from '@components/business/Content/Box'
 import DividerC from '@components/business/Content/Divider'
 import LimitTimeBuy from '@components/business/Content/LimitTimeBuy'
 import { Global, Native } from '@utils'
+import { WindowWidth } from '@utils/global'
 
 const Carousel = React.memo(CarouselC)
 const AdTitle = React.memo(AdTitleC)
@@ -32,23 +34,15 @@ const Ad1v2 = React.memo(Ad1v2C)
 const Box = React.memo(BoxC)
 const Divider = React.memo(DividerC)
 
-const { WindowWidth } = Global
-
 export function formatFloorData(
-  data: { [index: string]: any },
+  data: BaseObj[],
   shopCode: string,
   currentTabIdx: number,
   onLimitTimeBuyExpire: () => void
 ) {
-  let sortedData = data
-    .sort((a, b) => a.pos - b.pos) // step 1: 排序
-    .filter(
-      // step 2: 过滤掉空数据
-      ele =>
-        ele.img ||
-        (ele.templateDetailVOList && ele.templateDetailVOList.length > 0)
-    )
-  // step 3: 整合成组件
+  let sortedData = CMSServices.filterData(data)
+
+  // 整合成组件
   let result = []
   let i = 0
   let length = sortedData.length
@@ -110,7 +104,10 @@ export function formatFloorData(
           result.push({
             key: `c-${floor.id}&${nextFloor.id}`,
             component: ProductSwiperWithBg,
-            wrapperStyle: { paddingHorizontal: 0 },
+            wrapperStyle: {
+              paddingHorizontal: 0,
+              marginBottom: 10,
+            },
             props: {
               backgroundImage: imgObj.imgUrl,
               backgroundImageLink: CMSServices.formatLink(imgObj, shopCode),
@@ -123,18 +120,39 @@ export function formatFloorData(
           i += 2
           continue
         }
+        const dimensionProps =
+          imgObj.name === '查看更多' // 查看更多、区位标题
+            ? {
+                initialWidth: WindowWidth,
+                initialHeight: WindowWidth / (375 / 40),
+              }
+            : i === 0 && currentTabIdx > 0 // 非首位 tab 的头图
+            ? { width: WindowWidth, height: WindowWidth / (375 / 144) }
+            : nextFloor && nextFloor.type === 3 // 商品位头图
+            ? {
+                initialWidth: WindowWidth - 20,
+                initialHeight: (WindowWidth - 20) / (355 / 112),
+              }
+            : {
+                // 通栏广告
+                initialWidth: WindowWidth,
+                initialHeight: WindowWidth / (375 / 108),
+              }
         result.push({
           key: floor.id,
           component: AdSingle,
           wrapperStyle: [
-            {
-              marginHorizontal:
-                currentTabIdx === 0 && imgObj.name !== '查看更多' ? 10 : 0,
-            },
-            currentTabIdx === 0 && {
-              borderRadius: 5,
-              overflow: 'hidden',
-            },
+            currentTabIdx > 0 && i === 0 // 首页非首位 tab 下的头图
+              ? {}
+              : imgObj.name === '查看更多' // 查看更多图片
+              ? { marginBottom: 10 }
+              : nextFloor && nextFloor.type === 3 // 商品位头图
+              ? {
+                  paddingTop: 15,
+                  paddingHorizontal: 10,
+                  backgroundColor: '#FFF',
+                }
+              : {},
           ],
           props: {
             image: imgObj.imgUrl,
@@ -142,11 +160,8 @@ export function formatFloorData(
               imgObj.name && imgObj.name.indexOf('茅台') != -1
                 ? CMSServices.mouTaiActivityLink(imgObj.name, shopCode)
                 : CMSServices.formatLink(imgObj, shopCode),
-            width: i === 0 && currentTabIdx > 0 ? WindowWidth : undefined,
-            height:
-              i === 0 && currentTabIdx > 0
-                ? WindowWidth / (375 / 144)
-                : undefined,
+            borderRadius: nextFloor && nextFloor.type === 3 ? 5 : 0,
+            ...dimensionProps,
           },
         })
       } else if (floor.subType === 2) {
@@ -154,7 +169,11 @@ export function formatFloorData(
         result.push({
           key: floor.id,
           component: Ad1v2,
-          wrapperStyle: { paddingHorizontal: currentTabIdx === 0 ? 15 : 0 },
+          wrapperStyle: {
+            backgroundColor: '#FFF',
+            marginBottom: 10,
+            paddingBottom: 10,
+          },
           props: {
             data: (floor.templateDetailVOList || []).map(ele => ({
               image: ele.imgUrl,
@@ -167,7 +186,11 @@ export function formatFloorData(
         result.push({
           key: floor.id,
           component: Ad1v1,
-          wrapperStyle: { paddingHorizontal: currentTabIdx === 0 ? 10 : 0 },
+          wrapperStyle: {
+            backgroundColor: '#FFF',
+            marginBottom: 10,
+            paddingBottom: 10,
+          },
           props: {
             data: floor.templateDetailVOList.slice(0, 2).map(ele => ({
               image: ele.imgUrl,
@@ -189,7 +212,10 @@ export function formatFloorData(
         result.push({
           key: floor.id,
           component,
-          wrapperStyle: { paddingHorizontal: 0 },
+          wrapperStyle: {
+            paddingHorizontal: 0,
+            marginBottom: component === ProductSwiper ? 10 : 0,
+          },
           props: {
             products: floor.templateDetailVOList.map(ele => ({
               ...CMSServices.formatProduct(ele),
@@ -280,6 +306,7 @@ export function formatFloorData(
               .map(ele => CMSServices.formatProduct(ele)),
             onExpired: onLimitTimeBuyExpire,
           },
+          wrapperStyle: { marginBottom: 10 },
         })
       }
     }

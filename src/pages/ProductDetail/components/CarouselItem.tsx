@@ -1,8 +1,9 @@
 import * as React from 'react'
-import { View, Animated, Easing, Image } from 'react-native'
+import { View, Animated } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import styles from './CarouselItem.styles'
-import { placeholderProductCarousel } from '@const/resources'
+import { placeholder } from '@const/resources'
+import { usePlaceholder } from '@utils/hooks'
 
 export interface CarouselItemProps {
   image: string
@@ -11,18 +12,9 @@ export interface CarouselItemProps {
 
 const CarouselItem: React.FunctionComponent<CarouselItemProps> = ({
   image,
-  priority = FastImage.priority.normal,
+  priority,
 }) => {
-  const [placeholderOpacity] = React.useState(new Animated.Value(1))
-  const [placeholderVis, setPlaceholderVis] = React.useState(true)
-  const onImgLoad = () => {
-    Animated.timing(placeholderOpacity, {
-      toValue: 0,
-      duration: 350,
-      easing: Easing.linear,
-      useNativeDriver: true,
-    }).start(() => setPlaceholderVis(false))
-  }
+  const [placeholderVis, placeholderOpacityStyle, onLoad] = usePlaceholder()
 
   return (
     <View style={styles.container}>
@@ -30,21 +22,23 @@ const CarouselItem: React.FunctionComponent<CarouselItemProps> = ({
         style={styles.contentImg}
         source={{ uri: image, priority }}
         resizeMode="contain"
-        onLoad={onImgLoad}
+        onLoad={onLoad}
       />
       {placeholderVis && (
-        <Animated.View
-          style={[styles.placeholderBox, { opacity: placeholderOpacity }]}
-        >
+        <Animated.View style={[styles.placeholderBox, placeholderOpacityStyle]}>
           <FastImage
             style={styles.placeholderImg}
-            source={placeholderProductCarousel}
+            source={placeholder}
             resizeMode="contain"
           />
         </Animated.View>
       )}
     </View>
   )
+}
+
+CarouselItem.defaultProps = {
+  priority: FastImage.priority.normal,
 }
 
 export default CarouselItem

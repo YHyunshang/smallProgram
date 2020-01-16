@@ -296,7 +296,6 @@ export default class LimitTimeBuyScene extends React.Component<Props, State> {
   }
 
   onProductCartCountChange = (product, count) => {
-    console.log('>>>>> modify count', count)
     const { afterAddCart } = this.props
 
     this.setState(({ productCountInCart }) => ({

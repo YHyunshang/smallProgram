@@ -1,7 +1,7 @@
 /**
  * Created by 李华良 on 2019-09-29
  */
-import {StyleSheet} from "react-native";
+import { StyleSheet } from 'react-native'
 import theme from '@theme'
 
 export default StyleSheet.create({
@@ -42,7 +42,8 @@ export default StyleSheet.create({
   productBox: {
     flexBasis: '50%',
     paddingVertical: 20,
-    paddingHorizontal: 15,
+    paddingLeft: 10,
+    paddingRight: 15,
     borderColor: '#EBEBEB',
     borderBottomWidth: 0.5,
     borderRightWidth: 0.5,
@@ -52,5 +53,7 @@ export default StyleSheet.create({
   },
   productBoxInLastCol: {
     borderRightWidth: 0,
+    paddingLeft: 15,
+    paddingRight: 10,
   },
 })
