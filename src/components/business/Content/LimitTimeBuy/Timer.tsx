@@ -16,7 +16,9 @@ interface Props {
 export default function Timer({ title, duration, millisecondVis }: Props) {
   const [hour, minutes, seconds, milliseconds] = transMilliseconds(
     duration
-  ).map((d, idx) => (idx < 3 ? `${d}`.padStart(2, '0') : `${d / 100}`))
+  ).map((d, idx) =>
+    idx < 3 ? `${d}`.padStart(2, '0') : `${Math.floor(d / 100)}`
+  )
 
   return (
     <View style={styles.container}>
