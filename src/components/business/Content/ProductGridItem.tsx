@@ -77,6 +77,7 @@ function _ProductGridItem_({
               ]}
               source={{ uri: fitThumbnail }}
               resizeMode="contain"
+              onLoad={onLoad}
             />
 
             {placeholderVis && (

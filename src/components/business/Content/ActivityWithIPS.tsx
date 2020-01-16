@@ -83,7 +83,7 @@ export default function ActivityWithIPS({
             style={styles.image}
             source={{ uri: fitImg }}
             resizeMode="contain"
-            onLoadStart={onLoad}
+            onLoad={onLoad}
           />
           {placeholderVis && (
             <Animated.View
