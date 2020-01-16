@@ -235,7 +235,7 @@ export default class Page extends React.Component<PageProps, PageState> {
     }
     const { result: poster } = await getPoster({
       name: detailInfo.productName,
-      price: `¥&nbsp;${transPenny(priceOnPoster)}`,
+      price: `¥ ${transPenny(priceOnPoster)}`,
       code: detailInfo.productCode,
       storeCode: detailInfo.storeCode,
       thumbnail,
