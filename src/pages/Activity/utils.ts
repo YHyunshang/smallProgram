@@ -77,9 +77,12 @@ export function formatFloors(
           props: {
             image: imgObj.imgUrl,
             link: CMSServices.formatLink(imgObj, shopCode),
-            width: i === 0 && hasMultiTab ? WindowWidth : undefined,
-            height:
-              i === 0 && hasMultiTab ? WindowWidth / (375 / 144) : undefined,
+            ...(i === 0 && hasMultiTab
+              ? { width: WindowWidth, heigh: WindowWidth / (375 / 144) }
+              : {
+                  initialWidth: WindowWidth,
+                  initialHeight: WindowWidth / (375 / 108),
+                }),
           },
         })
       } else if (floor.subType === 2) {

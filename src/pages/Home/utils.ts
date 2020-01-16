@@ -121,14 +121,17 @@ export function formatFloorData(
           continue
         }
         const dimensionProps =
-          imgObj.name === '查看更多' || imgObj.name === '标题' // 查看更多、区位标题
-            ? {}
+          imgObj.name === '查看更多' // 查看更多、区位标题
+            ? {
+                initialWidth: WindowWidth,
+                initialHeight: WindowWidth / (375 / 40),
+              }
             : i === 0 && currentTabIdx > 0 // 非首位 tab 的头图
             ? { width: WindowWidth, height: WindowWidth / (375 / 144) }
             : nextFloor && nextFloor.type === 3 // 商品位头图
             ? {
                 initialWidth: WindowWidth - 20,
-                initialHeight: (WindowWidth - 20) / (375 / 118),
+                initialHeight: (WindowWidth - 20) / (355 / 112),
               }
             : {
                 // 通栏广告

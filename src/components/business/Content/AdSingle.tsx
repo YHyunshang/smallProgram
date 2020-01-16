@@ -45,6 +45,10 @@ const AdSingle: React.FunctionComponent<Props> = ({
   ]
   const placeholderBoxStyle = [styles.placeholderBox, placeholderOpacityStyle]
 
+  const hasPlaceholderImg =
+    (width && height && width > 145 && height > 40) ||
+    (initialWidth && initialHeight && initialWidth > 145 && initialHeight > 40)
+
   return (
     <TouchableWithoutFeedback onPress={() => Native.navigateTo(link)}>
       <View style={[containerStyle, { borderRadius }]}>
@@ -56,21 +60,18 @@ const AdSingle: React.FunctionComponent<Props> = ({
         />
         {placeholderVis && (
           <Animated.View style={placeholderBoxStyle}>
-            <FastImage
-              style={styles.placeholderImg}
-              source={placeholder}
-              resizeMode="contain"
-            />
+            {hasPlaceholderImg && (
+              <FastImage
+                style={styles.placeholderImg}
+                source={placeholder}
+                resizeMode="contain"
+              />
+            )}
           </Animated.View>
         )}
       </View>
     </TouchableWithoutFeedback>
   )
-}
-
-AdSingle.defaultProps = {
-  initialWidth: WindowWidth,
-  initialHeight: WindowWidth / (375 / 108),
 }
 
 export default AdSingle
