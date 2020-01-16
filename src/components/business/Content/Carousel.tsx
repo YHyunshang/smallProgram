@@ -45,7 +45,7 @@ export default function Carousel({ imageHeight = 290, data }: Props) {
                   style={[Styles.image, { height: imageHeight }]}
                   source={{ uri: fitImg }}
                   resizeMode="contain"
-                  onLoadStart={onLoad}
+                  onLoad={onLoad}
                 />
                 {placeholderVis && (
                   <Animated.View
