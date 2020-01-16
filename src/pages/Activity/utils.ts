@@ -114,6 +114,7 @@ export function formatFloors(
         const product = CMSServices.formatProduct(ele)
         return {
           ...product,
+          shopCode,
           count: productCountMap[ele.code],
           afterModifyCount: c => onProductCountChange(c, ele.code),
         }
