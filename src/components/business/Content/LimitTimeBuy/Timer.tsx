@@ -28,7 +28,7 @@ export default function Timer({ title, duration, millisecondVis }: Props) {
           {!!millisecondVis && (
             <React.Fragment>
               <Text style={styles.colon}>:</Text>
-              <TimePad>{Math.floor(milliseconds / 10)}</TimePad>
+              <TimePad>{Math.floor(milliseconds / 100)}</TimePad>
             </React.Fragment>
           )}
         </React.Fragment>
