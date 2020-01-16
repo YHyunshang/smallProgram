@@ -81,7 +81,6 @@ export default StyleSheet.create({
     color: theme.orange,
     fontFamily: theme.priceFFPrimary,
     fontSize: 22,
-    fontWeight: '600',
     textAlignVertical: 'bottom',
   },
   pricePrefix: {

@@ -44,7 +44,6 @@ export default StyleSheet.create({
     color: '#FA8500',
     lineHeight: 26,
     fontFamily: theme.priceFFPrimary,
-    fontWeight: '700',
   },
   pricePrefix: {
     fontSize: 12,

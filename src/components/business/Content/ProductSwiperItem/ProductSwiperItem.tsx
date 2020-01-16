@@ -98,7 +98,7 @@ function ProductSwiperItem({
           </Text>
           <Text style={styles.priceRow}>
             <Text style={styles.currentPrice}>
-              <Text style={styles.pricePrefix}>¥ </Text>
+              <Text style={styles.pricePrefix}>&nbsp;</Text>
               {transPenny(price)}
             </Text>
             {slashedPrice && (

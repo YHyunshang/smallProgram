@@ -126,7 +126,6 @@ export default StyleSheet.create({
   },
   currentPrice: {
     color: '#FA8500',
-    fontWeight: '600',
     fontSize: 25,
     fontFamily: theme.priceFFPrimary,
     marginRight: 5,
