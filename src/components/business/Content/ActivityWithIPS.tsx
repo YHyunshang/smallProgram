@@ -160,7 +160,7 @@ const ProductItem = React.memo(
               </Text>
             </View>
             <Text style={styles.price}>
-              <Text style={styles.pricePrefix}>¥ </Text>
+              <Text style={styles.pricePrefix}>¥&nbsp;</Text>
               {Formatter.transPenny(price)}
             </Text>
           </View>

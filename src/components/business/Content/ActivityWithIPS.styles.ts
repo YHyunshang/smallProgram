@@ -86,7 +86,6 @@ export default StyleSheet.create({
   price: {
     fontSize: 18,
     color: '#FA8500',
-    fontWeight: '600',
     fontFamily: theme.priceFFPrimary,
   },
   pricePrefix: {

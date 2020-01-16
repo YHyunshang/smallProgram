@@ -106,7 +106,6 @@ export default theme =>
     priceRow: {},
     currentPrice: {
       color: '#FA8500',
-      fontWeight: '600',
       fontFamily: GlobalTheme.priceFFPrimary,
       fontSize: 18,
     },

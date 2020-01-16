@@ -49,7 +49,7 @@ export default function Footer({ cartCount, amount }: Props) {
         )}
       </View>
       <Text style={styles.price}>
-        <Text style={styles.pricePrefix}>¥ </Text>
+        <Text style={styles.pricePrefix}>¥&nbsp;</Text>
         {amount / 100}
       </Text>
       <TouchableOpacity

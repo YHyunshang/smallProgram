@@ -3,9 +3,9 @@
  */
 import * as React from 'react'
 import styles from './CartFooter.styles'
-import {View, Image, Text, TouchableWithoutFeedback} from "react-native";
-import {cartGray} from "@const/resources";
-import {Formatter, Native} from "@utils";
+import { View, Image, Text, TouchableWithoutFeedback } from 'react-native'
+import { cartGray } from '@const/resources'
+import { Formatter, Native } from '@utils'
 
 interface Props {
   count: number // 购物车商品计数
@@ -20,13 +20,11 @@ function navToCart() {
   })
 }
 
-export default function ({ count, amount, children }: Props) {
+export default function({ count, amount, children }: Props) {
   const budget = count >= 100 ? '99+' : `${count}`
   return (
     <View style={styles.container}>
-      <View style={styles.content}>
-        {children}
-      </View>
+      <View style={styles.content}>{children}</View>
 
       <View style={styles.footer}>
         <TouchableWithoutFeedback onPress={navToCart}>
@@ -41,7 +39,7 @@ export default function ({ count, amount, children }: Props) {
         </TouchableWithoutFeedback>
         <View style={styles.amountBox}>
           <Text style={styles.amount}>
-            <Text style={styles.amountPrefix}>¥ </Text>
+            <Text style={styles.amountPrefix}>¥&nbsp;</Text>
             {Formatter.transPenny(amount)}
           </Text>
         </View>
