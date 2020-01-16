@@ -119,7 +119,7 @@ export function formatFloors(
       // 商品
       const { id: floorId, subType, templateDetailVOList } = floor
       const products = templateDetailVOList.map(ele => {
-        const product = CMSServices.formatProduct(ele)
+        const product = CMSServices.formatProduct(ele, shopCode)
         return {
           ...product,
           count: productCountMap[ele.code],
