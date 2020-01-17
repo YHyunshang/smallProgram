@@ -56,7 +56,7 @@ function _ProductGridItem_({
       onModifyCount(c)
     }
   }
-  labels=[]
+  
   const [placeholderVis, placeholderOpacityStyle, onLoad] = usePlaceholder()
 
   return (
