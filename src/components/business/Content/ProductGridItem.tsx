@@ -56,7 +56,7 @@ function _ProductGridItem_({
       onModifyCount(c)
     }
   }
-
+  labels=[]
   const [placeholderVis, placeholderOpacityStyle, onLoad] = usePlaceholder()
 
   return (
@@ -115,7 +115,7 @@ function _ProductGridItem_({
                   style={{ width: 38, height: 16 }}
                 />
               ) : (
-                labels.slice(0, 1).map(ele => <Tag key={ele}>{ele}</Tag>)
+                labels && labels.slice(0, 1).map(ele => <Tag key={ele}>{ele}</Tag>)
               )}
             </View>
 

@@ -102,7 +102,7 @@ function ProductListItem({
               {!!spec && <Text style={styles.spec}>{spec}</Text>}
             </View>
             <View style={styles.tagRow}>
-              {labels.slice(0, 2).map((tag, idx) => (
+              {labels && labels.slice(0, 2).map((tag, idx) => (
                 <Tag key={idx}>{tag}</Tag>
               ))}
             </View>
