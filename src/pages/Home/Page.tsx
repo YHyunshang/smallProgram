@@ -25,7 +25,7 @@ import { formatFloorData, NativePlaceHeightMax, TabHeight } from './utils'
 import { LimitTimeBuy as LimitTimeBuyScene } from '@components/Scene'
 import { RouteContext } from '@utils/contextes'
 import Spin from '@components/Spin'
-
+import PneumoniaModal from '@components/business/PneumoniaPestilence/PneumoniaModal'
 const WindowWidth = Dimensions.get('window').width
 const WindowHeight = Dimensions.get('window').height
 
@@ -77,6 +77,7 @@ interface State {
 }
 
 export default class Page extends React.Component<{}, State> {
+  pneumoniaModalRef: React.RefObject<any>
   state = {
     shop: { code: '', type: '' },
 
@@ -92,7 +93,10 @@ export default class Page extends React.Component<{}, State> {
     shouldRefreshTab: false,
     autoRefreshing: false,
   }
-
+  constructor(props) {
+    super(props)
+   this.pneumoniaModalRef = React.createRef()
+  }
   removeShopChangeListener: Function
   removeCartChangeListener: Function
   removeNewcomerChangeListener: Function
@@ -101,6 +105,7 @@ export default class Page extends React.Component<{}, State> {
     Native.setHomeFirstTabActiveStatus(true)
     this.syncScrollToNative({ nativeEvent: { contentOffset: { x: 0, y: 0 } } })
     this.init()
+    this.pneumoniaModalRef.current.showModal()
   }
 
   componentDidUpdate() {
@@ -630,6 +635,7 @@ export default class Page extends React.Component<{}, State> {
             initialLayout={{ height: WindowHeight, width: WindowWidth }}
           />
         </View>
+        <PneumoniaModal ref={this.pneumoniaModalRef}  />
       </RouteContext.Provider>
     )
   }

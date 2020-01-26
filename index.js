@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-08-26 09:41:18
  * @LastEditors  : yuwen.liu
- * @LastEditTime : 2020-01-09 19:57:14
+ * @LastEditTime : 2020-01-26 23:17:15
  */
 import { AppRegistry, Text, TouchableOpacity } from 'react-native'
 import Home from './src/pages/Home'
@@ -17,6 +17,7 @@ import HelpFeedBackAnswer from './src/pages/HelpFeedBack/HelpFeedBackAnswer'
 import LimitTimeBuy from './src/pages/LimitTimeBuy'
 import PreviewPurchase from './src/pages/MouTai/PreviewPurchase'
 import QualificationsQuery from './src/pages/MouTai/QualificationsQuery'
+import PneumoniaPestilence from './src/pages/PneumoniaPestilence/PneumoniaPestilence'
 import { Native } from './src/utils'
 
 // 隐藏 RN yellowBox warning 提示
@@ -46,6 +47,7 @@ AppRegistry.registerComponent('RNHelpFeedBackAnswer', () => HelpFeedBackAnswer)
 AppRegistry.registerComponent('LimitTimeBuy', () => LimitTimeBuy)
 AppRegistry.registerComponent('RNPreviewPurchase', () => PreviewPurchase)
 AppRegistry.registerComponent('RNQualificationQuery', () => QualificationsQuery)
+AppRegistry.registerComponent('RNPneumoniaPestilence', () => PneumoniaPestilence)
 
 // Native 全局设置
 Native.setGlobalConfig({
