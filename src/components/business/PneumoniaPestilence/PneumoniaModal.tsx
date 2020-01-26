@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors  : yuwen.liu
- * @LastEditTime : 2020-01-27 00:22:54
+ * @LastEditTime : 2020-01-27 00:31:06
  */
 import {Native} from '@utils'
 import * as React from 'react'
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     fontWeight:'600',
     color: '#FFF',
     position:'absolute',
-    top:53,
+    top:55,
     left:98,
   },
   close:{
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   decorate:{
     flex:1,
     position:'absolute',
-    top:61,
+    top:63,
     left:40,
     width:205,
     height:8,
