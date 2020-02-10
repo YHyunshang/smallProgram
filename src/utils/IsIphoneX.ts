@@ -3,11 +3,12 @@
  * @Company: yh
  * @Author: yuwen.liu
  * @Date: 2019-07-23 14:53:27
- * @LastEditors: yuwen.liu
- * @LastEditTime: 2019-09-19 10:30:36
+ * @LastEditors  : yuwen.liu
+ * @LastEditTime : 2020-02-10 17:14:33
  */
 import {isiPhoneX, isiOS} from './native'
-
+import { Dimensions } from 'react-native'
+const {height} = Dimensions.get('window')
 /**
  * @description:iphoneX 顶部留白的兼容处理
  * @return:marginTop
@@ -20,12 +21,18 @@ export const isIPhoneXMarginTop = (marginTop) => {
 
 /**
  * @description:iPhoneX 底部高度兼容处理
- * @return:marginTop
- * @param marginTop
  */
-export const isIPhoneXFooter = (marginTop) => {
-  const height = isNaN(+marginTop) ? 0 : +marginTop
-  return height + (isiPhoneX ? 80 : 10)
+export const isIPhoneXFooter = () => {
+  return isiPhoneX ? 185 : 100
+}
+
+
+/**
+ * @description:iPhone5判断
+ */
+export const isIPhone5 = () => {
+  const XSMAX_HEIGHT = 568
+  return height  === XSMAX_HEIGHT ? 57 : 157
 }
 
 /**
