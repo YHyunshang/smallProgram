@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-12 16:18:48
  * @LastEditors  : yuwen.liu
- * @LastEditTime : 2020-01-26 23:59:18
+ * @LastEditTime : 2020-02-10 14:53:14
  */
 import * as React from 'react'
 import {
@@ -34,11 +34,11 @@ export default class PneumoniaPestilence extends React.Component {
             showsVerticalScrollIndicator={false}
           >
           <FitImage            
-              source={{uri:'http://hotfile.yonghui.cn/files/%7Ccephdata%7Cfilecache%7CYHYS%7CYHYS%7C2020-01-26%7C3083314391542657024'}}
+              source={{uri:'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/extra/emergency-top.jpeg'}}
               resizeMode="contain"
             />
             <FitImage           
-              source={{uri:'http://hotfile.yonghui.cn/files/%7Ccephdata%7Cfilecache%7CYHYS%7CYHYS%7C2020-01-26%7C3036626440721264640'}}
+              source={{uri:'https://static-yh.yonghui.cn/front/wxapp-fresh-delivery/imgs/extra/emergency-bottom.jpeg'}}
               resizeMode="contain"
             />
           </ScrollView>

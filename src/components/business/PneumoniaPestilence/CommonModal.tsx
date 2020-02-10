@@ -4,10 +4,12 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors  : yuwen.liu
- * @LastEditTime : 2020-01-26 22:05:28
+ * @LastEditTime : 2020-02-10 15:05:51
  */
 import * as React from 'react'
-import { StyleSheet, View, Dimensions } from 'react-native'
+import FastImage from "react-native-fast-image"
+import { close } from '@const/resources'
+import { StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native'
 /**
  * 弹出层
  */
@@ -60,6 +62,18 @@ export default class CommonModal extends React.Component<Props, State> {
           >
             {this.props.children}
           </View>
+          <TouchableOpacity
+            style={styles.closeWrapper}
+            activeOpacity={0.95}
+            onPress={() => {
+              this.hide()
+            }} >
+            <FastImage
+              style={styles.closeImage}
+              source={close}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
         </View>
       )
     }
@@ -81,5 +95,18 @@ const styles = StyleSheet.create({
   modalBox: {
     position: 'absolute',
     top: 157,
+  },
+  closeWrapper: {
+    position: 'absolute',
+    bottom: 85,
+    width: 40,
+    height: 40,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  closeImage: {
+    width: 40,
+    height: 40
   },
 })
