@@ -3,38 +3,52 @@
  */
 import * as React from 'react'
 import styles from './ProductSwiper.styles'
-import { ScrollView, View } from 'react-native'
+import { FlatList, View, ViewToken } from 'react-native'
 import ProductSwiperItem from './ProductSwiperItem/ProductSwiperItem'
 import { Product } from '@common/typings'
+import withProductVisChange from './HOC/withProductVisChange'
 
 interface Props {
   products: Product[]
   afterModifyCount: Function
+  onViewableItemsChanged: (info: {
+    viewableItems: ViewToken[]
+    changed: ViewToken[]
+  }) => void
 }
 
-export default function ProductSwiper({ products, afterModifyCount }: Props) {
+function ProductSwiper({
+  products,
+  afterModifyCount,
+  onViewableItemsChanged,
+}: Props) {
   const total = products.length
+
+  const floorRenderer = ({ item: product, index: idx }) => (
+    <View
+      style={[styles.productBox, idx < total - 1 && styles.productBoxNotLast]}
+      key={product.code}
+    >
+      <ProductSwiperItem
+        {...product}
+        afterModifyCount={c => afterModifyCount(c, product.code)}
+      />
+    </View>
+  )
+
   return (
-    <ScrollView
+    <FlatList
       style={styles.container}
       horizontal
+      data={products}
+      renderItem={floorRenderer}
+      keyExtractor={item => `${item.code}`}
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
-    >
-      {products.map((product, idx) => (
-        <View
-          style={[
-            styles.productBox,
-            idx < total - 1 && styles.productBoxNotLast,
-          ]}
-          key={product.code}
-        >
-          <ProductSwiperItem
-            {...product}
-            afterModifyCount={c => afterModifyCount(c, product.code)}
-          />
-        </View>
-      ))}
-    </ScrollView>
+      removeClippedSubviews={false}
+      onViewableItemsChanged={onViewableItemsChanged}
+    />
   )
 }
+
+export default withProductVisChange(ProductSwiper)

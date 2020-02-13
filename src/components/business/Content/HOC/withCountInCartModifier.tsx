@@ -87,6 +87,22 @@ export default function withCartCountModify(WrappedComponent) {
     }
 
     onModifyCount = count => {
+      const { code, name, price, slashedPrice, spec, recTraceId } = this.props
+
+      // 推荐商品加购先触发推荐点击事件
+      if (recTraceId) {
+        track('RecommendClick', {
+          scenerio_name: '首页-小辉推荐',
+          rec_trace_id: recTraceId,
+          product_id: code,
+          product_name: name,
+          original_price: transPenny(slashedPrice || price),
+          present_price: transPenny(price),
+          product_spec: spec,
+          opration_type: '加入购物车',
+        })
+      }
+
       if (
         count === 1 &&
         this.state.count === 0 &&
@@ -95,7 +111,6 @@ export default function withCartCountModify(WrappedComponent) {
         this.showRemarksBeforeAddToCart()
       } else {
         const currentScene = this.context
-        const { code, name, price, slashedPrice, spec } = this.props
         const { modifiedCount } = this.state
         count > modifiedCount &&
           track('addToShoppingcart', {
@@ -109,6 +124,7 @@ export default function withCartCountModify(WrappedComponent) {
             tab_name: currentScene.extraData
               ? currentScene.extraData.currentTab || ''
               : '',
+            rec_trace_id: recTraceId,
           })
 
         this.requestUpdateCount(count)

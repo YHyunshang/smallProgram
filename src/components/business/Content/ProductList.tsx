@@ -2,10 +2,11 @@
  * Created by 李华良 on 2019-08-22
  */
 import * as React from 'react'
-import { FlatList, View } from 'react-native'
+import { FlatList, View, ViewToken } from 'react-native'
 import styles from './ProductList.styles'
 import ProductListItem from '@components/business/Content/ProductListItem'
 import { Product } from '@common/typings'
+import withProductVisChange from './HOC/withProductVisChange'
 
 // IMPORTANT: update it after modify ProductListItem layout
 const FloorHeight = 147.5
@@ -13,9 +14,17 @@ const FloorHeight = 147.5
 interface Props {
   products: Product[]
   afterModifyCount: Function
+  onViewableItemsChanged: (info: {
+    viewableItems: ViewToken[]
+    changed: ViewToken[]
+  }) => void
 }
 
-export default function ProductList({ products, afterModifyCount }: Props) {
+function ProductList({
+  products,
+  afterModifyCount,
+  onViewableItemsChanged,
+}: Props) {
   const total = products.length
 
   const floorRenderer = ({ item }) => (
@@ -40,6 +49,9 @@ export default function ProductList({ products, afterModifyCount }: Props) {
       ItemSeparatorComponent={() => <View style={styles.fakeBorder} />}
       showsVerticalScrollIndicator={false}
       removeClippedSubviews={false}
+      onViewableItemsChanged={onViewableItemsChanged}
     />
   )
 }
+
+export default withProductVisChange(ProductList)

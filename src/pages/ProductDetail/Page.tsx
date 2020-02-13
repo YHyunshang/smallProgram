@@ -105,7 +105,7 @@ export default class Page extends React.Component<PageProps, PageState> {
     const {
       productCode,
       storeCode,
-      initialData: { $$tracking },
+      initialData: { queryId, recTraceId, $$tracking },
     } = this.props
 
     // request similar products
@@ -142,6 +142,8 @@ export default class Page extends React.Component<PageProps, PageState> {
           detailInfo.promotionPrice || detailInfo.price
         ),
         product_spec: detailInfo.productSpecific,
+        query_id: queryId,
+        rec_trace_id: recTraceId,
       })
   }
 

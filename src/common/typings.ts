@@ -8,7 +8,7 @@ export interface BaseObj {
 export enum ShareChannel {
   WeChatFriends = '微信好友',
   WeChatMoment = '朋友圈',
-  Poster = '海报'
+  Poster = '海报',
 }
 
 // 活动状态
@@ -27,10 +27,10 @@ export enum ProductType {
 
 // 商品标签
 export interface ProductLabels {
-  delivery?: string[]  // 配送类标签
-  activity?: string[]  // 活动类标签
-  product?: string[]  // 商品属性类标签
-  service?: string[]  // 服务类标签
+  delivery?: string[] // 配送类标签
+  activity?: string[] // 活动类标签
+  product?: string[] // 商品属性类标签
+  service?: string[] // 服务类标签
 }
 
 // 商品配送类型
@@ -58,6 +58,14 @@ export interface Product {
   inventoryLabel?: string // 商品缺货提示
   onModifyCount?: (count: number) => any // 修改数量
   labels?: string[]
-  deliveryType: ProductDeliveryType  // 配送时效
+  deliveryType: ProductDeliveryType // 配送时效
   isPreSale: boolean
+  categoryCode?: string // 分类编码
+
+  // 搜索跟踪
+  traceId?: string
+
+  // 智能推荐相关
+  recTraceId?: string
+  queryId?: string
 }

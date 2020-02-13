@@ -302,6 +302,8 @@ export function formatProduct(
       }[data.deliveryType] || ProductDeliveryType.Other,
     isPreSale: type === ProductType.PreSale,
     shopCode,
+    queryId: data.queryId, // 智能推荐追踪
+    recTraceId: data.recTraceId, // 智能推荐追踪
   }
 }
 
