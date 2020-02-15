@@ -137,13 +137,15 @@ export function getDataByCategory(
  * @param productPrice 价格
  * @param remark 备注
  * @param shopCode 门店编码
+ * @param recTraceId 推荐id
  */
 export function updateProductCountInCart(
   productCode: string,
   productNum: number,
   productPrice: number,
   remark = '',
-  shopCode: string
+  shopCode: string,
+  recTraceId?: string
 ) {
   Log.debug(
     'addToCart:',
@@ -153,6 +155,7 @@ export function updateProductCountInCart(
       productPrice,
       remark,
       shopCode,
+      recTraceId,
     })
   )
   return new Promise((resolve, reject) => {
@@ -166,6 +169,7 @@ export function updateProductCountInCart(
         productPrice,
         remark,
         shopCode,
+        recTraceId,
       }),
       (errMsg, responseData) => {
         if (errMsg === '未登录')

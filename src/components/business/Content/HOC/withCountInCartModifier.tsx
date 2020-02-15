@@ -55,8 +55,15 @@ export default function withCartCountModify(WrappedComponent) {
     }
 
     requestUpdateCount = debounce(count => {
-      const { code, price, shopCode, afterModifyCount } = this.props
-      CMSServices.updateProductCountInCart(code, count, price, '', shopCode)
+      const { code, price, shopCode, recTraceId, afterModifyCount } = this.props
+      CMSServices.updateProductCountInCart(
+        code,
+        count,
+        price,
+        '',
+        shopCode,
+        recTraceId
+      )
         .then(res => {
           Log.debug(`change count success: current is ${count}`, res)
           this.setState({ modifiedCount: count, count, disableAdd: false })
