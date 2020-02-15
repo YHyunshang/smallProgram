@@ -37,7 +37,7 @@ const withProductVisChange = <P extends Product>(
             product_id: item.code,
             product_name: item.name,
             result_no: index + 1,
-            original_price: transPenny(item.slashedPrice),
+            original_price: transPenny(item.slashedPrice || item.price),
             present_price: transPenny(item.price),
             product_spec: item.spec,
           })
