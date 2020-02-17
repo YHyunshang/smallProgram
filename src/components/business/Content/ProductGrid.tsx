@@ -9,6 +9,7 @@ import ProductGridItem, {
 } from './ProductGridItem'
 import { Native } from '@utils'
 import withProductVisChange from './HOC/withProductVisChange'
+import { Product } from '@common/typings'
 
 // IMPORTANT: update it after modify ProductGridItem layout
 const CellHeight2X = 241.5
@@ -22,6 +23,7 @@ interface Props {
     viewableItems: ViewToken[]
     changed: ViewToken[]
   }) => void
+  keyExtractor: (item: Product, index: number) => string
 }
 
 function ProductGrid({
@@ -29,6 +31,7 @@ function ProductGrid({
   columnNumber,
   afterModifyCount,
   onViewableItemsChanged,
+  keyExtractor,
 }: Props) {
   const theme = { 2: '2x', 3: '3x' }[columnNumber]
   const styles = useTheme(theme || '2x')
@@ -77,7 +80,7 @@ function ProductGrid({
       style={styles.container}
       data={products}
       renderItem={floorRenderer}
-      keyExtractor={item => `${item.code}`}
+      keyExtractor={keyExtractor}
       numColumns={columnNumber}
       getItemLayout={getItemLayout}
       showsVerticalScrollIndicator={false}

@@ -20,16 +20,17 @@ const withProductVisChange = <P extends Product>(
       WrappedComp.name ||
       'Component'})`
 
-    // 已展示过的商品编码（当前只针对推荐商品）
+    // 已展示过的商品key（当前只针对推荐商品 queryId + productCode）
     private visitedProducts = new Set()
 
     onViewableItemsChanged = ({ viewableItems }) =>
       viewableItems.forEach(({ index, item }) => {
-        if (this.visitedProducts.has(item.code)) return
-
         // 推荐商品触发浏览事件
         if (item.queryId && item.recTraceId) {
-          this.visitedProducts.add(item.code)
+          const key = `${item.queryId}/${item.code}`
+          if (this.visitedProducts.has(key)) return
+
+          this.visitedProducts.add(key)
           track('RecommendView', {
             scenerio_name: '首页-小辉推荐',
             rec_trace_id: item.recTraceId,
@@ -49,6 +50,8 @@ const withProductVisChange = <P extends Product>(
         <WrappedComp
           {...(this.props as P)}
           onViewableItemsChanged={this.onViewableItemsChanged}
+          // fixme: 不同请求时 queryId 不同，但相同的商品应触发两次埋点时间，因此要以 queryId + code 作为 key，但是会出现商品重新渲染
+          keyExtractor={item => `${item.queryId}/${item.code}`}
         />
       )
     }

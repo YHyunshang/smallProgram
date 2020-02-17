@@ -18,6 +18,7 @@ interface Props {
     viewableItems: ViewToken[]
     changed: ViewToken[]
   }) => void
+  keyExtractor: (item: Product, index: number) => string
 }
 
 function ProductList({

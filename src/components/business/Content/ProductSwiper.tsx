@@ -15,12 +15,14 @@ interface Props {
     viewableItems: ViewToken[]
     changed: ViewToken[]
   }) => void
+  keyExtractor: (item: Product, index: number) => string
 }
 
 function ProductSwiper({
   products,
   afterModifyCount,
   onViewableItemsChanged,
+  keyExtractor,
 }: Props) {
   const total = products.length
 
@@ -42,7 +44,7 @@ function ProductSwiper({
       horizontal
       data={products}
       renderItem={floorRenderer}
-      keyExtractor={item => `${item.code}`}
+      keyExtractor={keyExtractor}
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
       removeClippedSubviews={false}
