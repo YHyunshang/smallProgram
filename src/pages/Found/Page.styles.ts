@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import { isiOS } from '@utils/native'
 
 export default StyleSheet.create({
   container: {
@@ -22,8 +23,12 @@ export default StyleSheet.create({
     paddingVertical: 7.5,
     borderRadius: 10,
     overflow: 'hidden',
-    shadowColor: "#000",
-    shadowOpacity: 0.06,
-    shadowRadius: 11,
+    ...(isiOS
+      ? {
+          shadowColor: '#000',
+          shadowOpacity: 0.06,
+          shadowRadius: 11,
+        }
+      : {}),
   },
 })
