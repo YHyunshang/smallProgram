@@ -38,9 +38,10 @@ export default function Carousel({ imageHeight = 290, data }: Props) {
           const fitImg = Img.loadRatioImage(image, Img.FullWidth)
           return (
             <TouchableWithoutFeedback
+              key={key}
               onPress={() => link.type && Native.navigateTo(link)}
             >
-              <View style={Styles.slider} key={key}>
+              <View style={Styles.slider}>
                 <FastImage
                   style={[Styles.image, { height: imageHeight }]}
                   source={{ uri: fitImg }}
