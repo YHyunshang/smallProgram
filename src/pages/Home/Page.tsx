@@ -105,7 +105,7 @@ export default class Page extends React.Component<{}, State> {
     Native.setHomeFirstTabActiveStatus(true)
     this.syncScrollToNative({ nativeEvent: { contentOffset: { x: 0, y: 0 } } })
     this.init()
-    this.pneumoniaModalRef.current.showModal()
+    //this.pneumoniaModalRef.current.showModal()
   }
 
   componentDidUpdate() {
