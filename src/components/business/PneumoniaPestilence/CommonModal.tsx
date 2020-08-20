@@ -3,8 +3,8 @@
  * @Company: yh
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
- * @LastEditors  : yuwen.liu
- * @LastEditTime : 2020-02-10 17:18:10
+ * @LastEditors: yuwen.liu
+ * @LastEditTime: 2020-08-20 15:58:15
  */
 import * as React from 'react'
 import FastImage from "react-native-fast-image"
@@ -63,7 +63,7 @@ export default class CommonModal extends React.Component<Props, State> {
           >
             {this.props.children}
           </View>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.closeWrapper}
             activeOpacity={0.95}
             onPress={() => {
@@ -74,7 +74,7 @@ export default class CommonModal extends React.Component<Props, State> {
               source={close}
               resizeMode="contain"
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       )
     }

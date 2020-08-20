@@ -2,8 +2,8 @@
  * @Descripttion: resources.ts
  * @Author: yuwen.liu
  * @Date: 2019-09-06 13:54:53
- * @LastEditors  : yuwen.liu
- * @LastEditTime : 2020-01-26 22:13:36
+ * @LastEditors: yuwen.liu
+ * @LastEditTime: 2020-08-20 15:11:16
  */
 export const cartGray = require('@img/cart-gray.png')
 
@@ -94,7 +94,7 @@ export const placeholderHeadBanner = require('@img/placeholder-head-banner.png')
 export const placeholder = require('@img/placeholder.png')
 export const placeholderProductThumbnail = require('@img/placeholder-productThumbnail.png')
 
-export const pneumoniaBg = require('@img/pneumonia-bg.png')
+export const pneumoniaBg = require('@img/yonghui-life.png')
 
 export const close = require('@img/close.png')
 

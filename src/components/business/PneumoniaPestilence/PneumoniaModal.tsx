@@ -3,8 +3,8 @@
  * @Company: yh
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
- * @LastEditors  : yuwen.liu
- * @LastEditTime : 2020-02-10 15:09:21
+ * @LastEditors: yuwen.liu
+ * @LastEditTime: 2020-08-20 16:01:18
  */
 import { Native } from '@utils'
 import * as React from 'react'
@@ -44,12 +44,12 @@ export default class PneumoniaModal extends React.Component<Props, State> {
   }
 
   /**
-  * @description: 跳转到疫情配送详情页面
+  * @description: 跳转到永辉生活app下载页面
   */
-  handleJumpToPneumoniaPestilence() {
+ handleJumpToYonghuiLife() {
     Native.navigateTo({
-      type: Native.NavPageType.RN,
-      uri: 'RNPneumoniaPestilence',
+      type: Native.NavPageType.H5,
+      uri: 'https://m.yonghuivip.com/yh-activity/apploadtip/index.html',
       params: {},
       title: String(''),
     })
@@ -61,30 +61,34 @@ export default class PneumoniaModal extends React.Component<Props, State> {
           style={styles.pneumoniaBg}
           resizeMode="contain"
           source={pneumoniaBg}>
-          <FastImage
+          {/* <FastImage
             style={styles.decorate}
             source={decorate}
             resizeMode="contain"
           />
-          <Text style={styles.titleText}>配送说明</Text>
+          <Text style={styles.titleText}>配送说明</Text> */}
           <ScrollView
             showsVerticalScrollIndicator={false}
           >
             <View style={styles.contentWrapper}>
-              <Text style={styles.contentText}>
+              {/* <Text style={styles.contentText}>
                 针对近日来新型冠状病毒感染的肺炎疫情，考虑到配送服务人员岗位每日会接触大量人群的特殊性质，为确保群众健康和民生供给，永辉买菜在配送条件达到的情况下，即日起执行特殊时期配送方式。
-             </Text>
+             </Text> */}
+             {/* <WebView
+               source={{ uri: "https://m.yonghuivip.com/yh-activity/apploadtip/index.html" }}
+               style={{ marginTop: 20 }}
+            /> */}
             </View>
           </ScrollView>
           <TouchableOpacity
             activeOpacity={0.95}
             onPress={() => {
-              this.handleJumpToPneumoniaPestilence()
+              this.handleJumpToYonghuiLife()
             }} >
             <View
               style={[styles.seeDetailButton]}
             >
-              <Text style={styles.seeText}>查看详情</Text>
+              <Text style={styles.seeText}>跳转永辉生活app</Text>
             </View>
           </TouchableOpacity>
         </ImageBackground>
@@ -130,10 +134,10 @@ const styles = StyleSheet.create({
     color: '#FFFFFF'
   },
   seeDetailButton: {
-    width: 222,
+    width: 200,
     height: 40,
     borderRadius: 2,
-    marginBottom: 20,
+    marginBottom: 10,
     backgroundColor: '#FEFAA2',
     flexDirection: 'row',
     alignItems: 'center',
