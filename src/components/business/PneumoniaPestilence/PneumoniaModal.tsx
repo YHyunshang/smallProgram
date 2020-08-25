@@ -4,7 +4,7 @@
  * @Author: yuwen.liu
  * @Date: 2019-07-15 14:02:19
  * @LastEditors: yuwen.liu
- * @LastEditTime: 2020-08-20 16:01:18
+ * @LastEditTime: 2020-08-25 19:21:47
  */
 import { Native } from '@utils'
 import * as React from 'react'
@@ -57,41 +57,19 @@ export default class PneumoniaModal extends React.Component<Props, State> {
   render() {
     return (
       <CommonModal ref={this.commonModalRef} modalBoxHeight={354} modalBoxWidth={285}>
+        <TouchableOpacity
+        style={styles.touchableButton}
+        activeOpacity={0.95}
+        onPress={() => {
+          this.handleJumpToYonghuiLife()
+        }} >
         <ImageBackground
           style={styles.pneumoniaBg}
           resizeMode="contain"
           source={pneumoniaBg}>
-          {/* <FastImage
-            style={styles.decorate}
-            source={decorate}
-            resizeMode="contain"
-          />
-          <Text style={styles.titleText}>配送说明</Text> */}
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-          >
-            <View style={styles.contentWrapper}>
-              {/* <Text style={styles.contentText}>
-                针对近日来新型冠状病毒感染的肺炎疫情，考虑到配送服务人员岗位每日会接触大量人群的特殊性质，为确保群众健康和民生供给，永辉买菜在配送条件达到的情况下，即日起执行特殊时期配送方式。
-             </Text> */}
-             {/* <WebView
-               source={{ uri: "https://m.yonghuivip.com/yh-activity/apploadtip/index.html" }}
-               style={{ marginTop: 20 }}
-            /> */}
-            </View>
-          </ScrollView>
-          <TouchableOpacity
-            activeOpacity={0.95}
-            onPress={() => {
-              this.handleJumpToYonghuiLife()
-            }} >
-            <View
-              style={[styles.seeDetailButton]}
-            >
-              <Text style={styles.seeText}>跳转永辉生活app</Text>
-            </View>
-          </TouchableOpacity>
+         
         </ImageBackground>
+        </TouchableOpacity>
       </CommonModal>
     )
   }
@@ -103,6 +81,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  touchableButton: {
+    flex: 1,
+    width: 285,
+    height:354
   },
   titleText: {
     fontSize: 22,
